@@ -1,9 +1,11 @@
+package config;
 public class Loop {
     private static final int TARGET_FPS = 60;
     private static final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
 
     private boolean isRunning;
-    Game g;
+    private Game g;
+    public static double delta;
 
     public Loop() {
         isRunning = true;
@@ -16,9 +18,11 @@ public class Loop {
             long updateLength = now - lastLoopTime;
             lastLoopTime = now;
 
-            double delta = updateLength / ((double) OPTIMAL_TIME);
+            double delta0 = updateLength / ((double) OPTIMAL_TIME);
 
-            updateGame(delta);
+            updateGame(delta0);
+
+            this.delta = delta0;
 
             long sleepTime = Math.max(0, (lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000);
 

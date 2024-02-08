@@ -1,10 +1,11 @@
+package entity;
+import geometry.Geometry;
 public class Knife {
     private double x,y;
     private int angle = 0;
-    private double velocite = 0;
-    final double GRAVITY = 0.2;
+    Geometry geometry = new Geometry(0,0.2);
 
-    Knife(){
+    public Knife(){
         this.x=10;
         this.y=0;
     }
@@ -38,23 +39,10 @@ public class Knife {
 
 
     /**
-     * Simule un saut en modifiant la position verticale (y) d'un objet en fonction du temps écoulé (delta).
-     * Applique la gravité pour contrôler le déplacement vertical.
-     * @param delta Le temps écoulé depuis la dernière mise à jour, influençant la simulation du saut.
+     * Appel upAndDownMovement de Geometry pour simuler le saut du couteau
      */
-    public void saut(double delta){
-        y += (velocite * delta)/50;
-        if (y<15) {
-            velocite += GRAVITY * delta;
-        }
-        else {
-            velocite -= GRAVITY * delta;
-        }
-
-        if (y < 0) {
-            y = 0;
-            velocite = 0;
-        }
+    public void saut(){
+        y=geometry.upAndDownMovement(y,15,50);
     }
 
 
