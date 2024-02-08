@@ -1,6 +1,7 @@
+package config;
 import java.util.ArrayList;
 import java.util.List;
-
+import entity.*;
 import static java.lang.Math.round;
 
 public class Game {
@@ -53,7 +54,7 @@ public class Game {
      * @param delta timer du jeu.
      */
      public void update(double delta){
-        knife.saut(delta);
+        knife.saut();
         knife.addAngle(2);
         affichage();
      }
