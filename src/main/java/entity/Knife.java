@@ -39,8 +39,7 @@ public class Knife {
 
 
     /**
-     * Simule un saut en modifiant la position verticale (y) d'un objet en fonction du temps écoulé (delta).
-     * Applique la gravité pour contrôler le déplacement vertical.
+     * Appel upAndDownMovement de Geometry pour simuler le saut du couteau
      */
     public void saut(){
         y=geometry.upAndDownMovement(y,15,50);
