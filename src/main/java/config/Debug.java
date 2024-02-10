@@ -26,7 +26,7 @@ public class Debug {
     public static void affichage(Knife knife){
         lastPos = (int) round(knife.getY()/RATIO_AFFICHE);
         clearScreen();
-        System.out.println(knife.getY());
+        //System.out.println(" y : "+knife.getY()+" velocite : "+knife.getVelocite());
         for (int i = 0; i < 40; i++) {
             for (int j = 0; j < 20; j++) {
                 if (j == 10 && i == 40-round(knife.getY() / RATIO_AFFICHE)) {

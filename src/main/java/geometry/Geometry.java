@@ -1,5 +1,7 @@
 package geometry;
 import config.*;
+import entity.Knife;
+
 public class Geometry{
 
 
@@ -11,15 +13,17 @@ public class Geometry{
      * @param y La position verticale actuelle de l'objet.
      * @param height La hauteur maximale à laquelle l'objet peut monter.
      * @param ratio Le ratio utilisé pour ajuster la vélocité du mouvement.
+     * @param knife éventuellement le couteau pour indiquer s'il redescend.
      * @return La nouvelle position verticale de l'objet après le mouvement.
      */
-    public static double[] upAndDownMovement(double y, int height, double velocite, double gravity, int ratio){
+    public static double[] upAndDownMovement(double y, int height, double velocite, double gravity, int ratio, Knife knife){
         y += (velocite * Loop.delta)/ratio;
         if (y<height) {
             velocite += gravity * Loop.delta;
         }
         else {
             velocite -= gravity * Loop.delta;
+            if (knife != null) knife.redescend = true;
         }
         if (y < 0) {
             y = 0;
