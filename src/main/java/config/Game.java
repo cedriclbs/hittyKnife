@@ -24,11 +24,7 @@ public class Game {
      * @param delta timer du jeu.
      */
      public void update(double delta){
-         if (knife.isInTheAir){
-             knife.updateJump();
-             knife.addAngle(4);
-         }
-
+         knife.updateMovement();
 
         Debug.affichage(knife);
      }

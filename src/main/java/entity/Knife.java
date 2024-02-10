@@ -4,9 +4,9 @@ public class Knife {
     private double x,y;
     private int angle = 0;
     private double velocite=0;
-    private final double GRAVITY=0.4;
     public boolean isInTheAir = false;
     public boolean redescend = false;
+    public boolean throwing = false;
 
     public Knife(){
         this.x=10;
@@ -54,6 +54,18 @@ public class Knife {
     }
 
 
+    public void updateMovement(){
+        if (isInTheAir){
+            if (throwing){
+                throwKnife();
+            }
+            else {
+                updateJump();
+                addAngle(4);
+            }
+        }
+    }
+
     /**
      * Met à jour la position verticale et la vélocité du saut du personnage.
      * Cette méthode utilise la classe Geometry pour effectuer le mouvement ascendant
@@ -68,7 +80,8 @@ public class Knife {
      *           indiquant que le personnage a atterri.
      */
     public void updateJump(){
-       double[] result = Geometry.upAndDownMovement(y,10,velocite,GRAVITY,50,this);
+        double gravity = 0.4;
+        double[] result = Geometry.upAndDownMovement(y,10,velocite, gravity,50,this);
        y=result[0];
        velocite=result[1];
        if (y<1 && velocite<1 && redescend){
@@ -77,6 +90,16 @@ public class Knife {
            velocite = 0;
 
        }
+    }
+
+    public void throwKnife(){
+        double deltaX;
+        double deltaY;
+        double angleRad = angle * Math.PI / 180.0;
+        deltaX = Math.cos(angleRad);
+        deltaY = Math.sin(angleRad);
+        x+=deltaX/2;
+        y+=deltaY/2;
     }
 
 }
