@@ -14,6 +14,7 @@ public class Game {
         knife = new Knife();
         listeCible = new ArrayList<>();
         life = 3;
+        knife.jump();
     }
 
 
@@ -23,8 +24,8 @@ public class Game {
      * @param delta timer du jeu.
      */
      public void update(double delta){
-        knife.saut();
-        knife.addAngle(2);
+         knife.updateMovement();
+
         Debug.affichage(knife);
      }
 
