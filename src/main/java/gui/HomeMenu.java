@@ -91,6 +91,9 @@ public class HomeMenu extends Menu {
 
     }
 
+    /**
+     * Sauvegarde l'état actuel du jeu dans un fichier spécifié et ferme l'application.
+     */
     private void quitterEtSauvegarder() {
         if (game != null) {
             game.sauvegarderEtat("cheminVersVotreFichierDeSauvegarde.ser");

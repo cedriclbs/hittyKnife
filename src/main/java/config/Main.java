@@ -11,4 +11,5 @@ public class Main {
         homeMenu.setGame(game); // Passez l'instance de Game à HomeMenu
         Loop l = new Loop();
     }
+
 }
