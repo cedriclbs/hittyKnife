@@ -33,7 +33,7 @@ public class Game {
     // Méthode pour sauvegarder l'état du jeu
     public void sauvegarderEtat(String cheminFichier) {
         GameSave gameSave = new GameSave(knife, listeCible);
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(cheminFichier))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("save.ser"))) {
             oos.writeObject(gameSave);
         } catch (IOException e) {
             e.printStackTrace();

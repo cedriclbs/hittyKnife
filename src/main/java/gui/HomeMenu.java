@@ -1,6 +1,8 @@
 package gui;
 
 
+import config.Game;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -25,6 +27,11 @@ public class HomeMenu extends Menu {
         super(title, backgroundPath, musicPath);
         JPanel menuPanel = createMenuPanel(backgroundPath);
         add(menuPanel);
+    }
+
+    // Setter pour l'instance de Game
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     /**
@@ -74,7 +81,7 @@ public class HomeMenu extends Menu {
         quitterButton.setFocusPainted(false);
         quitterButton.setBorderPainted(false);
         quitterButton.setContentAreaFilled(false);
-        quitterButton.addActionListener(e -> System.exit(0));
+        quitterButton.addActionListener(e -> quitterEtSauvegarder());
         panel.add(quitterButton);
 
         // Définition de la taille préférée pour centrer dans le GridBagLayout
@@ -82,6 +89,14 @@ public class HomeMenu extends Menu {
 
         return panel;
 
+    }
+
+    private void quitterEtSauvegarder() {
+        if (game != null) {
+            game.sauvegarderEtat("cheminVersVotreFichierDeSauvegarde.ser");
+            System.out.println("Sauvegarde effectuée. Fermeture du jeu.");
+        }
+        System.exit(0);
     }
 
     //TODO : Ajouter la méthode redirigeant au jeu quand la partie graphique du jeu sera implémentée
