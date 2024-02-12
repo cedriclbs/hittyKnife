@@ -1,4 +1,5 @@
 package config;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import entity.*;
@@ -28,6 +29,27 @@ public class Game {
 
         Debug.affichage(knife);
      }
+
+    // Méthode pour sauvegarder l'état du jeu
+    public void sauvegarderEtat(String cheminFichier) {
+        GameSave gameSave = new GameSave(knife, listeCible);
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(cheminFichier))) {
+            oos.writeObject(gameSave);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Méthode pour charger l'état du jeu
+    public void chargerEtat(String cheminFichier) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(cheminFichier))) {
+            GameSave gameSave = (GameSave) ois.readObject();
+            this.knife = gameSave.getKnife();
+            this.listeCible = gameSave.getListeCible();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }
