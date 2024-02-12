@@ -4,6 +4,7 @@ import entity.Knife;
 import entity.Cible;
 import java.util.List;
 
+//TODO: Implémenter des méthodes permettant de sauvegarder lorsque le jeu se ferme.
 public class GameSave implements Serializable {
     private Knife knife;
     private List<Cible> listeCible;
