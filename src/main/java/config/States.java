@@ -5,7 +5,7 @@ public enum States {
     HOMEMENU, 
     SOLOMODE,
     VERSUSMODE,
-    GAMEOVER;
+    GAMEOVERMENU;
     
 
     public static States states = HOMEMENU;
