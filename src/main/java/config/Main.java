@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) {
         Game game = new Game(); // Créez l'instance de votre jeu
-        GameOverMenu gameOverMenu = new GameOverMenu("Game Over","","");
+        GameOverMenu gameOverMenu = new GameOverMenu("Game Over","src/main/ressources/GameOver3.png","src/main/ressources/");
         gameOverMenu.setGame(game);
         Loop l = new Loop();
     }
