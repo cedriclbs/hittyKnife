@@ -1,6 +1,6 @@
 package gui;
 
-
+import config.Game;
 import javax.swing.*;
 import java.awt.*;
 
@@ -25,6 +25,11 @@ public class HomeMenu extends Menu {
         super(title, backgroundPath, musicPath);
         JPanel menuPanel = createMenuPanel(backgroundPath);
         add(menuPanel);
+    }
+
+    // Setter pour l'instance de Game
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     /**
