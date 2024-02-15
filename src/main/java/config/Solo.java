@@ -6,7 +6,7 @@ import java.awt.Graphics;
 public class Solo {
     int score;
     int monnaie;
-    int vie;
+    int vie = 3;
 
     public Solo(int score, int monnaie) {
         this.score = score;
