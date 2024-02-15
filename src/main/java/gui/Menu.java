@@ -106,4 +106,15 @@ abstract class Menu extends JFrame {
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escapeKeyStroke, "ESCAPE");
         getRootPane().getActionMap().put("ESCAPE", escapeAction);
     }
+
+    /**
+     * Sauvegarde l'état actuel du jeu dans un fichier spécifié et ferme l'application.
+     */
+    void quitterEtSauvegarder() {
+        if (game != null) {
+            game.sauvegarderEtat("cheminVersVotreFichierDeSauvegarde.ser");
+            System.out.println("Sauvegarde effectuée. Fermeture du jeu.");
+        }
+        System.exit(0);
+    }
 }

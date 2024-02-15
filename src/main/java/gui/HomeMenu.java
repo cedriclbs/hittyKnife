@@ -83,23 +83,11 @@ public class HomeMenu extends Menu {
         quitterButton.setContentAreaFilled(false);
         quitterButton.addActionListener(e -> quitterEtSauvegarder());
         panel.add(quitterButton);
-
         // Définition de la taille préférée pour centrer dans le GridBagLayout
         panel.setPreferredSize(new Dimension(500, 800)); // Taille du panel de menu
 
         return panel;
 
-    }
-
-    /**
-     * Sauvegarde l'état actuel du jeu dans un fichier spécifié et ferme l'application.
-     */
-    private void quitterEtSauvegarder() {
-        if (game != null) {
-            game.sauvegarderEtat("cheminVersVotreFichierDeSauvegarde.ser");
-            System.out.println("Sauvegarde effectuée. Fermeture du jeu.");
-        }
-        System.exit(0);
     }
 
     //TODO : Ajouter la méthode redirigeant au jeu quand la partie graphique du jeu sera implémentée
