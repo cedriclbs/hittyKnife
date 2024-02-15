@@ -50,7 +50,7 @@ public class GameOverMenu extends Menu {
         quitterButton.setFocusPainted(false);
         quitterButton.setBorderPainted(false);
         quitterButton.setContentAreaFilled(false);
-        quitterButton.addActionListener(e -> System.exit(0));
+        quitterButton.addActionListener(e -> quitterEtSauvegarder());
         quitButtonPanel.add(quitterButton);
         panel.add(quitButtonPanel);
     
