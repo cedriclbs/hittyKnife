@@ -1,5 +1,7 @@
 package gui;
 
+import config.Game;
+
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +16,8 @@ import java.io.IOException;
  * La classe gère également la musique de fond et le rendu de l'image de fond du menu.
  */
 abstract class Menu extends JFrame {
+
+    Game game;
 
     /**
      * Clip audio pour la lecture de la musique de fond du menu.
