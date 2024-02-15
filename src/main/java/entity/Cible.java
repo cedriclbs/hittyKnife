@@ -1,5 +1,7 @@
 package entity;
-public class Cible {
+import java.io.Serializable;
+
+public class Cible implements Serializable {
 
 
     private int x,y;
