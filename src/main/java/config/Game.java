@@ -2,6 +2,8 @@ package config;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import debug.Debug;
 import entity.*;
 
 /**
@@ -17,7 +19,7 @@ public class Game {
      * Constructeur qui initialise le jeu avec un couteau, une liste de cibles vide, et un nombre initial de vies.
      * Fait également sauter le couteau dès le début.
      */
-    Game(){
+    public Game(){
         knife = new Knife();
         listeCible = new ArrayList<>();
         life = 3;
