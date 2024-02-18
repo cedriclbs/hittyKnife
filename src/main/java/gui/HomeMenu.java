@@ -92,7 +92,10 @@ public class HomeMenu extends Menu {
 
     //TODO : Ajouter la méthode redirigeant au jeu quand la partie graphique du jeu sera implémentée
     private void showGame() {
-
+        SwingUtilities.invokeLater(() -> {
+            SoloGameFrame soloFrame = new SoloGameFrame("Mode Solo", "src/main/ressources/background/solo.png");
+            soloFrame.setVisible(true);
+        });
     }
 
     //TODO : Ajouter la méthode redirigeant au mode 1v1 quand le mode sera implémenté
