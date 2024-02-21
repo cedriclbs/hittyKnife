@@ -3,6 +3,7 @@ package config;
 public class Versus {
     int scoreJ1;
     int scoreJ2;
+    GameTimer timer;
 
     public Versus(int s1, int s2) {
         if (s1 > 5 || s2 > 5) {
@@ -14,7 +15,7 @@ public class Versus {
 
     //Fonction qu'informe qui sera le vainqueur
     //TODO : adaptez la fonction en fonction de l'avancement du jeu
-    void vainqueur() {
+    private void vainqueur() {
         if (this.scoreJ1 == 5) {
             //System.out.println("J1 a gagné");
             return;
@@ -24,7 +25,7 @@ public class Versus {
         }
     }
 
-    void finDeManche() {
+    private void finDeManche() {
         if (J1BoardisClear() && !J2BoardisClear()) {
             scoreJ1++;
         }
@@ -44,8 +45,17 @@ public class Versus {
     }
 
     //Fonction pour reset les scores pour pouvoir rejouer
-    void resetScores() {
+    private void resetScores() {
         scoreJ1 = 0;
         scoreJ2 = 0;
+    }
+
+    private void initTimer() {
+        this.timer = new GameTimer(2);
+        timer.start();
+    }
+
+    private boolean timerOver() {
+        return (timer.getSeconds() == 0);
     }
 }
