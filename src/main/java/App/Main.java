@@ -1,8 +1,8 @@
-package config;
+package App;
 
+import config.Game;
 import gui.HomeMenu;
-import java.awt.Image;
-import java.util.Objects;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
@@ -14,7 +14,7 @@ public class Main {
 
         ImageIcon icon = new ImageIcon("src/main/ressources/icon/icon.ico");
         JFrame frame = new JFrame("Hitty Knife");
-        frame.setIconImage(gameIcon.getImage());
+        //frame.setIconImage(gameIcon.getImage());
 
         HomeMenu homeMenu = new HomeMenu("Hitty Knife", "src/main/ressources/background/solo.png", "save.ser");
         homeMenu.setGame(game); // Passez l'instance de Game à HomeMenu

@@ -1,4 +1,4 @@
-package config;
+package debug;
 
 import entity.Knife;
 import geometry.Geometry;

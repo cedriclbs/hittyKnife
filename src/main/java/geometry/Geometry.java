@@ -1,5 +1,5 @@
 package geometry;
-import config.*;
+import App.Loop;
 import entity.Knife;
 
 public class Geometry{
