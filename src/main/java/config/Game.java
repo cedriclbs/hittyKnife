@@ -14,6 +14,7 @@ public class Game {
     Knife knife;
     List<Cible> listeCible;
     int life;
+    int argent; // Ajout de l'argent comme attribut du jeu
 
     /**
      * Constructeur qui initialise le jeu avec un couteau, une liste de cibles vide, et un nombre initial de vies.
@@ -23,10 +24,9 @@ public class Game {
         knife = new Knife();
         listeCible = new ArrayList<>();
         life = 3;
+        argent = 0;
         knife.jump();
     }
-
-
 
     /**
      * Met à jour l'état du jeu en fonction du temps écoulé depuis la dernière mise à jour.
@@ -35,8 +35,7 @@ public class Game {
      */
      public void update(double delta){
          knife.updateMovement();
-
-        Debug.affichage(knife);
+         Debug.affichage(knife);
      }
 
     /**
@@ -45,7 +44,7 @@ public class Game {
      * @param cheminFichier Le chemin vers le fichier où l'état du jeu sera sauvegardé.
      */
     public void sauvegarderEtat(String cheminFichier) {
-        GameSave gameSave = new GameSave(knife, listeCible);
+        GameSave gameSave = new GameSave(knife, listeCible, argent);
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("save.ser"))) {
             oos.writeObject(gameSave);
         } catch (IOException e) {
@@ -63,9 +62,18 @@ public class Game {
             GameSave gameSave = (GameSave) ois.readObject();
             this.knife = gameSave.getKnife();
             this.listeCible = gameSave.getListeCible();
+            this.argent = gameSave.getArgent();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public void ajouterArgent(int montant) {
+        this.argent += montant;
+    }
+
+    public void retirerArgent(int montant) {
+        this.argent -= montant;
     }
 
 
