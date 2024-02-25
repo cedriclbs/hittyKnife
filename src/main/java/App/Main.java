@@ -1,23 +1,22 @@
 package App;
 
+import User.User;
+import User.UserManager;
 import config.Game;
+import gui.ConnectionMenu;
 import gui.HomeMenu;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 public class Main {
 
     public static void main(String[] args) {
         Game game = new Game(); // Créez l'instance de votre jeu
-        game.chargerEtat("save.ser");
-
-        ImageIcon icon = new ImageIcon("src/main/ressources/icon/icon.ico");
-        JFrame frame = new JFrame("Hitty Knife");
-        //frame.setIconImage(gameIcon.getImage());
-
-        HomeMenu homeMenu = new HomeMenu("Hitty Knife", "src/main/ressources/background/solo.png", "save.ser");
-        homeMenu.setGame(game); // Passez l'instance de Game à HomeMenu
+        SwingUtilities.invokeLater(() -> {
+            UserManager gestionUtilisateurs = new UserManager(); // Assurez-vous d'initialiser cette classe correctement
+            ConnectionMenu ecranConnexion = new ConnectionMenu(null, gestionUtilisateurs);
+            ecranConnexion.setVisible(true);
+        });
         Loop l = new Loop();
     }
 
