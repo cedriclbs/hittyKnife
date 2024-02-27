@@ -1,29 +1,30 @@
 package entity;
+import geometry.Coordinate;
+
 import java.io.Serializable;
 
 public class Cible implements Serializable {
 
 
-    private int x,y;
+    private final Coordinate coordinate;
 
-    Cible(int x,int y){
-        this.x=x;
-        this.y=y;
+    Cible(double x,double y){
+        coordinate = new Coordinate(x,y);
     }
 
 
-    public int getY(){
-        return y;
+    public double getY(){
+        return coordinate.getY();
     }
-    public int getX() {
-        return x;
+    public double getX() {
+        return coordinate.getX();
     }
-    public void setX(int x){
-        this.x=x;
+    public void setX(double x){
+        coordinate.setX(x);
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setY(double y) {
+        coordinate.setY(y);
     }
 
 }
