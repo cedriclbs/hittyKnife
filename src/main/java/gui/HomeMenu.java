@@ -44,9 +44,13 @@ public class HomeMenu extends Menu {
      * @return Le {@link JPanel} configuré pour le menu principal.
      */
 JPanel createMenuPanel(String backgroundPath) {
+
     BackgroundPanel panel = new BackgroundPanel(backgroundPath);
     panel.setLayout(new GridLayout(4, 1, 0, 20)); //Espacement vertical entre les boutons
     panel.setBorder(BorderFactory.createEmptyBorder(40, 20, 40, 20)); // Ajoute des marges
+
+    // TODO : Afficher le numéro du niveau actuel centré en haut-> "Niveau X"
+    // TODO : Afficher un engrenage pour les paramètres en haut à gauche.
 
     // Bouton "Solo" 
     JPanel campaignButtonPanel = new JPanel();
