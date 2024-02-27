@@ -13,6 +13,7 @@ public class GameSave implements Serializable {
     private Knife knife;
     private List<Cible> listeCible;
     private int argent;
+    private int level;
 
     /**
      * Initialise une nouvelle sauvegarde de jeu.
@@ -20,10 +21,11 @@ public class GameSave implements Serializable {
      * @param knife Le couteau du joueur.
      * @param listeCible Les cibles actuelles.
      */
-    public GameSave(Knife knife, List<Cible> listeCible, int argent) {
+    public GameSave(Knife knife, List<Cible> listeCible, int argent,int level) {
         this.knife = knife;
         this.listeCible = listeCible;
         this.argent = argent;
+        this.level = level;
     }
 
     /**
@@ -46,5 +48,9 @@ public class GameSave implements Serializable {
 
     public void setArgent(int argent) {
         this.argent = argent;
+    }
+
+    public int getLevel(){
+        return level;
     }
 }
