@@ -43,7 +43,6 @@ public class HomeMenu extends Menu {
      * @param backgroundPath Le chemin d'accès au fichier d'image de fond pour le panel.
      * @return Le {@link JPanel} configuré pour le menu principal.
      */
-    @Override
 JPanel createMenuPanel(String backgroundPath) {
     BackgroundPanel panel = new BackgroundPanel(backgroundPath);
     panel.setLayout(new GridLayout(4, 1, 0, 20)); //Espacement vertical entre les boutons
