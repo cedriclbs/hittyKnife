@@ -99,13 +99,6 @@ public class Knife implements Serializable {
     }
 
     public void throwKnife(){
-        double deltaX;
-        double deltaY;
-        double angleRad = angle * Math.PI / 180.0;
-        deltaX = Math.cos(angleRad);
-        deltaY = Math.sin(angleRad);
-        coordinate.setX(coordinate.getX()+deltaX/2);
-        coordinate.setY(coordinate.getY()+deltaY/2);
+        Geometry.forwardMovement(coordinate,angle);
     }
-
 }
