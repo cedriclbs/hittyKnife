@@ -1,6 +1,9 @@
 package gui;
 
 
+import static config.States.SOLOMODE;
+import static config.States.setStates;
+
 import config.Game;
 
 import javax.swing.*;
@@ -14,7 +17,6 @@ import java.awt.*;
  * </p>
  */
 public class HomeMenu extends Menu {
-
     //TODO: quand on appuie sur échap, enlève le plein écran
     /**
      * Crée l'interface du menu principal avec le titre spécifié, le chemin vers l'image de fond et le chemin vers la musique de fond.
@@ -23,9 +25,17 @@ public class HomeMenu extends Menu {
      * @param backgroundPath Le chemin d'accès au fichier d'image de fond du menu.
      * @param musicPath Le chemin d'accès au fichier audio de la musique de fond.
      */
+
+    private BackgroundPanel soloFrame;
+
     public HomeMenu(String title, String backgroundPath, String musicPath) {
         super(title, backgroundPath, musicPath);
-        JPanel menuPanel = createMenuPanel(backgroundPath);
+        initialize("src/main/ressources/background/solo.png");
+    }
+
+    private void initialize(String background) {
+        soloFrame = new BackgroundPanel(background);
+        JPanel menuPanel = createMenuPanel(background);
         add(menuPanel);
     }
 
@@ -92,10 +102,11 @@ public class HomeMenu extends Menu {
 
     //TODO : Ajouter la méthode redirigeant au jeu quand la partie graphique du jeu sera implémentée
     private void showGame() {
-        SwingUtilities.invokeLater(() -> {
-            SoloGameFrame soloFrame = new SoloGameFrame("Mode Solo", "src/main/ressources/background/solo.png");
-            soloFrame.setVisible(true);
-        });
+        setStates(SOLOMODE);
+        getContentPane().removeAll();
+        getContentPane().add(soloFrame);
+        revalidate();
+        repaint();
     }
 
     //TODO : Ajouter la méthode redirigeant au mode 1v1 quand le mode sera implémenté

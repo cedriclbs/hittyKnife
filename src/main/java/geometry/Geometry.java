@@ -1,5 +1,5 @@
 package geometry;
-import config.*;
+import App.Loop;
 import entity.Knife;
 
 public class Geometry{
@@ -30,6 +30,21 @@ public class Geometry{
             velocite = 0;
         }
         return new double[]{y,velocite};
+    }
+
+    /**
+     * Déplace les coordonnées spécifiées vers l'avant selon l'angle donné.
+     * @param coordinate Les coordonnées à déplacer.
+     * @param angle L'angle en degrés.
+     */
+    public static void forwardMovement(Coordinate coordinate, double angle){
+        double deltaX;
+        double deltaY;
+        double angleRad = angle * Math.PI / 180.0;
+        deltaX = Math.cos(angleRad);
+        deltaY = Math.sin(angleRad);
+        coordinate.setX(coordinate.getX()+deltaX/2);
+        coordinate.setY(coordinate.getY()+deltaY/2);
     }
 
     /**

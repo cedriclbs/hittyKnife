@@ -1,4 +1,7 @@
-package config;
+package App;
+
+import config.Game;
+
 public class Loop {
     private static final int TARGET_FPS = 60;
     private static final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
@@ -22,7 +25,7 @@ public class Loop {
 
             updateGame(delta0);
 
-            this.delta = delta0;
+            delta = delta0;
 
             long sleepTime = Math.max(0, (lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000);
 
