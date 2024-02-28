@@ -1,30 +1,28 @@
 package bosses;
 
+import entity.Cible;
 import entity.Knife;
+import geometry.Coordinate;
 import geometry.Geometry;
 
-public abstract class Boss {
+public abstract class Boss extends Cible {
     private String name;
     private int health;
     
     private boolean isBuffed = false;
     private boolean isDebuffed = false;
-    
-    private double x;
-    private double y;
+
+    private Coordinate coordinate;
     protected double velocite;
     protected boolean isInTheAir;
-    protected boolean redescend;    
+    protected boolean redescend;
+
+    public Boss(Double x, Double y) {
+        super(x,y);
+    }
 
     public Boss(String name, int health, double x, double y, double velocite) {
-        this.name = name;
-        this.health = health;
-        this.x = x;
-        this.y = y;
-        this.velocite = velocite;
-        this.isInTheAir = false;
-        this.redescend = false;     
-        
+        super(name, health, x, y, velocite);        
     }
 
     public void takeDamage(int damage) {
@@ -58,22 +56,6 @@ public abstract class Boss {
     public int getHealth() {
         return health;
     }
-
-    public double getX() {
-        return x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
     
     public double getVelocite() {
         return this.velocite;
@@ -82,6 +64,20 @@ public abstract class Boss {
     public void setVelocite(double velocite) {
         this.velocite = velocite;
     }
+
+    public double getY(){
+        return coordinate.getY();
+    }
+    public double getX() {
+        return coordinate.getX();
+    }
+    public void setX(double x){
+        coordinate.setX(x);
+    }
+
+    public void setY(double y) {
+        coordinate.setY(y);
+    }    
     
     /*
     public void updateJump(){

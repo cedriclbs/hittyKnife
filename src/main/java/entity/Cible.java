@@ -5,11 +5,25 @@ import java.io.Serializable;
 
 public class Cible implements Serializable {
 
+    private String name;
+    private int health;
 
-    private final Coordinate coordinate;
+    private Coordinate coordinate;
+    protected double velocite;
+    protected boolean isInTheAir;
+    protected boolean redescend;
 
-    Cible(double x,double y){
+    public Cible(double x,double y){
         coordinate = new Coordinate(x,y);
+    }
+
+    public Cible(String name, int health, double x, double y, double velocite) {
+        this.name = name;
+        this.health = health;
+        this.coordinate = new Coordinate(x,y);
+        this.velocite = velocite;
+        this.isInTheAir = false;
+        this.redescend = false;  
     }
 
 
