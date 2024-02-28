@@ -7,10 +7,13 @@ public class Solo {
     int score;
     int monnaie;
     int vie = 3;
+    boolean isBoss;
+    GameTimer timer;
 
     public Solo(int score, int monnaie) {
         this.score = score;
         this.monnaie = monnaie;
+        this.isBoss = false;
     }
 
     //Fonction pour augmentation du score
@@ -58,4 +61,15 @@ public class Solo {
     public int getVies() {
         return vie;
     }
+
+    public void initTimer() {
+        if (isBoss) {
+            this.timer = new GameTimer(3);
+            timer.start();
+        }
+    }
+
+    private boolean timerOver() {
+        return (timer.getSeconds() == 0);
+    }    
 }
