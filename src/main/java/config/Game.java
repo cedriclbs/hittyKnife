@@ -15,6 +15,7 @@ public class Game {
     List<Cible> listeCible;
     int life;
     int argent; // Ajout de l'argent comme attribut du jeu
+    Level level;
 
     /**
      * Constructeur qui initialise le jeu avec un couteau, une liste de cibles vide, et un nombre initial de vies.
@@ -44,7 +45,7 @@ public class Game {
      * @param cheminFichier Le chemin vers le fichier où l'état du jeu sera sauvegardé.
      */
     public void sauvegarderEtat(String cheminFichier) {
-        GameSave gameSave = new GameSave(knife, listeCible, argent);
+        GameSave gameSave = new GameSave(knife, listeCible, argent,level.getLevel());
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("save.ser"))) {
             oos.writeObject(gameSave);
         } catch (IOException e) {
