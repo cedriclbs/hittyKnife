@@ -29,6 +29,9 @@ public class Geometry{
             y = 0;
             velocite = 0;
         }
+        if (knife != null) {
+            knife.setVelocite(velocite);
+        }
         return new double[]{y,velocite};
     }
 

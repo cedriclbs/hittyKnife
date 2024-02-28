@@ -35,7 +35,7 @@ public class Game {
      */
      public void update(double delta){
          knife.updateMovement();
-         Debug.affichage(knife);
+         //Debug.affichage(knife);
      }
 
     /**
@@ -74,6 +74,10 @@ public class Game {
 
     public void retirerArgent(int montant) {
         this.argent -= montant;
+    }
+
+    public Knife getKnife () {
+        return knife;
     }
 
 
