@@ -101,4 +101,7 @@ public class Knife implements Serializable {
     public void throwKnife(){
         Geometry.forwardMovement(coordinate,angle);
     }
+    public void updatePositionTest() {
+        this.coordinate.setX(this.coordinate.getX()+1);
+    }
 }

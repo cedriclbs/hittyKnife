@@ -103,7 +103,6 @@ public class HomeMenu extends Menu {
 
     }
 
-    //TODO : Ajouter la méthode redirigeant au jeu quand la partie graphique du jeu sera implémentée
     private void showGame() {
         soloMode.startSoloGame();
     }
