@@ -3,6 +3,10 @@ package gui;
 import User.UserManager;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import config.Game;
 
 public class ConnectionMenu extends JDialog {
@@ -44,13 +48,14 @@ public class ConnectionMenu extends JDialog {
 
         if (gestionUtilisateurs.validerConnexion(nomUtilisateur, motDePasse) != null) {
             JOptionPane.showMessageDialog(this, "Connexion réussie !");
+            gestionUtilisateurs.sauvegarderInstance();
             this.dispose(); // Ferme l'écran de connexion
 
             // Lancement du HomeMenu
             SwingUtilities.invokeLater(() -> {
                 Game game = new Game(); // Créez l'instance de votre jeu
-                game.chargerEtat("save.ser");
-                HomeMenu homeMenu = new HomeMenu("Hitty Knife", "cheminVersImageDeFond", "cheminVersMusique");
+                game.chargerEtat(nomUtilisateur + ".json");
+                HomeMenu homeMenu = new HomeMenu("Hitty Knife", "src/main/ressources/background/solo.png", "cheminVersMusique");
             });
         } else {
             JOptionPane.showMessageDialog(this, "Échec de la connexion. Vérifiez votre nom d'utilisateur et mot de passe.", "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -69,10 +74,25 @@ public class ConnectionMenu extends JDialog {
         boolean utilisateurAjoute = gestionUtilisateurs.ajouterUtilisateur(nomUtilisateur, motDePasse);
         if (utilisateurAjoute) {
             JOptionPane.showMessageDialog(this, "Compte créé avec succès !");
+
+            // Créez le fichier de sauvegarde pour le nouvel utilisateur
+            String cheminSauvegarde = "src/main/saves/sauvegarde_" + nomUtilisateur + ".json";
+            creerFichierSauvegardeUtilisateur(cheminSauvegarde);
         } else {
             JOptionPane.showMessageDialog(this, "Le nom d'utilisateur est déjà pris. Veuillez essayer un nom différent.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    private void creerFichierSauvegardeUtilisateur(String cheminSauvegarde) {
+        try {
+            Game etatInitialJeu = new Game(); // Supposons que Game a un état initial valide pour un nouveau joueur.
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.writeValue(new File(cheminSauvegarde), etatInitialJeu);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     //TODO: connexion automatique après une création de compte réussie
 

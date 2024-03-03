@@ -52,11 +52,9 @@ public class Game {
 
     /**
      * Sauvegarde l'état actuel du jeu dans un fichier spécifié.
-     *
-     * @param cheminFichier Le chemin vers le fichier où l'état du jeu sera sauvegardé.
      */
-    public void sauvegarderEtat(String cheminFichier) {
-        String cheminComplet = "src/main/saves/" + cheminFichier; // Ajustez ce chemin si nécessaire
+    public void sauvegarderEtat() {
+        String cheminComplet = "src/main/saves/"+nomUtilisateur+".json"; // Ajustez ce chemin si nécessaire
         ObjectMapper mapper = new ObjectMapper();
         GameSave gameSave = new GameSave(knife, listeCible, argent);
         try {

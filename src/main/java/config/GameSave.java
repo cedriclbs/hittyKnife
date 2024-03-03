@@ -1,5 +1,5 @@
 package config;
-import java.io.Serializable;
+
 import entity.Knife;
 import entity.Cible;
 import java.util.List;
