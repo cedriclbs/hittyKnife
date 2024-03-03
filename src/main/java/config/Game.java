@@ -15,6 +15,7 @@ public class Game {
     List<Cible> listeCible;
     int life;
     int argent; // Ajout de l'argent comme attribut du jeu
+    String nomUtilisateur;
 
     /**
      * Constructeur qui initialise le jeu avec un couteau, une liste de cibles vide, et un nombre initial de vies.
@@ -26,6 +27,14 @@ public class Game {
         life = 3;
         argent = 0;
         knife.jump();
+    }
+
+    public void setNomUtilisateur(String nomUtilisateur) {
+        this.nomUtilisateur = nomUtilisateur;
+    }
+
+    public String getNomUtilisateur() {
+        return this.nomUtilisateur;
     }
 
     /**
@@ -44,8 +53,9 @@ public class Game {
      * @param cheminFichier Le chemin vers le fichier où l'état du jeu sera sauvegardé.
      */
     public void sauvegarderEtat(String cheminFichier) {
-        GameSave gameSave = new GameSave(knife, listeCible, argent);
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("save.ser"))) {
+        String cheminComplet = "src/main/saves/" + cheminFichier; // Ajustez ce chemin si nécessaire
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(cheminComplet))) {
+            GameSave gameSave = new GameSave(knife, listeCible, argent);
             oos.writeObject(gameSave);
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,7 +68,8 @@ public class Game {
      * @param cheminFichier Le chemin vers le fichier contenant l'état du jeu sauvegardé.
      */
     public void chargerEtat(String cheminFichier) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(cheminFichier))) {
+        String cheminComplet = "src/main/saves/" + cheminFichier; // Ajustez ce chemin si nécessaire
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(cheminComplet))) {
             GameSave gameSave = (GameSave) ois.readObject();
             this.knife = gameSave.getKnife();
             this.listeCible = gameSave.getListeCible();

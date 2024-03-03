@@ -3,6 +3,7 @@ package gui;
 import User.UserManager;
 import javax.swing.*;
 import java.awt.*;
+import config.Game;
 
 public class ConnectionMenu extends JDialog {
     private JTextField champNomUtilisateur;
@@ -47,12 +48,9 @@ public class ConnectionMenu extends JDialog {
 
             // Lancement du HomeMenu
             SwingUtilities.invokeLater(() -> {
-                JFrame frame = new JFrame("Titre du jeu");
-                HomeMenu homeMenu = new HomeMenu("Titre du Jeu", "cheminVersImageDeFond", "cheminVersMusique");
-                frame.setContentPane(homeMenu.createMenuPanel("cheminVersImageDeFond"));
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.pack();
-                frame.setVisible(true);
+                Game game = new Game(); // Créez l'instance de votre jeu
+                game.chargerEtat("save.ser");
+                HomeMenu homeMenu = new HomeMenu("Hitty Knife", "cheminVersImageDeFond", "cheminVersMusique");
             });
         } else {
             JOptionPane.showMessageDialog(this, "Échec de la connexion. Vérifiez votre nom d'utilisateur et mot de passe.", "Erreur", JOptionPane.ERROR_MESSAGE);

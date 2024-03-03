@@ -1,5 +1,6 @@
 package gui;
 
+import User.UserManager;
 import config.Game;
 
 import javax.sound.sampled.*;
@@ -97,7 +98,6 @@ abstract class Menu extends JFrame {
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 int height = screenSize.height;
                 int width = 500;
-
                 setBounds((screenSize.width - width) / 2, 0, width, height);
                 setExtendedState(JFrame.NORMAL);
                 getContentPane().revalidate();
@@ -112,7 +112,9 @@ abstract class Menu extends JFrame {
      */
     void quitterEtSauvegarder() {
         if (game != null) {
-            game.sauvegarderEtat("cheminVersVotreFichierDeSauvegarde.ser");
+            String cheminSauvegarde = "/src/main/saves/cheminVersLeFichierDeSauvegarde.ser";
+            game.sauvegarderEtat(cheminSauvegarde);
+            UserManager.getInstance().sauvegarderInstance();
             System.out.println("Sauvegarde effectuée. Fermeture du jeu.");
         }
         System.exit(0);

@@ -11,12 +11,13 @@ import javax.swing.*;
 public class Main {
 
     public static void main(String[] args) {
-        Game game = new Game(); // Créez l'instance de votre jeu
+        Game game = new Game();
         SwingUtilities.invokeLater(() -> {
-            UserManager gestionUtilisateurs = new UserManager(); // Assurez-vous d'initialiser cette classe correctement
+            UserManager gestionUtilisateurs = new UserManager();
             ConnectionMenu ecranConnexion = new ConnectionMenu(null, gestionUtilisateurs);
             ecranConnexion.setVisible(true);
         });
+
         Loop l = new Loop();
     }
 
