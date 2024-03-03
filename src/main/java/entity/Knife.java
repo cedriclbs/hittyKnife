@@ -1,9 +1,8 @@
 package entity;
 import geometry.Geometry;
 
-import java.io.Serializable;
 
-public class Knife implements Serializable {
+public class Knife {
     private double x,y;
     private int angle = 0;
     private double velocite=0;

@@ -1,6 +1,5 @@
 package gui;
 
-import User.UserManager;
 import config.Game;
 
 import javax.sound.sampled.*;
@@ -10,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Classe abstraite {@code Menu} sert de base pour créer les interfaces de menu dans le jeu.
@@ -112,11 +113,18 @@ abstract class Menu extends JFrame {
      */
     void quitterEtSauvegarder() {
         if (game != null) {
-            String cheminSauvegarde = "/src/main/saves/cheminVersLeFichierDeSauvegarde.ser";
-            game.sauvegarderEtat(cheminSauvegarde);
-            UserManager.getInstance().sauvegarderInstance();
-            System.out.println("Sauvegarde effectuée. Fermeture du jeu.");
+            // Le chemin vers le fichier JSON où vous souhaitez sauvegarder l'état du jeu
+            String cheminSauvegarde = "src/main/saves/etatDuJeu.json"; // Ajustez selon votre structure de dossiers
+            ObjectMapper mapper = new ObjectMapper(); // Créer une instance de ObjectMapper
+            try {
+                // Sérialiser l'objet game en JSON et sauvegarder dans le fichier spécifié
+                mapper.writeValue(new File(cheminSauvegarde), game);
+                // Afficher un message de confirmation dans la console
+                System.out.println("Sauvegarde de l'état du jeu effectuée en format JSON. Fermeture du jeu.");
+            } catch (IOException e) {
+                e.printStackTrace(); // Gérer les exceptions, par exemple, en cas d'erreur d'écriture du fichier
+            }
         }
-        System.exit(0);
+        System.exit(0); // Fermer l'application
     }
 }

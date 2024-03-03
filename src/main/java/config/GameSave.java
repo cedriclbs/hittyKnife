@@ -5,11 +5,11 @@ import entity.Cible;
 import java.util.List;
 
 /**
- * Classe sérialisable pour sauvegarder l'état du jeu, incluant un couteau ({@link Knife})
+ * Classe pour sauvegarder l'état du jeu, incluant un couteau ({@link Knife})
  * et une liste de cibles ({@link List} de {@link Cible}). Permet de restaurer l'état du jeu
  * à partir d'une sauvegarde.
  */
-public class GameSave implements Serializable {
+public class GameSave {
     private Knife knife;
     private List<Cible> listeCible;
     private int argent;

@@ -2,7 +2,8 @@ package User;
 
 import java.io.*;
 import java.util.HashMap;
-public class UserManager implements Serializable {
+import com.fasterxml.jackson.databind.ObjectMapper;
+public class UserManager {
 
     private static final long serialVersionUID = 1L;
     private static UserManager instance;
@@ -20,16 +21,18 @@ public class UserManager implements Serializable {
     }
 
     private static void chargerInstance() {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("src/main/saves/usermanager.ser"))) {
-            instance = (UserManager) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            instance = mapper.readValue(new File("src/main/saves/usermanager.json"), UserManager.class);
+        } catch (IOException e) {
             instance = new UserManager();
         }
     }
 
     public void sauvegarderInstance() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("src/main/saves/usermanager.ser"))) {
-            oos.writeObject(instance);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            mapper.writeValue(new File("src/main/saves/usermanager.json"), instance);
         } catch (IOException e) {
             e.printStackTrace();
         }

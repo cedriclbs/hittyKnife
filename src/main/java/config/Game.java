@@ -6,6 +6,9 @@ import java.util.List;
 import debug.Debug;
 import entity.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.nio.file.Paths;
+
 /**
  * Classe principale du jeu gérant l'état du jeu, y compris le couteau, les cibles et les vies.
  * Permet la sauvegarde et le chargement de l'état du jeu.
@@ -54,9 +57,10 @@ public class Game {
      */
     public void sauvegarderEtat(String cheminFichier) {
         String cheminComplet = "src/main/saves/" + cheminFichier; // Ajustez ce chemin si nécessaire
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(cheminComplet))) {
-            GameSave gameSave = new GameSave(knife, listeCible, argent);
-            oos.writeObject(gameSave);
+        ObjectMapper mapper = new ObjectMapper();
+        GameSave gameSave = new GameSave(knife, listeCible, argent);
+        try {
+            mapper.writeValue(Paths.get(cheminComplet).toFile(), gameSave);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -69,12 +73,13 @@ public class Game {
      */
     public void chargerEtat(String cheminFichier) {
         String cheminComplet = "src/main/saves/" + cheminFichier; // Ajustez ce chemin si nécessaire
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(cheminComplet))) {
-            GameSave gameSave = (GameSave) ois.readObject();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            GameSave gameSave = mapper.readValue(Paths.get(cheminComplet).toFile(), GameSave.class);
             this.knife = gameSave.getKnife();
             this.listeCible = gameSave.getListeCible();
             this.argent = gameSave.getArgent();
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

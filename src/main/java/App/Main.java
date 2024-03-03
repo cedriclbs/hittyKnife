@@ -17,7 +17,6 @@ public class Main {
             ConnectionMenu ecranConnexion = new ConnectionMenu(null, gestionUtilisateurs);
             ecranConnexion.setVisible(true);
         });
-
         Loop l = new Loop();
     }
 
