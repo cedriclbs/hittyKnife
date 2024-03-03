@@ -1,28 +1,24 @@
 package config;
 
 import entity.Knife;
-import entity.Cible;
-import java.util.List;
 
 /**
- * Classe pour sauvegarder l'état du jeu, incluant un couteau ({@link Knife})
- * et une liste de cibles ({@link List} de {@link Cible}). Permet de restaurer l'état du jeu
- * à partir d'une sauvegarde.
+ * Classe pour sauvegarder l'état du jeu.
+ * Permet de restaurer l'état du jeu à partir d'une sauvegarde.
  */
 public class GameSave {
     private Knife knife;
-    private List<Cible> listeCible;
     private int argent;
+
+    public GameSave(){}
 
     /**
      * Initialise une nouvelle sauvegarde de jeu.
      *
      * @param knife Le couteau du joueur.
-     * @param listeCible Les cibles actuelles.
      */
-    public GameSave(Knife knife, List<Cible> listeCible, int argent) {
+    public GameSave(Knife knife, int argent) {
         this.knife = knife;
-        this.listeCible = listeCible;
         this.argent = argent;
     }
 
@@ -33,18 +29,15 @@ public class GameSave {
         return knife;
     }
 
-    /**
-     * @return Les cibles sauvegardées.
-     */
-    public List<Cible> getListeCible() {
-        return listeCible;
-    }
-
     public int getArgent() {
         return argent;
     }
 
     public void setArgent(int argent) {
         this.argent = argent;
+    }
+
+    public void setKnife(Knife knife) {
+        this.knife = knife;
     }
 }

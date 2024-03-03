@@ -7,7 +7,6 @@ import debug.Debug;
 import entity.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.nio.file.Paths;
 
 /**
  * Classe principale du jeu gérant l'état du jeu, y compris le couteau, les cibles et les vies.
@@ -32,6 +31,23 @@ public class Game {
         knife.jump();
     }
 
+    public Game(String nomUtilisateur){
+        super();
+        this.nomUtilisateur = nomUtilisateur;
+    }
+
+
+
+    // Getters et setters pour la sérialisation/désérialisation
+    public Knife getKnife() { return knife; }
+    public void setKnife(Knife knife) { this.knife = knife; }
+
+    public List<Cible> getListeCible() { return listeCible; }
+    public void setListeCible(List<Cible> listeCible) { this.listeCible = listeCible; }
+
+    public int getArgent() { return argent; }
+    public void setArgent(int argent) { this.argent = argent; }
+
     public void setNomUtilisateur(String nomUtilisateur) {
         this.nomUtilisateur = nomUtilisateur;
     }
@@ -54,41 +70,19 @@ public class Game {
      * Sauvegarde l'état actuel du jeu dans un fichier spécifié.
      */
     public void sauvegarderEtat() {
-        String cheminComplet = "src/main/saves/"+nomUtilisateur+".json"; // Ajustez ce chemin si nécessaire
         ObjectMapper mapper = new ObjectMapper();
-        GameSave gameSave = new GameSave(knife, listeCible, argent);
         try {
-            mapper.writeValue(Paths.get(cheminComplet).toFile(), gameSave);
+            mapper.writeValue(new File( "src/main/saves/sauvegarde_"+ nomUtilisateur + ".json"), this);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * Charge l'état du jeu à partir d'un fichier spécifié, remplaçant l'état actuel par celui chargé.
-     *
-     * @param cheminFichier Le chemin vers le fichier contenant l'état du jeu sauvegardé.
-     */
-    public void chargerEtat(String cheminFichier) {
-        String cheminComplet = "src/main/saves/" + cheminFichier; // Ajustez ce chemin si nécessaire
+    public static Game chargerEtat(String cheminFichier) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        try {
-            GameSave gameSave = mapper.readValue(Paths.get(cheminComplet).toFile(), GameSave.class);
-            this.knife = gameSave.getKnife();
-            this.listeCible = gameSave.getListeCible();
-            this.argent = gameSave.getArgent();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return mapper.readValue(new File(cheminFichier), Game.class);
     }
 
-    public void ajouterArgent(int montant) {
-        this.argent += montant;
-    }
-
-    public void retirerArgent(int montant) {
-        this.argent -= montant;
-    }
 
 
 }
