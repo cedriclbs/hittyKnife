@@ -1,6 +1,9 @@
 package entity;
 import geometry.Coordinate;
 import geometry.Geometry;
+import gui.KnifeDisplay;
+import javax.swing.*;
+import java.awt.*;
 
 import java.io.Serializable;
 
@@ -11,6 +14,8 @@ public class Knife implements Serializable {
     public boolean isInTheAir = false;
     public boolean redescend = false;
     public boolean throwing = false;
+
+
 
 
 
@@ -36,6 +41,15 @@ public class Knife implements Serializable {
         return angle;
     }
 
+
+    public void startThrowing() {
+        throwing = true;
+    }
+
+    public void resetThrowing() {
+        this.throwing = false;
+    }
+
     public void setAngle(int angle){
         this.angle=angle;
     }
@@ -54,18 +68,24 @@ public class Knife implements Serializable {
         if (angle<0) angle+=360;
     }
 
+
     public void jump(){
         isInTheAir = true;
         velocite = 10;
     }
 
+    public void throwKnife(){
+        if (throwing) {
+            Geometry.forwardMovement(coordinate, angle);
+        }
+    }
 
-    public void updateMovement(){
-        if (isInTheAir){
-            if (throwing){
+
+    public void updateMovement() {
+        if (isInTheAir) {
+            if (throwing) {
                 throwKnife();
-            }
-            else {
+            } else {
                 updateJump();
                 addAngle(4);
             }
@@ -89,18 +109,16 @@ public class Knife implements Serializable {
         double gravity = 0.4;
         double[] result = Geometry.upAndDownMovement(coordinate.getY(),10,velocite, gravity,50,this);
         coordinate.setY(result[0]);
-       velocite=result[1];
-       if (coordinate.getY()<1 && velocite<1 && redescend){
-           isInTheAir = false;
-           redescend = false;
-           velocite = 0;
-
-       }
+        velocite=result[1];
+            if (coordinate.getY()<1 && velocite<1 && redescend){
+                isInTheAir = false;
+                redescend = false;
+                velocite = 0;
+                angle = 0;
+            }
     }
 
-    public void throwKnife(){
-        Geometry.forwardMovement(coordinate,angle);
-    }
+
     public void updatePositionTest() {
         this.coordinate.setX(this.coordinate.getX()+1);
     }

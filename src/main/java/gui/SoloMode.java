@@ -2,6 +2,9 @@ package gui;
 
 import config.Game;
 import entity.Knife;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import static config.States.*;
 
 
@@ -40,5 +43,53 @@ public class SoloMode {
 
     public void startSoloGame() {
         initialize();
+
+        // Add a MouseListener to the knifeDisplay
+        knifeDisplay.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                knifeDisplay.handleMouseClick();
+            }
+
+            /**
+             * Invoked when a mouse button has been pressed on a component.
+             *
+             * @param e the event to be processed
+             */
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            /**
+             * Invoked when a mouse button has been released on a component.
+             *
+             * @param e the event to be processed
+             */
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            /**
+             * Invoked when the mouse enters a component.
+             *
+             * @param e the event to be processed
+             */
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            /**
+             * Invoked when the mouse exits a component.
+             *
+             * @param e the event to be processed
+             */
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
     }
 }
