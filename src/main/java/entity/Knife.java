@@ -5,9 +5,8 @@ import geometry.Geometry;
 import javax.swing.*;
 import java.awt.*;
 
-import java.io.Serializable;
 
-public class Knife implements Serializable {
+public class Knife {
     private final Coordinate coordinate;
     private int angle = 0;
     private double velocite=0;

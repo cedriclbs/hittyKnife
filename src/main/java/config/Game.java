@@ -6,6 +6,8 @@ import java.util.List;
 import debug.Debug;
 import entity.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * Classe principale du jeu gérant l'état du jeu, y compris le couteau, les cibles et les vies.
  * Permet la sauvegarde et le chargement de l'état du jeu.
@@ -15,6 +17,7 @@ public class Game {
     List<Cible> listeCible;
     int life;
     int argent; // Ajout de l'argent comme attribut du jeu
+    String nomUtilisateur;
 
     /**
      * Constructeur qui initialise le jeu avec un couteau, une liste de cibles vide, et un nombre initial de vies.
@@ -26,6 +29,31 @@ public class Game {
         life = 3;
         argent = 0;
         knife.jump();
+    }
+
+    public Game(String nomUtilisateur){
+        super();
+        this.nomUtilisateur = nomUtilisateur;
+    }
+
+
+
+    // Getters et setters pour la sérialisation/désérialisation
+    public Knife getKnife() { return knife; }
+    public void setKnife(Knife knife) { this.knife = knife; }
+
+    public List<Cible> getListeCible() { return listeCible; }
+    public void setListeCible(List<Cible> listeCible) { this.listeCible = listeCible; }
+
+    public int getArgent() { return argent; }
+    public void setArgent(int argent) { this.argent = argent; }
+
+    public void setNomUtilisateur(String nomUtilisateur) {
+        this.nomUtilisateur = nomUtilisateur;
+    }
+
+    public String getNomUtilisateur() {
+        return this.nomUtilisateur;
     }
 
     /**
@@ -43,41 +71,21 @@ public class Game {
 
     /**
      * Sauvegarde l'état actuel du jeu dans un fichier spécifié.
-     *
-     * @param cheminFichier Le chemin vers le fichier où l'état du jeu sera sauvegardé.
      */
-    public void sauvegarderEtat(String cheminFichier) {
-        GameSave gameSave = new GameSave(knife, listeCible, argent);
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("save.ser"))) {
-            oos.writeObject(gameSave);
+    public void sauvegarderEtat() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            mapper.writeValue(new File( "src/main/saves/sauvegarde_"+ nomUtilisateur + ".json"), this);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * Charge l'état du jeu à partir d'un fichier spécifié, remplaçant l'état actuel par celui chargé.
-     *
-     * @param cheminFichier Le chemin vers le fichier contenant l'état du jeu sauvegardé.
-     */
-    public void chargerEtat(String cheminFichier) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(cheminFichier))) {
-            GameSave gameSave = (GameSave) ois.readObject();
-            this.knife = gameSave.getKnife();
-            this.listeCible = gameSave.getListeCible();
-            this.argent = gameSave.getArgent();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+    public static Game chargerEtat(String cheminFichier) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(new File(cheminFichier), Game.class);
     }
 
-    public void ajouterArgent(int montant) {
-        this.argent += montant;
-    }
-
-    public void retirerArgent(int montant) {
-        this.argent -= montant;
-    }
 
     public Knife getKnife () {
         return knife;
