@@ -14,8 +14,9 @@ public abstract class Boss extends Cible {
 
     private Coordinate coordinate;
     protected double velocite;
-    protected boolean isInTheAir;
-    protected boolean redescend;
+    public boolean isInTheAir;
+    public boolean redescend;
+    public boolean isAtCorner;
 
     public Boss(Double x, Double y) {
         super(x,y);
@@ -45,7 +46,7 @@ public abstract class Boss extends Cible {
 
     public void updateMovement(){
         if (isInTheAir){
-            //updateJump();
+            updateJump();
             }
     }    
 
@@ -77,21 +78,33 @@ public abstract class Boss extends Cible {
 
     public void setY(double y) {
         coordinate.setY(y);
-    }    
-    
-    /*
+    }
+
+
     public void updateJump(){
         double gravity = 0.4;
-        //double[] result = Geometry.upAndDownMovement(y,10,velocite, gravity,50, this);
-       y=result[0];
-       velocite=result[1];
-       if (y<1 && velocite<1 && redescend){
-           isInTheAir = false;
-           redescend = false;
-           velocite = 0;
+        double[] result = Geometry.upAndDownMovement(coordinate.getY(),10,velocite, gravity,50, this);
+        coordinate.setY(result[0]);
+        velocite=result[1];
+        if (coordinate.getY()<1 && velocite<1 && redescend){
+            isInTheAir = false;
+            redescend = false;
+            velocite = 0;
 
        }
     }
-    */
+
+    public void updateLeftRight(){
+        double accelerationX = 0.4;
+        double[] result = Geometry.leftAndRightMovement(coordinate.getX(), 10, velocite, accelerationX, 50, this);
+        coordinate.setX(result[0]);
+        velocite=result[1];
+        /*
+        if (coordinate.getX()<1 && velocite<1){
+            isAtCorner = false;
+            velocite = 0;
+        }
+         */
+    }
     
 }
