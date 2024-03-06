@@ -10,6 +10,8 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * Classe abstraite {@code Menu} sert de base pour créer les interfaces de menu dans le jeu.
  * Elle initialise et affiche le menu principal avec des options comme jouer, accéder aux paramètres, visiter le magasin, ou quitter le jeu.
@@ -97,7 +99,6 @@ abstract class Menu extends JFrame {
                 Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
                 int height = screenSize.height;
                 int width = 500;
-
                 setBounds((screenSize.width - width) / 2, 0, width, height);
                 setExtendedState(JFrame.NORMAL);
                 getContentPane().revalidate();
@@ -112,9 +113,8 @@ abstract class Menu extends JFrame {
      */
     void quitterEtSauvegarder() {
         if (game != null) {
-            game.sauvegarderEtat("cheminVersVotreFichierDeSauvegarde.ser");
-            System.out.println("Sauvegarde effectuée. Fermeture du jeu.");
+            game.sauvegarderEtat();
         }
-        System.exit(0);
+        System.exit(0); // Fermer l'application
     }
 }
