@@ -55,51 +55,63 @@ public class HomeMenu extends Menu {
      */
     JPanel createMenuPanel(String backgroundPath) {
         BackgroundPanel panel = new BackgroundPanel(backgroundPath);
-        panel.setLayout(new GridLayout(4, 1, 0, 20)); // Espacement vertical entre les boutons
+        panel.setLayout(new GridLayout(4, 1, 0, 20)); //Espacement vertical entre les boutons
         panel.setBorder(BorderFactory.createEmptyBorder(40, 20, 40, 20)); // Ajoute des marges
-
-
+    
         // TODO : Afficher le numéro du niveau actuel centré en haut-> "Niveau X"
         // TODO : Afficher un engrenage pour les paramètres en haut à gauche.
 
-        // Bouton "Solo"
+
+        // Bouton "Solo" 
+        JPanel campaignButtonPanel = new JPanel();
+        campaignButtonPanel.setOpaque(false); // Rend le panel transparent
         JButton campaignButton = new JButton(new ImageIcon("src/main/ressources/button/Button.png"));
         campaignButton.setFocusPainted(false);
         campaignButton.setBorderPainted(false);
         campaignButton.setContentAreaFilled(false);
         campaignButton.addActionListener(e -> showGame());
-        panel.add(campaignButton);
-
-        // Bouton "1v1"
+        campaignButtonPanel.add(campaignButton);
+        panel.add(campaignButtonPanel);
+    
+        // Bouton "1v1" 
+        JPanel versusButtonPanel = new JPanel();
+        versusButtonPanel.setOpaque(false); // Rend le panel transparent
         JButton versusButton = new JButton(new ImageIcon("src/main/ressources/button/Button.png"));
         versusButton.setFocusPainted(false);
         versusButton.setBorderPainted(false);
         versusButton.setContentAreaFilled(false);
         versusButton.addActionListener(e -> show1v1Menu());
-        panel.add(versusButton);
-
-        // Bouton "Shop"
+        versusButtonPanel.add(versusButton);
+        panel.add(versusButtonPanel);
+    
+        // Bouton "Shop" 
+        JPanel shopButtonPanel = new JPanel();
+        shopButtonPanel.setOpaque(false); // Rend le panel transparent
         JButton shopButton = new JButton(new ImageIcon("src/main/ressources/button/Button.png"));
         shopButton.setFocusPainted(false);
         shopButton.setBorderPainted(false);
         shopButton.setContentAreaFilled(false);
         shopButton.addActionListener(e -> showShop());
-        panel.add(shopButton);
-
-        // Bouton "Quitter"
+        shopButtonPanel.add(shopButton);
+        panel.add(shopButtonPanel);
+    
+        // Bouton "Quitter" 
+        JPanel quitterButtonPanel = new JPanel();
+        quitterButtonPanel.setOpaque(false); // Rend le panel transparent
         JButton quitterButton = new JButton(new ImageIcon("src/main/ressources/button/Button.png"));
         quitterButton.setFocusPainted(false);
         quitterButton.setBorderPainted(false);
         quitterButton.setContentAreaFilled(false);
         quitterButton.addActionListener(e -> quitterEtSauvegarder());
-        panel.add(quitterButton);
+        quitterButtonPanel.add(quitterButton);
+        panel.add(quitterButtonPanel);
+    
         // Définition de la taille préférée pour centrer dans le GridBagLayout
         panel.setPreferredSize(new Dimension(500, 800)); // Taille du panel de menu
-
+    
         return panel;
-
     }
-
+    
     //TODO : Ajouter la méthode redirigeant au jeu quand la partie graphique du jeu sera implémentée
     private void showGame() {
         setStates(SOLOMODE);
