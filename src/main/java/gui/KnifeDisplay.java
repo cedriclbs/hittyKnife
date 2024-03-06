@@ -28,8 +28,8 @@ public class KnifeDisplay extends JPanel {
 
 
         this.knife = knife;
-        initImage();
-        initBg(backgroundPath);
+        initImage(); //Img du knife
+        initBg(backgroundPath); //Img du background
 
 
         // Coordonnées du couteau initialisé au milieu de l'écran pour une meilleure visibilité
