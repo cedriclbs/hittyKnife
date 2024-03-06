@@ -9,6 +9,7 @@ import entity.Knife;
 public class GameSave {
     private Knife knife;
     private int argent;
+    private int level;
 
     public GameSave(){}
 
@@ -20,6 +21,7 @@ public class GameSave {
     public GameSave(Knife knife, int argent) {
         this.knife = knife;
         this.argent = argent;
+        this.level = level;
     }
 
     /**

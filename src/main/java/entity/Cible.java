@@ -2,27 +2,40 @@ package entity;
 
 public class Cible {
 
+    private String name;
+    private int health;
 
-    private int x,y;
+    private Coordinate coordinate;
+    protected double velocite;
+    protected boolean isInTheAir;
+    protected boolean redescend;
 
-    Cible(int x,int y){
-        this.x=x;
-        this.y=y;
+    public Cible(double x,double y){
+        coordinate = new Coordinate(x,y);
+    }
+
+    public Cible(String name, int health, double x, double y, double velocite) {
+        this.name = name;
+        this.health = health;
+        this.coordinate = new Coordinate(x,y);
+        this.velocite = velocite;
+        this.isInTheAir = false;
+        this.redescend = false;  
     }
 
 
-    public int getY(){
-        return y;
+    public double getY(){
+        return coordinate.getY();
     }
-    public int getX() {
-        return x;
+    public double getX() {
+        return coordinate.getX();
     }
-    public void setX(int x){
-        this.x=x;
+    public void setX(double x){
+        coordinate.setX(x);
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setY(double y) {
+        coordinate.setY(y);
     }
 
 }

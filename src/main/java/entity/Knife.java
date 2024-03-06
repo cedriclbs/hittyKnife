@@ -1,31 +1,34 @@
 package entity;
+import geometry.Coordinate;
 import geometry.Geometry;
 
 
-public class Knife {
-    private double x,y;
+public class Knife implements Serializable {
+    private final Coordinate coordinate;
     private int angle = 0;
     private double velocite=0;
     public boolean isInTheAir = false;
     public boolean redescend = false;
     public boolean throwing = false;
 
+
+
     public Knife(){
-        this.x=10;
-        this.y=0;
+        this.coordinate = new Coordinate(10,0);
     }
 
     public double getY(){
-        return y;
+        return coordinate.getY();
     }
     public double getX() {
-        return x;
+        return coordinate.getX();
     }
     public void setX(double x){
-        this.x=x;
+        coordinate.setX(x);
     }
+
     public void setY(double y) {
-        this.y = y;
+        coordinate.setY(y);
     }
 
     public int getAngle(){
@@ -83,10 +86,10 @@ public class Knife {
      */
     public void updateJump(){
         double gravity = 0.4;
-        double[] result = Geometry.upAndDownMovement(y,10,velocite, gravity,50,this);
-       y=result[0];
+        double[] result = Geometry.upAndDownMovement(coordinate.getY(),10,velocite, gravity,50,this);
+        coordinate.setY(result[0]);
        velocite=result[1];
-       if (y<1 && velocite<1 && redescend){
+       if (coordinate.getY()<1 && velocite<1 && redescend){
            isInTheAir = false;
            redescend = false;
            velocite = 0;
@@ -95,13 +98,6 @@ public class Knife {
     }
 
     public void throwKnife(){
-        double deltaX;
-        double deltaY;
-        double angleRad = angle * Math.PI / 180.0;
-        deltaX = Math.cos(angleRad);
-        deltaY = Math.sin(angleRad);
-        x+=deltaX/2;
-        y+=deltaY/2;
+        Geometry.forwardMovement(coordinate,angle);
     }
-
 }
