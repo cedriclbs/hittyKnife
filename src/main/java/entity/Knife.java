@@ -2,7 +2,6 @@ package entity;
 import geometry.Coordinate;
 import geometry.Geometry;
 
-import java.io.Serializable;
 
 public class Knife implements Serializable {
     private final Coordinate coordinate;
