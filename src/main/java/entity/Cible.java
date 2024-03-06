@@ -1,9 +1,8 @@
 package entity;
+
 import geometry.Coordinate;
 
-import java.io.Serializable;
-
-public class Cible implements Serializable {
+public class Cible {
 
     private String name;
     private int health;

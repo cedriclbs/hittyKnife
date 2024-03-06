@@ -1,7 +1,12 @@
 package debug;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import config.Game;
 import entity.Knife;
 import geometry.Geometry;
+
+import java.io.File;
+import java.io.IOException;
 
 import static java.lang.Math.round;
 
@@ -21,7 +26,7 @@ public class Debug {
 
     /**
      * Affiche le knife sur le terminal où "A" représente le knife et "o" le vecteur de longueur LONGUEUR_VECT.
-     * À noter : pour un meilleur rendu mieux vaux l'exécuter dans le cmd plutôt que dans l'IDE.
+     * À noter : pour un meilleur rendu mieux vaut l'exécuter dans le cmd plutôt que dans l'IDE.
      */
     public static void affichage(Knife knife){
         lastPos = (int) round(knife.getY()/RATIO_AFFICHE);
@@ -42,4 +47,21 @@ public class Debug {
         lastPos = (int) round(knife.getY()/RATIO_AFFICHE);
 
     }
+    public static void testSerialization() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Game gameTest = new Game();
+            gameTest.setNomUtilisateur("testUser"); // Définir un nomUtilisateur valide
+
+            // Sérialisation
+            mapper.writeValue(new File("testGame.json"), gameTest);
+
+            // Désérialisation pour tester
+            Game loadedGame = mapper.readValue(new File("testGame.json"), Game.class);
+            System.out.println("Test chargé: " + loadedGame.getNomUtilisateur()); // Afficher le nomUtilisateur pour vérifier.
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
