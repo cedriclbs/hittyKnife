@@ -1,7 +1,7 @@
 package entity;
 import geometry.Coordinate;
-import geometry.Geometry;
 import gui.KnifeDisplay;
+import geometry.Geometry;
 import javax.swing.*;
 import java.awt.*;
 
@@ -35,6 +35,10 @@ public class Knife implements Serializable {
 
     public void setY(double y) {
         coordinate.setY(y);
+    }
+
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 
     public int getAngle(){
@@ -75,9 +79,8 @@ public class Knife implements Serializable {
     }
 
     public void throwKnife(){
-        if (throwing) {
-            Geometry.forwardMovement(coordinate, angle);
-        }
+        throwing = true;
+        Geometry.forwardMovement(coordinate, angle, velocite);
     }
 
 
@@ -85,12 +88,31 @@ public class Knife implements Serializable {
         if (isInTheAir) {
             if (throwing) {
                 throwKnife();
+
+                // Le couteau sort de l'écran ? Si oui, reset
+                if (getX() < 0 || getX() > KnifeDisplay.getBgImgWidth() || getY() < 0 || getY() > KnifeDisplay.getBgImgHeight()) {
+                    resetKnife();
+                }
+
             } else {
                 updateJump();
                 addAngle(4);
             }
         }
     }
+
+    // Ajoutez cette méthode pour réinitialiser le couteau au milieu de l'écran
+    public void resetKnife() {
+        setX((double) KnifeDisplay.getBgImgWidth() / 2);
+        setY((double) KnifeDisplay.getBgImgHeight() / 2);
+
+        isInTheAir = false;
+        redescend = false;
+        throwing = false;
+        velocite = 0;
+        angle = 0;
+    }
+
 
     /**
      * Met à jour la position verticale et la vélocité du saut du personnage.
@@ -119,7 +141,4 @@ public class Knife implements Serializable {
     }
 
 
-    public void updatePositionTest() {
-        this.coordinate.setX(this.coordinate.getX()+1);
-    }
 }

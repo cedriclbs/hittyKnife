@@ -35,7 +35,7 @@ public class Game {
      */
      public void update(double delta){
          knife.updateMovement();
-         Debug.affichage(knife);
+         //Debug.affichage(knife);
          //System.out.println("Knife X: " + knife.getX() + ", Knife Y: " + knife.getY());
          //System.out.println("Rotation Angle: " + knife.getAngle());
 
