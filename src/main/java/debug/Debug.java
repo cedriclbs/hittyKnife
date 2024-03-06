@@ -26,7 +26,7 @@ public class Debug {
 
     /**
      * Affiche le knife sur le terminal où "A" représente le knife et "o" le vecteur de longueur LONGUEUR_VECT.
-     * À noter : pour un meilleur rendu mieux vaux l'exécuter dans le cmd plutôt que dans l'IDE.
+     * À noter : pour un meilleur rendu mieux vaut l'exécuter dans le cmd plutôt que dans l'IDE.
      */
     public static void affichage(Knife knife){
         lastPos = (int) round(knife.getY()/RATIO_AFFICHE);
