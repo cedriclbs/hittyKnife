@@ -40,8 +40,18 @@ public class Geometry{
      * @param coordinate Les coordonnées à déplacer.
      * @param angle L'angle en degrés.
      */
-    public static void forwardMovement(Coordinate coordinate, double angle, double velocite) {
-        //double angleRad = angle * Math.PI / 180.0;
+    public static void forwardMovement(Coordinate coordinate, double angle){
+        double deltaX;
+        double deltaY;
+        double angleRad = angle * Math.PI / 180.0;
+        deltaX = Math.cos(angleRad);
+        deltaY = Math.sin(angleRad);
+        coordinate.setX(coordinate.getX()+deltaX/2);
+        coordinate.setY(coordinate.getY()+deltaY/2);
+    }
+
+
+    public static void forwardMovementSoloMode(Coordinate coordinate, double angle, double velocite) {
         double angleRad = Math.toRadians(angle);
 
         double deltaX = Math.cos(angleRad);
@@ -51,6 +61,9 @@ public class Geometry{
         coordinate.setX(coordinate.getX() + deltaX * velocite);
         coordinate.setY(coordinate.getY() + deltaY * velocite);
     }
+
+
+
 
 
     /**

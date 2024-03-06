@@ -80,7 +80,7 @@ public class Knife implements Serializable {
 
     public void throwKnife(){
         throwing = true;
-        Geometry.forwardMovement(coordinate, angle, velocite);
+        Geometry.forwardMovementSoloMode(coordinate, angle, velocite);
     }
 
 

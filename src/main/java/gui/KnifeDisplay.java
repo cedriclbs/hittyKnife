@@ -75,7 +75,7 @@ public class KnifeDisplay extends JPanel {
 
         });
 
-        Timer timer = new Timer(50, new ActionListener() {
+        Timer timer = new Timer(1000/60, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (countClicked == 1) {
