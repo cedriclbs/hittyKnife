@@ -16,7 +16,6 @@ public abstract class Boss extends Cible {
     protected double velocite;
     public boolean isInTheAir;
     public boolean redescend;
-    public boolean isAtCorner;
 
     public Boss(Double x, Double y) {
         super(x,y);
@@ -44,11 +43,7 @@ public abstract class Boss extends Cible {
 
     public abstract void sideWalk();
 
-    public void updateMovement(){
-        if (isInTheAir){
-            updateJump();
-            }
-    }    
+    public abstract void updateMovement();
 
     public String getName() {
         return name;

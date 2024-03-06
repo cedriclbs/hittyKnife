@@ -18,6 +18,7 @@ public class BossType1 extends Boss {
         */
     }
 
+    // jump de boss sera utilisé à chaque X secondes durant la boss fight
     @Override
     public void jump(){
         isInTheAir = true;
@@ -26,6 +27,13 @@ public class BossType1 extends Boss {
 
     @Override
     public void sideWalk() {
+    }
+
+    @Override
+    public void updateMovement() {
+        if (isInTheAir) {
+            updateJump();
+        }
     }
 
 }

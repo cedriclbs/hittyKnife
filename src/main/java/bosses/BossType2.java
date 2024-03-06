@@ -27,5 +27,10 @@ public class BossType2 extends Boss{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'sideWalk'");
     }
+
+    @Override
+    public void updateMovement() {
+        updateLeftRight();
+    }
     
 }
