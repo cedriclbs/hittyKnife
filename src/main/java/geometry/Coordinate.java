@@ -24,10 +24,4 @@ public class Coordinate {
         this.x = x;
     }
 
-    public void setCoordinate(double x, double y){
-        this.x=x;
-        this.y=y;
-    }
-
-
 }

@@ -26,8 +26,7 @@ public class HomeMenu extends Menu {
      * @param musicPath Le chemin d'accès au fichier audio de la musique de fond.
      */
 
-    //private BackgroundPanel soloFrame;
-    private SoloMode soloMode;
+    private BackgroundPanel soloFrame;
 
     public HomeMenu(String title, String backgroundPath, String musicPath) {
         super(title, backgroundPath, musicPath);
@@ -35,16 +34,14 @@ public class HomeMenu extends Menu {
     }
 
     private void initialize(String background) {
-        //soloFrame = new BackgroundPanel(background);
+        soloFrame = new BackgroundPanel(background);
         JPanel menuPanel = createMenuPanel(background);
         add(menuPanel);
-        soloMode = new SoloMode(game, this);
     }
 
     // Setter pour l'instance de Game
     public void setGame(Game game) {
         this.game = game;
-        soloMode = new SoloMode(game, this);
     }
 
     /**
@@ -114,9 +111,14 @@ public class HomeMenu extends Menu {
     
         return panel;
     }
-
+    
+    //TODO : Ajouter la méthode redirigeant au jeu quand la partie graphique du jeu sera implémentée
     private void showGame() {
-        soloMode.startSoloGame();
+        setStates(SOLOMODE);
+        getContentPane().removeAll();
+        getContentPane().add(soloFrame);
+        revalidate();
+        repaint();
     }
 
     //TODO : Ajouter la méthode redirigeant au mode 1v1 quand le mode sera implémenté

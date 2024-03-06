@@ -7,7 +7,7 @@ import java.awt.*;
  * Cette classe représente un panneau avec une image de fond dans l'interface graphique du jeu.
  * Elle permet d'afficher une image de fond pour personnaliser l'apparence de l'interface.
  */
-public class BackgroundPanel extends JPanel {
+class BackgroundPanel extends JPanel {
     private Image backgroundImage;
 
     /**
