@@ -3,7 +3,7 @@ import geometry.Coordinate;
 import geometry.Geometry;
 
 
-public class Knife implements Serializable {
+public class Knife {
     private final Coordinate coordinate;
     private int angle = 0;
     private double velocite=0;

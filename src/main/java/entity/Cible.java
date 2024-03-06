@@ -1,5 +1,7 @@
 package entity;
 
+import geometry.Coordinate;
+
 public class Cible {
 
     private String name;
