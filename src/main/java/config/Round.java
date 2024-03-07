@@ -2,6 +2,7 @@ package config;
 
 import java.util.ArrayList;
 import java.util.List;
+import entity.Cible.TypeCible;
 import java.util.Random;
 
 /**
@@ -9,14 +10,13 @@ import java.util.Random;
  * Elle permet d'initialiser les cibles pour chaque round, de passer au round suivant, et de réinitialiser les rounds.
  */
 public class Round {
-    private List<Integer> round1Targets;
-    private List<Integer> round2Targets;
-    private List<Integer> round3Targets;
-    private List<Integer> bossTarget;
+    private List<TypeCible> round1Targets;
+    private List<TypeCible> round2Targets;
+    private List<TypeCible> round3Targets;
+    private List<TypeCible> bossTarget;
     private int currentRound;
     private int indexTargets;
     private Random random;
-
 
     public Round() {
         this.random = new Random();
@@ -37,24 +37,24 @@ public class Round {
         switch (currentRound) {
             case 1:
                 for (int i = 0; i < getRndIntTargetRounds(); i++) {
-                    round1Targets.add(getRndIntTarget());
+                    round1Targets.add(getRandomTypeCible());
                 }
                 indexTargets = round1Targets.size();
                 break;
             case 2:
                 for (int i = 0; i < getRndIntTargetRounds(); i++) {
-                    round2Targets.add(getRndIntTarget());
+                    round2Targets.add(getRandomTypeCible());
                 }
                 indexTargets = round2Targets.size();
                 break;
             case 3:
                 for (int i = 0; i < getRndIntTargetRounds(); i++) {
-                    round3Targets.add(getRndIntTarget());
+                    round3Targets.add(getRandomTypeCible());
                 }
                 indexTargets = round3Targets.size();
                 break;
             case 4:
-                bossTarget.add(getRndIntBoss());
+                bossTarget.add(getRandomTypeBoss());
                 indexTargets = bossTarget.size();
                 break;
         }
@@ -70,7 +70,7 @@ public class Round {
      */
     public void nextTarget() {
         if (indexTargets > 0) {
-            //if(TargetsHit == true){ Condition si le joueur a bien touché la cible à implementer 
+            //if(TargetsHit == true){ TODO Condition si le joueur a bien touché la cible à implementer 
                 indexTargets--;
             //}
         } else {
@@ -89,24 +89,24 @@ public class Round {
         switch (currentRound) {
             case 1:
                 for (int i = 0; i < getRndIntTargetRounds(); i++) {
-                    round1Targets.add(getRndIntTarget());
+                    round1Targets.add(getRandomTypeCible());
                 }
                 indexTargets = round1Targets.size();
                 break;
             case 2:
                 for (int i = 0; i < getRndIntTargetRounds(); i++) {
-                    round2Targets.add(getRndIntTarget());
+                    round2Targets.add(getRandomTypeCible());
                 }
                 indexTargets = round2Targets.size();
                 break;
             case 3:
                 for (int i = 0; i < getRndIntTargetRounds(); i++) {
-                    round3Targets.add(getRndIntTarget());
+                    round3Targets.add(getRandomTypeCible());
                 }
                 indexTargets = round3Targets.size();
                 break;
             case 4:
-                bossTarget.add(getRndIntBoss());
+                bossTarget.add(getRandomTypeBoss());
                 indexTargets = bossTarget.size();
                 break;
         }
@@ -127,7 +127,7 @@ public class Round {
      *
      * @return La liste des cibles pour le round actuel.
      */
-    private List<Integer> getCurrentTargets() {
+    private List<TypeCible> getCurrentTargets() {
         switch (currentRound) {
             case 1:
                 return round1Targets;
@@ -135,21 +135,24 @@ public class Round {
                 return round2Targets;
             case 3:
                 return round3Targets;
-           default:
+            default:
                 return bossTarget;
         }
     }
 
-    //renvoie un nombre entre 4 et 10 qui sont les chiffres des types de boss
-    private int getRndIntBoss(){
-        int randomNum = random.nextInt(7);
-        return 4 + randomNum;
-    }
-    //renvoie un nombre entre 0 et 3 qui sont les chiffres des types de cible
-    private int getRndIntTarget(){
-        return random.nextInt(4);
+    // Sélectionne parmi les deux premiers types de cibles
+    private TypeCible getRandomTypeCible() {
+        int randomNum = random.nextInt(2); // Sélectionne parmi les deux premiers types
+        return TypeCible.values()[randomNum];
     }
 
+    //Sélectionne parmi les trois types de boss
+    private TypeCible getRandomTypeBoss() {
+        int randomNum = random.nextInt(3); // Vous pouvez ajuster cela selon le nombre de types de boss que vous avez
+        return TypeCible.values()[TypeCible.values().length - 1 - randomNum];
+    }
+
+    //un nombre de cible aléatoire
     private int getRndIntTargetRounds(){
         int randomNum = random.nextInt(7);
         return 4 + randomNum;
