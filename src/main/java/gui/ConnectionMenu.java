@@ -13,9 +13,11 @@ public class ConnectionMenu extends JDialog {
     private JTextField champNomUtilisateur;
     private JPasswordField champMotDePasse;
     private UserManager gestionUtilisateurs;
+    private Game game;
 
-    public ConnectionMenu(Frame parent, UserManager gestion) {
+    public ConnectionMenu(Frame parent, UserManager gestion, Game game) {
         super(parent, "Connexion", true);
+        this.game = game;
         this.gestionUtilisateurs = gestion;
         setupUI();
     }
@@ -58,7 +60,7 @@ public class ConnectionMenu extends JDialog {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Erreur lors du chargement de la sauvegarde de jeu.", "Erreur", JOptionPane.ERROR_MESSAGE);
                 // Gérer l'erreur, par exemple, en démarrant un nouveau jeu
-            } HomeMenu homeMenu = new HomeMenu("Hitty Knife", "src/main/ressources/background/solo.png", "cheminVersMusique");
+            } HomeMenu homeMenu = new HomeMenu("Hitty Knife", "src/main/ressources/background/solo.png", "cheminVersMusique",game);
         } else {
             JOptionPane.showMessageDialog(this, "Échec de la connexion. Vérifiez votre nom d'utilisateur et mot de passe.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }

@@ -30,7 +30,7 @@ public class SoloMode {
     public SoloMode(Game game, HomeMenu homeMenu) {
         this.game = game;
         this.homeMenu = homeMenu;
-        this.knife = new Knife();
+        this.knife = game.getKnife();
         //this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);
         this.knifeDisplay = new KnifeDisplay(knife,"src/main/ressources/background/solo.png");
     }

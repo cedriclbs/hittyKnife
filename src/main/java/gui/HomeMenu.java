@@ -29,8 +29,9 @@ public class HomeMenu extends Menu {
     //private BackgroundPanel soloFrame;
     private SoloMode soloMode;
 
-    public HomeMenu(String title, String backgroundPath, String musicPath) {
+    public HomeMenu(String title, String backgroundPath, String musicPath,Game game) {
         super(title, backgroundPath, musicPath);
+        this.game = game;
         initialize("src/main/ressources/background/solo.png");
     }
 
@@ -41,8 +42,7 @@ public class HomeMenu extends Menu {
     }
 
     // Setter pour l'instance de Game
-    public void setGame(Game game) {
-        this.game = game;
+    public void setGame() {
         soloMode = new SoloMode(game, this);
     }
 
