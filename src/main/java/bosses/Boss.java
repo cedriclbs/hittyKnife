@@ -6,9 +6,8 @@ import geometry.Coordinate;
 import geometry.Geometry;
 
 public abstract class Boss extends Cible {
-    private int bosstype;
     private int health;
-    
+    private TypeCible bosstype;
     private boolean isBuffed = false;
     private boolean isDebuffed = false;
 
@@ -49,10 +48,10 @@ public abstract class Boss extends Cible {
             }
     }    
 
-    public int getBossType() {
+    public TypeCible getBosstype(){
         return bosstype;
     }
-
+    
     public int getHealth() {
         return health;
     }

@@ -6,7 +6,7 @@ import entity.Cible;
 public class BossType2 extends Boss{
 
     public BossType2() {
-        super(CIBLE_BOSS2, 4, 10, 0, 0);
+        super(Cible.TypeCible.CIBLE_BOSS2, 4, 10, 0, 0);
     }
 
     @Override
