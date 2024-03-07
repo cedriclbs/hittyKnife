@@ -13,7 +13,7 @@ public class Level {
     private int level;
     private int argent;
     private Round round;
-    private GameSave gameSave;
+    //private GameSave gameSave;
 
     /**
      * Constructeur pour initialiser un nouveau niveau.
@@ -23,7 +23,7 @@ public class Level {
         this.level = 1;
         this.argent = 0; 
         this.round = new Round(); 
-        this.gameSave = new GameSave(new Knife(), new ArrayList<Cible>(),argent,level); 
+        //this.gameSave = new GameSave(new Knife(), new ArrayList<Cible>(),argent,level);
     }
 
     /**
@@ -41,7 +41,7 @@ public class Level {
      * et le niveau actuel.
      */
     public void saveGame() {
-        gameSave = new GameSave(gameSave.getKnife(), gameSave.getListeCible(),gameSave.getArgent(),gameSave.getLevel());
+        //gameSave = new GameSave(gameSave.getKnife(), gameSave.getListeCible(),gameSave.getArgent(),gameSave.getLevel());
     }
 
     /**

@@ -29,6 +29,9 @@ public class Geometry{
             y = 0;
             velocite = 0;
         }
+        if (knife != null) {
+            knife.setVelocite(velocite);
+        }
         return new double[]{y,velocite};
     }
 
@@ -46,6 +49,22 @@ public class Geometry{
         coordinate.setX(coordinate.getX()+deltaX/2);
         coordinate.setY(coordinate.getY()+deltaY/2);
     }
+
+
+    public static void forwardMovementSoloMode(Coordinate coordinate, double angle, double velocite) {
+        double angleRad = Math.toRadians(angle);
+
+        double deltaX = Math.cos(angleRad);
+        double deltaY = Math.sin(angleRad);
+
+
+        coordinate.setX(coordinate.getX() + deltaX * velocite);
+        coordinate.setY(coordinate.getY() + deltaY * velocite);
+    }
+
+
+
+
 
     /**
      * Vérifie si un point défini par ses coordonnées (x2, y2) est situé dans un vecteur défini par sa longueur et son angle.

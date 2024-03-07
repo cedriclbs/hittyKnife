@@ -3,7 +3,7 @@ package entity;
 import geometry.Coordinate;
 import java.io.Serializable;
 
-public class Cible implements Serializable {
+public class Cible {
 
     public enum TypeCible {
         CIBLE_NORMALE,

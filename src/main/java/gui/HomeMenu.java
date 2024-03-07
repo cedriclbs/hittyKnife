@@ -26,7 +26,8 @@ public class HomeMenu extends Menu {
      * @param musicPath Le chemin d'accès au fichier audio de la musique de fond.
      */
 
-    private BackgroundPanel soloFrame;
+    //private BackgroundPanel soloFrame;
+    private SoloMode soloMode;
 
     public HomeMenu(String title, String backgroundPath, String musicPath) {
         super(title, backgroundPath, musicPath);
@@ -34,14 +35,15 @@ public class HomeMenu extends Menu {
     }
 
     private void initialize(String background) {
-        soloFrame = new BackgroundPanel(background);
         JPanel menuPanel = createMenuPanel(background);
         add(menuPanel);
+        soloMode = new SoloMode(game, this);
     }
 
     // Setter pour l'instance de Game
     public void setGame(Game game) {
         this.game = game;
+        soloMode = new SoloMode(game, this);
     }
 
     /**
@@ -57,12 +59,12 @@ public class HomeMenu extends Menu {
         BackgroundPanel panel = new BackgroundPanel(backgroundPath);
         panel.setLayout(new GridLayout(4, 1, 0, 20)); //Espacement vertical entre les boutons
         panel.setBorder(BorderFactory.createEmptyBorder(40, 20, 40, 20)); // Ajoute des marges
-    
+
         // TODO : Afficher le numéro du niveau actuel centré en haut-> "Niveau X"
         // TODO : Afficher un engrenage pour les paramètres en haut à gauche.
 
 
-        // Bouton "Solo" 
+        // Bouton "Solo"
         JPanel campaignButtonPanel = new JPanel();
         campaignButtonPanel.setOpaque(false); // Rend le panel transparent
         JButton campaignButton = new JButton(new ImageIcon("src/main/ressources/button/Button.png"));
@@ -72,8 +74,8 @@ public class HomeMenu extends Menu {
         campaignButton.addActionListener(e -> showGame());
         campaignButtonPanel.add(campaignButton);
         panel.add(campaignButtonPanel);
-    
-        // Bouton "1v1" 
+
+        // Bouton "1v1"
         JPanel versusButtonPanel = new JPanel();
         versusButtonPanel.setOpaque(false); // Rend le panel transparent
         JButton versusButton = new JButton(new ImageIcon("src/main/ressources/button/Button.png"));
@@ -83,8 +85,8 @@ public class HomeMenu extends Menu {
         versusButton.addActionListener(e -> show1v1Menu());
         versusButtonPanel.add(versusButton);
         panel.add(versusButtonPanel);
-    
-        // Bouton "Shop" 
+
+        // Bouton "Shop"
         JPanel shopButtonPanel = new JPanel();
         shopButtonPanel.setOpaque(false); // Rend le panel transparent
         JButton shopButton = new JButton(new ImageIcon("src/main/ressources/button/Button.png"));
@@ -94,8 +96,8 @@ public class HomeMenu extends Menu {
         shopButton.addActionListener(e -> showShop());
         shopButtonPanel.add(shopButton);
         panel.add(shopButtonPanel);
-    
-        // Bouton "Quitter" 
+
+        // Bouton "Quitter"
         JPanel quitterButtonPanel = new JPanel();
         quitterButtonPanel.setOpaque(false); // Rend le panel transparent
         JButton quitterButton = new JButton(new ImageIcon("src/main/ressources/button/Button.png"));
@@ -105,20 +107,19 @@ public class HomeMenu extends Menu {
         quitterButton.addActionListener(e -> quitterEtSauvegarder());
         quitterButtonPanel.add(quitterButton);
         panel.add(quitterButtonPanel);
-    
+
         // Définition de la taille préférée pour centrer dans le GridBagLayout
         panel.setPreferredSize(new Dimension(500, 800)); // Taille du panel de menu
-    
+
         return panel;
     }
-    
-    //TODO : Ajouter la méthode redirigeant au jeu quand la partie graphique du jeu sera implémentée
+
     private void showGame() {
-        setStates(SOLOMODE);
-        getContentPane().removeAll();
-        getContentPane().add(soloFrame);
-        revalidate();
-        repaint();
+        if (soloMode != null) {
+            soloMode.startSoloGame();
+        } else {
+            new SoloMode(game, this).startSoloGame();
+        }
     }
 
     //TODO : Ajouter la méthode redirigeant au mode 1v1 quand le mode sera implémenté
