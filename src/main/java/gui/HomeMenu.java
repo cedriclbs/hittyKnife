@@ -87,7 +87,7 @@ public class HomeMenu extends Menu {
         // Bouton "Shop" 
         JPanel shopButtonPanel = new JPanel();
         shopButtonPanel.setOpaque(false); // Rend le panel transparent
-        JButton shopButton = new JButton(new ImageIcon("src/main/ressources/button/Button.png"));
+        JButton shopButton = new JButton(new ImageIcon("src/main/ressources/button/ShopButton.png"));
         shopButton.setFocusPainted(false);
         shopButton.setBorderPainted(false);
         shopButton.setContentAreaFilled(false);
