@@ -1,5 +1,7 @@
 package gui;
 
+import App.Loop;
+import App.Main;
 import config.Game;
 import entity.Cible;
 import entity.Knife;
@@ -24,11 +26,14 @@ public class SoloMode {
 
     /**
      * Constructeur de la classe SoloMode.
-     * @param game L'objet Game associé au mode solo.
      * @param homeMenu Le menu principal de l'application.
      */
-    public SoloMode(Game game, HomeMenu homeMenu) {
-        this.game = game;
+    public SoloMode( HomeMenu homeMenu) {
+        System.out.println("creation solo");
+        this.game = new Game();//Main.game;//new Game();
+        Main.loop = new Loop(game);
+        Main.loop.startTickFunction();
+        System.out.println("loop créé");
         this.homeMenu = homeMenu;
         this.knife = game.getKnife();
         //this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);

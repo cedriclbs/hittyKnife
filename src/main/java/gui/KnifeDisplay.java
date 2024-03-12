@@ -4,10 +4,7 @@ import entity.Cible;
 import entity.Knife;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -36,20 +33,14 @@ public class KnifeDisplay extends JPanel {
         this.knife.getCoordinate().setCoordinate(getBgImgWidth() / 2, getBgImgHeight() / 2);
 
 
-
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (!knife.throwing){
-                    countClicked++;
-
-                    if (countClicked == 1) {
-                        knife.isInTheAir = true;
-                    } else if (countClicked == 2) {
-                        // 2 : Couteau va attaquer la cible avec sa trajectoire droite
-                        knife.throwKnife();
-                        countClicked = 0;
-                    }
+                if (knife.throwing) {
+                    knife.throwKnife();
+                }
+                else{
+                    knife.jump();
                 }
             }
 
@@ -74,30 +65,39 @@ public class KnifeDisplay extends JPanel {
             }
 
         });
+        /*addKeyListener(new KeyListener() {
 
-        Timer timer = new Timer(1000/60, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed (ActionEvent e){
                 if (countClicked == 1) {
                     // 1 : Le couteau n'est plus figé
                     knife.jump();
-                    knife.addAngle(30);
                 } else if (countClicked == 2) {
                     // 2 : Couteau va attaquer la cible avec sa trajectoire droite
                     knife.throwKnife();
                     return;
                 }
 
-                if (countClicked > 2){
+                if (countClicked > 2) {
                     countClicked = 0;
-                    knife.resetKnife();
                 }
-
-                knife.updateMovement();
                 repaint();
             }
-        });
-        timer.start();
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });*/
+
     }
 
 
