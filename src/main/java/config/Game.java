@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Permet la sauvegarde et le chargement de l'état du jeu.
  */
 public class Game {
-    Knife knife;
+    public Knife knife;
     List<Cible> listeCible;
     int life;
     int argent; // Ajout de l'argent comme attribut du jeu
@@ -24,11 +24,12 @@ public class Game {
      * Fait également sauter le couteau dès le début.
      */
     public Game(){
-        knife = new Knife();
+        System.out.println("creation game");
+        this.knife = new Knife();
         listeCible = new ArrayList<>();
         life = 3;
         argent = 0;
-        knife.jump();
+        //knife.jump();
     }
 
     public Game(String nomUtilisateur){
@@ -62,8 +63,9 @@ public class Game {
      * @param delta Le temps écoulé depuis la dernière mise à jour, utilisé pour calculer les mouvements.
      */
      public void update(double delta){
+         //System.out.println("dqdqzsqzdqsqdqzdqz");
          knife.updateMovement();
-         Debug.affichage(knife);
+         //Debug.affichage(knife);
      }
 
     /**

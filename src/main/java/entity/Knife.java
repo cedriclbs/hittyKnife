@@ -79,7 +79,7 @@ public class Knife {
 
     public void throwKnife(){
         throwing = true;
-        Geometry.forwardMovementSoloMode(coordinate, angle, velocite);
+        Geometry.forwardMovement(coordinate, angle);
     }
 
 

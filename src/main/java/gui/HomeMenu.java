@@ -4,6 +4,8 @@ package gui;
 import static config.States.SOLOMODE;
 import static config.States.setStates;
 
+import App.Loop;
+import App.Main;
 import config.Game;
 
 import javax.swing.*;
@@ -27,7 +29,8 @@ public class HomeMenu extends Menu {
      */
 
     //private BackgroundPanel soloFrame;
-    private SoloMode soloMode;
+    //private SoloMode soloMode;
+    //Game game;
 
     public HomeMenu(String title, String backgroundPath, String musicPath) {
         super(title, backgroundPath, musicPath);
@@ -35,15 +38,10 @@ public class HomeMenu extends Menu {
     }
 
     private void initialize(String background) {
+        System.out.println("teeeeest");
         JPanel menuPanel = createMenuPanel(background);
         add(menuPanel);
-        soloMode = new SoloMode(game, this);
-    }
-
-    // Setter pour l'instance de Game
-    public void setGame(Game game) {
-        this.game = game;
-        soloMode = new SoloMode(game, this);
+        //soloMode = new SoloMode(game, this);
     }
 
     /**
@@ -115,11 +113,16 @@ public class HomeMenu extends Menu {
     }
 
     private void showGame() {
-        if (soloMode != null) {
+
+        SoloMode soloMode = new SoloMode( this);
+
+        soloMode.startSoloGame();
+        System.out.println("teeeeeaaaaaast");
+        /*if (soloMode != null) {
             soloMode.startSoloGame();
         } else {
             new SoloMode(game, this).startSoloGame();
-        }
+        }*/
     }
 
     //TODO : Ajouter la méthode redirigeant au mode 1v1 quand le mode sera implémenté
