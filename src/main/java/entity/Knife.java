@@ -8,7 +8,9 @@ import java.awt.*;
 
 public class Knife {
     private final Coordinate coordinate;
-    private int angle = 0;
+    private final double DEFAULT_ANGLE = 90;
+    private double angle = DEFAULT_ANGLE;
+
     private double velocite=0;
     public boolean isInTheAir = false;
     public boolean redescend = false;
@@ -19,7 +21,7 @@ public class Knife {
 
 
     public Knife(){
-        this.coordinate = new Coordinate(10,0);
+        this.coordinate = new Coordinate(0,0);
     }
 
     public double getY(){
@@ -40,7 +42,7 @@ public class Knife {
         return coordinate;
     }
 
-    public int getAngle(){
+    public double getAngle(){
         return angle;
     }
 
@@ -65,7 +67,7 @@ public class Knife {
         this.velocite = velocite;
     }
 
-    public void addAngle(int value){
+    public void addAngle(double value){
         angle+=value;
         if (angle>360) angle-=360;
         if (angle<0) angle+=360;
@@ -88,28 +90,24 @@ public class Knife {
             if (throwing) {
                 throwKnife();
 
-                // Le couteau sort de l'écran ? Si oui, reset
-                /*if (getX() < 0 || getX() > KnifeDisplay.getBgImgWidth() || getY() < 0 || getY() > KnifeDisplay.getBgImgHeight()) {
-                    resetKnife();
-                }*/
-
             } else {
                 updateJump();
-                addAngle(1);
+                addAngle(0.4);
             }
         }
     }
 
     // Ajoutez cette méthode pour réinitialiser le couteau au milieu de l'écran
     public void resetKnife() {
-        setX((double) KnifeDisplay.getBgImgWidth() / 2);
-        setY((double) KnifeDisplay.getBgImgHeight() / 2);
+        //setX((double) KnifeDisplay.getBgImgWidth() / 2);
+        //setY((double) KnifeDisplay.getBgImgHeight() / 2);
+        setX(0);setY(0);
 
         isInTheAir = false;
         redescend = false;
         throwing = false;
         velocite = 0;
-        angle = 0;
+        angle = DEFAULT_ANGLE;
     }
 
 
@@ -135,7 +133,7 @@ public class Knife {
             isInTheAir = false;
             redescend = false;
             velocite = 0;
-            angle = 0;
+            angle = DEFAULT_ANGLE;
         }
     }
 

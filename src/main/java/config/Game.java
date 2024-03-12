@@ -26,6 +26,7 @@ public class Game {
     public Game(){
         System.out.println("creation game");
         this.knife = new Knife();
+        knife.addAngle(90);
         listeCible = new ArrayList<>();
         life = 3;
         argent = 0;
@@ -65,7 +66,7 @@ public class Game {
      public void update(double delta){
          //System.out.println("dqdqzsqzdqsqdqzdqz");
          knife.updateMovement();
-         Debug.affichage(knife);
+         //Debug.affichage(knife);
      }
 
     /**
