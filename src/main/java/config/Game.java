@@ -29,7 +29,7 @@ public class Game {
         listeCible = new ArrayList<>();
         life = 3;
         argent = 0;
-        //knife.jump();
+        knife.jump();
     }
 
     public Game(String nomUtilisateur){
@@ -65,7 +65,7 @@ public class Game {
      public void update(double delta){
          //System.out.println("dqdqzsqzdqsqdqzdqz");
          knife.updateMovement();
-         //Debug.affichage(knife);
+         Debug.affichage(knife);
      }
 
     /**

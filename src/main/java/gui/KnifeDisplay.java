@@ -25,22 +25,22 @@ public class KnifeDisplay extends JPanel {
 
 
         this.knife = knife;
-        initImage(); //Img du knife
-        initBg(backgroundPath); //Img du background
+        initImage();
+        initBg(backgroundPath);
 
 
         // Coordonnées du couteau initialisé au milieu de l'écran pour une meilleure visibilité
-        this.knife.getCoordinate().setCoordinate(getBgImgWidth() / 2, getBgImgHeight() / 2);
+        //this.knife.getCoordinate().setCoordinate(getBgImgWidth() / 2, getBgImgHeight() / 2);
 
 
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (knife.throwing) {
-                    knife.throwKnife();
-                }
-                else{
+                if (!knife.throwing && !knife.isInTheAir) {
                     knife.jump();
+                }
+                else if (!knife.throwing && knife.isInTheAir){
+                    knife.throwKnife();
                 }
             }
 

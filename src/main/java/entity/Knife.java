@@ -89,13 +89,13 @@ public class Knife {
                 throwKnife();
 
                 // Le couteau sort de l'écran ? Si oui, reset
-                if (getX() < 0 || getX() > KnifeDisplay.getBgImgWidth() || getY() < 0 || getY() > KnifeDisplay.getBgImgHeight()) {
+                /*if (getX() < 0 || getX() > KnifeDisplay.getBgImgWidth() || getY() < 0 || getY() > KnifeDisplay.getBgImgHeight()) {
                     resetKnife();
-                }
+                }*/
 
             } else {
                 updateJump();
-                addAngle(4);
+                addAngle(1);
             }
         }
     }
