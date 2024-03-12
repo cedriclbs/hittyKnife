@@ -37,7 +37,7 @@ public class Debug {
                 if (j == knife.getX() && i == 40-round(knife.getY() / RATIO_AFFICHE)) {
                     System.out.print(" A ");
                 }
-                else if (Geometry.estDansVecteur(LONGUEUR_VECT,knife.getAngle(),knife.getX(),knife.getY(),j,40-i)) System.out.print(" o ");
+                else if (Geometry.estDansVecteur(LONGUEUR_VECT,(int) knife.getAngle(),knife.getX(),knife.getY(),j,40-i)) System.out.print(" o ");
                 else {
                     System.out.print("   ");
                 }

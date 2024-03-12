@@ -19,16 +19,21 @@ public class KnifeDisplay extends JPanel {
 
     private static double bgImgWidth;
     private static double bgImgHeight;
+    private double RATIO_X; //1100;
+    private double RATIO_Y; //800;
+    private final int RATIO = 18;
 
 
     public KnifeDisplay(Knife knife, String backgroundPath) {
+        //System.out.println("bg x : "+RATIO_X+" bg y : "+RATIO_Y);
 
 
         this.knife = knife;
         initImage();
         initBg(backgroundPath);
 
-
+        RATIO_X = getBgImgWidth()/2;
+        RATIO_Y = getBgImgHeight()*3/4;
         // Coordonnées du couteau initialisé au milieu de l'écran pour une meilleure visibilité
         //this.knife.getCoordinate().setCoordinate(getBgImgWidth() / 2, getBgImgHeight() / 2);
 
@@ -103,7 +108,7 @@ public class KnifeDisplay extends JPanel {
 
 
     private void initImage () {
-        this.knifeImage = new ImageIcon("src/main/ressources/knifes/knife.png").getImage();
+        this.knifeImage = new ImageIcon("src/main/ressources/knifes/knifeRotate2.png").getImage();
         int w = this.knifeImage.getWidth(null)/3;
         int h = this.knifeImage.getHeight(null)/3;
         this.knifeImage = this.knifeImage.getScaledInstance(w,h,Image.SCALE_SMOOTH);
@@ -121,11 +126,17 @@ public class KnifeDisplay extends JPanel {
 
         g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 
-        int knifeX = (int) knife.getX();
-        int knifeY = (int) knife.getY();
+
+        int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
+        int knifeY = (int) (RATIO_Y-(knife.getY()*RATIO));
+
+        if (knifeX>getBgImgWidth() || knifeX<0 || knifeY > getBgImgHeight() || knifeY<0){
+            knife.resetKnife();
+        }
 
         int knifeImgWidth = knifeImage.getWidth(this);
         int knifeImgHeight = knifeImage.getHeight(this);
+
 
         AffineTransform transform = AffineTransform.getTranslateInstance(knifeX - (double) knifeImgWidth / 2, knifeY - (double) knifeImgHeight / 2);
         transform.rotate(Math.toRadians(knife.getAngle()), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);

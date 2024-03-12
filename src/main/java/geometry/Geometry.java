@@ -44,8 +44,8 @@ public class Geometry{
         double angleRad = angle * Math.PI / 180.0;
         deltaX = Math.cos(angleRad);
         deltaY = Math.sin(angleRad);
-        coordinate.setX(coordinate.getX()+deltaX/2);
-        coordinate.setY(coordinate.getY()+deltaY/2);
+        coordinate.setX(coordinate.getX()+deltaX/10);
+        coordinate.setY(coordinate.getY()+deltaY/10);
     }
 
 
