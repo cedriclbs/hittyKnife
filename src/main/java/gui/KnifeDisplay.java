@@ -42,12 +42,6 @@ public class KnifeDisplay extends JPanel {
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-               /* if (!knife.throwing && !knife.isInTheAir) {
-                    knife.jump();
-                }
-                else if (!knife.throwing && knife.isInTheAir){
-                    knife.throwKnife();
-                }*/
             }
 
             @Override
@@ -76,38 +70,6 @@ public class KnifeDisplay extends JPanel {
             }
 
         });
-        /*addKeyListener(new KeyListener() {
-
-            public void actionPerformed (ActionEvent e){
-                if (countClicked == 1) {
-                    // 1 : Le couteau n'est plus figé
-                    knife.jump();
-                } else if (countClicked == 2) {
-                    // 2 : Couteau va attaquer la cible avec sa trajectoire droite
-                    knife.throwKnife();
-                    return;
-                }
-
-                if (countClicked > 2) {
-                    countClicked = 0;
-                }
-                repaint();
-            }
-            @Override
-            public void keyTyped(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
-        });*/
 
     }
 
@@ -148,12 +110,28 @@ public class KnifeDisplay extends JPanel {
         int cibleImHeight = cibleImage.getHeight(this);
 
 
+
+
+
         AffineTransform transform = AffineTransform.getTranslateInstance(knifeX - (double) knifeImgWidth / 2, knifeY - (double) knifeImgHeight / 2);
         transform.rotate(Math.toRadians(knife.getAngle()), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
         g2d.drawImage(knifeImage, transform, this);
+
+        ArrayList<Cible> deleteCible= new ArrayList<>();
         for (Cible cible : listeCible){
-            AffineTransform transformCible = AffineTransform.getTranslateInstance((RATIO_X-cible.getX()*RATIO) - (double) cibleImWidth / 2, (RATIO_Y-cible.getY()*RATIO) - (double) cibleImHeight / 2);
+            double cibleX = (RATIO_X-cible.getX()*RATIO);
+            double cibleY = (RATIO_Y-cible.getY()*RATIO);
+            AffineTransform transformCible = AffineTransform.getTranslateInstance(cibleX - (double) cibleImWidth / 2, cibleY - (double) cibleImHeight / 2);
             g2d.drawImage(cibleImage,transformCible,this);
+
+            int cw=50;int ch=50;
+            if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
+                deleteCible.add(cible);
+                knife.resetKnife();
+            }
+        }
+        for (Cible c : deleteCible){
+            listeCible.remove(c);
         }
 
 
