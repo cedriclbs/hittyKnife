@@ -38,7 +38,6 @@ public class HomeMenu extends Menu {
     }
 
     private void initialize(String background) {
-        System.out.println("teeeeest");
         JPanel menuPanel = createMenuPanel(background);
         add(menuPanel);
         //soloMode = new SoloMode(game, this);
@@ -117,12 +116,7 @@ public class HomeMenu extends Menu {
         SoloMode soloMode = new SoloMode( this);
 
         soloMode.startSoloGame();
-        System.out.println("teeeeeaaaaaast");
-        /*if (soloMode != null) {
-            soloMode.startSoloGame();
-        } else {
-            new SoloMode(game, this).startSoloGame();
-        }*/
+
     }
 
     //TODO : Ajouter la méthode redirigeant au mode 1v1 quand le mode sera implémenté

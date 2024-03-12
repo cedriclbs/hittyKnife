@@ -6,6 +6,7 @@ import entity.Knife;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -13,10 +14,10 @@ import javax.swing.Timer;
 public class KnifeDisplay extends JPanel {
     private final Knife knife;
     private Image knifeImage;
+    private Image cibleImage;
     private Image backgroundImage;
 
-    private static int countClicked = 0;
-
+    private ArrayList<Cible> listeCible;
     private static double bgImgWidth;
     private static double bgImgHeight;
     private double RATIO_X; //1100;
@@ -24,10 +25,10 @@ public class KnifeDisplay extends JPanel {
     private final int RATIO = 18;
 
 
-    public KnifeDisplay(Knife knife, String backgroundPath) {
+    public KnifeDisplay(Knife knife, String backgroundPath, ArrayList<Cible> listeCible) {
         //System.out.println("bg x : "+RATIO_X+" bg y : "+RATIO_Y);
 
-
+        this.listeCible = listeCible;
         this.knife = knife;
         initImage();
         initBg(backgroundPath);
@@ -41,17 +42,22 @@ public class KnifeDisplay extends JPanel {
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
+               /* if (!knife.throwing && !knife.isInTheAir) {
+                    knife.jump();
+                }
+                else if (!knife.throwing && knife.isInTheAir){
+                    knife.throwKnife();
+                }*/
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
                 if (!knife.throwing && !knife.isInTheAir) {
                     knife.jump();
                 }
                 else if (!knife.throwing && knife.isInTheAir){
                     knife.throwKnife();
                 }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
             }
 
             @Override
@@ -109,9 +115,11 @@ public class KnifeDisplay extends JPanel {
 
     private void initImage () {
         this.knifeImage = new ImageIcon("src/main/ressources/knifes/knifeRotate2.png").getImage();
+        this.cibleImage = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
         int w = this.knifeImage.getWidth(null)/3;
         int h = this.knifeImage.getHeight(null)/3;
         this.knifeImage = this.knifeImage.getScaledInstance(w,h,Image.SCALE_SMOOTH);
+        this.cibleImage = this.cibleImage.getScaledInstance(this.cibleImage.getWidth(null)/2,this.cibleImage.getHeight(null)/2,Image.SCALE_SMOOTH);
     }
 
     private void initBg(String backgroundPath) {
@@ -136,11 +144,19 @@ public class KnifeDisplay extends JPanel {
 
         int knifeImgWidth = knifeImage.getWidth(this);
         int knifeImgHeight = knifeImage.getHeight(this);
+        int cibleImWidth = cibleImage.getWidth(this);
+        int cibleImHeight = cibleImage.getHeight(this);
 
 
         AffineTransform transform = AffineTransform.getTranslateInstance(knifeX - (double) knifeImgWidth / 2, knifeY - (double) knifeImgHeight / 2);
         transform.rotate(Math.toRadians(knife.getAngle()), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
         g2d.drawImage(knifeImage, transform, this);
+        for (Cible cible : listeCible){
+            AffineTransform transformCible = AffineTransform.getTranslateInstance((RATIO_X-cible.getX()*RATIO) - (double) cibleImWidth / 2, (RATIO_Y-cible.getY()*RATIO) - (double) cibleImHeight / 2);
+            g2d.drawImage(cibleImage,transformCible,this);
+        }
+
+
 
         repaint();
     }
