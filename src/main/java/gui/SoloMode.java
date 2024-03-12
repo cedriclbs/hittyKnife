@@ -7,6 +7,11 @@ import entity.Cible;
 import entity.Knife;
 
 
+import javax.swing.*;
+
+import java.awt.*;
+import java.util.ArrayList;
+
 import static config.States.*;
 
 
@@ -14,12 +19,16 @@ import static config.States.*;
 /**
  * La classe SoloMode représente le mode de jeu solo du jeu et gère l'initialisation et le démarrage d'une partie solo du jeu.
  */
-public class SoloMode {
+public class SoloMode extends JPanel{
 
     private Game game;
     private HomeMenu homeMenu;
     private KnifeDisplay knifeDisplay;
     private Knife knife;
+
+    private Image backgroundImage;
+    private static double bgImgWidth;
+    private static double bgImgHeight;
     //private Cible cible;
 
 
@@ -28,24 +37,39 @@ public class SoloMode {
      * Constructeur de la classe SoloMode.
      * @param homeMenu Le menu principal de l'application.
      */
-    public SoloMode( HomeMenu homeMenu) {
-        System.out.println("creation solo");
-        this.game = new Game();//Main.game;//new Game();
+    public SoloMode( HomeMenu homeMenu)  {
+
+        initBg("src/main/ressources/background/bgForet.png");
+        this.game = new Game();
         Main.loop = new Loop(game);
         Main.loop.startTickFunction();
-        System.out.println("loop créé");
+
         this.homeMenu = homeMenu;
         this.knife = game.getKnife();
         //this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);
-        this.knifeDisplay = new KnifeDisplay(knife,"src/main/ressources/background/bgForet.png");
+        this.knifeDisplay = new KnifeDisplay(knife,"src/main/ressources/background/bgForet.png", (ArrayList<Cible>) game.getListeCible());
     }
+
+
+
+
 
     public void initialize() {
         setStates(SOLOMODE);
         homeMenu.getContentPane().removeAll();
+
         homeMenu.getContentPane().add(knifeDisplay);
-        homeMenu.revalidate();
-        homeMenu.repaint();
+
+        homeMenu.getContentPane().revalidate();
+        homeMenu.getContentPane().repaint();
+
+
+    }
+
+    private void initBg(String backgroundPath) {
+        this.backgroundImage = new ImageIcon(backgroundPath).getImage();
+        bgImgHeight = this.backgroundImage.getHeight(null);
+        bgImgWidth = this.backgroundImage.getWidth(null);
     }
 
     public void startSoloGame() {

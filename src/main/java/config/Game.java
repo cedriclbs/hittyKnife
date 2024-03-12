@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class Game {
     public Knife knife;
-    List<Cible> listeCible;
+    List<Cible> listeCible = new ArrayList<>();;
     int life;
     int argent; // Ajout de l'argent comme attribut du jeu
     String nomUtilisateur;
@@ -27,7 +27,9 @@ public class Game {
         System.out.println("creation game");
         this.knife = new Knife();
         knife.addAngle(90);
-        listeCible = new ArrayList<>();
+        Cible c1 = new Cible(20,20);
+        Cible c2 = new Cible(-15,30);
+        listeCible.add(c1);listeCible.add(c2);
         life = 3;
         argent = 0;
         knife.jump();
