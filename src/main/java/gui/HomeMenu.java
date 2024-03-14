@@ -31,7 +31,7 @@ public class HomeMenu extends Menu {
 
     public HomeMenu(String title, String backgroundPath, String musicPath) {
         super(title, backgroundPath, musicPath);
-        initialize("src/main/ressources/background/solo.png");
+        initialize("src/main/ressources/background/Background_MainMenu.png");
     }
 
     private void initialize(String background) {

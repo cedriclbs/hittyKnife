@@ -18,7 +18,7 @@ public class SoloMode {
     private HomeMenu homeMenu;
     private KnifeDisplay knifeDisplay;
     private Knife knife;
-    //private Cible cible;
+    private Cible cible;
 
 
 
@@ -31,8 +31,8 @@ public class SoloMode {
         this.game = game;
         this.homeMenu = homeMenu;
         this.knife = new Knife();
-        //this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);
-        this.knifeDisplay = new KnifeDisplay(knife,"src/main/ressources/background/solo.png");
+        this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);
+        this.knifeDisplay = new KnifeDisplay(knife,"src/main/ressources/background/Background_Solo.png");
     }
 
     public void initialize() {
