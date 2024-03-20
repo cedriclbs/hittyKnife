@@ -10,23 +10,29 @@ import java.io.IOException;
 
 import static java.lang.Math.round;
 
+/**
+ * Classe utilitaire pour le débogage.
+ */
 public class Debug {
 
     static int lastPos;
     final static int RATIO_AFFICHE = 1;
     final static int LONGUEUR_VECT = 5;
 
-
-
-
+    /**
+     * Efface l'écran du terminal.
+     */
     private static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
     /**
-     * Affiche le knife sur le terminal où "A" représente le knife et "o" le vecteur de longueur LONGUEUR_VECT.
-     * À noter : pour un meilleur rendu mieux vaux l'exécuter dans le cmd plutôt que dans l'IDE.
+     * Affiche un couteau sur le terminal.
+     * "A" représente le couteau et "o" le vecteur de longueur LONGUEUR_VECT.
+     * Note : Pour un meilleur rendu, il est préférable d'exécuter cette méthode dans le terminal plutôt que dans l'IDE.
+     *
+     * @param knife Couteau à afficher.
      */
     public static void affichage(Knife knife){
         lastPos = (int) round(knife.getY()/RATIO_AFFICHE);
@@ -47,6 +53,11 @@ public class Debug {
         lastPos = (int) round(knife.getY()/RATIO_AFFICHE);
 
     }
+
+    /**
+     * Méthode de test pour la sérialisation des objets.
+     * Cette méthode sérialise et désérialise un objet Game pour tester la fonctionnalité.
+     */
     public static void testSerialization() {
         try {
             ObjectMapper mapper = new ObjectMapper();

@@ -18,6 +18,10 @@ public class Round {
     private int indexTargets;
     private Random random;
 
+    /**
+     * Constructeur par défaut de la classe Round.
+     * Initialise les listes de cibles pour chaque round et le boss final.
+     */
     public Round() {
         this.random = new Random();
         round1Targets = new ArrayList<>();
@@ -27,6 +31,56 @@ public class Round {
         currentRound = 1; // si round en trop à l'affichage mettre 0
 
         initTargets();
+    }
+
+    /**
+     * Retourne la liste des cibles pour le round actuel.
+     *
+     * @return La liste des cibles pour le round actuel.
+     */
+    private List<TypeCible> getCurrentTargets() {
+        return switch (currentRound) {
+            case 1 -> round1Targets;
+            case 2 -> round2Targets;
+            case 3 -> round3Targets;
+            default -> bossTarget;
+        };
+    }
+
+    /**
+     * Retourne une cible aléatoire parmi les deux premiers types de cibles
+     * @return Une cible alétoire
+     */
+    // Sélectionne parmi les deux premiers types de cibles
+    private TypeCible getRandomTypeCible() {
+        int randomNum = random.nextInt(2); // Sélectionne parmi les deux premiers types
+        return TypeCible.values()[randomNum];
+    }
+
+    /**
+     * Retourne un boss aléatoire parmi les trois types de boss
+     * @return Un boss alétoire
+     */
+    private TypeCible getRandomTypeBoss() {
+        int randomNum = random.nextInt(3); // Vous pouvez ajuster cela selon le nombre de types de boss que vous avez
+        return TypeCible.values()[TypeCible.values().length - 1 - randomNum];
+    }
+
+    /**
+     * Retourne un nombre de cibles aléatoires
+     * @return Une nombre de cibles alétoires
+     */
+    private int getRndIntTargetRounds(){
+        int randomNum = random.nextInt(7);
+        return 4 + randomNum;
+    }
+
+    /**
+     * Retourne le nombre de cibles restantes dans le round actuel.
+     * @return Le nombre de cibles restantes.
+     */
+    public int getIndexTargets(){
+        return indexTargets;
     }
 
     /**
@@ -60,6 +114,9 @@ public class Round {
         }
     }
 
+    /**
+     * Réinitialise les rounds.
+     */
     public void reset(){
         currentRound = 1;
         indexTargets = 0;
@@ -123,45 +180,8 @@ public class Round {
     }
 
     /**
-     * Retourne la liste des cibles pour le round actuel.
-     *
-     * @return La liste des cibles pour le round actuel.
+     * Réinitialise le nombre de target à 0.
      */
-    private List<TypeCible> getCurrentTargets() {
-        switch (currentRound) {
-            case 1:
-                return round1Targets;
-            case 2:
-                return round2Targets;
-            case 3:
-                return round3Targets;
-            default:
-                return bossTarget;
-        }
-    }
-
-    // Sélectionne parmi les deux premiers types de cibles
-    private TypeCible getRandomTypeCible() {
-        int randomNum = random.nextInt(2); // Sélectionne parmi les deux premiers types
-        return TypeCible.values()[randomNum];
-    }
-
-    //Sélectionne parmi les trois types de boss
-    private TypeCible getRandomTypeBoss() {
-        int randomNum = random.nextInt(3); // Vous pouvez ajuster cela selon le nombre de types de boss que vous avez
-        return TypeCible.values()[TypeCible.values().length - 1 - randomNum];
-    }
-
-    //un nombre de cible aléatoire
-    private int getRndIntTargetRounds(){
-        int randomNum = random.nextInt(7);
-        return 4 + randomNum;
-    }
-
-    public int getIndexTargets(){
-        return indexTargets;
-    }
-
     public void resetIndexTargets() {
         indexTargets= 0;
     }

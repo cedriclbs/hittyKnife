@@ -9,8 +9,11 @@ import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
+/**
+ * La classe KnifeDisplay représente le panneau graphique où le couteau et les cibles sont affichés.
+ * Elle étend JPanel pour permettre l'affichage des éléments graphiques du jeu Hitty Knife.
+ */
 public class KnifeDisplay extends JPanel {
     private final Knife knife;
     private Image knifeImage;
@@ -20,11 +23,16 @@ public class KnifeDisplay extends JPanel {
     private ArrayList<Cible> listeCible;
     private static double bgImgWidth;
     private static double bgImgHeight;
-    private double RATIO_X; //1100;
-    private double RATIO_Y; //800;
+    private double RATIO_X;
+    private double RATIO_Y;
     private final int RATIO = 18;
 
-
+    /**
+     * Constructeur de la classe KnifeDisplay.
+     * @param knife Le couteau à afficher dans le panneau.
+     * @param backgroundPath Le chemin d'accès à l'image de fond du panneau.
+     * @param listeCible La liste des cibles à afficher dans le panneau.
+     */
     public KnifeDisplay(Knife knife, String backgroundPath, ArrayList<Cible> listeCible) {
         //System.out.println("bg x : "+RATIO_X+" bg y : "+RATIO_Y);
 
@@ -37,7 +45,6 @@ public class KnifeDisplay extends JPanel {
         RATIO_Y = getBgImgHeight()*3/4;
         // Coordonnées du couteau initialisé au milieu de l'écran pour une meilleure visibilité
         //this.knife.getCoordinate().setCoordinate(getBgImgWidth() / 2, getBgImgHeight() / 2);
-
 
         addMouseListener(new MouseListener() {
             @Override
@@ -73,8 +80,25 @@ public class KnifeDisplay extends JPanel {
 
     }
 
+    /**
+     * Renvoie la largeur de l'image de fond du panneau.
+     *
+     * @return La largeur de l'image de fond.
+     */
+    public static double getBgImgWidth() {
+        return bgImgWidth;
+    }
 
+    /**
+     * Renvoie la hauteur de l'image de fond du panneau.
+     *
+     * @return La hauteur de l'image de fond.
+     */
+     public static double getBgImgHeight() {
+        return bgImgHeight;
+    }
 
+    // Méthode privée pour initialiser les images du couteau et des cibles
     private void initImage () {
         this.knifeImage = new ImageIcon("src/main/ressources/knifes/knifeRotate2.png").getImage();
         this.cibleImage = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
@@ -84,6 +108,7 @@ public class KnifeDisplay extends JPanel {
         this.cibleImage = this.cibleImage.getScaledInstance(this.cibleImage.getWidth(null)/2,this.cibleImage.getHeight(null)/2,Image.SCALE_SMOOTH);
     }
 
+    // Méthode privée pour initialiser l'image de fond
     private void initBg(String backgroundPath) {
         this.backgroundImage = new ImageIcon(backgroundPath).getImage();
         bgImgHeight = this.backgroundImage.getHeight(null);
@@ -96,7 +121,6 @@ public class KnifeDisplay extends JPanel {
 
         g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 
-
         int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
         int knifeY = (int) (RATIO_Y-(knife.getY()*RATIO));
 
@@ -108,10 +132,6 @@ public class KnifeDisplay extends JPanel {
         int knifeImgHeight = knifeImage.getHeight(this);
         int cibleImWidth = cibleImage.getWidth(this);
         int cibleImHeight = cibleImage.getHeight(this);
-
-
-
-
 
         AffineTransform transform = AffineTransform.getTranslateInstance(knifeX - (double) knifeImgWidth / 2, knifeY - (double) knifeImgHeight / 2);
         transform.rotate(Math.toRadians(knife.getAngle()), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
@@ -133,17 +153,7 @@ public class KnifeDisplay extends JPanel {
         for (Cible c : deleteCible){
             listeCible.remove(c);
         }
-
-
-
         repaint();
     }
 
-    public static double getBgImgWidth() {
-        return bgImgWidth;
-    }
-
-    public static double getBgImgHeight() {
-        return bgImgHeight;
-    }
 }

@@ -10,8 +10,6 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 /**
  * Classe abstraite {@code Menu} sert de base pour créer les interfaces de menu dans le jeu.
  * Elle initialise et affiche le menu principal avec des options comme jouer, accéder aux paramètres, visiter le magasin, ou quitter le jeu.
@@ -71,7 +69,7 @@ abstract class Menu extends JFrame {
                 clip.start();
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
             } else {
-                System.out.println("Can't find file");
+                System.out.println("Can't find audio file");
             }
         } catch(UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();

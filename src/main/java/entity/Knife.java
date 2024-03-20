@@ -1,90 +1,154 @@
 package entity;
 import geometry.Coordinate;
-import gui.KnifeDisplay;
 import geometry.Geometry;
-import javax.swing.*;
-import java.awt.*;
 
-
+/**
+ * Classe représentant un couteau dans le jeu.
+ */
 public class Knife {
     private final Coordinate coordinate;
     private final double DEFAULT_ANGLE = 90;
     private double angle = DEFAULT_ANGLE;
-
     private double velocite=0;
     public boolean isInTheAir = false;
     public boolean redescend = false;
     public boolean throwing = false;
 
-
-
-
-
+    /**
+     * Constructeur de la classe Knife.
+     * Initialise un couteau avec des coordonnées par défaut.
+     */
     public Knife(){
         this.coordinate = new Coordinate(0,0);
     }
 
-    public double getY(){
+    /**
+     * Méthode pour obtenir la coordonnée y du couteau.
+     *
+     * @return La coordonnée y du couteau.
+     */
+    public double getY() {
         return coordinate.getY();
     }
+
+    /**
+     * Méthode pour obtenir la coordonnée x du couteau.
+     *
+     * @return La coordonnée x du couteau.
+     */
     public double getX() {
         return coordinate.getX();
     }
-    public void setX(double x){
+
+    /**
+     * Méthode pour définir la coordonnée x du couteau.
+     *
+     * @param x Nouvelle coordonnée x du couteau.
+     */
+    public void setX(double x) {
         coordinate.setX(x);
     }
 
+    /**
+     * Méthode pour définir la coordonnée y du couteau.
+     *
+     * @param y Nouvelle coordonnée y du couteau.
+     */
     public void setY(double y) {
         coordinate.setY(y);
     }
 
+    /**
+     * Méthode pour obtenir les coordonnées du couteau.
+     *
+     * @return Les coordonnées du couteau.
+     */
     public Coordinate getCoordinate() {
         return coordinate;
     }
 
-    public double getAngle(){
+    /**
+     * Méthode pour obtenir l'angle du couteau.
+     *
+     * @return L'angle du couteau.
+     */
+    public double getAngle() {
         return angle;
     }
 
-
+    /**
+     * Méthode pour démarrer le lancer du couteau.
+     */
     public void startThrowing() {
         throwing = true;
     }
 
+    /**
+     * Méthode pour réinitialiser l'état de lancer du couteau.
+     */
     public void resetThrowing() {
         this.throwing = false;
     }
 
-    public void setAngle(int angle){
-        this.angle=angle;
+    /**
+     * Méthode pour définir l'angle du couteau.
+     *
+     * @param angle Nouvel angle du couteau.
+     */
+    public void setAngle(int angle) {
+        this.angle = angle;
     }
 
+    /**
+     * Méthode pour obtenir la vélocité du couteau.
+     *
+     * @return La vélocité du couteau.
+     */
     public double getVelocite() {
         return velocite;
     }
 
+    /**
+     * Méthode pour définir la vélocité du couteau.
+     *
+     * @param velocite Nouvelle vélocité du couteau.
+     */
     public void setVelocite(double velocite) {
         this.velocite = velocite;
     }
 
+    /**
+     * Méthode pour ajouter un angle au couteau.
+     *
+     * @param value Angle à ajouter.
+     */
     public void addAngle(double value){
         angle+=value;
-        if (angle>360) angle-=360;
-        if (angle<0) angle+=360;
+        if (angle > 360) angle -= 360;
+        if (angle < 0) angle += 360;
     }
 
-
+    /**
+     * Méthode pour faire sauter le couteau.
+     * Met le couteau en l'air avec une vélocité verticale de 10.
+     */
     public void jump(){
         isInTheAir = true;
         velocite = 10;
     }
 
+    /**
+     * Méthode pour lancer le couteau.
+     */
     public void throwKnife(){
         throwing = true;
         Geometry.forwardMovement(coordinate, angle);
     }
 
-
+    /**
+     * Méthode pour mettre à jour le mouvement du couteau.
+     * Si le couteau est en l'air, il soit lance, soit il saute.
+     */
     public void updateMovement() {
         if (isInTheAir) {
             if (throwing) {

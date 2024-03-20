@@ -3,7 +3,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import debug.Debug;
 import entity.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,10 +13,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class Game {
     public Knife knife;
-    List<Cible> listeCible = new ArrayList<>();;
-    int life;
-    int argent; // Ajout de l'argent comme attribut du jeu
-    String nomUtilisateur;
+    private List<Cible> listeCible = new ArrayList<>();
+    private int life;
+    private int argent; // Ajout de l'argent comme attribut du jeu
+    private String nomUtilisateur;
 
     /**
      * Constructeur qui initialise le jeu avec un couteau, une liste de cibles vide, et un nombre initial de vies.
@@ -35,11 +34,14 @@ public class Game {
         knife.jump();
     }
 
+    /**
+     * Constructeur qui initialise le jeu avec un nom d'utilisateur spécifié.
+     * @param nomUtilisateur Le nom de l'utilisateur.
+     */
     public Game(String nomUtilisateur){
         super();
         this.nomUtilisateur = nomUtilisateur;
     }
-
 
 
     // Getters et setters pour la sérialisation/désérialisation
@@ -59,6 +61,7 @@ public class Game {
     public String getNomUtilisateur() {
         return this.nomUtilisateur;
     }
+
 
     /**
      * Met à jour l'état du jeu en fonction du temps écoulé depuis la dernière mise à jour.
@@ -83,11 +86,15 @@ public class Game {
         }
     }
 
+    /**
+     * Charge l'état du jeu à partir d'un fichier spécifié.
+     * @param cheminFichier Le chemin du fichier à charger.
+     * @return L'état du jeu chargé.
+     * @throws IOException En cas d'erreur de lecture du fichier.
+     */
     public static Game chargerEtat(String cheminFichier) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(new File(cheminFichier), Game.class);
     }
-
-
 
 }

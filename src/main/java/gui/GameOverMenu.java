@@ -3,18 +3,40 @@ package gui;
 import config.Game;
 import javax.swing.*;
 import java.awt.*;
-import static config.States.*;
 
+/**
+ * Fenêtre de menu affichée lorsque la partie est terminée.
+ */
 public class GameOverMenu extends Menu {
-   
 
+    /**
+     * Constructeur de la fenêtre de menu de fin de jeu.
+     *
+     * @param title Le titre de la fenêtre de menu.
+     * @param backgroundPath Le chemin de l'arrière-plan de la fenêtre de menu.
+     * @param musicPath Le chemin de la musique de fond de la fenêtre de menu.
+     */
     public GameOverMenu(String title, String backgroundPath, String musicPath) {
         super(title, backgroundPath, musicPath);
         JPanel GameOverPanel = createMenuPanel(backgroundPath);
         add(GameOverPanel);
     }
 
+    /**
+     * Définit l'instance de jeu associée à ce menu de fin de jeu.
+     *
+     * @param game L'instance de jeu à associer à ce menu.
+     */
+    public void setGame(Game game) {
+        this.game = game;
+    }
 
+    /**
+     * Crée le panneau de menu de fin de jeu.
+     *
+     * @param backgroundPath Le chemin de l'arrière-plan du panneau de menu.
+     * @return Le panneau de menu créé.
+     */
     @Override
     JPanel createMenuPanel(String backgroundPath) {
         BackgroundPanel panel = new BackgroundPanel(backgroundPath);
@@ -58,12 +80,6 @@ public class GameOverMenu extends Menu {
         panel.setPreferredSize(new Dimension(500, 800)); // Taille du panel de menu
     
         return panel;
-    }
-    
-
-    // Setter pour l'instance de Game
-    public void setGame(Game game) {
-        this.game = game;
     }
 
     //TODO : Ajouter la méthode qui recommence le mode de jeu quand la partie graphique du jeu sera implémentée
