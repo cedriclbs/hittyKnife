@@ -75,7 +75,7 @@ public class HomeMenu extends Menu {
         // Bouton "1v1"
         JPanel versusButtonPanel = new JPanel();
         versusButtonPanel.setOpaque(false); // Rend le panel transparent
-        JButton versusButton = new JButton(new ImageIcon("src/main/ressources/button/Button.png"));
+        JButton versusButton = new JButton(new ImageIcon("src/main/ressources/button/VersusButton.png"));
         versusButton.setFocusPainted(false);
         versusButton.setBorderPainted(false);
         versusButton.setContentAreaFilled(false);
