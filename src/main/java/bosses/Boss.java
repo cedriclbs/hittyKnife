@@ -6,9 +6,8 @@ import geometry.Coordinate;
 import geometry.Geometry;
 
 public abstract class Boss extends Cible {
-    private String name;
     private int health;
-    
+    private TypeCible bosstype;
     private boolean isBuffed = false;
     private boolean isDebuffed = false;
 
@@ -21,8 +20,8 @@ public abstract class Boss extends Cible {
         super(x,y);
     }
 
-    public Boss(String name, int health, double x, double y, double velocite) {
-        super(name, health, x, y, velocite);        
+    public Boss(TypeCible bosstype, int health, double x, double y, double velocite) {
+        super(bosstype, health, x, y, velocite);        
     }
 
     public void takeDamage(int damage) {
@@ -49,10 +48,10 @@ public abstract class Boss extends Cible {
             }
     }    
 
-    public String getName() {
-        return name;
+    public TypeCible getBosstype(){
+        return bosstype;
     }
-
+    
     public int getHealth() {
         return health;
     }

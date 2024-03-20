@@ -1,12 +1,12 @@
 package bosses;
 
 import entity.Knife;
+import entity.Cible;
 
 public class BossType1 extends Boss {
 
     public BossType1() {
-        super("Boss 1", 3, 5, 0, 0);
-
+        super(Cible.TypeCible.CIBLE_BOSS1, 3, 5, 0, 0);
     }
     
     @Override
