@@ -51,7 +51,7 @@ public abstract class Boss extends Cible {
     public TypeCible getBosstype(){
         return bosstype;
     }
-    
+
     public int getHealth() {
         return health;
     }

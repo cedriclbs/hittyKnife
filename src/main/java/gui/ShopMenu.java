@@ -3,8 +3,12 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import config.Game;
 
 public class ShopMenu extends Menu {
+    private Game game; // Référence vers l'objet Game pour obtenir l'argent du joueur
+    private JLabel argentLabel; // Label pour afficher l'argent du joueur
+
 
     public ShopMenu(String title, String backgroundPath, String musicPath) {
         super(title, backgroundPath, musicPath);
@@ -15,6 +19,12 @@ public class ShopMenu extends Menu {
     JPanel createMenuPanel(String backgroundPath) {
         BackgroundPanel panel = new BackgroundPanel(backgroundPath);
         panel.setLayout(new BorderLayout()); // Utilisation d'un BorderLayout pour placer le bouton "Menu" dans le coin supérieur gauche
+
+         // Création d'un JPanel pour afficher l'argent du joueur
+         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+         argentLabel = new JLabel("Argent: " + game.getArgent()); // Afficher l'argent initial du joueur
+         topPanel.add(argentLabel);
+         panel.add(topPanel, BorderLayout.NORTH);
 
         // Création d'un JPanel pour les boutons de menu principal
         JPanel mainMenuPanel = new JPanel(new GridLayout(3, 3, 150, 20));
