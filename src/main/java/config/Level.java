@@ -33,6 +33,7 @@ public class Level {
     public void bossDefeated() {
         level++; 
         round.reset(); 
+        round.clearTargets();
         saveGame();
     }
 

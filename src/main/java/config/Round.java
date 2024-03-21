@@ -115,7 +115,7 @@ public class Round {
     /**
      * Efface les listes de cibles pour tous les rounds, en préparation pour le round suivant.
      */
-    private void clearTargets() {
+    protected void clearTargets() {
         round1Targets.clear();
         round2Targets.clear();
         round3Targets.clear();
