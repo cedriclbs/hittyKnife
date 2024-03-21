@@ -4,8 +4,6 @@ import entity.Knife;
 
 public class Geometry{
 
-
-
     /**
      * Modifie la position verticale d'un objet en simulant un mouvement de haut en bas.
      * La fonction prend en compte la vélocité actuelle, la gravité et une hauteur maximale.
@@ -46,21 +44,21 @@ public class Geometry{
         double angleRad = angle * Math.PI / 180.0;
         deltaX = Math.cos(angleRad);
         deltaY = Math.sin(angleRad);
-        coordinate.setX(coordinate.getX()+deltaX/2);
-        coordinate.setY(coordinate.getY()+deltaY/2);
+        coordinate.setX(coordinate.getX()+deltaX/10);
+        coordinate.setY(coordinate.getY()+deltaY/10);
     }
 
 
-    public static void forwardMovementSoloMode(Coordinate coordinate, double angle, double velocite) {
+    /*public static void forwardMovementSoloMode(Coordinate coordinate, double angle, double velocite) {
         double angleRad = Math.toRadians(angle);
 
         double deltaX = Math.cos(angleRad);
         double deltaY = Math.sin(angleRad);
 
 
-        coordinate.setX(coordinate.getX() + deltaX * velocite);
-        coordinate.setY(coordinate.getY() + deltaY * velocite);
-    }
+        coordinate.setX(coordinate.getX() + deltaX * 2);
+        coordinate.setY(coordinate.getY() + deltaY * 2);
+    }*/
 
 
 

@@ -4,11 +4,9 @@ import entity.Cible;
 import entity.Knife;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -16,46 +14,44 @@ import javax.swing.Timer;
 public class KnifeDisplay extends JPanel {
     private final Knife knife;
     private Image knifeImage;
+    private Image cibleImage;
     private Image backgroundImage;
 
-    private static int countClicked = 0;
-
+    private ArrayList<Cible> listeCible;
     private static double bgImgWidth;
     private static double bgImgHeight;
+    private double RATIO_X; //1100;
+    private double RATIO_Y; //800;
+    private final int RATIO = 18;
 
 
-    public KnifeDisplay(Knife knife, String backgroundPath) {
+    public KnifeDisplay(Knife knife, String backgroundPath, ArrayList<Cible> listeCible) {
+        //System.out.println("bg x : "+RATIO_X+" bg y : "+RATIO_Y);
 
-
+        this.listeCible = listeCible;
         this.knife = knife;
-        initImage(); //Img du knife
-        initBg(backgroundPath); //Img du background
+        initImage();
+        initBg(backgroundPath);
 
-
+        RATIO_X = getBgImgWidth()/2;
+        RATIO_Y = getBgImgHeight()*3/4;
         // Coordonnées du couteau initialisé au milieu de l'écran pour une meilleure visibilité
-        this.knife.getCoordinate().setCoordinate(getBgImgWidth() / 2, getBgImgHeight() / 2);
-
+        //this.knife.getCoordinate().setCoordinate(getBgImgWidth() / 2, getBgImgHeight() / 2);
 
 
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (!knife.throwing){
-                    countClicked++;
-
-                    if (countClicked == 1) {
-                        knife.isInTheAir = true;
-                    } else if (countClicked == 2) {
-                        // 2 : Couteau va attaquer la cible avec sa trajectoire droite
-                        knife.throwKnife();
-                        countClicked = 0;
-                    }
-                }
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-
+                if (!knife.throwing && !knife.isInTheAir) {
+                    knife.jump();
+                }
+                else if (!knife.throwing && knife.isInTheAir){
+                    knife.throwKnife();
+                }
             }
 
             @Override
@@ -75,38 +71,17 @@ public class KnifeDisplay extends JPanel {
 
         });
 
-        Timer timer = new Timer(1000/60, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (countClicked == 1) {
-                    // 1 : Le couteau n'est plus figé
-                    knife.jump();
-                    knife.addAngle(30);
-                } else if (countClicked == 2) {
-                    // 2 : Couteau va attaquer la cible avec sa trajectoire droite
-                    knife.throwKnife();
-                    return;
-                }
-
-                if (countClicked > 2){
-                    countClicked = 0;
-                    knife.resetKnife();
-                }
-
-                knife.updateMovement();
-                repaint();
-            }
-        });
-        timer.start();
     }
 
 
 
     private void initImage () {
-        this.knifeImage = new ImageIcon("src/main/ressources/knifes/knife.png").getImage();
+        this.knifeImage = new ImageIcon("src/main/ressources/knifes/knifeRotate2.png").getImage();
+        this.cibleImage = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
         int w = this.knifeImage.getWidth(null)/3;
         int h = this.knifeImage.getHeight(null)/3;
         this.knifeImage = this.knifeImage.getScaledInstance(w,h,Image.SCALE_SMOOTH);
+        this.cibleImage = this.cibleImage.getScaledInstance(this.cibleImage.getWidth(null)/2,this.cibleImage.getHeight(null)/2,Image.SCALE_SMOOTH);
     }
 
     private void initBg(String backgroundPath) {
@@ -121,15 +96,45 @@ public class KnifeDisplay extends JPanel {
 
         g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 
-        int knifeX = (int) knife.getX();
-        int knifeY = (int) knife.getY();
+
+        int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
+        int knifeY = (int) (RATIO_Y-(knife.getY()*RATIO));
+
+        if (knifeX>getBgImgWidth() || knifeX<0 || knifeY > getBgImgHeight() || knifeY<0){
+            knife.resetKnife();
+        }
 
         int knifeImgWidth = knifeImage.getWidth(this);
         int knifeImgHeight = knifeImage.getHeight(this);
+        int cibleImWidth = cibleImage.getWidth(this);
+        int cibleImHeight = cibleImage.getHeight(this);
+
+
+
+
 
         AffineTransform transform = AffineTransform.getTranslateInstance(knifeX - (double) knifeImgWidth / 2, knifeY - (double) knifeImgHeight / 2);
         transform.rotate(Math.toRadians(knife.getAngle()), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
         g2d.drawImage(knifeImage, transform, this);
+
+        ArrayList<Cible> deleteCible= new ArrayList<>();
+        for (Cible cible : listeCible){
+            double cibleX = (RATIO_X-cible.getX()*RATIO);
+            double cibleY = (RATIO_Y-cible.getY()*RATIO);
+            AffineTransform transformCible = AffineTransform.getTranslateInstance(cibleX - (double) cibleImWidth / 2, cibleY - (double) cibleImHeight / 2);
+            g2d.drawImage(cibleImage,transformCible,this);
+
+            int cw=50;int ch=50;
+            if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
+                deleteCible.add(cible);
+                knife.resetKnife();
+            }
+        }
+        for (Cible c : deleteCible){
+            listeCible.remove(c);
+        }
+
+
 
         repaint();
     }
