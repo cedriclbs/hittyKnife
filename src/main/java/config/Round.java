@@ -148,7 +148,7 @@ public class Round {
 
     //Sélectionne parmi les trois types de boss
     private TypeCible getRandomTypeBoss() {
-        int randomNum = random.nextInt(3); // Vous pouvez ajuster cela selon le nombre de types de boss que vous avez
+        int randomNum = random.nextInt(3); 
         return TypeCible.values()[TypeCible.values().length - 1 - randomNum];
     }
 
