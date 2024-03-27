@@ -1,6 +1,6 @@
 package geometry;
 import App.Loop;
-import bosses.Boss;
+import entity.bosses.Boss;
 import entity.Knife;
 
 public class Geometry{

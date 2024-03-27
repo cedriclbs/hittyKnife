@@ -16,7 +16,7 @@ public abstract class Boss extends Cible {
     private Coordinate coordinate;
     protected double velocite;
     protected boolean isInTheAir;
-    protected boolean redescend;
+    public boolean redescend;
 
     /**
      * Constructeur de la classe Boss prenant les coordonnées x et y du boss.
