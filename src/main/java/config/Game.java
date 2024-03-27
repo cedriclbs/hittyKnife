@@ -3,7 +3,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import debug.Debug;
 import entity.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,29 +12,36 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Permet la sauvegarde et le chargement de l'état du jeu.
  */
 public class Game {
-    Knife knife;
-    List<Cible> listeCible;
-    int life;
-    int argent; // Ajout de l'argent comme attribut du jeu
-    String nomUtilisateur;
+    public Knife knife;
+    private List<Cible> listeCible = new ArrayList<>();
+    private int life;
+    private int argent; // Ajout de l'argent comme attribut du jeu
+    private String nomUtilisateur;
 
     /**
      * Constructeur qui initialise le jeu avec un couteau, une liste de cibles vide, et un nombre initial de vies.
      * Fait également sauter le couteau dès le début.
      */
     public Game(){
-        knife = new Knife();
-        listeCible = new ArrayList<>();
+        System.out.println("creation game");
+        this.knife = new Knife();
+        knife.addAngle(90);
+        Cible c1 = new Cible(20,20);
+        Cible c2 = new Cible(-15,30);
+        listeCible.add(c1);listeCible.add(c2);
         life = 3;
         argent = 0;
         knife.jump();
     }
 
+    /**
+     * Constructeur qui initialise le jeu avec un nom d'utilisateur spécifié.
+     * @param nomUtilisateur Le nom de l'utilisateur.
+     */
     public Game(String nomUtilisateur){
         super();
         this.nomUtilisateur = nomUtilisateur;
     }
-
 
 
     // Getters et setters pour la sérialisation/désérialisation
@@ -56,14 +62,16 @@ public class Game {
         return this.nomUtilisateur;
     }
 
+
     /**
      * Met à jour l'état du jeu en fonction du temps écoulé depuis la dernière mise à jour.
      *
      * @param delta Le temps écoulé depuis la dernière mise à jour, utilisé pour calculer les mouvements.
      */
      public void update(double delta){
+         //System.out.println("dqdqzsqzdqsqdqzdqz");
          knife.updateMovement();
-         Debug.affichage(knife);
+         //Debug.affichage(knife);
      }
 
     /**
@@ -78,11 +86,15 @@ public class Game {
         }
     }
 
+    /**
+     * Charge l'état du jeu à partir d'un fichier spécifié.
+     * @param cheminFichier Le chemin du fichier à charger.
+     * @return L'état du jeu chargé.
+     * @throws IOException En cas d'erreur de lecture du fichier.
+     */
     public static Game chargerEtat(String cheminFichier) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(new File(cheminFichier), Game.class);
     }
-
-
 
 }

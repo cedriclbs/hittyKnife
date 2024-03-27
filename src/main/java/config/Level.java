@@ -1,10 +1,5 @@
 package config;
 
-import entity.Knife; 
-import entity.Cible; 
-import java.util.List; 
-import java.util.ArrayList;
-
 /**
  * Représente un niveau dans le jeu. Gère l'état actuel du niveau,
  * incluant le round en cours et la sauvegarde du jeu.
@@ -33,6 +28,7 @@ public class Level {
     public void bossDefeated() {
         level++; 
         round.reset(); 
+        round.clearTargets();
         saveGame();
     }
 
@@ -52,4 +48,5 @@ public class Level {
     public int getLevel() {
         return level;
     }
+
 }

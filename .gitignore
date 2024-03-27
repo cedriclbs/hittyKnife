@@ -1,6 +1,11 @@
 .gradle/*
+.gradle/
 build/
 bin/
+.idea/
 .idea/*
 out/*
+out/
 hitty_knife.iml
+save.ser
+*.class

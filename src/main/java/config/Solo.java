@@ -3,28 +3,48 @@ package config;
 import java.awt.Color;
 import java.awt.Graphics;
 
+/**
+ * Classe représentant le mode solo du jeu.
+ */
 public class Solo {
-    int score;
-    int monnaie;
-    int vie = 3;
-    boolean isBoss;
-    GameTimer timer;
+    private int score;
+    private int monnaie;
+    private int vie = 3;
+    private boolean isBoss;
+    private GameTimer timer;
 
+    /**
+     * Constructeur de la classe Solo.
+     * @param score Le score initial du joueur.
+     * @param monnaie La quantité initiale de monnaie du joueur.
+     */
     public Solo(int score, int monnaie) {
         this.score = score;
         this.monnaie = monnaie;
         this.isBoss = false;
     }
 
-    //Fonction pour augmentation du score
-    //TODO : gagne plus de points si knife est bien centralisé sur la cible 
-    void augmentescore() {
+    /**
+     * Récupère le nombre de vies restantes du joueur.
+     * @return Le nombre de vies restantes.
+     */
+    public int getVies() {
+        return vie;
+    }
+
+    /**
+     * Augmente le score du joueur.
+     * TODO : Implementer une logique pour augmenter le score en fonction de la précision du tir.
+     */
+     void augmentescore() {
         score += 1;
         //if (knifehitcenter()) { score += 2 * 100}
     }
 
-    //Fonction pour transformer le Score du joueur en argent que sera utilisé dans le Shop
-    //TODO : il serait mieux de l'avoir en int même en divisant par 0.3 (pourrant changer valeur comme on veut)
+    /**
+     * Convertit le score du joueur en monnaie pour être utilisé dans la boutique.
+     * TODO : Modifier le type de retour en int après avoir défini une conversion appropriée.
+     */
     double transformScoreInGold() {
         return score * 0.3;
     }
@@ -35,33 +55,38 @@ public class Solo {
     //     score = 0;
     // }
 
-    //Fonction pour afficher les vies du joueur en position x et y une fois l'interface graphique implementée
-    //TODO : A transformer en croix pour l'affichage des vies du joueur
+    /**
+     * Affiche les vies restantes du joueur.
+     * @param graphics L'objet Graphics utilisé pour l'affichage.
+     * TODO : Transformer l'affichage en représentation graphique des vies du joueur.
+     */
     private void afficheViesRestantes(Graphics graphics) {
         graphics.setColor(Color.red);
         graphics.drawString("Vies restantes : " + vie, 250, 100);
-    } 
+    }
 
-    //Fonction pour tout reset lorsqu'on sort du mode solo
+    /**
+     * Réinitialise tous les paramètres du mode solo.
+     */
     public void resetAll(){
         transformScoreInGold();
         score = 0;
         vie = 3;
     }
 
-    //Fonction pour enlever une vie au joueur et s'il n'a plus de vie elle renvoie au menu game over
+    /**
+     * Enlève une vie au joueur et vérifie si le joueur a perdu toutes ses vies.
+     */
     public void enleverUneVie () {
         vie--;
         if (vie <= 0){
-            //setStates(GAMEOVERMENU); 
+            //setStates(GAMEOVERMENU);
         }
     }
 
-    //Récupère les vies du joueurs
-    public int getVies() {
-        return vie;
-    }
-
+    /**
+     * Initialise le timer pour le boss si nécessaire.
+     */
     public void initTimer() {
         if (isBoss) {
             this.timer = new GameTimer(3);
@@ -69,7 +94,12 @@ public class Solo {
         }
     }
 
+    /**
+     * Vérifie si le timer du boss est écoulé.
+     * @return true si le timer est écoulé, sinon false.
+     */
     private boolean timerOver() {
         return (timer.getSeconds() == 0);
-    }    
+    }
+
 }
