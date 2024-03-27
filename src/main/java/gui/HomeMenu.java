@@ -51,6 +51,9 @@ public class HomeMenu extends Menu {
      */
     @Override
     JPanel createMenuPanel(String backgroundPath) {
+
+        String ButtonAd = "src/main/ressources/button";
+
         BackgroundPanel panel = new BackgroundPanel(backgroundPath);
         panel.setLayout(new GridLayout(4, 1, 0, 20)); //Espacement vertical entre les boutons
         panel.setBorder(BorderFactory.createEmptyBorder(40, 20, 40, 20)); // Ajoute des marges
@@ -62,7 +65,7 @@ public class HomeMenu extends Menu {
         // Bouton "Solo"
         JPanel campaignButtonPanel = new JPanel();
         campaignButtonPanel.setOpaque(false); // Rend le panel transparent
-        JButton campaignButton = new JButton(new ImageIcon("src/main/ressources/button/PlayButton.png"));
+        JButton campaignButton = new JButton(new ImageIcon(ButtonAd + "/PlayButton.png"));
         campaignButton.setFocusPainted(false);
         campaignButton.setBorderPainted(false);
         campaignButton.setContentAreaFilled(false);
@@ -73,7 +76,7 @@ public class HomeMenu extends Menu {
         // Bouton "1v1"
         JPanel versusButtonPanel = new JPanel();
         versusButtonPanel.setOpaque(false); // Rend le panel transparent
-        JButton versusButton = new JButton(new ImageIcon("src/main/ressources/button/VersusButton.png"));
+        JButton versusButton = new JButton(new ImageIcon(ButtonAd + "/VersusButton.png"));
         versusButton.setFocusPainted(false);
         versusButton.setBorderPainted(false);
         versusButton.setContentAreaFilled(false);
@@ -84,7 +87,7 @@ public class HomeMenu extends Menu {
         // Bouton "Shop"
         JPanel shopButtonPanel = new JPanel();
         shopButtonPanel.setOpaque(false); // Rend le panel transparent
-        JButton shopButton = new JButton(new ImageIcon("src/main/ressources/button/ShopButton.png"));
+        JButton shopButton = new JButton(new ImageIcon(ButtonAd + "/ShopButton.png"));
         shopButton.setFocusPainted(false);
         shopButton.setBorderPainted(false);
         shopButton.setContentAreaFilled(false);
@@ -95,7 +98,7 @@ public class HomeMenu extends Menu {
         // Bouton "Quitter"
         JPanel quitterButtonPanel = new JPanel();
         quitterButtonPanel.setOpaque(false); // Rend le panel transparent
-        JButton quitterButton = new JButton(new ImageIcon("src/main/ressources/button/QuitButton.png"));
+        JButton quitterButton = new JButton(new ImageIcon(ButtonAd + "/QuitButton.png"));
         quitterButton.setFocusPainted(false);
         quitterButton.setBorderPainted(false);
         quitterButton.setContentAreaFilled(false);
