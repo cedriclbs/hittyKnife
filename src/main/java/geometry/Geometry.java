@@ -48,7 +48,6 @@ public class Geometry{
         coordinate.setY(coordinate.getY()+deltaY/10);
     }
 
-
     /*public static void forwardMovementSoloMode(Coordinate coordinate, double angle, double velocite) {
         double angleRad = Math.toRadians(angle);
 
@@ -59,10 +58,6 @@ public class Geometry{
         coordinate.setX(coordinate.getX() + deltaX * 2);
         coordinate.setY(coordinate.getY() + deltaY * 2);
     }*/
-
-
-
-
 
     /**
      * Vérifie si un point défini par ses coordonnées (x2, y2) est situé dans un vecteur défini par sa longueur et son angle.
@@ -111,8 +106,5 @@ public class Geometry{
     private static double distanceEntrePoints(int x1, int y1, int x2, int y2) {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
-
-
-
 
 }

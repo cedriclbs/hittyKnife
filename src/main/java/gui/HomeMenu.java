@@ -1,13 +1,5 @@
 package gui;
 
-
-import static config.States.SOLOMODE;
-import static config.States.setStates;
-
-import App.Loop;
-import App.Main;
-import config.Game;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -19,6 +11,11 @@ import java.awt.*;
  * </p>
  */
 public class HomeMenu extends Menu {
+
+    //private BackgroundPanel soloFrame;
+    //private SoloMode soloMode;
+    //Game game;
+
     //TODO: quand on appuie sur échap, enlève le plein écran
     /**
      * Crée l'interface du menu principal avec le titre spécifié, le chemin vers l'image de fond et le chemin vers la musique de fond.
@@ -27,16 +24,16 @@ public class HomeMenu extends Menu {
      * @param backgroundPath Le chemin d'accès au fichier d'image de fond du menu.
      * @param musicPath Le chemin d'accès au fichier audio de la musique de fond.
      */
-
-    //private BackgroundPanel soloFrame;
-    //private SoloMode soloMode;
-    //Game game;
-
     public HomeMenu(String title, String backgroundPath, String musicPath) {
         super(title, backgroundPath, musicPath);
         initialize("src/main/ressources/background/Background_MainMenu.png");
     }
 
+    /**
+     * Initialise l'interface du menu principal.
+     *
+     * @param background Le chemin d'accès à l'image de fond du menu principal.
+     */
     private void initialize(String background) {
         JPanel menuPanel = createMenuPanel(background);
         add(menuPanel);
@@ -52,6 +49,7 @@ public class HomeMenu extends Menu {
      * @param backgroundPath Le chemin d'accès au fichier d'image de fond pour le panel.
      * @return Le {@link JPanel} configuré pour le menu principal.
      */
+    @Override
     JPanel createMenuPanel(String backgroundPath) {
         BackgroundPanel panel = new BackgroundPanel(backgroundPath);
         panel.setLayout(new GridLayout(4, 1, 0, 20)); //Espacement vertical entre les boutons
@@ -111,12 +109,12 @@ public class HomeMenu extends Menu {
         return panel;
     }
 
+    /**
+     * Affiche le jeu en mode solo lorsque le bouton "Solo" est cliqué.
+     */
     private void showGame() {
-
         SoloMode soloMode = new SoloMode( this);
-
         soloMode.startSoloGame();
-
     }
 
     //TODO : Ajouter la méthode redirigeant au mode 1v1 quand le mode sera implémenté
@@ -127,4 +125,5 @@ public class HomeMenu extends Menu {
     private void showShop() {
 
     }
+
 }

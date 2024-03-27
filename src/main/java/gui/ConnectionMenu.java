@@ -9,17 +9,30 @@ import java.io.IOException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import config.Game;
 
+
+/**
+ * Fenêtre de connexion pour l'application.
+ */
 public class ConnectionMenu extends JDialog {
     private JTextField champNomUtilisateur;
     private JPasswordField champMotDePasse;
     private UserManager gestionUtilisateurs;
 
+    /**
+     * Constructeur de la fenêtre de connexion.
+     *
+     * @param parent Le parent de la fenêtre.
+     * @param gestion Le gestionnaire d'utilisateurs.
+     */
     public ConnectionMenu(Frame parent, UserManager gestion) {
         super(parent, "Connexion", true);
         this.gestionUtilisateurs = gestion;
         setupUI();
     }
 
+    /**
+     * Initialise l'interface utilisateur de la fenêtre de connexion.
+     */
     private void setupUI() {
         setLayout(new GridLayout(3, 2));
 
@@ -42,28 +55,32 @@ public class ConnectionMenu extends JDialog {
         setLocationRelativeTo(null); // Centre l'écran de connexion
     }
 
+    /**
+     * Méthode appelée lorsqu'un utilisateur tente de se connecter.
+     */
     private void seConnecter() {
         String nomUtilisateur = champNomUtilisateur.getText();
         String motDePasse = new String(champMotDePasse.getPassword());
 
         if (gestionUtilisateurs.validerConnexion(nomUtilisateur, motDePasse) != null) {
             JOptionPane.showMessageDialog(this, "Connexion réussie !");
-            this.dispose(); // Ferme l'écran de connexion
+            this.dispose();
 
-            // Charger l'état du jeu pour l'utilisateur connecté
+            // Charge l'état du jeu pour l'utilisateur connecté
             try {
                 Game game = Game.chargerEtat("src/main/saves/sauvegarde_" + nomUtilisateur + ".json");
-                // Utilisez `game` pour continuer le jeu avec l'état chargé
             } catch (IOException e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Erreur lors du chargement de la sauvegarde de jeu.", "Erreur", JOptionPane.ERROR_MESSAGE);
-                // Gérer l'erreur, par exemple, en démarrant un nouveau jeu
             } HomeMenu homeMenu = new HomeMenu("Hitty Knife", "src/main/ressources/background/solo.png", "cheminVersMusique");
         } else {
             JOptionPane.showMessageDialog(this, "Échec de la connexion. Vérifiez votre nom d'utilisateur et mot de passe.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+    /**
+     * Méthode appelée lorsqu'un utilisateur souhaite créer un compte.
+     */
     private void creerCompte() {
         String nomUtilisateur = champNomUtilisateur.getText();
         String motDePasse = new String(champMotDePasse.getPassword());
@@ -77,7 +94,7 @@ public class ConnectionMenu extends JDialog {
         if (utilisateurAjoute) {
             JOptionPane.showMessageDialog(this, "Compte créé avec succès !");
 
-            // Créez le fichier de sauvegarde pour le nouvel utilisateur
+            // Créer le fichier de sauvegarde pour le nouvel utilisateur
             String cheminSauvegarde = "src/main/saves/sauvegarde_" + nomUtilisateur + ".json";
             creerFichierSauvegardeUtilisateur(cheminSauvegarde, nomUtilisateur);
         } else {
@@ -85,9 +102,15 @@ public class ConnectionMenu extends JDialog {
         }
     }
 
+    /**
+     * Crée un fichier de sauvegarde pour un nouvel utilisateur.
+     *
+     * @param cheminSauvegarde Le chemin du fichier de sauvegarde.
+     * @param username Le nom d'utilisateur.
+     */
     private void creerFichierSauvegardeUtilisateur(String cheminSauvegarde, String username) {
         try {
-            Game etatInitialJeu = new Game(username); // Supposons que Game a un état initial valide pour un nouveau joueur.
+            Game etatInitialJeu = new Game(username);
             ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(new File(cheminSauvegarde), etatInitialJeu);
         } catch (IOException e) {
@@ -95,8 +118,6 @@ public class ConnectionMenu extends JDialog {
         }
     }
 
-
     //TODO: connexion automatique après une création de compte réussie
-
 
 }

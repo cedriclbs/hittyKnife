@@ -5,17 +5,34 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import config.Game;
 
+/**
+ * Fenêtre du magasin où les joueurs peuvent acheter des objets ou des améliorations.
+ */
 public class ShopMenu extends Menu {
     private Game game; // Référence vers l'objet Game pour obtenir l'argent du joueur
     private JLabel argentLabel; // Label pour afficher l'argent du joueur
 
 
+    /**
+     * Constructeur de la fenêtre du magasin.
+     *
+     * @param title Le titre de la fenêtre du magasin.
+     * @param backgroundPath Le chemin de l'image de fond du magasin.
+     * @param musicPath Le chemin de la musique de fond du magasin.
+     */
     public ShopMenu(String title, String backgroundPath, String musicPath) {
         super(title, backgroundPath, musicPath);
         JPanel menuPanel = createMenuPanel(backgroundPath);
         add(menuPanel);
     }
 
+    /**
+     * Crée et configure le panneau du menu du magasin.
+     *
+     * @param backgroundPath Le chemin de l'image de fond du panneau du menu.
+     * @return Le panneau du menu du magasin configuré.
+     */
+    @Override
     JPanel createMenuPanel(String backgroundPath) {
         BackgroundPanel panel = new BackgroundPanel(backgroundPath);
         panel.setLayout(new BorderLayout()); // Utilisation d'un BorderLayout pour placer le bouton "Menu" dans le coin supérieur gauche
@@ -104,6 +121,12 @@ public class ShopMenu extends Menu {
         return panel;
     }
 
+    /**
+     * Configure les propriétés visuelles et comportementales d'un bouton.
+     *
+     * @param button Le bouton à configurer.
+     * @param actionListener L'action à exécuter lorsque le bouton est cliqué.
+     */
     private void configureButton(JButton button, ActionListener actionListener) {
         button.setPreferredSize(new Dimension(50,50));
         button.setFocusPainted(false);
@@ -112,7 +135,12 @@ public class ShopMenu extends Menu {
         button.addActionListener(actionListener);
     }
 
+    /**
+     * Redirige vers le menu principal.
+     * Cette méthode est appelée lorsque le bouton "Menu" est cliqué.
+     */
     private void showMenu() {
-        // TODO : rediriger vers le Menu Principal
+        // TODO : Implémenter la redirection vers le menu principal
     }
+
 }

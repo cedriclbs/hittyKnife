@@ -13,10 +13,11 @@ import java.util.concurrent.TimeUnit;
 public class Loop {
 
     private final Game g;
-    long lastLoopTime;
+    private long lastLoopTime;
     private static final int TARGET_FPS = 100;
     private static final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
     public static double delta;
+
     /**
      * Constructeur de la classe Loop.
      *
@@ -24,7 +25,7 @@ public class Loop {
      */
     public Loop(Game g){
         this.g = g;
-        long lastLoopTime = System.nanoTime();
+        lastLoopTime = System.nanoTime();
     }
 
     /**

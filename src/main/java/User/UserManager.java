@@ -3,18 +3,28 @@ package User;
 import java.io.*;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import config.Game;
 import java.util.HashMap;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+/**
+ * Classe représentant le gestionnaire d'utilisateurs.
+ */
 public class UserManager {
 
     private static UserManager instance;
     private HashMap<String, User> userList;
 
+    /**
+     * Constructeur par défaut du gestionnaire d'utilisateurs.
+     */
     public UserManager() {
         userList = new HashMap<>();
     }
 
+    /**
+     * Méthode permettant d'obtenir l'instance unique du gestionnaire d'utilisateurs.
+     * @return L'instance unique du gestionnaire d'utilisateurs.
+     */
     public static UserManager getInstance() {
         if (instance == null) {
             chargerInstance();
@@ -22,6 +32,9 @@ public class UserManager {
         return instance;
     }
 
+    /**
+     * Méthode privée permettant de charger l'instance du gestionnaire d'utilisateurs depuis un fichier JSON.
+     */
     private static void chargerInstance() {
         ObjectMapper mapper = new ObjectMapper();
         File fichier = new File("src/main/saves/usermanager.json");
@@ -30,7 +43,7 @@ public class UserManager {
         } else {
             try {
                 // Utilisation de la désérialisation customisée
-                TypeReference<HashMap<String, User>> typeRef = new TypeReference<HashMap<String, User>>() {};
+                TypeReference<HashMap<String, User>> typeRef = new TypeReference<>() {};
                 HashMap<String, User> users = mapper.readValue(fichier, typeRef);
                 instance = new UserManager();
                 instance.userList = users;
@@ -40,6 +53,9 @@ public class UserManager {
         }
     }
 
+    /**
+     * Méthode permettant de sauvegarder l'instance du gestionnaire d'utilisateurs dans un fichier JSON.
+     */
     public void sauvegarderInstance() {
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -49,6 +65,13 @@ public class UserManager {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Méthode permettant de valider la connexion d'un utilisateur.
+     * @param nomUtilisateur Le nom de l'utilisateur.
+     * @param motDePasse Le mot de passe de l'utilisateur.
+     * @return L'utilisateur si la connexion est réussie, sinon null.
+     */
     public User validerConnexion(String nomUtilisateur, String motDePasse) {
         if (userList.containsKey(nomUtilisateur)) {
             User user = userList.get(nomUtilisateur);
@@ -59,6 +82,12 @@ public class UserManager {
         return null;
     }
 
+    /**
+     * Méthode permettant d'ajouter un nouvel utilisateur.
+     * @param nomUtilisateur Le nom de l'utilisateur à ajouter.
+     * @param motDePasse Le mot de passe de l'utilisateur à ajouter.
+     * @return true si l'utilisateur a été ajouté avec succès, sinon false.
+     */
     public boolean ajouterUtilisateur(String nomUtilisateur, String motDePasse) {
         if (!userList.containsKey(nomUtilisateur)) {
             String cheminSauvegarde = "src/main/saves/sauvegarde_" + nomUtilisateur + ".json";

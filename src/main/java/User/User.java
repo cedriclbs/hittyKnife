@@ -1,7 +1,5 @@
 package User;
 
-import java.util.Objects;
-
 public record User(String nomUtilisateur, String motDePasse, String cheminSauvegarde) {
 
     @Override
@@ -11,4 +9,5 @@ public record User(String nomUtilisateur, String motDePasse, String cheminSauveg
                 "motDePasse=" + motDePasse + ", " +
                 "cheminSauvegarde=" + cheminSauvegarde + ']';
     }
+
 }
