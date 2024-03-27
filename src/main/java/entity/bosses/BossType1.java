@@ -43,4 +43,7 @@ public class BossType1 extends Boss {
         }
     }
 
+    private void updateJump() {
+    }
+
 }

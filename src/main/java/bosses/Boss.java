@@ -21,20 +21,16 @@ public abstract class Boss extends Cible {
         super(x,y);
     }
 
-    public Boss(String name, int health, double x, double y, double velocite) {
-        super(name, health, x, y, velocite);        
+    public Boss(TypeCible type, int health, double x, double y, double velocite) {
+        super(type, health, x, y, velocite);
     }
 
     public void takeDamage(int damage) {
-        if (isDebuffed) {
-            health -= 2 * damage;
-        }
-        if (isBuffed) {
-            health -= 2 / damage;
-        }
         if (health <= 0) {
             //System.out.println(name + " is dead");
+            return;
         }
+        health--;
     }
 
     public abstract void attacked(Knife knife);
@@ -52,11 +48,11 @@ public abstract class Boss extends Cible {
     public int getHealth() {
         return health;
     }
-    
+
     public double getVelocite() {
         return this.velocite;
     }
-    
+
     public void setVelocite(double velocite) {
         this.velocite = velocite;
     }

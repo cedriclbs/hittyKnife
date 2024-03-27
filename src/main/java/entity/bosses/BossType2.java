@@ -40,5 +40,8 @@ public class BossType2 extends Boss{
     public void updateMovement() {
         updateLeftRight();
     }
-    
+
+    private void updateLeftRight() {
+    }
+
 }
