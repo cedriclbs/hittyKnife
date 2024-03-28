@@ -1,6 +1,7 @@
 package bosses;
 
 import entity.Cible;
+import entity.TypeCible;
 import entity.Knife;
 import geometry.Coordinate;
 
