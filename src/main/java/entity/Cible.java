@@ -101,6 +101,8 @@ public class Cible {
         return typeCible;
     }
 
+    public Coordinate getCoord(){return coordinate;}
+
     /**
      * Méthode pour obtenir la valeur d'argent de la cible.
      *
