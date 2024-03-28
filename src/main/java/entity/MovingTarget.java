@@ -9,7 +9,11 @@ public class MovingTarget extends Cible{
         super(x,y);
 
     }
-
+    /**
+     * Met à jour le mouvement de l'objet en fonction de sa position actuelle et de son angle.
+     * Utilise la géométrie pour calculer la nouvelle position en avant.
+     * Si la nouvelle position dépasse les limites verticales définies, ajuste l'angle en conséquence.
+     */
     public void updateMovement(){
         double[] result = Geometry.forwardMovement(getCoord(),angle,15);
         setX(result[0]);

@@ -102,7 +102,10 @@ public class KnifeDisplay extends JPanel {
         return bgImgHeight;
     }
 
-    // Méthode privée pour initialiser les images du couteau et des cibles
+    /**
+     * Initialise les images des couteaux et des cibles en chargeant les images correspondantes depuis les chemins spécifiés.
+     * Redimensionne également les images pour les adapter à la taille souhaitée.
+     */
     private void initImage () {
         this.knifeImage = new ImageIcon("src/main/ressources/knifes/knifeRotate2.png").getImage();
         this.cibleImage = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
@@ -114,13 +117,22 @@ public class KnifeDisplay extends JPanel {
         this.ciblesMouventeImage = this.ciblesMouventeImage.getScaledInstance(this.ciblesMouventeImage.getWidth(null)/2,this.ciblesMouventeImage.getHeight(null)/2,Image.SCALE_SMOOTH);
     }
 
-    // Méthode privée pour initialiser l'image de fond
+    /**
+     * Initialise l'image de fond en chargeant l'image à partir du chemin spécifié.
+     *
+     * @param backgroundPath Le chemin de l'image de fond à charger.
+     */
     private void initBg(String backgroundPath) {
         this.backgroundImage = new ImageIcon(backgroundPath).getImage();
         bgImgHeight = this.backgroundImage.getHeight(null);
         bgImgWidth = this.backgroundImage.getWidth(null);
     }
-
+    /**
+     * Redessine le composant en dessinant l'image de fond, les couteaux et les cibles.
+     * Effectue également la gestion des collisions entre les couteaux et les cibles.
+     *
+     * @param g L'objet Graphics utilisé pour dessiner les composants.
+     */
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
