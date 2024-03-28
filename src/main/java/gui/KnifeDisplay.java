@@ -2,6 +2,7 @@ package gui;
 
 import entity.Cible;
 import entity.Knife;
+import entity.MovingTarget;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -19,6 +20,7 @@ public class KnifeDisplay extends JPanel {
     private Image knifeImage;
     private Image cibleImage;
     private Image backgroundImage;
+    private Image ciblesMouventeImage;
 
     private ArrayList<Cible> listeCible;
     private static double bgImgWidth;
@@ -104,10 +106,12 @@ public class KnifeDisplay extends JPanel {
     private void initImage () {
         this.knifeImage = new ImageIcon("src/main/ressources/knifes/knifeRotate2.png").getImage();
         this.cibleImage = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
+        this.ciblesMouventeImage =  new ImageIcon("src/main/ressources/targets/target#2.png").getImage();
         int w = this.knifeImage.getWidth(null)/3;
         int h = this.knifeImage.getHeight(null)/3;
         this.knifeImage = this.knifeImage.getScaledInstance(w,h,Image.SCALE_SMOOTH);
         this.cibleImage = this.cibleImage.getScaledInstance(this.cibleImage.getWidth(null)/2,this.cibleImage.getHeight(null)/2,Image.SCALE_SMOOTH);
+        this.ciblesMouventeImage = this.ciblesMouventeImage.getScaledInstance(this.ciblesMouventeImage.getWidth(null)/2,this.ciblesMouventeImage.getHeight(null)/2,Image.SCALE_SMOOTH);
     }
 
     // Méthode privée pour initialiser l'image de fond
@@ -144,7 +148,13 @@ public class KnifeDisplay extends JPanel {
             double cibleX = (RATIO_X-cible.getX()*RATIO);
             double cibleY = (RATIO_Y-cible.getY()*RATIO);
             AffineTransform transformCible = AffineTransform.getTranslateInstance(cibleX - (double) cibleImWidth / 2, cibleY - (double) cibleImHeight / 2);
-            g2d.drawImage(cibleImage,transformCible,this);
+            if (cible instanceof MovingTarget){
+                g2d.drawImage(ciblesMouventeImage,transformCible,this);
+
+            }
+            else {
+                g2d.drawImage(cibleImage, transformCible, this);
+            }
 
             int cw=50;int ch=50;
             if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
