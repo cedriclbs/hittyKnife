@@ -25,13 +25,12 @@ public class Game {
     public Game(){
         System.out.println("creation game");
         this.knife = new Knife();
-        knife.addAngle(90);
+        //knife.addAngle(90);
         Cible c1 = new Cible(20,20);
         Cible c2 = new Cible(-15,30);
         listeCible.add(c1);listeCible.add(c2);
         life = 3;
         argent = 0;
-        knife.jump();
     }
 
     /**

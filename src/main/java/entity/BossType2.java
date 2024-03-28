@@ -1,7 +1,4 @@
-package entity.bosses;
-
-import entity.Knife;
-import entity.Cible;
+package entity;
 
 /**
  * Classe représentant un type spécifique de boss.
@@ -13,7 +10,7 @@ public class BossType2 extends Boss{
      * Initialise un boss de type 2.
      */
     public BossType2() {
-        super(Cible.TypeCible.CIBLE_BOSS2, 4, 10, 0, 0);
+        super(TypeCible.CIBLE_BOSS2, 4, 10, 0, 0);
     }
 
     @Override
@@ -35,13 +32,5 @@ public class BossType2 extends Boss{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'sideWalk'");
     }
-
-    @Override
-    public void updateMovement() {
-        updateLeftRight();
-    }
-
-    private void updateLeftRight() {
-    }
-
+    
 }

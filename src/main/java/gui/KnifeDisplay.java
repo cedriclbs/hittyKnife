@@ -40,9 +40,11 @@ public class KnifeDisplay extends JPanel {
         this.knife = knife;
         initImage();
         initBg(backgroundPath);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-        RATIO_X = getBgImgWidth()/2;
-        RATIO_Y = getBgImgHeight()*3/4;
+
+        RATIO_X = screenSize.width/2;//getBgImgWidth()/2;
+        RATIO_Y = screenSize.height*3/4;//getBgImgHeight()*3/4;
         // Coordonnées du couteau initialisé au milieu de l'écran pour une meilleure visibilité
         //this.knife.getCoordinate().setCoordinate(getBgImgWidth() / 2, getBgImgHeight() / 2);
 

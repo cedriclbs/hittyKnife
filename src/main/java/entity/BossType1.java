@@ -1,7 +1,4 @@
-package entity.bosses;
-
-import entity.Knife;
-import entity.Cible;
+package entity;
 
 /**
  * Classe représentant un type spécifique de boss.
@@ -13,7 +10,7 @@ public class BossType1 extends Boss {
      * Initialise un boss de type 1.
      */
     public BossType1() {
-        super(Cible.TypeCible.CIBLE_BOSS1, 3, 5, 0, 0);
+        super(TypeCible.CIBLE_BOSS1, 3, 5, 0, 0);
     }
     
     @Override
@@ -25,7 +22,6 @@ public class BossType1 extends Boss {
         */
     }
 
-    // jump de boss sera utilisé à chaque X secondes durant la boss fight
     @Override
     public void jump(){
         isInTheAir = true;
@@ -34,16 +30,6 @@ public class BossType1 extends Boss {
 
     @Override
     public void sideWalk() {
-    }
-
-    @Override
-    public void updateMovement() {
-        if (isInTheAir) {
-            updateJump();
-        }
-    }
-
-    private void updateJump() {
     }
 
 }

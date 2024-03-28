@@ -1,7 +1,5 @@
-package entity.bosses;
+package entity;
 
-import entity.Cible;
-import entity.Knife;
 import geometry.Coordinate;
 
 /**
