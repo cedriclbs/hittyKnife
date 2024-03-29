@@ -32,7 +32,7 @@ public class Game {
         listeCible.add(c1);listeCible.add(c2);
         listeCible.add(m1);
         life = 3;
-        argent = 0;
+        argent = 100;
     }
 
     /**
