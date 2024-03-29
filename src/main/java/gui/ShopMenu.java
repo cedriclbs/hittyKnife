@@ -35,7 +35,7 @@ public class ShopMenu extends JFrame {
         this.game = new Game();
         Main.loop = new Loop(game);
         Main.loop.startTickFunction();
-        this.homeMenu = homeMenu;
+        this.homeMenu = hm;
 
         initialize();
     }
@@ -71,8 +71,10 @@ public class ShopMenu extends JFrame {
         JPanel retourAuMenuPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
         JButton retourAuMenuButton = new JButton("Retour au menu");
-        JLabel retourAuMenuLabel = new JLabel("<html>Ajoutez au panier des articles avec la monnaie disponible, et sauvegardez.<br>Vous pouvez également retourner au menu sans effectuer d'achat.</html>");
         retourAuMenuButton.addActionListener(e -> showMenu());
+
+
+        JLabel retourAuMenuLabel = new JLabel("<html>Ajoutez au panier des articles avec la monnaie disponible, et sauvegardez.<br>Vous pouvez également retourner au menu sans effectuer d'achat.</html>");
         retourAuMenuPanel.add(retourAuMenuButton);
         retourAuMenuPanel.add(retourAuMenuLabel);
 
@@ -88,39 +90,14 @@ public class ShopMenu extends JFrame {
         add(argentLabel, BorderLayout.NORTH);
     }
 
-    private void initializeV2() {
-        setLayout(new BorderLayout());
 
-        // Création du JTabbedPane
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.setOpaque(false); // Rend les onglets transparents
-
-        // Ajout des onglets avec une couleur de fond transparente
-        JPanel tempForRetour = createMenuPanel(knifePath, "couteaux");
-        tabbedPane.addTab("Couteaux", tempForRetour);
-
-        JPanel couteauxPanel = createMenuPanel(knifePath, "couteaux");
-        tabbedPane.addTab("Couteaux", couteauxPanel);
-
-        tabbedPane.addTab("Background", createMenuPanel(backgroundPath, "background"));
-        tabbedPane.addTab("Music", createMenuPanel(musicPath, "music"));
-
-        // Ajout du JTabbedPane au centre du ShopMenu
-        add(tabbedPane, BorderLayout.CENTER);
-
-        // Ajout des boutons "Menu" et "Sauvegarde" à droite des onglets
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.setOpaque(false);
-
-        JButton menuButton = createMenuButton("src/main/ressources/button/retourMenu.png");
-        JButton saveButton = createMenuButton("src/main/ressources/button/save.png");
-
-        buttonPanel.add(menuButton);
-        buttonPanel.add(saveButton);
-
-        add(buttonPanel, BorderLayout.NORTH);
+    private void configureButton(JButton button, ActionListener actionListener) {
+        button.setPreferredSize(new Dimension(50,50));
+        button.setFocusPainted(false);
+        button.setBorderPainted(true);
+        button.setContentAreaFilled(true);
+        button.addActionListener(actionListener);
     }
-
 
     private JButton createMenuButton(String imagePath) {
         JButton button = new JButton();
@@ -134,6 +111,29 @@ public class ShopMenu extends JFrame {
         button.setIcon(icon);
 
         return button;
+    }
+    private JButton getMenuButton() {
+        JButton menuButton = new JButton();
+        menuButton.setBorderPainted(false);
+        menuButton.setContentAreaFilled(false);
+        menuButton.setFocusPainted(false);
+        menuButton.setOpaque(false);
+        menuButton.setPreferredSize(new Dimension(50, 50));
+
+        // Chargement de l'image d'origine
+        ImageIcon originalIcon = new ImageIcon("src/main/ressources/button/retourMenu.png");
+
+        // Redimensionnement de l'image à la taille du bouton
+        Image resizedImage = originalIcon.getImage().getScaledInstance(menuButton.getPreferredSize().width, menuButton.getPreferredSize().height, Image.SCALE_SMOOTH);
+
+        // Création d'une nouvelle ImageIcon avec l'image redimensionnée
+        ImageIcon resizedIcon = new ImageIcon(resizedImage);
+
+        // Définir l'icône redimensionnée pour le bouton
+        menuButton.setIcon(resizedIcon);
+
+        menuButton.addActionListener(e -> showMenu());
+        return menuButton;
     }
 
 
@@ -211,30 +211,6 @@ public class ShopMenu extends JFrame {
 
 
 
-    private JButton getMenuButton() {
-        JButton menuButton = new JButton();
-        menuButton.setBorderPainted(false);
-        menuButton.setContentAreaFilled(false);
-        menuButton.setFocusPainted(false);
-        menuButton.setOpaque(false);
-        menuButton.setPreferredSize(new Dimension(50, 50));
-
-        // Chargement de l'image d'origine
-        ImageIcon originalIcon = new ImageIcon("src/main/ressources/button/retourMenu.png");
-
-        // Redimensionnement de l'image à la taille du bouton
-        Image resizedImage = originalIcon.getImage().getScaledInstance(menuButton.getPreferredSize().width, menuButton.getPreferredSize().height, Image.SCALE_SMOOTH);
-
-        // Création d'une nouvelle ImageIcon avec l'image redimensionnée
-        ImageIcon resizedIcon = new ImageIcon(resizedImage);
-
-        // Définir l'icône redimensionnée pour le bouton
-        menuButton.setIcon(resizedIcon);
-
-        menuButton.addActionListener(e -> showMenu());
-        return menuButton;
-    }
-
 
     /**
      * Configure les propriétés visuelles et comportementales d'un bouton.
@@ -242,13 +218,7 @@ public class ShopMenu extends JFrame {
      * @param button Le bouton à configurer.
      * @param actionListener L'action à exécuter lorsque le bouton est cliqué.
      */
-    private void configureButton(JButton button, ActionListener actionListener) {
-        button.setPreferredSize(new Dimension(50,50));
-        button.setFocusPainted(false);
-        button.setBorderPainted(true);
-        button.setContentAreaFilled(true);
-        button.addActionListener(actionListener);
-    }
+
 
     /**
      * Redirige vers le menu principal.
