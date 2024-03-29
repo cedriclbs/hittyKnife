@@ -82,7 +82,6 @@ public class ShopMenu extends JFrame {
         ImageIcon retourAuMenuIcon = new ImageIcon(musicPath + "retourMenu.png");
         tabbedPane.addTab("Retour au menu", retourAuMenuIcon, retourAuMenuPanel, "Retour au menu");
 
-        // Ajout du JTabbedPane au centre du ShopMenu
         add(tabbedPane, BorderLayout.CENTER);
 
         // Création et ajout du label d'argent
@@ -206,10 +205,6 @@ public class ShopMenu extends JFrame {
         // Ajout du panneau de l'élément au panneau principal
         panel.add(itemPanel);
     }
-
-    // Méthode pour redimensionner une ImageIcon
-
-
 
 
     /**
