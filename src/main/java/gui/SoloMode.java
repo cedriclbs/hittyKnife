@@ -21,7 +21,7 @@ public class SoloMode extends JPanel{
 
     private Game game;
     private HomeMenu homeMenu;
-    private KnifeDisplay knifeDisplay;
+    private EntityDisplay entityDisplay;
     private Knife knife;
 
     private Image backgroundImage;
@@ -43,7 +43,7 @@ public class SoloMode extends JPanel{
         this.homeMenu = homeMenu;
         this.knife = game.getKnife();
         //this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);
-        this.knifeDisplay = new KnifeDisplay(knife,"src/main/ressources/background/bgForet.png", (ArrayList<Cible>) game.getListeCible());
+        this.entityDisplay = new EntityDisplay(knife,"src/main/ressources/background/bgForet.png", (ArrayList<Cible>) game.getListeCible());
     }
 
     /**
@@ -61,7 +61,7 @@ public class SoloMode extends JPanel{
     public void initialize() {
         setStates(SOLOMODE);
         homeMenu.getContentPane().removeAll();
-        homeMenu.getContentPane().add(knifeDisplay);
+        homeMenu.getContentPane().add(entityDisplay);
         homeMenu.getContentPane().revalidate();
         homeMenu.getContentPane().repaint();
     }

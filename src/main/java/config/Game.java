@@ -63,7 +63,6 @@ public class Game {
         return this.nomUtilisateur;
     }
 
-
     /**
      * Met à jour l'état du jeu en fonction du temps écoulé depuis la dernière mise à jour.
      *

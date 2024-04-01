@@ -15,7 +15,7 @@ import javax.swing.JPanel;
  * La classe KnifeDisplay représente le panneau graphique où le couteau et les cibles sont affichés.
  * Elle étend JPanel pour permettre l'affichage des éléments graphiques du jeu Hitty Knife.
  */
-public class KnifeDisplay extends JPanel {
+public class EntityDisplay extends JPanel {
     private final Knife knife;
     private Image knifeImage;
     private Image cibleImage;
@@ -35,7 +35,7 @@ public class KnifeDisplay extends JPanel {
      * @param backgroundPath Le chemin d'accès à l'image de fond du panneau.
      * @param listeCible La liste des cibles à afficher dans le panneau.
      */
-    public KnifeDisplay(Knife knife, String backgroundPath, ArrayList<Cible> listeCible) {
+    public EntityDisplay(Knife knife, String backgroundPath, ArrayList<Cible> listeCible) {
         //System.out.println("bg x : "+RATIO_X+" bg y : "+RATIO_Y);
 
         this.listeCible = listeCible;
