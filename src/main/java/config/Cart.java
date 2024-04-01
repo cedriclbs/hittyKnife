@@ -6,31 +6,31 @@ import java.util.List;
 public class Cart {
 
 
-    private List<Article> cart;
+    private List<ShopArticle> cart;
 
     public Cart (){
         this.cart = new ArrayList<>();
     }
 
 
-    public void addArticle (Article article){
+    public void addArticle (ShopArticle article){
         cart.add(article);
     }
 
 
-    public void removeArticle (Article article){
+    public void removeArticle (ShopArticle article){
         cart.remove(article);
     }
 
 
-    public List<Article> getCart() {
+    public List<ShopArticle> getCart() {
         return cart;
     }
 
 
     public int getTotal () {
         int res = 0;
-        for (Article article : cart){
+        for (ShopArticle article : cart){
             res+=article.getArticlePrice();
         }
         return res;
@@ -39,7 +39,7 @@ public class Cart {
 
     public void afficherPanier() {
         System.out.println("Contenu du panier :");
-        for (Article article : cart) {
+        for (ShopArticle article : cart) {
             System.out.println(article);
         }
     }

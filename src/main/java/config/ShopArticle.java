@@ -1,6 +1,6 @@
 package config;
 
-public class Article {
+public class ShopArticle {
 
     private String articleName;
     private int articlePrice;
@@ -8,7 +8,7 @@ public class Article {
 
 
 
-    public Article (String articleName, int articlePrice, String articleImagePath){
+    public ShopArticle (String articleName, int articlePrice, String articleImagePath){
         this.articleName = articleName;
         this.articlePrice = articlePrice;
         this.articleImagePath = articleImagePath;

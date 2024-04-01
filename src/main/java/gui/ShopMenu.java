@@ -2,7 +2,7 @@ package gui;
 
 import App.Loop;
 import App.Main;
-import config.Article;
+import config.ShopArticle;
 import config.Cart;
 import config.Game;
 
@@ -176,7 +176,7 @@ public class ShopMenu extends JFrame {
 
                 cartPanel.add(new JLabel("Panier"));
 
-                for (Article article : cart.getCart()) {
+                for (ShopArticle article : cart.getCart()) {
                     JPanel itemPanel = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Alignement à gauche
                     itemPanel.setOpaque(false);
 
@@ -231,7 +231,7 @@ public class ShopMenu extends JFrame {
         panel.add(itemPanel);
 
         configureButton(itemButton, e -> {
-            cart.addArticle(new Article(itemName, 10, imagePath));
+            cart.addArticle(new ShopArticle(itemName, 10, imagePath));
             cart.afficherPanier();
             updateTotal();
             int cartTabIndex = tabbedPane.indexOfTab("Panier");
