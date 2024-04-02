@@ -2,6 +2,8 @@ package gui;
 
 import App.Loop;
 import App.Main;
+import User.UserManager;
+import User.User;
 import config.ShopArticle;
 import config.ShopCart;
 import config.Game;
@@ -11,6 +13,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+
 
 import static config.States.*;
 
@@ -59,15 +65,14 @@ public class ShopMenu extends JFrame {
     private void initialize() {
         setLayout(new BorderLayout());
 
-        // Création des onglets
         tabbedPane.setOpaque(false);
 
-        // Ajouter les onglets
         addTab(tabbedPane, "Accueil", null, "shopWelcomeOnglet.png", "welcome");
         addTab(tabbedPane, "Couteaux", knifePath, "knifeOnglet.png", "couteaux");
         addTab(tabbedPane, "Background", backgroundPath, "bgOnglet.png", "background");
         addTab(tabbedPane, "Music", buttonPath, "musicOnglet.png", "music");
         addTab(tabbedPane, "Panier", null, "cartOnglet.png", "cart");
+        addTab(tabbedPane, "Bibliothèque", null, "biblioOnglet.png", "bibliotheque");
 
         add(tabbedPane, BorderLayout.CENTER);
 
@@ -89,20 +94,10 @@ public class ShopMenu extends JFrame {
 
 
     private void updateTotal() {
-        argentLabel.setText("Total: " + (game.getArgent() - cart.getTotal())); // Mettre à jour le texte avec le total du panier
+        argentLabel.setText("Total: " + (game.getArgent() - cart.getTotal()));
     }
 
 
-
-
-
-    /**
-     * Crée et configure le panneau du menu du magasin.
-     *
-     * @param path     Le chemin de l'image de fond du panneau du menu.
-     * @param category La catégorie de l'onglet.
-     * @return Le panneau du menu du magasin configuré.
-     */
 
 
     private JPanel createPanel(String path, String category) {
@@ -111,11 +106,9 @@ public class ShopMenu extends JFrame {
         BackgroundPanel tabPanel = new BackgroundPanel(backgroundPath + "bgShopMenu.png");
         tabPanel.setLayout(new BorderLayout());
 
-
         JPanel mainMenuPanel = new JPanel(new GridLayout(0, 3, 20, 20));
         mainMenuPanel.setOpaque(false);
         mainMenuPanel.setBorder(new EmptyBorder(100, 100, 100, 100));
-
 
 
         switch (category) {
@@ -126,8 +119,10 @@ public class ShopMenu extends JFrame {
                 temp.setOpaque(false);
 
                 JPanel welcomePanel = new JPanel();
+
                 JLabel welcomeLabel = new JLabel("<html>Bienvenue dans le Shop du jeu.<br>Ajoutez au panier des articles avec la monnaie disponible, et sauvegardez.<br>Vous pouvez également retourner au menu sans effectuer d'achat.</html>");
                 welcomePanel.add(welcomeLabel);
+
                 JButton retourAuMenuButton = new JButton("Retour au menu");
                 retourAuMenuButton.addActionListener(e -> showMenu());
                 ImageIcon retourAuMenuIcon = new ImageIcon(buttonPath + "retourMenu.png");
@@ -136,8 +131,7 @@ public class ShopMenu extends JFrame {
 
 
                 mainMenuPanel.add(temp);
-                mainMenuPanel.add(welcomePanel); // Ajout de welcomePanel à mainMenuPanel
-
+                mainMenuPanel.add(welcomePanel);
 
                 break;
 
@@ -165,57 +159,106 @@ public class ShopMenu extends JFrame {
 
             case "cart":
                 // Créez le panneau pour afficher les articles du panier
-                JPanel temp2 = new JPanel();
-                temp2.setOpaque(false);
-                mainMenuPanel.add(temp2);
-
-                JPanel cartPanel = new JPanel();
-                cartPanel.setLayout(new BoxLayout(cartPanel, BoxLayout.Y_AXIS)); // Utilisation d'un BoxLayout pour l'alignement vertical
-
-                JScrollPane scrollPane = new JScrollPane(cartPanel); // Ajout d'une barre de défilement au panneau du panier
-                scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED); // Défilement vertical si nécessaire
-                scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // Pas de défilement horizontal
-
-                cartPanel.add(new JLabel("Panier"));
-
-                for (ShopArticle article : cart.getCart()) {
-                    JPanel itemPanel = new JPanel(new FlowLayout(FlowLayout.LEFT)); // Alignement à gauche
-                    itemPanel.setOpaque(false);
-
-                    // Ajoutez l'image de l'article
-                    ImageIcon iconTemp = new ImageIcon(article.getArticleImagePath());
-                    ImageIcon icon = new ImageIcon(iconTemp.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
-
-                    JLabel imageLabel = new JLabel(icon);
-                    itemPanel.add(imageLabel);
-
-                    // Ajoutez le nom et le prix de l'article
-                    JLabel nameLabel = new JLabel(article.getArticleName());
-                    JLabel priceLabel = new JLabel("Prix: " + article.getArticlePrice());
-                    itemPanel.add(nameLabel);
-                    itemPanel.add(priceLabel);
-
-                    // Ajoutez le panneau de l'article au panneau du panier
-                    cartPanel.add(itemPanel);
-                }
+                JPanel cartPanel = displayList(cart.getCart(), mainMenuPanel, "Panier");
 
                 //Sauvegarder le panier
                 JButton saveButton = new JButton("Sauvegarder");
                 saveButton.addActionListener(e -> {
-                    saveB = true;
-                    JOptionPane.showMessageDialog(null, "Le panier a été sauvegardé avec succès.");
+                    saveCart();
                 });
                 cartPanel.add(saveButton);
                 
-                mainMenuPanel.add(scrollPane);
+                break;
+
+
+            case "bibliotheque":
+                /*
+                UserManager gestionUtilisateurs = UserManager.getInstance();
+                User utilisateurActuel = gestionUtilisateurs.getUtilisateurActuel(); // Obtenez l'utilisateur actuel
+                if (utilisateurActuel != null) {
+                    JPanel biblioPanel = displayList(utilisateurActuel.getSavedArticles(), mainMenuPanel, "Bibliothèque");
+                    mainMenuPanel.add(biblioPanel);
+                } else {
+                    JLabel notConnectedLabel = new JLabel("Veuillez vous connecter pour voir votre bibliothèque.");
+                    mainMenuPanel.add(notConnectedLabel);
+                }
+                 */
                 break;
 
 
         }
-
         tabPanel.add(mainMenuPanel, BorderLayout.CENTER);
         return tabPanel;
     }
+
+
+
+    public void saveCart() {
+        if (cart != null) {
+            saveB = true;
+            JOptionPane.showMessageDialog(null, "Le panier a été sauvegardé avec succès.");
+
+            /*
+            UserManager gestionUtilisateurs = UserManager.getInstance();
+            User utilisateurActuel = gestionUtilisateurs.getUtilisateurActuel(); // Obtenez l'utilisateur actuel
+            if (utilisateurActuel != null) {
+                for (ShopArticle article : cart.getCart()) {
+                    utilisateurActuel.addToSave(article); // Ajoutez chaque article du panier à la sauvegarde de l'utilisateur
+                }
+                gestionUtilisateurs.sauvegarderInstance(); // Sauvegardez l'instance du gestionnaire d'utilisateurs pour inclure les modifications
+                JOptionPane.showMessageDialog(null, "Le panier a été sauvegardé avec succès.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Impossible de sauvegarder le panier. L'utilisateur n'est pas connecté.");
+            }
+             */
+        } else {
+            JOptionPane.showMessageDialog(null, "Le panier est vide.");
+        }
+    }
+
+
+
+
+
+
+    public JPanel displayList (List<ShopArticle> list, JPanel mainMenuPanel, String labelName) {
+        JPanel temp2 = new JPanel();
+        temp2.setOpaque(false);
+        mainMenuPanel.add(temp2);
+
+        JPanel cartPanel = new JPanel();
+        cartPanel.setLayout(new BoxLayout(cartPanel, BoxLayout.Y_AXIS));
+
+        JScrollPane scrollPane = new JScrollPane(cartPanel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        cartPanel.add(new JLabel(labelName));
+        if (list != null){
+            for (ShopArticle article : list) {
+                JPanel itemPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                itemPanel.setOpaque(false);
+
+                ImageIcon iconTemp = new ImageIcon(article.getArticleImagePath());
+                ImageIcon icon = new ImageIcon(iconTemp.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
+
+                JLabel imageLabel = new JLabel(icon);
+                itemPanel.add(imageLabel);
+
+                JLabel nameLabel = new JLabel(article.getArticleName());
+                JLabel priceLabel = new JLabel("Prix: " + article.getArticlePrice());
+                itemPanel.add(nameLabel);
+                itemPanel.add(priceLabel);
+
+                cartPanel.add(itemPanel);
+            }
+        }
+        mainMenuPanel.add(scrollPane);
+        return cartPanel;
+    }
+
+
+
 
 
 
@@ -230,21 +273,21 @@ public class ShopMenu extends JFrame {
         itemButton.setContentAreaFilled(false);
         itemButton.setFocusPainted(false);
 
-        // Création de l'étiquette pour le nom de l'élément
+
         JLabel itemNameLabel = new JLabel(itemName);
         itemNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
         itemNameLabel.setFont(itemNameLabel.getFont().deriveFont(Font.BOLD | Font.ITALIC, 14f)); // Modification de la taille, du style et du gras
 
-        // Ajout du bouton et de l'étiquette au panneau de l'élément
+
         itemPanel.add(itemButton, BorderLayout.CENTER);
         itemPanel.add(itemNameLabel, BorderLayout.SOUTH);
 
-        // Ajout du panneau de l'élément au panneau principal
+
         panel.add(itemPanel);
 
         configureButton(itemButton, e -> {
             cart.addArticle(new ShopArticle(itemName, 10, imagePath));
-            cart.afficherPanier();
+            saveB = false;
             updateTotal();
             int cartTabIndex = tabbedPane.indexOfTab("Panier");
             if (cartTabIndex != -1) {
@@ -252,7 +295,7 @@ public class ShopMenu extends JFrame {
                 tabbedPane.setComponentAt(cartTabIndex, cartPanel);
             }
         });
-        saveB = false;
+
     }
 
 
@@ -269,9 +312,9 @@ public class ShopMenu extends JFrame {
      * Cette méthode est appelée lorsque le bouton "Menu" est cliqué.
      */
     private void showMenu() {
-        if (!saveB){
-            this.cart=null;
-        }
+//        if (!saveB) {
+//            saveCart();
+//        }
         setStates(HOMEMENU);
         homeMenu.showHomeMenu();
     }

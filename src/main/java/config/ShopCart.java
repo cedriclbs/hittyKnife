@@ -37,12 +37,12 @@ public class ShopCart {
     }
 
 
-    public void afficherPanier() {
-        System.out.println("Contenu du panier :");
-        for (ShopArticle article : cart) {
-            System.out.println(article);
-        }
-    }
+//    public void afficherPanier() {
+//        System.out.println("Contenu du panier :");
+//        for (ShopArticle article : cart) {
+//            System.out.println(article);
+//        }
+//    }
 
 
 
