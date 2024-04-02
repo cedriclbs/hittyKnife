@@ -3,12 +3,12 @@ package config;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cart {
+public class ShopCart {
 
 
     private List<ShopArticle> cart;
 
-    public Cart (){
+    public ShopCart (){
         this.cart = new ArrayList<>();
     }
 
@@ -43,6 +43,7 @@ public class Cart {
             System.out.println(article);
         }
     }
+
 
 
 

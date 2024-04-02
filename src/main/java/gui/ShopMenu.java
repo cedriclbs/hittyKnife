@@ -3,7 +3,7 @@ package gui;
 import App.Loop;
 import App.Main;
 import config.ShopArticle;
-import config.Cart;
+import config.ShopCart;
 import config.Game;
 
 import javax.swing.*;
@@ -28,9 +28,10 @@ public class ShopMenu extends JFrame {
 
     private JLabel argentLabel; // Label pour afficher l'argent du joueur
 
-    private Cart cart;
+    private ShopCart cart;
     private JTabbedPane tabbedPane;
 
+    private boolean saveB;
 
     /**
      * Constructeur de la fenêtre du magasin.
@@ -45,8 +46,9 @@ public class ShopMenu extends JFrame {
         Main.loop = new Loop(game);
         Main.loop.startTickFunction();
         this.homeMenu = hm;
-        this.cart = new Cart();
+        this.cart = new ShopCart();
         this.tabbedPane = new JTabbedPane();
+        this.saveB = false;
         initialize();
     }
 
@@ -197,7 +199,15 @@ public class ShopMenu extends JFrame {
                     cartPanel.add(itemPanel);
                 }
 
-                mainMenuPanel.add(scrollPane); // Ajout du JScrollPane contenant le panneau du panier au panneau principal
+                //Sauvegarder le panier
+                JButton saveButton = new JButton("Sauvegarder");
+                saveButton.addActionListener(e -> {
+                    saveB = true;
+                    JOptionPane.showMessageDialog(null, "Le panier a été sauvegardé avec succès.");
+                });
+                cartPanel.add(saveButton);
+                
+                mainMenuPanel.add(scrollPane);
                 break;
 
 
@@ -206,6 +216,8 @@ public class ShopMenu extends JFrame {
         tabPanel.add(mainMenuPanel, BorderLayout.CENTER);
         return tabPanel;
     }
+
+
 
     private void addShopItem(JPanel panel, String imagePath, String itemName) {
         JPanel itemPanel = new JPanel(new BorderLayout());
@@ -240,6 +252,7 @@ public class ShopMenu extends JFrame {
                 tabbedPane.setComponentAt(cartTabIndex, cartPanel);
             }
         });
+        saveB = false;
     }
 
 
@@ -256,6 +269,9 @@ public class ShopMenu extends JFrame {
      * Cette méthode est appelée lorsque le bouton "Menu" est cliqué.
      */
     private void showMenu() {
+        if (!saveB){
+            this.cart=null;
+        }
         setStates(HOMEMENU);
         homeMenu.showHomeMenu();
     }
