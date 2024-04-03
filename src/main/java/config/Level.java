@@ -22,13 +22,25 @@ public class Level {
     }
 
     /**
+     * Méthode appelée pour gérer la progression des cibles.
+     * Vérifie si tous les rounds et le boss ont été terminés pour passer au niveau suivant.
+     */
+    public void nextTargetAndUpdateLevel() {
+        round.nextTarget();
+
+        // Vérifie si tous les rounds et le boss ont été terminés
+        if (round.isAllRoundCompleted()) {
+            bossDefeated(); // Méthode pour gérer la fin du boss et passer au niveau suivant
+        }
+    }
+
+    /**
      * Gère les actions à effectuer lorsque le boss est vaincu, comme incrémenter le niveau,
      * réinitialiser le round et sauvegarder le jeu.
      */
     public void bossDefeated() {
         level++; 
         round.reset(); 
-        round.clearTargets();
         saveGame();
     }
 
