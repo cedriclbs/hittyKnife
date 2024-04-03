@@ -27,8 +27,9 @@ public class EntityDisplay extends JPanel {
     private static double bgImgHeight;
     private double RATIO_X;
     private double RATIO_Y;
-    private double RATIO1v1;
     private final int RATIO = 18;
+    private int RATIO1v1;
+    Dimension screenSize;
 
     /**
      * Constructeur de la classe KnifeDisplay.
@@ -38,55 +39,19 @@ public class EntityDisplay extends JPanel {
      */
     public EntityDisplay(Knife knife, String backgroundPath, ArrayList<Cible> listeCible,boolean isSolo) {
         //System.out.println("bg x : "+RATIO_X+" bg y : "+RATIO_Y);
-        if (isSolo){
-            RATIO1v1 = 1;
-        }
-        else{
-            RATIO1v1 = 2;
-        }
         this.listeCible = listeCible;
         this.knife = knife;
         initImage();
         initBg(backgroundPath);
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        RATIO1v1 = (isSolo)?1:2;
 
 
-        RATIO_X = screenSize.width/2;//getBgImgWidth()/2;
+        if (isSolo) RATIO_X = screenSize.width/2;
+        else RATIO_X = screenSize.width/4;//getBgImgWidth()/2;
+
         RATIO_Y = screenSize.height*3/4;//getBgImgHeight()*3/4;
-        // Coordonnées du couteau initialisé au milieu de l'écran pour une meilleure visibilité
-        //this.knife.getCoordinate().setCoordinate(getBgImgWidth() / 2, getBgImgHeight() / 2);
 
-        addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (!knife.throwing && !knife.isInTheAir) {
-                    knife.jump();
-                }
-                else if (!knife.throwing && knife.isInTheAir){
-                    knife.throwKnife();
-                }
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-
-        });
 
     }
 
@@ -145,10 +110,10 @@ public class EntityDisplay extends JPanel {
 
         g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 
-        int knifeX = (int) ((RATIO_X-(knife.getX()*RATIO))/RATIO1v1);
+        int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
         int knifeY = (int) (RATIO_Y-(knife.getY()*RATIO));
 
-        if (knifeX>getBgImgWidth() || knifeX<0 || knifeY > getBgImgHeight() || knifeY<0){
+        if (knifeX>screenSize.width/RATIO1v1 || knifeX<0 || knifeY > screenSize.height || knifeY<0){
             knife.resetKnife();
         }
 
@@ -163,7 +128,7 @@ public class EntityDisplay extends JPanel {
 
         ArrayList<Cible> deleteCible= new ArrayList<>();
         for (Cible cible : listeCible){
-            double cibleX = (RATIO_X-cible.getX()*RATIO)/RATIO1v1;
+            double cibleX = (RATIO_X-cible.getX()*RATIO);
             double cibleY = (RATIO_Y-cible.getY()*RATIO);
             AffineTransform transformCible = AffineTransform.getTranslateInstance(cibleX - (double) cibleImWidth / 2, cibleY - (double) cibleImHeight / 2);
             if (cible instanceof MovingTarget){

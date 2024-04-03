@@ -12,7 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Permet la sauvegarde et le chargement de l'état du jeu.
  */
 public class Game {
-    public Knife[] knife = new Knife[2];
+    public Knife knife1;
+    public Knife knife2;
     boolean isSolo;
     private List<Cible> listeCible1 = new ArrayList<>();
     private List<Cible> listeCible2 = new ArrayList<>();
@@ -27,9 +28,9 @@ public class Game {
     public Game(boolean isSolo){
         this.isSolo = isSolo;
         System.out.println("creation game");
-        this.knife[0] = new Knife();
+        this.knife1 = new Knife();
         if (!isSolo){
-            this.knife[1] = new Knife();
+            this.knife2 = new Knife();
         }
         //knife.addAngle(90);
         Cible c1 = new Cible(20,20);
@@ -54,8 +55,8 @@ public class Game {
 
 
     // Getters et setters pour la sérialisation/désérialisation
-    public Knife getKnife() { return knife[0]; }
-    public Knife getKnife2(){ return knife[1];}
+    public Knife getKnife() { return knife1; }
+    public Knife getKnife2(){ return knife2;}
     //public void setKnife(Knife knife) { this.knife = knife; }
 
     public List<Cible> getListeCible() { return listeCible1; }
@@ -80,14 +81,14 @@ public class Game {
      */
      public void update(double delta){
          //System.out.println("dqdqzsqzdqsqdqzdqz");
-         knife[0].updateMovement();
+         knife1.updateMovement();
          for(Cible c : this.listeCible1){
              if (c instanceof MovingTarget){
                  ((MovingTarget) c).updateMovement();
              }
          }
          if (!isSolo){
-             knife[1].updateMovement();
+             knife2.updateMovement();
              for(Cible c : this.listeCible2){
                  if (c instanceof MovingTarget){
                      ((MovingTarget) c).updateMovement();
