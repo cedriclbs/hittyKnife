@@ -2,42 +2,38 @@ package gui;
 
 import App.Loop;
 import App.Main;
-import User.UserManager;
-import User.User;
-import config.ShopArticle;
 import config.ShopCart;
 import config.Game;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-
-
-
 import static config.States.*;
+
+
 
 /**
  * Fenêtre du magasin où les joueurs peuvent acheter des objets ou des améliorations.
  */
+
+
 public class ShopMenu extends JFrame {
-    private Game game; // Référence vers l'objet Game pour obtenir l'argent du joueur
+    private Game game;
     private HomeMenu homeMenu;
+    JLabel argentLabel;
 
-    private String knifePath = "src/main/ressources/knifes/";
-    private String backgroundPath = "src/main/ressources/background/";
-    private String buttonPath = "src/main/ressources/button/";
-    private String ongletsPath = "src/main/ressources/onglets/";
+    ShopCart cart;
+    JTabbedPane tabbedPane;
 
-    private JLabel argentLabel; // Label pour afficher l'argent du joueur
+    boolean saveB;
 
-    private ShopCart cart;
-    private JTabbedPane tabbedPane;
+    String knifePath = "src/main/ressources/knifes/";
+    String backgroundPath = "src/main/ressources/background/";
+    String buttonPath = "src/main/ressources/button/";
+    String tabPath = "src/main/ressources/onglets/";
 
-    private boolean saveB;
+
+
 
     /**
      * Constructeur de la fenêtre du magasin.
@@ -54,7 +50,7 @@ public class ShopMenu extends JFrame {
         this.homeMenu = hm;
         this.cart = new ShopCart();
         this.tabbedPane = new JTabbedPane();
-        this.saveB = false;
+        this.saveB = true;
         initialize();
     }
 
@@ -62,17 +58,22 @@ public class ShopMenu extends JFrame {
         setStates(SHOPMENU);
     }
 
+
+    /**
+     * Initialise le ShopMenu avec sa disposition et les onglets du magasin.
+     */
     private void initialize() {
         setLayout(new BorderLayout());
 
         tabbedPane.setOpaque(false);
 
-        addTab(tabbedPane, "Accueil", null, "shopWelcomeOnglet.png", "welcome");
-        addTab(tabbedPane, "Couteaux", knifePath, "knifeOnglet.png", "couteaux");
-        addTab(tabbedPane, "Background", backgroundPath, "bgOnglet.png", "background");
-        addTab(tabbedPane, "Music", buttonPath, "musicOnglet.png", "music");
-        addTab(tabbedPane, "Panier", null, "cartOnglet.png", "cart");
-        addTab(tabbedPane, "Bibliothèque", null, "biblioOnglet.png", "bibliotheque");
+        ShopTab accueil = new ShopTab(tabbedPane, "Accueil", null, "shopWelcomeTab.png", "welcome", this);
+        ShopTab couteaux = new ShopTab(tabbedPane, "Couteaux", knifePath, "knifeTab.png", "couteaux", this);
+        ShopTab background = new ShopTab(tabbedPane, "Background", backgroundPath, "bgTab.png", "background", this);
+        ShopTab music = new ShopTab(tabbedPane, "Music", buttonPath, "musicTab.png", "music", this);
+        ShopTab cart = new ShopTab(tabbedPane, "Panier", null, "cartTab.png", "cart", this);
+        //ShopTab bibliotheque = new ShopTab(tabbedPane, "Bibliothèque", null, "biblioTab.png", "bibliotheque", this);
+
 
         add(tabbedPane, BorderLayout.CENTER);
 
@@ -80,99 +81,11 @@ public class ShopMenu extends JFrame {
         argentLabel = new JLabel("Argent disponible: " + game.getArgent());
         add(argentLabel, BorderLayout.NORTH);
 
-
-    }
-
-    private void addTab(JTabbedPane tabbedPane, String title, String imagePath, String iconPath, String category) {
-        JPanel panel = createPanel(imagePath, category);
-        tabbedPane.addTab(title, panel);
-        if (iconPath != null) {
-            ImageIcon icon = new ImageIcon(ongletsPath + iconPath);
-            tabbedPane.setIconAt(tabbedPane.indexOfComponent(panel), icon);
-        }
     }
 
 
-    private void updateTotal() {
-        argentLabel.setText("Total: " + (game.getArgent() - cart.getTotal()));
-    }
-
-
-
-
-    private JPanel createPanel(String path, String category) {
-        // Création du panel pour chaque onglet avec une image de fond personnalisée
-
-        BackgroundPanel tabPanel = new BackgroundPanel(backgroundPath + "bgShopMenu.png");
-        tabPanel.setLayout(new BorderLayout());
-
-        JPanel mainMenuPanel = new JPanel(new GridLayout(0, 3, 20, 20));
-        mainMenuPanel.setOpaque(false);
-        mainMenuPanel.setBorder(new EmptyBorder(100, 100, 100, 100));
-
-
-        switch (category) {
-
-
-            case "welcome":
-                JPanel temp = new JPanel();
-                temp.setOpaque(false);
-
-                JPanel welcomePanel = new JPanel();
-
-                JLabel welcomeLabel = new JLabel("<html>Bienvenue dans le Shop du jeu.<br>Ajoutez au panier des articles avec la monnaie disponible, et sauvegardez.<br>Vous pouvez également retourner au menu sans effectuer d'achat.</html>");
-                welcomePanel.add(welcomeLabel);
-
-                JButton retourAuMenuButton = new JButton("Retour au menu");
-                retourAuMenuButton.addActionListener(e -> showMenu());
-                ImageIcon retourAuMenuIcon = new ImageIcon(buttonPath + "retourMenu.png");
-                retourAuMenuButton.setIcon(retourAuMenuIcon);
-                welcomePanel.add(retourAuMenuButton);
-
-
-                mainMenuPanel.add(temp);
-                mainMenuPanel.add(welcomePanel);
-
-                break;
-
-
-            case "couteaux":
-                addShopItem(mainMenuPanel, path + "knife.png", "Sword 1");
-                addShopItem(mainMenuPanel, path + "knife#2.png", "Sword 2");
-                addShopItem(mainMenuPanel, path + "knife#3.png", "Sword 3");
-                break;
-
-
-            case "background":
-                addShopItem(mainMenuPanel, path + "Background_MainMenu.png", "Background 1");
-                addShopItem(mainMenuPanel, path + "Background_Solo.png", "Background 2");
-                addShopItem(mainMenuPanel, path + "bgForet.png", "Background 3");
-                break;
-
-
-            case "music":
-                addShopItem(mainMenuPanel, path + "music.png", "Music 1");
-                addShopItem(mainMenuPanel, path + "music.png", "Music 2");
-                addShopItem(mainMenuPanel, path + "music.png", "Music 2");
-                break;
-
-
-            case "cart":
-                // Créez le panneau pour afficher les articles du panier
-                JPanel cartPanel = displayList(cart.getCart(), mainMenuPanel, "Panier");
-
-                //Sauvegarder le panier
-                JButton saveButton = new JButton("Sauvegarder");
-                saveButton.addActionListener(e -> {
-                    saveCart();
-                });
-                cartPanel.add(saveButton);
-                
-                break;
-
-        }
-        tabPanel.add(mainMenuPanel, BorderLayout.CENTER);
-        return tabPanel;
+    void updateTotal() {
+        argentLabel.setText("Total: " + (game.getArgent() - cart.getCartTotal()));
     }
 
 
@@ -189,88 +102,13 @@ public class ShopMenu extends JFrame {
 
 
 
-
-
-
-    public JPanel displayList (List<ShopArticle> list, JPanel mainMenuPanel, String labelName) {
-        JPanel temp2 = new JPanel();
-        temp2.setOpaque(false);
-        mainMenuPanel.add(temp2);
-
-        JPanel cartPanel = new JPanel();
-        cartPanel.setLayout(new BoxLayout(cartPanel, BoxLayout.Y_AXIS));
-
-        JScrollPane scrollPane = new JScrollPane(cartPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-        cartPanel.add(new JLabel(labelName));
-        if (list != null){
-            for (ShopArticle article : list) {
-                JPanel itemPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-                itemPanel.setOpaque(false);
-
-                ImageIcon iconTemp = new ImageIcon(article.getArticleImagePath());
-                ImageIcon icon = new ImageIcon(iconTemp.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
-
-                JLabel imageLabel = new JLabel(icon);
-                itemPanel.add(imageLabel);
-
-                JLabel nameLabel = new JLabel(article.getArticleName());
-                JLabel priceLabel = new JLabel("Prix: " + article.getArticlePrice());
-                itemPanel.add(nameLabel);
-                itemPanel.add(priceLabel);
-
-                cartPanel.add(itemPanel);
-            }
-        }
-        mainMenuPanel.add(scrollPane);
-        return cartPanel;
-    }
-
-
-
-
-
-
-    private void addShopItem(JPanel panel, String imagePath, String itemName) {
-        JPanel itemPanel = new JPanel(new BorderLayout());
-        itemPanel.setOpaque(false);
-
-        ImageIcon icon = new ImageIcon(imagePath);
-        JButton itemButton = new JButton();
-        itemButton.setIcon(icon);
-        itemButton.setBorderPainted(false);
-        itemButton.setContentAreaFilled(false);
-        itemButton.setFocusPainted(false);
-
-
-        JLabel itemNameLabel = new JLabel(itemName);
-        itemNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        itemNameLabel.setFont(itemNameLabel.getFont().deriveFont(Font.BOLD | Font.ITALIC, 14f)); // Modification de la taille, du style et du gras
-
-
-        itemPanel.add(itemButton, BorderLayout.CENTER);
-        itemPanel.add(itemNameLabel, BorderLayout.SOUTH);
-
-
-        panel.add(itemPanel);
-
-        configureButton(itemButton, e -> {
-            cart.addArticle(new ShopArticle(itemName, 10, imagePath));
-            saveB = false;
-            updateTotal();
-            int cartTabIndex = tabbedPane.indexOfTab("Panier");
-            if (cartTabIndex != -1) {
-                JPanel cartPanel = createPanel(null, "cart");
-                tabbedPane.setComponentAt(cartTabIndex, cartPanel);
-            }
-        });
-
-    }
-
-
-    private void configureButton(JButton button, ActionListener actionListener) {
+    /**
+     * Configure un bouton avec des paramètres standard.
+     *
+     * @param button          Le bouton à configurer.
+     * @param actionListener L'action à exécuter lorsque le bouton est cliqué.
+     */
+    void configureButton(JButton button, ActionListener actionListener) {
         button.setPreferredSize(new Dimension(50, 50));
         button.setFocusPainted(false);
         button.setBorderPainted(true);
@@ -278,11 +116,13 @@ public class ShopMenu extends JFrame {
         button.addActionListener(actionListener);
     }
 
+
+
     /**
      * Redirige vers le menu principal.
      * Cette méthode est appelée lorsque le bouton "Menu" est cliqué.
      */
-    private void showMenu() {
+    void showMenu() {
         if (!saveB) {
             JPanel saveToQuit = new JPanel(new GridLayout(1, 2));
             JButton sauvButton = new JButton("Sauvegarder");
@@ -294,6 +134,10 @@ public class ShopMenu extends JFrame {
                 showMenuOnceVerif();
             });
             configureButton(quitterButton, e -> {
+                this.cart.getCart().clear();
+                updateTotal();
+                revalidate();
+                repaint();
                 SwingUtilities.getWindowAncestor(saveToQuit).dispose();
                 showMenuOnceVerif();
             });
@@ -312,7 +156,6 @@ public class ShopMenu extends JFrame {
         setStates(HOMEMENU);
         homeMenu.showHomeMenu();
     }
-
 
 
 }
