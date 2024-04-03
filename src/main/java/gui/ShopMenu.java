@@ -74,7 +74,6 @@ public class ShopMenu extends JFrame {
         ShopTab cart = new ShopTab(tabbedPane, "Panier", null, "cartTab.png", "cart", this);
         //ShopTab bibliotheque = new ShopTab(tabbedPane, "Bibliothèque", null, "biblioTab.png", "bibliotheque", this);
 
-
         add(tabbedPane, BorderLayout.CENTER);
 
         // Création et ajout du label d'argent
