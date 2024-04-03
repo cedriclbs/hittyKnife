@@ -1,133 +1,87 @@
 package gui;
 
+import App.Loop;
+import App.Main;
+import config.Game;
+import entity.Cible;
+import entity.Knife;
+
+
 import javax.swing.*;
+
 import java.awt.*;
+import java.util.ArrayList;
+
+import static config.States.*;
 
 /**
- * La classe {@code HomeMenu} étend {@code Menu} pour représenter le menu principal du jeu.
- * Elle gère l'affichage des différentes options du menu telles que jouer, accéder aux paramètres, au magasin (shop), ou quitter le jeu.
- * <p>
- * Cette classe configure l'interface utilisateur du menu principal, y compris la musique de fond et le placement des boutons.
- * </p>
+ * La classe SoloMode représente le mode de jeu solo du jeu et gère l'initialisation et le démarrage d'une partie solo du jeu.
  */
-public class GameView extends Menu {
+public class GameView extends JPanel{
 
-    //private BackgroundPanel soloFrame;
-    //private SoloMode soloMode;
-    //Game game;
+    private Game game;
+    private HomeMenu homeMenu;
+    private EntityDisplay entityDisplay;
+    private Knife knife;
 
-    //TODO: quand on appuie sur échap, enlève le plein écran
+    private Image backgroundImage;
+    private static double bgImgWidth;
+    private static double bgImgHeight;
+
     /**
-     * Crée l'interface du menu principal avec le titre spécifié, le chemin vers l'image de fond et le chemin vers la musique de fond.
+     * Constructeur de la classe SoloMode.
      *
-     * @param title Le titre de la fenêtre du menu.
-     * @param backgroundPath Le chemin d'accès au fichier d'image de fond du menu.
-     * @param musicPath Le chemin d'accès au fichier audio de la musique de fond.
+     * @param homeMenu Le menu principal de l'application.
      */
-    public GameView(String title, String backgroundPath, String musicPath) {
-        super(title, backgroundPath, musicPath);
-        initialize("src/main/ressources/background/Background_MainMenu.png");
+    public GameView(HomeMenu homeMenu, boolean isSolo)  {
+
+        initBg("src/main/ressources/background/bgForet.png");
+        this.game = new Game();
+        Main.loop = new Loop(game);
+        Main.loop.startTickFunction();
+
+        this.homeMenu = homeMenu;
+        this.knife = game.getKnife();
+        //this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);
+        this.entityDisplay = new EntityDisplay(knife,"src/main/ressources/background/bgForet.png", (ArrayList<Cible>) game.getListeCible());
     }
 
     /**
-     * Initialise l'interface du menu principal.
+     * Retourne le couteau utilisé dans la partie solo.
      *
-     * @param background Le chemin d'accès à l'image de fond du menu principal.
+     * @return Le couteau utilisé dans la partie solo.
      */
-    private void initialize(String background) {
-        JPanel menuPanel = createMenuPanel(background);
-        add(menuPanel);
-        //soloMode = new SoloMode(game, this);
+    public Knife getKnife() {
+        return knife;
     }
 
     /**
-     * Crée et retourne un {@link JPanel} configuré avec l'image de fond spécifiée et les boutons du menu.
-     * <p>
-     * Ce panel inclut les boutons pour les actions "Solo", "1v1", "Shop", et "Quitter", chacun configuré avec ses propres actions.
-     * </p>
+     * Initialise l'interface utilisateur et démarre la partie solo.
+     */
+    public void initialize() {
+        setStates(SOLOMODE);
+        homeMenu.getContentPane().removeAll();
+        homeMenu.getContentPane().add(entityDisplay);
+        homeMenu.getContentPane().revalidate();
+        homeMenu.getContentPane().repaint();
+    }
+
+    /**
+     * Initialise l'image de fond du jeu.
      *
-     * @param backgroundPath Le chemin d'accès au fichier d'image de fond pour le panel.
-     * @return Le {@link JPanel} configuré pour le menu principal.
+     * @param backgroundPath Le chemin d'accès à l'image de fond.
      */
-    @Override
-    JPanel createMenuPanel(String backgroundPath) {
-
-        String ButtonAd = "src/main/ressources/button";
-
-        BackgroundPanel panel = new BackgroundPanel(backgroundPath);
-        panel.setLayout(new GridLayout(4, 1, 0, 20)); //Espacement vertical entre les boutons
-        panel.setBorder(BorderFactory.createEmptyBorder(40, 20, 40, 20)); // Ajoute des marges
-
-        // TODO : Afficher le numéro du niveau actuel centré en haut-> "Niveau X"
-        // TODO : Afficher un engrenage pour les paramètres en haut à gauche.
-
-
-        // Bouton "Solo"
-        JPanel campaignButtonPanel = new JPanel();
-        campaignButtonPanel.setOpaque(false); // Rend le panel transparent
-        JButton campaignButton = new JButton(new ImageIcon(ButtonAd + "/PlayButton.png"));
-        campaignButton.setFocusPainted(false);
-        campaignButton.setBorderPainted(false);
-        campaignButton.setContentAreaFilled(false);
-        campaignButton.addActionListener(e -> showGame());
-        campaignButtonPanel.add(campaignButton);
-        panel.add(campaignButtonPanel);
-
-        // Bouton "1v1"
-        JPanel versusButtonPanel = new JPanel();
-        versusButtonPanel.setOpaque(false); // Rend le panel transparent
-        JButton versusButton = new JButton(new ImageIcon(ButtonAd + "/VersusButton.png"));
-        versusButton.setFocusPainted(false);
-        versusButton.setBorderPainted(false);
-        versusButton.setContentAreaFilled(false);
-        versusButton.addActionListener(e -> show1v1Menu());
-        versusButtonPanel.add(versusButton);
-        panel.add(versusButtonPanel);
-
-        // Bouton "Shop"
-        JPanel shopButtonPanel = new JPanel();
-        shopButtonPanel.setOpaque(false); // Rend le panel transparent
-        JButton shopButton = new JButton(new ImageIcon(ButtonAd + "/ShopButton.png"));
-        shopButton.setFocusPainted(false);
-        shopButton.setBorderPainted(false);
-        shopButton.setContentAreaFilled(false);
-        shopButton.addActionListener(e -> showShop());
-        shopButtonPanel.add(shopButton);
-        panel.add(shopButtonPanel);
-
-        // Bouton "Quitter"
-        JPanel quitterButtonPanel = new JPanel();
-        quitterButtonPanel.setOpaque(false); // Rend le panel transparent
-        JButton quitterButton = new JButton(new ImageIcon(ButtonAd + "/QuitButton.png"));
-        quitterButton.setFocusPainted(false);
-        quitterButton.setBorderPainted(false);
-        quitterButton.setContentAreaFilled(false);
-        quitterButton.addActionListener(e -> quitterEtSauvegarder());
-        quitterButtonPanel.add(quitterButton);
-        panel.add(quitterButtonPanel);
-
-        // Définition de la taille préférée pour centrer dans le GridBagLayout
-        panel.setPreferredSize(new Dimension(500, 800)); // Taille du panel de menu
-
-        return panel;
+    private void initBg(String backgroundPath) {
+        this.backgroundImage = new ImageIcon(backgroundPath).getImage();
+        bgImgHeight = this.backgroundImage.getHeight(null);
+        bgImgWidth = this.backgroundImage.getWidth(null);
     }
 
     /**
-     * Affiche le jeu en mode solo lorsque le bouton "Solo" est cliqué.
+     * Démarre la partie solo.
      */
-    private void showGame() {
-        SoloMode soloMode = new SoloMode( this,true);
-        soloMode.startSoloGame();
-    }
-
-    //TODO : Ajouter la méthode redirigeant au mode 1v1 quand le mode sera implémenté
-    private void show1v1Menu() {
-
-    }
-
-    //TODO : Ajouter la méthode redirigeant au shop quand le shop sera implémenté
-    private void showShop() {
-
+    public void startSoloGame() {
+        initialize();
     }
 
 }
