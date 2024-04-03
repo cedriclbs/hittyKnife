@@ -170,22 +170,6 @@ public class ShopMenu extends JFrame {
                 
                 break;
 
-
-            case "bibliotheque":
-                /*
-                UserManager gestionUtilisateurs = UserManager.getInstance();
-                User utilisateurActuel = gestionUtilisateurs.getUtilisateurActuel(); // Obtenez l'utilisateur actuel
-                if (utilisateurActuel != null) {
-                    JPanel biblioPanel = displayList(utilisateurActuel.getSavedArticles(), mainMenuPanel, "Bibliothèque");
-                    mainMenuPanel.add(biblioPanel);
-                } else {
-                    JLabel notConnectedLabel = new JLabel("Veuillez vous connecter pour voir votre bibliothèque.");
-                    mainMenuPanel.add(notConnectedLabel);
-                }
-                 */
-                break;
-
-
         }
         tabPanel.add(mainMenuPanel, BorderLayout.CENTER);
         return tabPanel;
@@ -196,21 +180,8 @@ public class ShopMenu extends JFrame {
     public void saveCart() {
         if (cart != null) {
             saveB = true;
+            //Ajouter this.cart à la bibliothèque
             JOptionPane.showMessageDialog(null, "Le panier a été sauvegardé avec succès.");
-
-            /*
-            UserManager gestionUtilisateurs = UserManager.getInstance();
-            User utilisateurActuel = gestionUtilisateurs.getUtilisateurActuel(); // Obtenez l'utilisateur actuel
-            if (utilisateurActuel != null) {
-                for (ShopArticle article : cart.getCart()) {
-                    utilisateurActuel.addToSave(article); // Ajoutez chaque article du panier à la sauvegarde de l'utilisateur
-                }
-                gestionUtilisateurs.sauvegarderInstance(); // Sauvegardez l'instance du gestionnaire d'utilisateurs pour inclure les modifications
-                JOptionPane.showMessageDialog(null, "Le panier a été sauvegardé avec succès.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Impossible de sauvegarder le panier. L'utilisateur n'est pas connecté.");
-            }
-             */
         } else {
             JOptionPane.showMessageDialog(null, "Le panier est vide.");
         }
@@ -312,10 +283,36 @@ public class ShopMenu extends JFrame {
      * Cette méthode est appelée lorsque le bouton "Menu" est cliqué.
      */
     private void showMenu() {
-//        if (!saveB) {
-//            saveCart();
-//        }
+        if (!saveB) {
+            JPanel saveToQuit = new JPanel(new GridLayout(1, 2));
+            JButton sauvButton = new JButton("Sauvegarder");
+            JButton quitterButton = new JButton("Quitter");
+
+            configureButton(sauvButton, e -> {
+                saveCart();
+                SwingUtilities.getWindowAncestor(saveToQuit).dispose();
+                showMenuOnceVerif();
+            });
+            configureButton(quitterButton, e -> {
+                SwingUtilities.getWindowAncestor(saveToQuit).dispose();
+                showMenuOnceVerif();
+            });
+
+            saveToQuit.add(sauvButton);
+            saveToQuit.add(quitterButton);
+            JOptionPane.showMessageDialog(null, saveToQuit, "Panier non sauvegardé", JOptionPane.PLAIN_MESSAGE);
+        } else {
+            showMenuOnceVerif();
+        }
+
+    }
+
+
+    private void showMenuOnceVerif () {
         setStates(HOMEMENU);
         homeMenu.showHomeMenu();
     }
+
+
+
 }
