@@ -35,7 +35,7 @@ public class Game {
         listeCible.add(m1);
         listeCible.add(b1);
         life = 3;
-        argent = 0;
+        argent = 100;
     }
 
     /**
