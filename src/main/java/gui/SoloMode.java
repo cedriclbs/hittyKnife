@@ -20,7 +20,7 @@ import static config.States.*;
 public class SoloMode extends JPanel{
 
     private Game game;
-    private HomeMenu homeMenu;
+    private GameView gameView;
     private EntityDisplay entityDisplay;
     private Knife knife;
 
@@ -31,16 +31,16 @@ public class SoloMode extends JPanel{
     /**
      * Constructeur de la classe SoloMode.
      *
-     * @param homeMenu Le menu principal de l'application.
+     * @param gameView Le menu principal de l'application.
      */
-    public SoloMode( HomeMenu homeMenu)  {
+    public SoloMode(GameView gameView, boolean isSolo)  {
 
         initBg("src/main/ressources/background/bgForet.png");
         this.game = new Game();
         Main.loop = new Loop(game);
         Main.loop.startTickFunction();
 
-        this.homeMenu = homeMenu;
+        this.gameView = gameView;
         this.knife = game.getKnife();
         //this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);
         this.entityDisplay = new EntityDisplay(knife,"src/main/ressources/background/bgForet.png", (ArrayList<Cible>) game.getListeCible());
@@ -60,10 +60,10 @@ public class SoloMode extends JPanel{
      */
     public void initialize() {
         setStates(SOLOMODE);
-        homeMenu.getContentPane().removeAll();
-        homeMenu.getContentPane().add(entityDisplay);
-        homeMenu.getContentPane().revalidate();
-        homeMenu.getContentPane().repaint();
+        gameView.getContentPane().removeAll();
+        gameView.getContentPane().add(entityDisplay);
+        gameView.getContentPane().revalidate();
+        gameView.getContentPane().repaint();
     }
 
     /**

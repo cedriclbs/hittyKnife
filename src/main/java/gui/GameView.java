@@ -10,7 +10,7 @@ import java.awt.*;
  * Cette classe configure l'interface utilisateur du menu principal, y compris la musique de fond et le placement des boutons.
  * </p>
  */
-public class HomeMenu extends Menu {
+public class GameView extends Menu {
 
     //private BackgroundPanel soloFrame;
     //private SoloMode soloMode;
@@ -24,7 +24,7 @@ public class HomeMenu extends Menu {
      * @param backgroundPath Le chemin d'accès au fichier d'image de fond du menu.
      * @param musicPath Le chemin d'accès au fichier audio de la musique de fond.
      */
-    public HomeMenu(String title, String backgroundPath, String musicPath) {
+    public GameView(String title, String backgroundPath, String musicPath) {
         super(title, backgroundPath, musicPath);
         initialize("src/main/ressources/background/Background_MainMenu.png");
     }
@@ -116,12 +116,13 @@ public class HomeMenu extends Menu {
      * Affiche le jeu en mode solo lorsque le bouton "Solo" est cliqué.
      */
     private void showGame() {
-        SoloMode soloMode = new SoloMode( this);
+        SoloMode soloMode = new SoloMode( this,true);
         soloMode.startSoloGame();
     }
 
     //TODO : Ajouter la méthode redirigeant au mode 1v1 quand le mode sera implémenté
     private void show1v1Menu() {
+
     }
 
     //TODO : Ajouter la méthode redirigeant au shop quand le shop sera implémenté
