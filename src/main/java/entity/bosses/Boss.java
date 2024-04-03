@@ -1,5 +1,6 @@
-package entity;
+package entity.bosses;
 
+import entity.*;
 import geometry.Coordinate;
 
 /**

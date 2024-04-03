@@ -1,4 +1,6 @@
-package entity;
+package entity.bosses;
+
+import entity.*;
 
 /**
  * Classe représentant un type spécifique de boss.

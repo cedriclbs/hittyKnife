@@ -1,6 +1,7 @@
 package gui;
 
 import entity.*;
+import entity.bosses.*;
 
 import java.awt.*;
 import java.awt.event.*;

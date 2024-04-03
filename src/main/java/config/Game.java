@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entity.*;
+import entity.bosses.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
