@@ -4,22 +4,25 @@ package entity;
  * Classe représentant un type spécifique de boss.
  */
 public class BossType1 extends Boss {
+    private int hitCount;
+    private final int maxHits = 3;
 
     /**
      * Constructeur de la classe BossType1.
      * Initialise un boss de type 1.
      */
-    public BossType1() {
-        super(TypeCible.CIBLE_BOSS1, 3, 5, 0, 0);
+    public BossType1(int x, int y) {
+        super(TypeCible.CIBLE_BOSS1, 3, x, y, 0);
+        this.hitCount = 0;
     }
     
     @Override
-    public void attacked(Knife knife) {
-        /*
-        if (knife.hitBoss(this)) {
-            takeDamage(1);
-        }
-        */
+    public void attacked() {
+        this.hitCount++;
+    }
+
+    public boolean isDead() {
+        return hitCount >= maxHits;
     }
 
     @Override

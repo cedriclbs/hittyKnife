@@ -14,7 +14,7 @@ public class BossType2 extends Boss{
     }
 
     @Override
-    public void attacked(Knife knife) {
+    public void attacked() {
         /*
         if (knife.hitBoss(this)) {
             takeDamage(1);

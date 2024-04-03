@@ -29,8 +29,10 @@ public class Game {
         Cible c1 = new Cible(20,20);
         Cible c2 = new Cible(-15,30);
         MovingTarget m1 = new MovingTarget(-20,10);
+        BossType1 b1 = new BossType1(40, 40);
         listeCible.add(c1);listeCible.add(c2);
         listeCible.add(m1);
+        listeCible.add(b1);
         life = 3;
         argent = 0;
     }

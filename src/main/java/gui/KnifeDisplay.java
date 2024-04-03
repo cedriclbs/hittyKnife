@@ -1,15 +1,12 @@
 package gui;
 
-import entity.Cible;
-import entity.Knife;
-import entity.MovingTarget;
+import entity.*;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 /**
  * La classe KnifeDisplay représente le panneau graphique où le couteau et les cibles sont affichés.
@@ -21,7 +18,7 @@ public class KnifeDisplay extends JPanel {
     private Image cibleImage;
     private Image backgroundImage;
     private Image ciblesMouventeImage;
-
+    private Image boss;
     private ArrayList<Cible> listeCible;
     private static double bgImgWidth;
     private static double bgImgHeight;
@@ -110,11 +107,13 @@ public class KnifeDisplay extends JPanel {
         this.knifeImage = new ImageIcon("src/main/ressources/knifes/knifeRotate2.png").getImage();
         this.cibleImage = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
         this.ciblesMouventeImage =  new ImageIcon("src/main/ressources/targets/target#2.png").getImage();
+        this.boss = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
         int w = this.knifeImage.getWidth(null)/3;
         int h = this.knifeImage.getHeight(null)/3;
         this.knifeImage = this.knifeImage.getScaledInstance(w,h,Image.SCALE_SMOOTH);
         this.cibleImage = this.cibleImage.getScaledInstance(this.cibleImage.getWidth(null)/2,this.cibleImage.getHeight(null)/2,Image.SCALE_SMOOTH);
         this.ciblesMouventeImage = this.ciblesMouventeImage.getScaledInstance(this.ciblesMouventeImage.getWidth(null)/2,this.ciblesMouventeImage.getHeight(null)/2,Image.SCALE_SMOOTH);
+        this.boss = this.boss.getScaledInstance(this.boss.getWidth(null)/2, this.boss.getHeight(null)/2, Image.SCALE_SMOOTH);
     }
 
     /**
@@ -164,13 +163,24 @@ public class KnifeDisplay extends JPanel {
                 g2d.drawImage(ciblesMouventeImage,transformCible,this);
 
             }
+            else if (cible instanceof BossType1) {
+                g2d.drawImage(boss, transformCible , this);
+
+            }
             else {
                 g2d.drawImage(cibleImage, transformCible, this);
             }
 
             int cw=50;int ch=50;
             if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
-                deleteCible.add(cible);
+                if (cible instanceof BossType1) {
+                    ((BossType1) cible).attacked();
+                    if (((BossType1) cible).isDead()) {
+                        deleteCible.add(cible);
+                    }
+                } else {
+                    deleteCible.add(cible);
+                }
                 knife.resetKnife();
             }
         }

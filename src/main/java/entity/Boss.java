@@ -76,24 +76,6 @@ public abstract class Boss extends Cible {
     }
 
     /**
-     * Méthode pour obtenir la coordonnée y du boss.
-     *
-     * @return La coordonnée y du boss.
-     */
-    public double getY() {
-        return coordinate.getY();
-    }
-
-    /**
-     * Méthode pour obtenir la coordonnée x du boss.
-     *
-     * @return La coordonnée x du boss.
-     */
-    public double getX() {
-        return coordinate.getX();
-    }
-
-    /**
      * Méthode pour définir la coordonnée x du boss.
      *
      * @param x Nouvelle coordonnée x du boss.
@@ -117,23 +99,14 @@ public abstract class Boss extends Cible {
      * @param damage Dommages infligés.
      */
     public void takeDamage(int damage) {
-        if (isDebuffed) {
-            health -= 2 * damage;
-        }
-        if (isBuffed) {
-            health -= 2 / damage;
-        }
-        if (health <= 0) {
-            //System.out.println(name + " is dead");
-        }
+        health -= damage;
     }
 
     /**
      * Méthode abstraite pour gérer une attaque contre le boss avec un couteau.
      *
-     * @param knife Couteau utilisé pour l'attaque.
      */
-    public abstract void attacked(Knife knife);
+    public abstract void attacked();
 
     /**
      * Méthode abstraite pour faire sauter le boss.
@@ -152,7 +125,14 @@ public abstract class Boss extends Cible {
         if (isInTheAir){
             //updateJump();
             }
-    }    
+    }
+
+    protected void setHealth(int x) { health = x;
+    }
+
+    public boolean isDead() {
+        return health <= 0;
+    }
 
 
     /*
