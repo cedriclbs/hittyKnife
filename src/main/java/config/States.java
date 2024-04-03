@@ -7,6 +7,7 @@ public enum States {
     HOMEMENU,     // Menu principal
     SOLOMODE,     // Mode solo
     VERSUSMODE,   // Mode versus
+    SHOPMENU,
     GAMEOVERMENU; // Menu de fin de partie
 
     // Variable statique pour stocker l'état actuel du jeu
