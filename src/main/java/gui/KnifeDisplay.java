@@ -2,6 +2,7 @@ package gui;
 
 import entity.Cible;
 import entity.Knife;
+import entity.MovingTarget;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -19,6 +20,7 @@ public class KnifeDisplay extends JPanel {
     private Image knifeImage;
     private Image cibleImage;
     private Image backgroundImage;
+    private Image ciblesMouventeImage;
 
     private ArrayList<Cible> listeCible;
     private static double bgImgWidth;
@@ -40,9 +42,11 @@ public class KnifeDisplay extends JPanel {
         this.knife = knife;
         initImage();
         initBg(backgroundPath);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-        RATIO_X = getBgImgWidth()/2;
-        RATIO_Y = getBgImgHeight()*3/4;
+
+        RATIO_X = screenSize.width/2;//getBgImgWidth()/2;
+        RATIO_Y = screenSize.height*3/4;//getBgImgHeight()*3/4;
         // Coordonnées du couteau initialisé au milieu de l'écran pour une meilleure visibilité
         //this.knife.getCoordinate().setCoordinate(getBgImgWidth() / 2, getBgImgHeight() / 2);
 
@@ -98,23 +102,37 @@ public class KnifeDisplay extends JPanel {
         return bgImgHeight;
     }
 
-    // Méthode privée pour initialiser les images du couteau et des cibles
+    /**
+     * Initialise les images des couteaux et des cibles en chargeant les images correspondantes depuis les chemins spécifiés.
+     * Redimensionne également les images pour les adapter à la taille souhaitée.
+     */
     private void initImage () {
         this.knifeImage = new ImageIcon("src/main/ressources/knifes/knifeRotate2.png").getImage();
         this.cibleImage = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
+        this.ciblesMouventeImage =  new ImageIcon("src/main/ressources/targets/target#2.png").getImage();
         int w = this.knifeImage.getWidth(null)/3;
         int h = this.knifeImage.getHeight(null)/3;
         this.knifeImage = this.knifeImage.getScaledInstance(w,h,Image.SCALE_SMOOTH);
         this.cibleImage = this.cibleImage.getScaledInstance(this.cibleImage.getWidth(null)/2,this.cibleImage.getHeight(null)/2,Image.SCALE_SMOOTH);
+        this.ciblesMouventeImage = this.ciblesMouventeImage.getScaledInstance(this.ciblesMouventeImage.getWidth(null)/2,this.ciblesMouventeImage.getHeight(null)/2,Image.SCALE_SMOOTH);
     }
 
-    // Méthode privée pour initialiser l'image de fond
+    /**
+     * Initialise l'image de fond en chargeant l'image à partir du chemin spécifié.
+     *
+     * @param backgroundPath Le chemin de l'image de fond à charger.
+     */
     private void initBg(String backgroundPath) {
         this.backgroundImage = new ImageIcon(backgroundPath).getImage();
         bgImgHeight = this.backgroundImage.getHeight(null);
         bgImgWidth = this.backgroundImage.getWidth(null);
     }
-
+    /**
+     * Redessine le composant en dessinant l'image de fond, les couteaux et les cibles.
+     * Effectue également la gestion des collisions entre les couteaux et les cibles.
+     *
+     * @param g L'objet Graphics utilisé pour dessiner les composants.
+     */
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
@@ -142,7 +160,13 @@ public class KnifeDisplay extends JPanel {
             double cibleX = (RATIO_X-cible.getX()*RATIO);
             double cibleY = (RATIO_Y-cible.getY()*RATIO);
             AffineTransform transformCible = AffineTransform.getTranslateInstance(cibleX - (double) cibleImWidth / 2, cibleY - (double) cibleImHeight / 2);
-            g2d.drawImage(cibleImage,transformCible,this);
+            if (cible instanceof MovingTarget){
+                g2d.drawImage(ciblesMouventeImage,transformCible,this);
+
+            }
+            else {
+                g2d.drawImage(cibleImage, transformCible, this);
+            }
 
             int cw=50;int ch=50;
             if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
