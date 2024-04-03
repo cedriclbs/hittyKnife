@@ -1,4 +1,4 @@
-package bosses;
+package entity.bosses;
 
 import entity.Knife;
 import entity.Cible;
