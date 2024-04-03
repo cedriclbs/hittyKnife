@@ -55,14 +55,16 @@ public class Geometry{
      * @param coordinate Les coordonnées à déplacer.
      * @param angle L'angle en degrés.
      */
-    public static void forwardMovement(Coordinate coordinate, double angle){
+    public static double[] forwardMovement(Coordinate coordinate, double angle,int ratio){
         double deltaX;
         double deltaY;
         double angleRad = angle * Math.PI / 180.0;
         deltaX = Math.cos(angleRad);
         deltaY = Math.sin(angleRad);
-        coordinate.setX(coordinate.getX()+deltaX/10);
-        coordinate.setY(coordinate.getY()+deltaY/10);
+        double[] result = new double[2];
+        result[0] =  coordinate.getX()+deltaX/ratio;
+        result[1] =  coordinate.getY()+deltaY/ratio;
+        return result;
     }
 
     /*public static void forwardMovementSoloMode(Coordinate coordinate, double angle, double velocite) {
