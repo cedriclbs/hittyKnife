@@ -27,6 +27,7 @@ public class EntityDisplay extends JPanel {
     private static double bgImgHeight;
     private double RATIO_X;
     private double RATIO_Y;
+    private double RATIO1v1;
     private final int RATIO = 18;
 
     /**
@@ -35,9 +36,14 @@ public class EntityDisplay extends JPanel {
      * @param backgroundPath Le chemin d'accès à l'image de fond du panneau.
      * @param listeCible La liste des cibles à afficher dans le panneau.
      */
-    public EntityDisplay(Knife knife, String backgroundPath, ArrayList<Cible> listeCible) {
+    public EntityDisplay(Knife knife, String backgroundPath, ArrayList<Cible> listeCible,boolean isSolo) {
         //System.out.println("bg x : "+RATIO_X+" bg y : "+RATIO_Y);
-
+        if (isSolo){
+            RATIO1v1 = 1;
+        }
+        else{
+            RATIO1v1 = 2;
+        }
         this.listeCible = listeCible;
         this.knife = knife;
         initImage();
@@ -98,7 +104,7 @@ public class EntityDisplay extends JPanel {
      *
      * @return La hauteur de l'image de fond.
      */
-     public static double getBgImgHeight() {
+    public static double getBgImgHeight() {
         return bgImgHeight;
     }
 
@@ -139,7 +145,7 @@ public class EntityDisplay extends JPanel {
 
         g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 
-        int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
+        int knifeX = (int) ((RATIO_X-(knife.getX()*RATIO))/RATIO1v1);
         int knifeY = (int) (RATIO_Y-(knife.getY()*RATIO));
 
         if (knifeX>getBgImgWidth() || knifeX<0 || knifeY > getBgImgHeight() || knifeY<0){
@@ -157,7 +163,7 @@ public class EntityDisplay extends JPanel {
 
         ArrayList<Cible> deleteCible= new ArrayList<>();
         for (Cible cible : listeCible){
-            double cibleX = (RATIO_X-cible.getX()*RATIO);
+            double cibleX = (RATIO_X-cible.getX()*RATIO)/RATIO1v1;
             double cibleY = (RATIO_Y-cible.getY()*RATIO);
             AffineTransform transformCible = AffineTransform.getTranslateInstance(cibleX - (double) cibleImWidth / 2, cibleY - (double) cibleImHeight / 2);
             if (cible instanceof MovingTarget){

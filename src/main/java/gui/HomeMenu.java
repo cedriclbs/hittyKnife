@@ -122,6 +122,8 @@ public class HomeMenu extends Menu {
 
     //TODO : Ajouter la méthode redirigeant au mode 1v1 quand le mode sera implémenté
     private void show1v1Menu() {
+        GameView gameView = new GameView( this,false);
+        gameView.startSoloGame();
 
     }
 

@@ -12,8 +12,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Permet la sauvegarde et le chargement de l'état du jeu.
  */
 public class Game {
-    public Knife knife;
-    private List<Cible> listeCible = new ArrayList<>();
+    public Knife[] knife = new Knife[2];
+    boolean isSolo;
+    private List<Cible> listeCible1 = new ArrayList<>();
+    private List<Cible> listeCible2 = new ArrayList<>();
     private int life;
     private int argent; // Ajout de l'argent comme attribut du jeu
     private String nomUtilisateur;
@@ -22,15 +24,21 @@ public class Game {
      * Constructeur qui initialise le jeu avec un couteau, une liste de cibles vide, et un nombre initial de vies.
      * Fait également sauter le couteau dès le début.
      */
-    public Game(){
+    public Game(boolean isSolo){
+        this.isSolo = isSolo;
         System.out.println("creation game");
-        this.knife = new Knife();
+        this.knife[0] = new Knife();
+        if (!isSolo){
+            this.knife[1] = new Knife();
+        }
         //knife.addAngle(90);
         Cible c1 = new Cible(20,20);
         Cible c2 = new Cible(-15,30);
         MovingTarget m1 = new MovingTarget(-20,10);
-        listeCible.add(c1);listeCible.add(c2);
-        listeCible.add(m1);
+        listeCible1.add(c1);listeCible1.add(c2);
+        listeCible1.add(m1);
+        listeCible2.add(c1);listeCible2.add(c2);
+        listeCible2.add(m1);
         life = 3;
         argent = 0;
     }
@@ -46,11 +54,13 @@ public class Game {
 
 
     // Getters et setters pour la sérialisation/désérialisation
-    public Knife getKnife() { return knife; }
-    public void setKnife(Knife knife) { this.knife = knife; }
+    public Knife getKnife() { return knife[0]; }
+    public Knife getKnife2(){ return knife[1];}
+    //public void setKnife(Knife knife) { this.knife = knife; }
 
-    public List<Cible> getListeCible() { return listeCible; }
-    public void setListeCible(List<Cible> listeCible) { this.listeCible = listeCible; }
+    public List<Cible> getListeCible() { return listeCible1; }
+    public List<Cible> getListeCible2() { return listeCible2; }
+    //public void setListeCible(List<Cible> listeCible) { this.listeCible = listeCible; }
 
     public int getArgent() { return argent; }
     public void setArgent(int argent) { this.argent = argent; }
@@ -70,10 +80,18 @@ public class Game {
      */
      public void update(double delta){
          //System.out.println("dqdqzsqzdqsqdqzdqz");
-         knife.updateMovement();
-         for(Cible c : this.listeCible){
+         knife[0].updateMovement();
+         for(Cible c : this.listeCible1){
              if (c instanceof MovingTarget){
                  ((MovingTarget) c).updateMovement();
+             }
+         }
+         if (!isSolo){
+             knife[1].updateMovement();
+             for(Cible c : this.listeCible2){
+                 if (c instanceof MovingTarget){
+                     ((MovingTarget) c).updateMovement();
+                 }
              }
          }
          //Debug.affichage(knife);

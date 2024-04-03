@@ -22,7 +22,9 @@ public class GameView extends JPanel{
     private Game game;
     private HomeMenu homeMenu;
     private EntityDisplay entityDisplay;
-    private Knife knife;
+    private EntityDisplay entityDisplay2;
+    private Knife knife[];
+    private boolean isSolo;
 
     private Image backgroundImage;
     private static double bgImgWidth;
@@ -34,16 +36,23 @@ public class GameView extends JPanel{
      * @param homeMenu Le menu principal de l'application.
      */
     public GameView(HomeMenu homeMenu, boolean isSolo)  {
-
+        this.isSolo = isSolo;
         initBg("src/main/ressources/background/bgForet.png");
-        this.game = new Game();
+        this.game = new Game(isSolo);
         Main.loop = new Loop(game);
+
         Main.loop.startTickFunction();
 
         this.homeMenu = homeMenu;
-        this.knife = game.getKnife();
+        this.knife = game.knife;
         //this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);
-        this.entityDisplay = new EntityDisplay(knife,"src/main/ressources/background/bgForet.png", (ArrayList<Cible>) game.getListeCible());
+        if (isSolo) {
+            this.entityDisplay = new EntityDisplay(knife[0], "src/main/ressources/background/bgForet.png", (ArrayList<Cible>) game.getListeCible(),isSolo);
+        }
+        else{
+            this.entityDisplay = new EntityDisplay(knife[0], "src/main/ressources/background/fond1v1.jpg", (ArrayList<Cible>) game.getListeCible(),isSolo);
+            this.entityDisplay2 = new EntityDisplay(knife[1], "src/main/ressources/background/fond1v1.jpg", (ArrayList<Cible>) game.getListeCible2(),isSolo);
+        }
     }
 
     /**
@@ -51,19 +60,34 @@ public class GameView extends JPanel{
      *
      * @return Le couteau utilisé dans la partie solo.
      */
-    public Knife getKnife() {
+    /*public Knife getKnife() {
         return knife;
-    }
+    }*/
 
     /**
      * Initialise l'interface utilisateur et démarre la partie solo.
      */
     public void initialize() {
-        setStates(SOLOMODE);
-        homeMenu.getContentPane().removeAll();
-        homeMenu.getContentPane().add(entityDisplay);
-        homeMenu.getContentPane().revalidate();
-        homeMenu.getContentPane().repaint();
+        if (isSolo) {
+            setStates(SOLOMODE);
+            homeMenu.getContentPane().removeAll();
+            homeMenu.getContentPane().add(entityDisplay);
+            homeMenu.getContentPane().revalidate();
+            homeMenu.getContentPane().repaint();
+        }
+        else{
+            setLayout(new BorderLayout());
+            setStates(SOLOMODE);
+            homeMenu.getContentPane().removeAll();
+
+            JPanel playersPanel = new JPanel(new GridLayout(1, 2));
+            playersPanel.add(entityDisplay);
+            playersPanel.add(entityDisplay2);
+            add(playersPanel, BorderLayout.CENTER);
+            homeMenu.getContentPane().add(this);
+            homeMenu.getContentPane().revalidate();
+            homeMenu.getContentPane().repaint();
+        }
     }
 
     /**
