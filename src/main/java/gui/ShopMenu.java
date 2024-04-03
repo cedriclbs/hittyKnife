@@ -1,146 +1,160 @@
 package gui;
 
+import App.Loop;
+import App.Main;
+import config.ShopCart;
+import config.Game;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import config.Game;
+import static config.States.*;
+
+
 
 /**
  * Fenêtre du magasin où les joueurs peuvent acheter des objets ou des améliorations.
  */
-public class ShopMenu extends Menu {
-    private Game game; // Référence vers l'objet Game pour obtenir l'argent du joueur
-    private JLabel argentLabel; // Label pour afficher l'argent du joueur
+
+
+public class ShopMenu extends JFrame {
+    private Game game;
+    private HomeMenu homeMenu;
+    JLabel argentLabel;
+
+    ShopCart cart;
+    JTabbedPane tabbedPane;
+
+    boolean saveB;
+
+    String knifePath = "src/main/ressources/knifes/";
+    String backgroundPath = "src/main/ressources/background/";
+    String buttonPath = "src/main/ressources/button/";
+    String tabPath = "src/main/ressources/onglets/";
+
+
 
 
     /**
      * Constructeur de la fenêtre du magasin.
      *
-     * @param title Le titre de la fenêtre du magasin.
+     * @param title           Le titre de la fenêtre du magasin.
      * @param backgroundPath Le chemin de l'image de fond du magasin.
-     * @param musicPath Le chemin de la musique de fond du magasin.
+     * @param hm              Le menu principal.
      */
-    public ShopMenu(String title, String backgroundPath, String musicPath) {
-        super(title, backgroundPath, musicPath);
-        JPanel menuPanel = createMenuPanel(backgroundPath);
-        add(menuPanel);
+    public ShopMenu(String title, String backgroundPath, HomeMenu hm) {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.game = new Game();
+        Main.loop = new Loop(game);
+        Main.loop.startTickFunction();
+        this.homeMenu = hm;
+        this.cart = new ShopCart();
+        this.tabbedPane = new JTabbedPane();
+        this.saveB = true;
+        initialize();
     }
 
-    /**
-     * Crée et configure le panneau du menu du magasin.
-     *
-     * @param backgroundPath Le chemin de l'image de fond du panneau du menu.
-     * @return Le panneau du menu du magasin configuré.
-     */
-    @Override
-    JPanel createMenuPanel(String backgroundPath) {
-        BackgroundPanel panel = new BackgroundPanel(backgroundPath);
-        panel.setLayout(new BorderLayout()); // Utilisation d'un BorderLayout pour placer le bouton "Menu" dans le coin supérieur gauche
-
-         // Création d'un JPanel pour afficher l'argent du joueur
-         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-         argentLabel = new JLabel("Argent: " + game.getArgent()); // Afficher l'argent initial du joueur
-         topPanel.add(argentLabel);
-         panel.add(topPanel, BorderLayout.NORTH);
-
-        // Création d'un JPanel pour les boutons de menu principal
-        JPanel mainMenuPanel = new JPanel(new GridLayout(3, 3, 150, 20));
-        mainMenuPanel.setBorder(BorderFactory.createEmptyBorder(200,200,200,200)); // Ajoute des marges
-
-        // Ajout des boutons de menu principal
-        JButton sword1 = new JButton("Sword 1");
-        configureButton(sword1, e -> {
-            // TODO : action lorsque le bouton "Sword 1" est cliqué
-        });
-        mainMenuPanel.add(sword1);
-
-        JButton sword2 = new JButton("Sword 2");
-        configureButton(sword2, e -> {
-            // TODO : action lorsque le bouton "Sword 2" est cliqué
-        });
-        mainMenuPanel.add(sword2);
-
-        JButton sword3 = new JButton("Sword 3");
-        configureButton(sword3, e -> {
-            // TODO : action lorsque le bouton "Sword 3" est cliqué
-        });
-        mainMenuPanel.add(sword3);
-
-        JButton sword4 = new JButton("Sword 4");
-        configureButton(sword4, e -> {
-            // TODO : action lorsque le bouton "Sword 4" est cliqué
-        });
-        mainMenuPanel.add(sword4);
-
-        JButton background1 = new JButton("Background 1");
-        configureButton(background1, e -> {
-            // TODO : action lorsque le bouton "Background 1" est cliqué
-        });
-        mainMenuPanel.add(background1);
-
-        JButton background2 = new JButton("Background 2");
-        configureButton(background2, e -> {
-            // TODO : action lorsque le bouton "Background 2" est cliqué
-        });
-        mainMenuPanel.add(background2);
-
-        JButton background3 = new JButton("Background 3");
-        configureButton(background3, e -> {
-            // TODO : action lorsque le bouton "Background 3" est cliqué
-        });
-        mainMenuPanel.add(background3);
-
-        JButton music1 = new JButton("Music 1");
-        configureButton(music1, e -> {
-            // TODO : action lorsque le bouton "Music 1" est cliqué
-        });
-        mainMenuPanel.add(music1);
-
-        JButton music2 = new JButton("Music 2");
-        configureButton(music2, e -> {
-            // TODO : action lorsque le bouton "Music 2" est cliqué
-        });
-        mainMenuPanel.add(music2);
-
-        // Ajout du JPanel des boutons de menu principal au centre du panel global
-        panel.add(mainMenuPanel, BorderLayout.CENTER);
-
-        // Création et configuration du bouton "Menu"
-        JButton menuButton = new JButton("Menu");
-        configureButton(menuButton, e -> {
-            // TODO : action lorsque le bouton "Menu" est cliqué
-            System.exit(0);
-            //showMenu();
-        });
-
-        // Ajout du bouton "Menu" dans le coin supérieur gauche
-        panel.add(menuButton, BorderLayout.NORTH);
-
-        panel.setPreferredSize(new Dimension(100, 100)); // Taille du panel de menu
-
-        return panel;
+    public void startShopMenu() {
+        setStates(SHOPMENU);
     }
 
+
     /**
-     * Configure les propriétés visuelles et comportementales d'un bouton.
+     * Initialise le ShopMenu avec sa disposition et les onglets du magasin.
+     */
+    private void initialize() {
+        setLayout(new BorderLayout());
+
+        tabbedPane.setOpaque(false);
+
+        ShopTab accueil = new ShopTab(tabbedPane, "Accueil", null, "shopWelcomeTab.png", "welcome", this);
+        ShopTab couteaux = new ShopTab(tabbedPane, "Couteaux", knifePath, "knifeTab.png", "couteaux", this);
+        ShopTab background = new ShopTab(tabbedPane, "Background", backgroundPath, "bgTab.png", "background", this);
+        ShopTab music = new ShopTab(tabbedPane, "Music", buttonPath, "musicTab.png", "music", this);
+        ShopTab cart = new ShopTab(tabbedPane, "Panier", null, "cartTab.png", "cart", this);
+        //ShopTab bibliotheque = new ShopTab(tabbedPane, "Bibliothèque", null, "biblioTab.png", "bibliotheque", this);
+
+        add(tabbedPane, BorderLayout.CENTER);
+
+        // Création et ajout du label d'argent
+        argentLabel = new JLabel("Argent disponible: " + game.getArgent());
+        add(argentLabel, BorderLayout.NORTH);
+
+    }
+
+
+    void updateTotal() {
+        argentLabel.setText("Total: " + (game.getArgent() - cart.getCartTotal()));
+    }
+
+
+
+    public void saveCart() {
+        if (cart != null) {
+            saveB = true;
+            //Ajouter this.cart à la bibliothèque
+            JOptionPane.showMessageDialog(null, "Le panier a été sauvegardé avec succès.");
+        } else {
+            JOptionPane.showMessageDialog(null, "Le panier est vide.");
+        }
+    }
+
+
+
+    /**
+     * Configure un bouton avec des paramètres standard.
      *
-     * @param button Le bouton à configurer.
+     * @param button          Le bouton à configurer.
      * @param actionListener L'action à exécuter lorsque le bouton est cliqué.
      */
-    private void configureButton(JButton button, ActionListener actionListener) {
-        button.setPreferredSize(new Dimension(50,50));
+    void configureButton(JButton button, ActionListener actionListener) {
+        button.setPreferredSize(new Dimension(50, 50));
         button.setFocusPainted(false);
         button.setBorderPainted(true);
         button.setContentAreaFilled(true);
         button.addActionListener(actionListener);
     }
 
+
+
     /**
      * Redirige vers le menu principal.
      * Cette méthode est appelée lorsque le bouton "Menu" est cliqué.
      */
-    private void showMenu() {
-        // TODO : Implémenter la redirection vers le menu principal
+    void showMenu() {
+        if (!saveB) {
+            JPanel saveToQuit = new JPanel(new GridLayout(1, 2));
+            JButton sauvButton = new JButton("Sauvegarder");
+            JButton quitterButton = new JButton("Quitter");
+
+            configureButton(sauvButton, e -> {
+                saveCart();
+                SwingUtilities.getWindowAncestor(saveToQuit).dispose();
+                showMenuOnceVerif();
+            });
+            configureButton(quitterButton, e -> {
+                this.cart.getCart().clear();
+                updateTotal();
+                revalidate();
+                repaint();
+                SwingUtilities.getWindowAncestor(saveToQuit).dispose();
+                showMenuOnceVerif();
+            });
+
+            saveToQuit.add(sauvButton);
+            saveToQuit.add(quitterButton);
+            JOptionPane.showMessageDialog(null, saveToQuit, "Panier non sauvegardé", JOptionPane.PLAIN_MESSAGE);
+        } else {
+            showMenuOnceVerif();
+        }
+
     }
+
+
+    private void showMenuOnceVerif () {
+        setStates(HOMEMENU);
+        homeMenu.showHomeMenu();
+    }
+
 
 }

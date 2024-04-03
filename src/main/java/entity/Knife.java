@@ -142,7 +142,9 @@ public class Knife {
      */
     public void throwKnife(){
         throwing = true;
-        Geometry.forwardMovement(coordinate, angle);
+        double[] result = Geometry.forwardMovement(coordinate, angle,10);
+        setX(result[0]);
+        setY(result[1]);
     }
 
     /**

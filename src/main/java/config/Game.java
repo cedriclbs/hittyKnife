@@ -28,9 +28,11 @@ public class Game {
         //knife.addAngle(90);
         Cible c1 = new Cible(20,20);
         Cible c2 = new Cible(-15,30);
+        MovingTarget m1 = new MovingTarget(-20,10);
         listeCible.add(c1);listeCible.add(c2);
+        listeCible.add(m1);
         life = 3;
-        argent = 0;
+        argent = 100;
     }
 
     /**
@@ -70,6 +72,11 @@ public class Game {
      public void update(double delta){
          //System.out.println("dqdqzsqzdqsqdqzdqz");
          knife.updateMovement();
+         for(Cible c : this.listeCible){
+             if (c instanceof MovingTarget){
+                 ((MovingTarget) c).updateMovement();
+             }
+         }
          //Debug.affichage(knife);
      }
 

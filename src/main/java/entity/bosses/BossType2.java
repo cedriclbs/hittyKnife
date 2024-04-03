@@ -1,4 +1,7 @@
-package entity;
+package entity.bosses;
+
+import entity.Knife;
+import entity.TypeCible;
 
 /**
  * Classe représentant un type spécifique de boss.
