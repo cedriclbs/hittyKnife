@@ -44,9 +44,9 @@ public class ShopMenu extends JFrame {
      */
     public ShopMenu(String title, String backgroundPath, HomeMenu hm) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.game = new Game();
-        Main.loop = new Loop(game);
-        Main.loop.startTickFunction();
+        this.game = new Game(false);//à modifier il ne faut pas créer de game ici
+        //Main.loop = new Loop(game);
+        //Main.loop.startTickFunction();
         this.homeMenu = hm;
         this.cart = new ShopCart();
         this.tabbedPane = new JTabbedPane();
