@@ -1,7 +1,7 @@
-package bosses;
+package entity.bosses;
 
 import entity.Knife;
-import entity.Cible;
+import entity.TypeCible;
 
 /**
  * Classe représentant un type spécifique de boss.
@@ -13,7 +13,7 @@ public class BossType2 extends Boss{
      * Initialise un boss de type 2.
      */
     public BossType2() {
-        super(Cible.TypeCible.CIBLE_BOSS2, 4, 10, 0, 0);
+        super(TypeCible.CIBLE_BOSS2, 4, 10, 0, 0);
     }
 
     @Override

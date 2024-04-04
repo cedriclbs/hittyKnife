@@ -44,7 +44,7 @@ public class Game {
         listeCible2.add(c12);listeCible2.add(c22);
         listeCible2.add(m12);
         life = 3;
-        argent = 0;
+        argent = 100;
     }
 
     /**

@@ -1,189 +1,107 @@
 package config;
 
+import entity.TypeCible;
 import java.util.ArrayList;
 import java.util.List;
-import entity.Cible.TypeCible;
 import java.util.Random;
 
 /**
- * La classe Round gère les rounds du jeu, y compris les cibles pour chaque round et le boss final.
- * Elle permet d'initialiser les cibles pour chaque round, de passer au round suivant, et de réinitialiser les rounds.
+ * Gère les rounds dans le jeu, y compris les cibles pour chaque round.
  */
 public class Round {
-    private List<TypeCible> round1Targets;
-    private List<TypeCible> round2Targets;
-    private List<TypeCible> round3Targets;
-    private List<TypeCible> bossTarget;
-    private int currentRound;
-    private int indexTargets;
-    private Random random;
+    private List<List<TypeCible>> roundsTargets; // Liste des cibles pour chaque round
+    private int currentRound; // Indice du round actuel
+    private Random random; // Pour générer des valeurs aléatoires
 
     /**
-     * Constructeur par défaut de la classe Round.
-     * Initialise les listes de cibles pour chaque round et le boss final.
+     * Constructeur pour initialiser les rounds et leurs cibles.
      */
     public Round() {
         this.random = new Random();
-        round1Targets = new ArrayList<>();
-        round2Targets = new ArrayList<>();
-        round3Targets = new ArrayList<>();
-        bossTarget = new ArrayList<>();
-        currentRound = 1; // si round en trop à l'affichage mettre 0
+        this.roundsTargets = new ArrayList<>();
+        this.currentRound = 0; // Commence au premier round
 
-        initTargets();
+        initRounds(); // Initialise les rounds avec des cibles
     }
 
     /**
-     * Retourne la liste des cibles pour le round actuel.
-     *
-     * @return La liste des cibles pour le round actuel.
+     * Prépare les rounds en créant une liste de cibles pour chacun.
      */
-    private List<TypeCible> getCurrentTargets() {
-        return switch (currentRound) {
-            case 1 -> round1Targets;
-            case 2 -> round2Targets;
-            case 3 -> round3Targets;
-            default -> bossTarget;
-        };
+    private void initRounds() {
+        for (int i = 0; i < 4; i++) { // Pour 3 rounds et 1 round de boss
+            roundsTargets.add(new ArrayList<>());
+        }
+        populateTargets(); // Remplit chaque round de cibles
     }
 
     /**
-     * Retourne une cible aléatoire parmi les deux premiers types de cibles
-     * @return Une cible alétoire
+     * Remplit chaque round avec un ensemble déterminé de cibles.
      */
-    // Sélectionne parmi les deux premiers types de cibles
+    private void populateTargets() {
+        for (int i = 0; i < roundsTargets.size(); i++) {
+            List<TypeCible> currentRoundTargets = roundsTargets.get(i);
+            int targetsCount = (i < roundsTargets.size() - 1) ? getRndIntTargetRounds() : 1; // Un seul boss pour le dernier round
+
+            for (int j = 0; j < targetsCount; j++) {
+                currentRoundTargets.add((i < roundsTargets.size() - 1) ? getRandomTypeCible() : getRandomTypeBoss());
+            }
+        }
+    }
+
+    /**
+     * Sélectionne un type de cible aléatoire pour les rounds normaux.
+     * @return Un type de cible aléatoire, à l'exception des boss.
+     */
     private TypeCible getRandomTypeCible() {
-        int randomNum = random.nextInt(2); // Sélectionne parmi les deux premiers types
+        int randomNum = random.nextInt(2);
         return TypeCible.values()[randomNum];
     }
 
     /**
-     * Retourne un boss aléatoire parmi les trois types de boss
-     * @return Un boss alétoire
+     * Sélectionne un type de boss aléatoire pour le round final.
+     * @return Un type de boss aléatoire.
      */
     private TypeCible getRandomTypeBoss() {
-        int randomNum = random.nextInt(3); // Vous pouvez ajuster cela selon le nombre de types de boss que vous avez
-        return TypeCible.values()[TypeCible.values().length - 1 - randomNum];
+        int randomNum = random.nextInt(3);
+        return TypeCible.values()[TypeCible.values().length - 3 + randomNum];
     }
 
     /**
-     * Retourne un nombre de cibles aléatoires
-     * @return Une nombre de cibles alétoires
+     * Génère un nombre aléatoire de cibles pour les rounds.
+     * @return Un nombre aléatoire de cibles, entre 4 et 10.
      */
-    private int getRndIntTargetRounds(){
-        int randomNum = random.nextInt(7);
-        return 4 + randomNum;
+    private int getRndIntTargetRounds() {
+        return 4 + random.nextInt(7);
     }
 
     /**
-     * Retourne le nombre de cibles restantes dans le round actuel.
-     * @return Le nombre de cibles restantes.
-     */
-    public int getIndexTargets(){
-        return indexTargets;
-    }
-
-    /**
-     * Initialise les cibles pour le round actuel.
-     */
-    private void initTargets() {
-
-        switch (currentRound) {
-            case 1:
-                for (int i = 0; i < getRndIntTargetRounds(); i++) {
-                    round1Targets.add(getRandomTypeCible());
-                }
-                indexTargets = round1Targets.size();
-                break;
-            case 2:
-                for (int i = 0; i < getRndIntTargetRounds(); i++) {
-                    round2Targets.add(getRandomTypeCible());
-                }
-                indexTargets = round2Targets.size();
-                break;
-            case 3:
-                for (int i = 0; i < getRndIntTargetRounds(); i++) {
-                    round3Targets.add(getRandomTypeCible());
-                }
-                indexTargets = round3Targets.size();
-                break;
-            case 4:
-                bossTarget.add(getRandomTypeBoss());
-                indexTargets = bossTarget.size();
-                break;
-        }
-    }
-
-    /**
-     * Réinitialise les rounds.
-     */
-    public void reset(){
-        currentRound = 1;
-        indexTargets = 0;
-    }
-    
-    /**
-     * Décrémente le nombre de cible restant dans le round actuel, et passe au round suivant si toutes les cibles sont atteintes.
+     * Gère la progression des cibles dans le round actuel et passe au suivant si nécessaire.
      */
     public void nextTarget() {
-        if (indexTargets > 0) {
-            //if(TargetsHit == true){ TODO Condition si le joueur a bien touché la cible à implementer 
-                indexTargets--;
-            //}
-        } else {
-            currentRound++;
-            initNextRoundTargets(); 
+        if (!roundsTargets.get(currentRound).isEmpty()) {
+            roundsTargets.get(currentRound).remove(0); // Élimine la première cible TODO: retirer la cible qui est touché donc fonction pour savoir quelle cible à été touchée
+        } else if (currentRound < roundsTargets.size() - 1) {
+            currentRound++; // Passe au round suivant
         }
     }
 
     /**
-     * Initialise les cibles pour le round suivant.
+     * Vérifie si tous les rounds, y compris le boss, ont été complétés.
+     * @return vrai si tous les rounds sont terminés, sinon faux.
      */
-    private void initNextRoundTargets() {
-       
-        clearTargets();
+    public boolean isAllRoundCompleted() {
+        return currentRound == roundsTargets.size() - 1 && roundsTargets.get(currentRound).isEmpty();
+    }
 
-        switch (currentRound) {
-            case 1:
-                for (int i = 0; i < getRndIntTargetRounds(); i++) {
-                    round1Targets.add(getRandomTypeCible());
-                }
-                indexTargets = round1Targets.size();
-                break;
-            case 2:
-                for (int i = 0; i < getRndIntTargetRounds(); i++) {
-                    round2Targets.add(getRandomTypeCible());
-                }
-                indexTargets = round2Targets.size();
-                break;
-            case 3:
-                for (int i = 0; i < getRndIntTargetRounds(); i++) {
-                    round3Targets.add(getRandomTypeCible());
-                }
-                indexTargets = round3Targets.size();
-                break;
-            case 4:
-                bossTarget.add(getRandomTypeBoss());
-                indexTargets = bossTarget.size();
-                break;
+    /**
+     * Réinitialise les rounds pour un nouveau jeu, en vidant les listes de cibles et en repopulant.
+     */
+    public void reset() {
+        for (List<TypeCible> round : roundsTargets) {
+            round.clear(); // Vide les cibles de chaque round
         }
-    }
 
-    /**
-     * Efface les listes de cibles pour tous les rounds, en préparation pour le round suivant.
-     */
-    protected void clearTargets() {
-        round1Targets.clear();
-        round2Targets.clear();
-        round3Targets.clear();
-        bossTarget.clear();
+        currentRound = 0; // Réinitialise au premier round
+        populateTargets(); // Repeuple les cibles
     }
-
-    /**
-     * Réinitialise le nombre de target à 0.
-     */
-    public void resetIndexTargets() {
-        indexTargets= 0;
-    }
-
 }

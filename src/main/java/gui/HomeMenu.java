@@ -15,6 +15,8 @@ public class HomeMenu extends Menu {
     //private BackgroundPanel soloFrame;
     //private SoloMode soloMode;
     //Game game;
+    private ShopMenu shopMenu;
+
 
     //TODO: quand on appuie sur échap, enlève le plein écran
     /**
@@ -129,7 +131,22 @@ public class HomeMenu extends Menu {
 
     //TODO : Ajouter la méthode redirigeant au shop quand le shop sera implémenté
     private void showShop() {
+        if (shopMenu == null) {
+            shopMenu = new ShopMenu("ShopMenu","src/main/ressources/background/bgShopMenu.png", this);
+        }
+        shopMenu.startShopMenu();
 
+        getContentPane().removeAll();
+        getContentPane().add(shopMenu.getContentPane());
+        revalidate();
+        repaint();
+    }
+
+    public void showHomeMenu() {
+        getContentPane().removeAll();
+        getContentPane().add(createMenuPanel("src/main/ressources/background/Background_MainMenu.png"));
+        revalidate();
+        repaint();
     }
 
 }

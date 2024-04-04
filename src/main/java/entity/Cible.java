@@ -7,18 +7,6 @@ import geometry.Coordinate;
  */
 public class Cible {
 
-    /**
-     * Enumération des types de cibles possibles.
-     */
-    public enum TypeCible {
-        CIBLE_NORMALE,
-        CIBLE_ARGENT,
-        CIBLE_BONUSGEL,
-        CIBLE_BOSS1,
-        CIBLE_BOSS2,
-        CIBLE_BOSS3
-    }
-
     private TypeCible typeCible;
     private int health;
 
