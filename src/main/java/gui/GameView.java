@@ -94,16 +94,13 @@ public class GameView extends JPanel{
             JPanel playersPanel = new JPanel(new GridLayout(1, 2));
             playersPanel.add(entityDisplay);
             playersPanel.add(entityDisplay2);
-            // Assurez-vous que le panel peut obtenir le focus
+
             playersPanel.setFocusable(true);
-// Demandez le focus pour le panneau
-            playersPanel.requestFocusInWindow();
             playersPanel.addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
 
                     if (!game.knife2.throwing && !game.knife2.isInTheAir) {
                         game.knife2.jump();
-                        //System.out.println(game.knife1.getY());
                     }
                     else if (!game.knife2.throwing && game.knife2.isInTheAir){
                         game.knife2.throwKnife();
@@ -128,6 +125,8 @@ public class GameView extends JPanel{
             homeMenu.getContentPane().add(this);
             homeMenu.getContentPane().revalidate();
             homeMenu.getContentPane().repaint();
+
+            playersPanel.requestFocusInWindow();
         }
     }
 

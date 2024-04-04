@@ -36,10 +36,13 @@ public class Game {
         Cible c1 = new Cible(20,20);
         Cible c2 = new Cible(-15,30);
         MovingTarget m1 = new MovingTarget(-20,10);
+        Cible c12 = new Cible(20,20);
+        Cible c22 = new Cible(-15,30);
+        MovingTarget m12 = new MovingTarget(-20,10);
         listeCible1.add(c1);listeCible1.add(c2);
         listeCible1.add(m1);
-        listeCible2.add(c1);listeCible2.add(c2);
-        listeCible2.add(m1);
+        listeCible2.add(c12);listeCible2.add(c22);
+        listeCible2.add(m12);
         life = 3;
         argent = 0;
     }
