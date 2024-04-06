@@ -59,16 +59,16 @@ public class ShopMenu extends JPanel {
         add(tabbedPane, BorderLayout.CENTER);
 
         // Création et ajout du label d'argent
-        //argentLabel = new JLabel("Argent disponible: " + user.getArgent());
+        //argentLabel = new JLabel("Argent disponible: " + User.getArgent());
         //add(argentLabel, BorderLayout.NORTH);
 
     }
 
     /*
     void updateTotal() {
-        argentLabel.setText("Total: " + (user.getArgent() - cart.getCartTotal()));
+        argentLabel.setText("Total: " + (User.getArgent() - cart.getCartTotal()));
     }
-    */
+     */
 
 
     public void saveCart() {
@@ -109,7 +109,7 @@ public class ShopMenu extends JPanel {
             configureButton(sauvButton, e -> {
                 saveCart();
                 SwingUtilities.getWindowAncestor(saveToQuit).dispose();
-                showMenuOnceVerif();
+                //showMenuOnceVerif();
             });
             configureButton(quitterButton, e -> {
                 this.cart.getCart().clear();
@@ -117,23 +117,25 @@ public class ShopMenu extends JPanel {
                 revalidate();
                 repaint();
                 SwingUtilities.getWindowAncestor(saveToQuit).dispose();
-                showMenuOnceVerif();
+                //showMenuOnceVerif();
             });
 
             saveToQuit.add(sauvButton);
             saveToQuit.add(quitterButton);
             JOptionPane.showMessageDialog(null, saveToQuit, "Panier non sauvegardé", JOptionPane.PLAIN_MESSAGE);
         } else {
-            showMenuOnceVerif();
+            //showMenuOnceVerif();
         }
 
     }
 
-
+    /*
     private void showMenuOnceVerif () {
         setStates(HOMEMENU);
         //homeMenu.showHomeMenu();
     }
+
+    */
 
 
 }
