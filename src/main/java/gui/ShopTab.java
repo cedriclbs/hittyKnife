@@ -109,7 +109,7 @@ public class ShopTab {
             case "cart":
                 JPanel cartPanel = displayList(shopMenu.cart.getCart(), mainMenuPanel, "Panier");
                 if (shopMenu.argentLabel != null) {
-                    shopMenu.updateTotal();
+                    //shopMenu.updateTotal();
                 }
                 break;
 
@@ -169,7 +169,7 @@ public class ShopTab {
                 deleteButton.setMaximumSize(new Dimension(50, 50));
                 deleteButton.addActionListener(e -> {
                     shopMenu.cart.removeArticle(article);
-                    shopMenu.updateTotal();
+                    //shopMenu.updateTotal();
                     updateCartTotal();
                     cartPanel.remove(itemPanel);
                     cartPanel.revalidate();
@@ -196,9 +196,7 @@ public class ShopTab {
 
         JButton saveButton = new JButton("Sauvegarder");
         saveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        saveButton.addActionListener(e -> {
-            shopMenu.saveCart();
-        });
+        saveButton.addActionListener(e -> shopMenu.saveCart());
         cartPanel.add(saveButton);
 
 
@@ -246,7 +244,7 @@ public class ShopTab {
         shopMenu.configureButton(itemButton, e -> {
             shopMenu.cart.addArticle(new ShopItem(itemName, 10, imagePath));
             shopMenu.saveB = false;
-            shopMenu.updateTotal();
+            //shopMenu.updateTotal();
             int cartTabIndex = shopMenu.tabbedPane.indexOfTab("Panier");
             if (cartTabIndex != -1) {
                 JPanel cartPanel = createPanel(null, "cart");
