@@ -18,7 +18,6 @@ public class Game {
     private List<Cible> listeCible1 = new ArrayList<>();
     private List<Cible> listeCible2 = new ArrayList<>();
     private int life;
-    private int argent; // Ajout de l'argent comme attribut du jeu
     private String nomUtilisateur;
 
     /**
@@ -44,7 +43,6 @@ public class Game {
         listeCible2.add(c12);listeCible2.add(c22);
         listeCible2.add(m12);
         life = 3;
-        argent = 100;
     }
 
     /**
@@ -65,9 +63,6 @@ public class Game {
     public List<Cible> getListeCible() { return listeCible1; }
     public List<Cible> getListeCible2() { return listeCible2; }
     //public void setListeCible(List<Cible> listeCible) { this.listeCible = listeCible; }
-
-    public int getArgent() { return argent; }
-    public void setArgent(int argent) { this.argent = argent; }
 
     public void setNomUtilisateur(String nomUtilisateur) {
         this.nomUtilisateur = nomUtilisateur;
