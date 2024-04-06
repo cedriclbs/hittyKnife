@@ -4,7 +4,6 @@ import App.Loop;
 import App.Main;
 import config.Game;
 import entity.Cible;
-import entity.Knife;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 
-import static config.States.*;
 
 /**
  * La classe SoloMode représente le mode de jeu solo du jeu et gère l'initialisation et le démarrage d'une partie solo du jeu.
@@ -20,7 +18,6 @@ import static config.States.*;
 public class GameView extends JPanel{
 
     private Game game;
-    private HomeMenu homeMenu;
     private EntityDisplay entityDisplay;
     private EntityDisplay entityDisplay2;
     //private Knife knife[];
@@ -33,17 +30,13 @@ public class GameView extends JPanel{
     /**
      * Constructeur de la classe SoloMode.
      *
-     * @param homeMenu Le menu principal de l'application.
      */
-    public GameView(HomeMenu homeMenu, boolean isSolo)  {
+    public GameView(boolean isSolo)  {
         this.isSolo = isSolo;
         initBg("src/main/ressources/background/bgForet.png");
         this.game = new Game(isSolo);
         Main.loop = new Loop(game);
-
         Main.loop.startTickFunction();
-
-        this.homeMenu = homeMenu;
         //this.knife = game.knife1;
         //this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);
         if (isSolo) {
@@ -56,8 +49,6 @@ public class GameView extends JPanel{
     }
 
     /**
-     * Retourne le couteau utilisé dans la partie solo.
-     *
      * @return Le couteau utilisé dans la partie solo.
      */
     /*public Knife getKnife() {
@@ -65,49 +56,36 @@ public class GameView extends JPanel{
     }*/
 
     /**
-     * Initialise l'interface utilisateur et démarre la partie solo.
+     * Initialise l'interface utilisateur et démarre le jeu.
      */
     public void initialize() {
-        setStates(SOLOMODE);
-        homeMenu.getContentPane().removeAll();
+        setLayout(new BorderLayout());
         if (isSolo) {
-            homeMenu.getContentPane().add(entityDisplay);
-            homeMenu.getContentPane().addMouseListener(new MouseAdapter() {
+            add(entityDisplay);
+            addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
-
                     if (!game.knife1.throwing && !game.knife1.isInTheAir) {
                         game.knife1.jump();
-                        System.out.println(game.knife1.getY());
-                    }
-                    else if (!game.knife1.throwing && game.knife1.isInTheAir){
+                    } else if (!game.knife1.throwing && game.knife1.isInTheAir) {
                         game.knife1.throwKnife();
                     }
                 }
-            }
-            );
-            homeMenu.getContentPane().revalidate();
-            homeMenu.getContentPane().repaint();
-        }
-        else{
-            setLayout(new BorderLayout());
-
+            });
+            requestFocusInWindow();
+        } else {
             JPanel playersPanel = new JPanel(new GridLayout(1, 2));
             playersPanel.add(entityDisplay);
             playersPanel.add(entityDisplay2);
-
             playersPanel.setFocusable(true);
             playersPanel.addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
-
                     if (!game.knife2.throwing && !game.knife2.isInTheAir) {
                         game.knife2.jump();
-                    }
-                    else if (!game.knife2.throwing && game.knife2.isInTheAir){
+                    } else if (!game.knife2.throwing && game.knife2.isInTheAir) {
                         game.knife2.throwKnife();
                     }
                 }
-            }
-            );
+            });
             playersPanel.addKeyListener(new KeyAdapter() {
                 public void keyPressed(KeyEvent e) {
                     if (e.getKeyCode() == KeyEvent.VK_SPACE) {
@@ -118,17 +96,12 @@ public class GameView extends JPanel{
                         }
                     }
                 }
-
             });
-
             add(playersPanel, BorderLayout.CENTER);
-            homeMenu.getContentPane().add(this);
-            homeMenu.getContentPane().revalidate();
-            homeMenu.getContentPane().repaint();
-
             playersPanel.requestFocusInWindow();
         }
     }
+
 
     /**
      * Initialise l'image de fond du jeu.
@@ -140,6 +113,15 @@ public class GameView extends JPanel{
         bgImgHeight = this.backgroundImage.getHeight(null);
         bgImgWidth = this.backgroundImage.getWidth(null);
     }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        g2d.dispose();
+    }
+
 
     /**
      * Démarre la partie solo.

@@ -73,7 +73,7 @@ public class ConnectionMenu extends JDialog {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Erreur lors du chargement de la sauvegarde de jeu.", "Erreur", JOptionPane.ERROR_MESSAGE);
             } 
-            HomeMenu homeMenu = new HomeMenu("Hitty Knife", "src/main/ressources/background/solo.png", "cheminVersMusique");
+            MainFrame mainFrame = new MainFrame();
         } else {
             JOptionPane.showMessageDialog(this, "Échec de la connexion. Vérifiez votre nom d'utilisateur et mot de passe.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
