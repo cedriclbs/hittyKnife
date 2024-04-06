@@ -1,12 +1,22 @@
 package User;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public final class User {
-    private final String nomUtilisateur;
-    private final String motDePasse;
-    private final String cheminSauvegarde;
+    private String nomUtilisateur;
+    private String motDePasse;
+    private String cheminSauvegarde;
     private int argent;
+
+    //Constructeur par défaut pour la sérialisation en JSON
+    public User() {
+        this.nomUtilisateur = null;
+        this.motDePasse = null;
+        this.cheminSauvegarde = null;
+        this.argent = 0;
+    }
 
     public User(String nomUtilisateur, String motDePasse, String cheminSauvegarde, int argent) {
         this.nomUtilisateur = nomUtilisateur;
@@ -23,22 +33,42 @@ public final class User {
                 "cheminSauvegarde=" + cheminSauvegarde + "]\n";
     }
 
-    public String nomUtilisateur() {
+    @JsonProperty("nomUtilisateur")
+    public String getNomUtilisateur() {
         return nomUtilisateur;
     }
 
-    public String motDePasse() {
+    @JsonProperty("nomUtilisateur")
+    public void setNomUtilisateur(String nomUtilisateur) {
+        this.nomUtilisateur = nomUtilisateur;
+    }
+
+    @JsonProperty("motDePasse")
+    public String getMotDePasse() {
         return motDePasse;
     }
 
-    public String cheminSauvegarde() {
+    @JsonProperty("motDePasse")
+    public void setMotDePasse(String motDePasse) {
+        this.motDePasse = motDePasse;
+    }
+
+    @JsonProperty("cheminSauvegarde")
+    public String getCheminSauvegarde() {
         return cheminSauvegarde;
     }
 
+    @JsonProperty("cheminSauvegarde")
+    public void setCheminSauvegarde(String cheminSauvegarde) {
+        this.cheminSauvegarde = cheminSauvegarde;
+    }
+
+    @JsonProperty("argent")
     public int getArgent() {
         return argent;
     }
 
+    @JsonProperty("argent")
     public void setArgent(int argent) {
         this.argent = argent;
     }

@@ -5,7 +5,6 @@ import config.ShopCart;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import User.User;
 import static config.States.*;
 
 
@@ -61,14 +60,15 @@ public class ShopMenu extends JPanel {
 
         // Création et ajout du label d'argent
         //argentLabel = new JLabel("Argent disponible: " + User.getArgent());
-        add(argentLabel, BorderLayout.NORTH);
+        //add(argentLabel, BorderLayout.NORTH);
 
     }
 
-
+    /*
     void updateTotal() {
-        //argentLabel.setText("Total: " + (User.getArgent() - cart.getCartTotal()));
+        argentLabel.setText("Total: " + (User.getArgent() - cart.getCartTotal()));
     }
+     */
 
 
     public void saveCart() {
@@ -113,7 +113,7 @@ public class ShopMenu extends JPanel {
             });
             configureButton(quitterButton, e -> {
                 this.cart.getCart().clear();
-                updateTotal();
+                //updateTotal();
                 revalidate();
                 repaint();
                 SwingUtilities.getWindowAncestor(saveToQuit).dispose();

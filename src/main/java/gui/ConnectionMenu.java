@@ -5,9 +5,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import config.Game;
+import User.User;
 
 
 /**
@@ -93,11 +93,10 @@ public class ConnectionMenu extends JDialog {
 
         boolean utilisateurAjoute = gestionUtilisateurs.ajouterUtilisateur(nomUtilisateur, motDePasse);
         if (utilisateurAjoute) {
-            JOptionPane.showMessageDialog(this, "Compte créé avec succès !");
-
             // Créer le fichier de sauvegarde pour le nouvel utilisateur
             String cheminSauvegarde = "src/main/saves/sauvegarde_" + nomUtilisateur + ".json";
             creerFichierSauvegardeUtilisateur(cheminSauvegarde, nomUtilisateur);
+            JOptionPane.showMessageDialog(this, "Compte créé avec succès !");
         } else {
             JOptionPane.showMessageDialog(this, "Le nom d'utilisateur est déjà pris. Veuillez essayer un nom différent.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
@@ -111,9 +110,13 @@ public class ConnectionMenu extends JDialog {
      */
     private void creerFichierSauvegardeUtilisateur(String cheminSauvegarde, String username) {
         try {
-            Game etatInitialJeu = new Game(username);
+            // Créer un nouvel utilisateur avec le nom d'utilisateur et un mot de passe par défaut
+            String motDePasse = "password"; // Mot de passe par défaut pour un nouvel utilisateur
+            User nouvelUtilisateur = new User(username, motDePasse, cheminSauvegarde, 100); // 100 est l'argent initial
+
+            // Sérialiser l'objet User dans le fichier JSON
             ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(new File(cheminSauvegarde), etatInitialJeu);
+            mapper.writeValue(new File(cheminSauvegarde), nouvelUtilisateur);
         } catch (IOException e) {
             e.printStackTrace();
         }
