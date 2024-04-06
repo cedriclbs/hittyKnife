@@ -15,7 +15,7 @@ import javax.swing.JPanel;
  * La classe KnifeDisplay représente le panneau graphique où le couteau et les cibles sont affichés.
  * Elle étend JPanel pour permettre l'affichage des éléments graphiques du jeu Hitty Knife.
  */
-public class KnifeDisplay extends JPanel {
+public class EntityDisplay extends JPanel {
     private final Knife knife;
     private Image knifeImage;
     private Image cibleImage;
@@ -28,6 +28,8 @@ public class KnifeDisplay extends JPanel {
     private double RATIO_X;
     private double RATIO_Y;
     private final int RATIO = 18;
+    private int RATIO1v1;
+    Dimension screenSize;
 
     /**
      * Constructeur de la classe KnifeDisplay.
@@ -35,52 +37,21 @@ public class KnifeDisplay extends JPanel {
      * @param backgroundPath Le chemin d'accès à l'image de fond du panneau.
      * @param listeCible La liste des cibles à afficher dans le panneau.
      */
-    public KnifeDisplay(Knife knife, String backgroundPath, ArrayList<Cible> listeCible) {
+    public EntityDisplay(Knife knife, String backgroundPath, ArrayList<Cible> listeCible,boolean isSolo) {
         //System.out.println("bg x : "+RATIO_X+" bg y : "+RATIO_Y);
-
         this.listeCible = listeCible;
         this.knife = knife;
         initImage();
         initBg(backgroundPath);
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        RATIO1v1 = (isSolo)?1:2;
 
 
-        RATIO_X = screenSize.width/2;//getBgImgWidth()/2;
+        if (isSolo) RATIO_X = screenSize.width/2;
+        else RATIO_X = screenSize.width/4;//getBgImgWidth()/2;
+
         RATIO_Y = screenSize.height*3/4;//getBgImgHeight()*3/4;
-        // Coordonnées du couteau initialisé au milieu de l'écran pour une meilleure visibilité
-        //this.knife.getCoordinate().setCoordinate(getBgImgWidth() / 2, getBgImgHeight() / 2);
 
-        addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (!knife.throwing && !knife.isInTheAir) {
-                    knife.jump();
-                }
-                else if (!knife.throwing && knife.isInTheAir){
-                    knife.throwKnife();
-                }
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-
-        });
 
     }
 
@@ -98,7 +69,7 @@ public class KnifeDisplay extends JPanel {
      *
      * @return La hauteur de l'image de fond.
      */
-     public static double getBgImgHeight() {
+    public static double getBgImgHeight() {
         return bgImgHeight;
     }
 
@@ -142,7 +113,7 @@ public class KnifeDisplay extends JPanel {
         int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
         int knifeY = (int) (RATIO_Y-(knife.getY()*RATIO));
 
-        if (knifeX>getBgImgWidth() || knifeX<0 || knifeY > getBgImgHeight() || knifeY<0){
+        if (knifeX>screenSize.width/RATIO1v1 || knifeX<0 || knifeY > screenSize.height || knifeY<0){
             knife.resetKnife();
         }
 

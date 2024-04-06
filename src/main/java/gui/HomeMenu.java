@@ -118,12 +118,15 @@ public class HomeMenu extends Menu {
      * Affiche le jeu en mode solo lorsque le bouton "Solo" est cliqué.
      */
     private void showGame() {
-        SoloMode soloMode = new SoloMode( this);
-        soloMode.startSoloGame();
+        GameView gameView = new GameView( this,true);
+        gameView.startSoloGame();
     }
 
     //TODO : Ajouter la méthode redirigeant au mode 1v1 quand le mode sera implémenté
     private void show1v1Menu() {
+        GameView gameView = new GameView( this,false);
+        gameView.startSoloGame();
+
     }
 
     //TODO : Ajouter la méthode redirigeant au shop quand le shop sera implémenté
