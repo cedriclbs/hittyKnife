@@ -2,7 +2,7 @@
 
 ## Description
 
-"Hitty Knife Redux" est une réinterprétation du jeu "Hitty Knife", dans lequel les joueurs doivent détruire des cibles à l'aide d'un coûteau. 
+"Hitty Knife Redux" est une réinterprétation du jeu "Hitty Knife", dans lequel les joueurs doivent détruire des cibles à l'aide d'un couteau. 
 Cette version repensée propose une expérience de jeu enrichie, avec des vagues de défis de plus en plus difficiles, comprenant des boss uniques dans des environnements variés. 
 De plus, les joueurs peuvent choisir parmi une sélection de skins de couteaux pour personnaliser leur expérience de jeu, et s'affronter dans un tout nouveau mode versus ! 
 
