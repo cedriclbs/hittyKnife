@@ -122,11 +122,7 @@ public abstract class Boss extends Cible {
     /**
      * Méthode pour mettre à jour le mouvement du boss.
      */
-    public void updateMovement(){
-        if (isInTheAir){
-            //updateJump();
-            }
-    }
+    public abstract void updateMovement();
 
     protected void setHealth(int x) { health = x;
     }

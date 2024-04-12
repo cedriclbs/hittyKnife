@@ -6,6 +6,7 @@ import entity.*;
  * Classe représentant un type spécifique de boss.
  */
 public class BossType2 extends Boss{
+    private double angle = 90;
 
     /**
      * Constructeur de la classe BossType2.
@@ -34,5 +35,10 @@ public class BossType2 extends Boss{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'sideWalk'");
     }
-    
+
+    @Override
+    public void updateMovement() {
+
+    }
+
 }

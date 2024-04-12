@@ -1,6 +1,7 @@
 package entity.bosses;
 
 import entity.*;
+import geometry.Geometry;
 
 /**
  * Classe représentant un type spécifique de boss.
@@ -8,6 +9,7 @@ import entity.*;
 public class BossType1 extends Boss {
     private int hitCount;
     private final int maxHits = 3;
+    private double angle = 90;
 
     /**
      * Constructeur de la classe BossType1.
@@ -35,6 +37,11 @@ public class BossType1 extends Boss {
 
     @Override
     public void sideWalk() {
+    }
+
+    @Override
+    public void updateMovement() {
+
     }
 
 }

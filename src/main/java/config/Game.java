@@ -79,6 +79,9 @@ public class Game {
              if (c instanceof MovingTarget){
                  ((MovingTarget) c).updateMovement();
              }
+             if (c instanceof BossType1){
+                 ((BossType1) c).updateMovement();
+             }
          }
          //Debug.affichage(knife);
      }
