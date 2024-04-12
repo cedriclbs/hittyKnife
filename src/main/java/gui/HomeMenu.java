@@ -12,9 +12,6 @@ import java.awt.*;
  */
 public class HomeMenu extends Menu {
 
-    //private BackgroundPanel soloFrame;
-    //private SoloMode soloMode;
-    //Game game;
     private ShopMenu shopMenu;
 
 
@@ -22,24 +19,11 @@ public class HomeMenu extends Menu {
     /**
      * Crée l'interface du menu principal avec le titre spécifié, le chemin vers l'image de fond et le chemin vers la musique de fond.
      *
-     * @param title Le titre de la fenêtre du menu.
      * @param backgroundPath Le chemin d'accès au fichier d'image de fond du menu.
      * @param musicPath Le chemin d'accès au fichier audio de la musique de fond.
      */
-    public HomeMenu(String title, String backgroundPath, String musicPath) {
-        super(title, backgroundPath, musicPath);
-        initialize("src/main/ressources/background/Background_MainMenu.png");
-    }
-
-    /**
-     * Initialise l'interface du menu principal.
-     *
-     * @param background Le chemin d'accès à l'image de fond du menu principal.
-     */
-    private void initialize(String background) {
-        JPanel menuPanel = createMenuPanel(background);
-        add(menuPanel);
-        //soloMode = new SoloMode(game, this);
+    public HomeMenu(String backgroundPath, String musicPath) {
+        super(backgroundPath, musicPath);
     }
 
     /**
@@ -53,16 +37,11 @@ public class HomeMenu extends Menu {
      */
     @Override
     JPanel createMenuPanel(String backgroundPath) {
-
         String ButtonAd = "src/main/ressources/button";
 
         BackgroundPanel panel = new BackgroundPanel(backgroundPath);
         panel.setLayout(new GridLayout(4, 1, 0, 20)); //Espacement vertical entre les boutons
         panel.setBorder(BorderFactory.createEmptyBorder(40, 20, 40, 20)); // Ajoute des marges
-
-        // TODO : Afficher le numéro du niveau actuel centré en haut-> "Niveau X"
-        // TODO : Afficher un engrenage pour les paramètres en haut à gauche.
-
 
         // Bouton "Solo"
         JPanel campaignButtonPanel = new JPanel();
@@ -118,35 +97,19 @@ public class HomeMenu extends Menu {
      * Affiche le jeu en mode solo lorsque le bouton "Solo" est cliqué.
      */
     private void showGame() {
-        GameView gameView = new GameView( this,true);
+        GameView gameView = new GameView(true);
         gameView.startSoloGame();
     }
 
-    //TODO : Ajouter la méthode redirigeant au mode 1v1 quand le mode sera implémenté
     private void show1v1Menu() {
-        GameView gameView = new GameView( this,false);
+        GameView gameView = new GameView(false);
         gameView.startSoloGame();
-
     }
 
-    //TODO : Ajouter la méthode redirigeant au shop quand le shop sera implémenté
     private void showShop() {
         if (shopMenu == null) {
-            shopMenu = new ShopMenu("ShopMenu","src/main/ressources/background/bgShopMenu.png", this);
+            shopMenu = new ShopMenu("src/main/ressources/background/bgShopMenu.png");
         }
         shopMenu.startShopMenu();
-
-        getContentPane().removeAll();
-        getContentPane().add(shopMenu.getContentPane());
-        revalidate();
-        repaint();
     }
-
-    public void showHomeMenu() {
-        getContentPane().removeAll();
-        getContentPane().add(createMenuPanel("src/main/ressources/background/Background_MainMenu.png"));
-        revalidate();
-        repaint();
-    }
-
 }

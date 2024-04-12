@@ -3,6 +3,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import entity.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,8 +20,22 @@ public class Game {
     private List<Cible> listeCible1 = new ArrayList<>();
     private List<Cible> listeCible2 = new ArrayList<>();
     private int life;
-    private int argent; // Ajout de l'argent comme attribut du jeu
+
+    //Attribut du User pour JSON
+    @JsonProperty("nomUtilisateur")
     private String nomUtilisateur;
+    @JsonProperty("motDePasse")
+    private String motDePasse;
+    @JsonProperty("cheminSauvegarde")
+    private String cheminSauvegarde;
+    @JsonProperty("argent")
+    private int argent;
+
+
+    @JsonCreator
+    public Game() {
+        // Constructeur sans arguments pour la désérialisation JSON
+    }
 
     /**
      * Constructeur qui initialise le jeu avec un couteau, une liste de cibles vide, et un nombre initial de vies.
@@ -44,16 +60,18 @@ public class Game {
         listeCible2.add(c12);listeCible2.add(c22);
         listeCible2.add(m12);
         life = 3;
-        argent = 100;
     }
 
     /**
      * Constructeur qui initialise le jeu avec un nom d'utilisateur spécifié.
      * @param nomUtilisateur Le nom de l'utilisateur.
      */
-    public Game(String nomUtilisateur){
+    public Game(String nomUtilisateur, String motDePasse, String cheminSauvegarde, int argent){
         super();
         this.nomUtilisateur = nomUtilisateur;
+        this.motDePasse = motDePasse;
+        this.cheminSauvegarde = cheminSauvegarde;
+        this.argent = argent;
     }
 
 
@@ -65,9 +83,6 @@ public class Game {
     public List<Cible> getListeCible() { return listeCible1; }
     public List<Cible> getListeCible2() { return listeCible2; }
     //public void setListeCible(List<Cible> listeCible) { this.listeCible = listeCible; }
-
-    public int getArgent() { return argent; }
-    public void setArgent(int argent) { this.argent = argent; }
 
     public void setNomUtilisateur(String nomUtilisateur) {
         this.nomUtilisateur = nomUtilisateur;
@@ -82,24 +97,24 @@ public class Game {
      *
      * @param delta Le temps écoulé depuis la dernière mise à jour, utilisé pour calculer les mouvements.
      */
-     public void update(double delta){
-         //System.out.println("dqdqzsqzdqsqdqzdqz");
-         knife1.updateMovement();
-         for(Cible c : this.listeCible1){
-             if (c instanceof MovingTarget){
-                 ((MovingTarget) c).updateMovement();
-             }
-         }
-         if (!isSolo){
-             knife2.updateMovement();
-             for(Cible c : this.listeCible2){
-                 if (c instanceof MovingTarget){
-                     ((MovingTarget) c).updateMovement();
-                 }
-             }
-         }
-         //Debug.affichage(knife);
-     }
+    public void update(double delta){
+        //System.out.println("dqdqzsqzdqsqdqzdqz");
+        knife1.updateMovement();
+        for(Cible c : this.listeCible1){
+            if (c instanceof MovingTarget){
+                ((MovingTarget) c).updateMovement();
+            }
+        }
+        if (!isSolo){
+            knife2.updateMovement();
+            for(Cible c : this.listeCible2){
+                if (c instanceof MovingTarget){
+                    ((MovingTarget) c).updateMovement();
+                }
+            }
+        }
+        //Debug.affichage(knife);
+    }
 
     /**
      * Sauvegarde l'état actuel du jeu dans un fichier spécifié.

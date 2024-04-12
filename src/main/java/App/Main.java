@@ -1,8 +1,7 @@
 package App;
 
 import User.UserManager;
-import config.Game;
-import gui.ConnectionMenu;
+import gui.*;
 
 import javax.swing.*;
 
