@@ -14,12 +14,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Permet la sauvegarde et le chargement de l'état du jeu.
  */
 public class Game {
-    public Knife knife1;
-    public Knife knife2;
-    boolean isSolo;
-    private List<Cible> listeCible1 = new ArrayList<>();
-    private List<Cible> listeCible2 = new ArrayList<>();
-    private int life;
+    transient public Knife knife1;
+    transient public Knife knife2;
+    transient boolean isSolo;
+    transient private List<Cible> listeCible1 = new ArrayList<>();
+    transient private List<Cible> listeCible2 = new ArrayList<>();
+    transient private int life;
 
     //Attribut du User pour JSON
     @JsonProperty("nomUtilisateur")
