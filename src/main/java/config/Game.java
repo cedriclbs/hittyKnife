@@ -30,7 +30,7 @@ public class Game {
         Cible c1 = new Cible(20,20);
         Cible c2 = new Cible(-15,30);
         MovingTarget m1 = new MovingTarget(-20,10);
-        BossType1 b1 = new BossType1(40, 40);
+        BossType1 b1 = new BossType1(30, 15); //x changera entre -30 et 30  et  y deplacera de -21 à 49 pour sortir de l'écran et apparaitre de l'autre côté
         listeCible.add(c1);listeCible.add(c2);
         listeCible.add(m1);
         listeCible.add(b1);
@@ -78,9 +78,8 @@ public class Game {
          for(Cible c : this.listeCible){
              if (c instanceof MovingTarget){
                  ((MovingTarget) c).updateMovement();
-             }
-             if (c instanceof BossType1){
-                 ((BossType1) c).updateMovement();
+             } else if (c instanceof BossType1){
+                 //((BossType1) c).updateMovement();
              }
          }
          //Debug.affichage(knife);
