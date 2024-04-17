@@ -46,6 +46,7 @@ public class GameView extends JPanel{
             this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/fond1v1.jpg", (ArrayList<Cible>) game.getListeCible(),isSolo);
             this.entityDisplay2 = new EntityDisplay(game.knife2, "src/main/ressources/background/fond1v1.jpg", (ArrayList<Cible>) game.getListeCible2(),isSolo);
         }
+        initialize();
     }
 
     /**
