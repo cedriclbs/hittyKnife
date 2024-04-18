@@ -4,10 +4,11 @@ import entity.*;
 import entity.bosses.*;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
+
 
 /**
  * La classe KnifeDisplay représente le panneau graphique où le couteau et les cibles sont affichés.

@@ -3,6 +3,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import entity.*;
 import entity.bosses.*;
 
@@ -59,7 +61,7 @@ public class Game {
         listeCible1.add(m1);
         listeCible2.add(c12);listeCible2.add(c22);
         listeCible2.add(m12);
-        listeCible1.add(b1);listeCible2.add(b1);
+        listeCible1.add(b1);
         life = 3;
         argent = 100;
     }
