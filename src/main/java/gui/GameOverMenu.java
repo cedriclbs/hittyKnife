@@ -12,12 +12,11 @@ public class GameOverMenu extends Menu {
     /**
      * Constructeur de la fenêtre de menu de fin de jeu.
      *
-     * @param title Le titre de la fenêtre de menu.
      * @param backgroundPath Le chemin de l'arrière-plan de la fenêtre de menu.
      * @param musicPath Le chemin de la musique de fond de la fenêtre de menu.
      */
-    public GameOverMenu(String title, String backgroundPath, String musicPath) {
-        super(title, backgroundPath, musicPath);
+    public GameOverMenu(String backgroundPath, String musicPath) {
+        super(backgroundPath, musicPath);
         JPanel GameOverPanel = createMenuPanel(backgroundPath);
         add(GameOverPanel);
     }

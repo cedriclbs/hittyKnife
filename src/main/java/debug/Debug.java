@@ -61,7 +61,7 @@ public class Debug {
     public static void testSerialization() {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            Game gameTest = new Game();
+            Game gameTest = new Game(true);
             gameTest.setNomUtilisateur("testUser"); // Définir un nomUtilisateur valide
 
             // Sérialisation

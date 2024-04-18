@@ -1,9 +1,6 @@
 package gui;
 
-import App.Loop;
-import App.Main;
 import config.ShopCart;
-import config.Game;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,14 +14,10 @@ import static config.States.*;
  */
 
 
-public class ShopMenu extends JFrame {
-    private Game game;
-    private HomeMenu homeMenu;
+public class ShopMenu extends JPanel {
     JLabel argentLabel;
-
     ShopCart cart;
     JTabbedPane tabbedPane;
-
     boolean saveB;
 
     String knifePath = "src/main/ressources/knifes/";
@@ -32,22 +25,12 @@ public class ShopMenu extends JFrame {
     String buttonPath = "src/main/ressources/button/";
     String tabPath = "src/main/ressources/onglets/";
 
-
-
-
     /**
      * Constructeur de la fenêtre du magasin.
      *
-     * @param title           Le titre de la fenêtre du magasin.
      * @param backgroundPath Le chemin de l'image de fond du magasin.
-     * @param hm              Le menu principal.
      */
-    public ShopMenu(String title, String backgroundPath, HomeMenu hm) {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.game = new Game();
-        Main.loop = new Loop(game);
-        Main.loop.startTickFunction();
-        this.homeMenu = hm;
+    public ShopMenu(String backgroundPath) {
         this.cart = new ShopCart();
         this.tabbedPane = new JTabbedPane();
         this.saveB = true;
@@ -57,7 +40,6 @@ public class ShopMenu extends JFrame {
     public void startShopMenu() {
         setStates(SHOPMENU);
     }
-
 
     /**
      * Initialise le ShopMenu avec sa disposition et les onglets du magasin.
@@ -77,34 +59,31 @@ public class ShopMenu extends JFrame {
         add(tabbedPane, BorderLayout.CENTER);
 
         // Création et ajout du label d'argent
-        argentLabel = new JLabel("Argent disponible: " + game.getArgent());
-        add(argentLabel, BorderLayout.NORTH);
+        //argentLabel = new JLabel("Argent disponible: " + User.getArgent());
+        //add(argentLabel, BorderLayout.NORTH);
 
     }
 
-
+    /*
     void updateTotal() {
-        argentLabel.setText("Total: " + (game.getArgent() - cart.getCartTotal()));
+        argentLabel.setText("Total: " + (User.getArgent() - cart.getCartTotal()));
     }
-
+     */
 
 
     public void saveCart() {
         if (cart != null) {
             saveB = true;
-            //Ajouter this.cart à la bibliothèque
             JOptionPane.showMessageDialog(null, "Le panier a été sauvegardé avec succès.");
         } else {
             JOptionPane.showMessageDialog(null, "Le panier est vide.");
         }
     }
 
-
-
     /**
      * Configure un bouton avec des paramètres standard.
      *
-     * @param button          Le bouton à configurer.
+     * @param button         Le bouton à configurer.
      * @param actionListener L'action à exécuter lorsque le bouton est cliqué.
      */
     void configureButton(JButton button, ActionListener actionListener) {
@@ -130,31 +109,33 @@ public class ShopMenu extends JFrame {
             configureButton(sauvButton, e -> {
                 saveCart();
                 SwingUtilities.getWindowAncestor(saveToQuit).dispose();
-                showMenuOnceVerif();
+                //showMenuOnceVerif();
             });
             configureButton(quitterButton, e -> {
                 this.cart.getCart().clear();
-                updateTotal();
+                //updateTotal();
                 revalidate();
                 repaint();
                 SwingUtilities.getWindowAncestor(saveToQuit).dispose();
-                showMenuOnceVerif();
+                //showMenuOnceVerif();
             });
 
             saveToQuit.add(sauvButton);
             saveToQuit.add(quitterButton);
             JOptionPane.showMessageDialog(null, saveToQuit, "Panier non sauvegardé", JOptionPane.PLAIN_MESSAGE);
         } else {
-            showMenuOnceVerif();
+            //showMenuOnceVerif();
         }
 
     }
 
-
+    /*
     private void showMenuOnceVerif () {
         setStates(HOMEMENU);
-        homeMenu.showHomeMenu();
+        //homeMenu.showHomeMenu();
     }
+
+    */
 
 
 }

@@ -85,7 +85,7 @@ public class UserManager {
     public User validerConnexion(String nomUtilisateur, String motDePasse) {
         if (userList.containsKey(nomUtilisateur)) {
             User user = userList.get(nomUtilisateur);
-            if (verifierMotDePasse(motDePasse, user.motDePasse())) {
+            if (verifierMotDePasse(motDePasse, user.getMotDePasse())) {
                 return user;
             }
         }
@@ -120,7 +120,7 @@ public class UserManager {
         if (!userList.containsKey(nomUtilisateur)) {
             String cheminSauvegarde = "src/main/saves/sauvegarde_" + nomUtilisateur + ".json";
             String motDePasseHache = hasherMotDePasse(motDePasse);
-            User nouvelUtilisateur = new User(nomUtilisateur, motDePasseHache, cheminSauvegarde);
+            User nouvelUtilisateur = new User(nomUtilisateur, motDePasseHache, cheminSauvegarde, 100);
             userList.put(nomUtilisateur, nouvelUtilisateur);
             sauvegarderInstance(); // Sauvegarder l'instance UserManager pour inclure le nouvel utilisateur.
             return true;

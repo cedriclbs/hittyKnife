@@ -77,6 +77,24 @@ public abstract class Boss extends Cible {
     }
 
     /**
+     * Méthode pour obtenir la coordonnée y du boss.
+     *
+     * @return La coordonnée y du boss.
+     */
+    public double getY() {
+        return coordinate.getY();
+    }
+
+    /**
+     * Méthode pour obtenir la coordonnée x du boss.
+     *
+     * @return La coordonnée x du boss.
+     */
+    public double getX() {
+        return coordinate.getX();
+    }
+
+    /**
      * Méthode pour définir la coordonnée x du boss.
      *
      * @param x Nouvelle coordonnée x du boss.
@@ -106,6 +124,7 @@ public abstract class Boss extends Cible {
     /**
      * Méthode abstraite pour gérer une attaque contre le boss avec un couteau.
      *
+     * @param knife Couteau utilisé pour l'attaque.
      */
     public abstract void attacked();
 
