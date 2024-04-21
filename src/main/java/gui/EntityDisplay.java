@@ -36,6 +36,9 @@ public class EntityDisplay extends JPanel {
     private double cibleColliY;
     private double collisionAngle;
     private boolean animCollision = false;
+    private boolean isCollisionMovingTarget= false;
+    final float baseOpacity = 1f;
+    float opacity;
     Dimension screenSize;
 
     /**
@@ -135,13 +138,21 @@ public class EntityDisplay extends JPanel {
 
         //--------------------------AFFICHAGE ANIMATION COLLISION -------------------------------
         if (animCollision){
+            Composite oldComposite = g2d.getComposite();
+            AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
+
+            g2d.setComposite(alphaComposite);
             AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - (double) knifeImgWidth / 2, collisionY - (double) knifeImgHeight / 2);
             transformColli.rotate(Math.toRadians(collisionAngle), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
             g2d.drawImage(knifeImage, transformColli, this);
 
             AffineTransform transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - (double) cibleImWidth / 2, cibleColliY - (double) cibleImHeight / 2);
-            g2d.drawImage(cibleImage, transformCibleColli, this);
+            if (isCollisionMovingTarget) g2d.drawImage(ciblesMouventeImage, transformCibleColli, this);
+            else g2d.drawImage(cibleImage, transformCibleColli, this);
 
+            g2d.setComposite(oldComposite);
+            if (opacity>0.01f)opacity-=0.001f;
+            else animCollision=false;
         }
 
         //-------------------------------AFFICHAGE NORMAL DES CIBLES -------------------------------
@@ -174,6 +185,8 @@ public class EntityDisplay extends JPanel {
                 animCollision = true;
                 deleteCible.add(cible);
                 knife.resetKnife();
+                opacity = baseOpacity;
+                isCollisionMovingTarget=cible instanceof MovingTarget;
             }
         }
         for (Cible c : deleteCible){
