@@ -32,6 +32,8 @@ public class EntityDisplay extends JPanel {
 
     private int collisionX;
     private int collisionY;
+    private double cibleColliX;
+    private double cibleColliY;
     private double collisionAngle;
     private boolean animCollision = false;
     Dimension screenSize;
@@ -131,6 +133,18 @@ public class EntityDisplay extends JPanel {
         transform.rotate(Math.toRadians(knife.getAngle()), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
         g2d.drawImage(knifeImage, transform, this);
 
+        //--------------------------AFFICHAGE ANIMATION COLLISION -------------------------------
+        if (animCollision){
+            AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - (double) knifeImgWidth / 2, collisionY - (double) knifeImgHeight / 2);
+            transformColli.rotate(Math.toRadians(collisionAngle), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
+            g2d.drawImage(knifeImage, transformColli, this);
+
+            AffineTransform transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - (double) cibleImWidth / 2, cibleColliY - (double) cibleImHeight / 2);
+            g2d.drawImage(cibleImage, transformCibleColli, this);
+
+        }
+
+        //-------------------------------AFFICHAGE NORMAL DES CIBLES -------------------------------
 
         ArrayList<Cible> deleteCible= new ArrayList<>();
         for (Cible cible : listeCible){
@@ -147,16 +161,15 @@ public class EntityDisplay extends JPanel {
 
             //--------------------COLLISIONS------------------------
 
-            if (animCollision){
-                AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - (double) knifeImgWidth / 2, collisionY - (double) knifeImgHeight / 2);
-                transformColli.rotate(Math.toRadians(collisionAngle), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
-                g2d.drawImage(knifeImage, transformColli, this);
-            }
 
-            int cw=50;int ch=50;
+
+
+            int cw=55;int ch=55;
             if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
                 collisionX = knifeX;
                 collisionY = knifeY;
+                cibleColliX = cibleX;
+                cibleColliY = cibleY;
                 collisionAngle = knife.getAngle();
                 animCollision = true;
                 deleteCible.add(cible);
