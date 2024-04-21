@@ -29,6 +29,11 @@ public class EntityDisplay extends JPanel {
     private double RATIO_Y;
     private final int RATIO = 18;
     private int RATIO1v1;
+
+    private int collisionX;
+    private int collisionY;
+    private double collisionAngle;
+    private boolean animCollision = false;
     Dimension screenSize;
 
     /**
@@ -126,6 +131,7 @@ public class EntityDisplay extends JPanel {
         transform.rotate(Math.toRadians(knife.getAngle()), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
         g2d.drawImage(knifeImage, transform, this);
 
+
         ArrayList<Cible> deleteCible= new ArrayList<>();
         for (Cible cible : listeCible){
             double cibleX = (RATIO_X-cible.getX()*RATIO);
@@ -139,8 +145,20 @@ public class EntityDisplay extends JPanel {
                 g2d.drawImage(cibleImage, transformCible, this);
             }
 
+            //--------------------COLLISIONS------------------------
+
+            if (animCollision){
+                AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - (double) knifeImgWidth / 2, collisionY - (double) knifeImgHeight / 2);
+                transformColli.rotate(Math.toRadians(collisionAngle), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
+                g2d.drawImage(knifeImage, transformColli, this);
+            }
+
             int cw=50;int ch=50;
             if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
+                collisionX = knifeX;
+                collisionY = knifeY;
+                collisionAngle = knife.getAngle();
+                animCollision = true;
                 deleteCible.add(cible);
                 knife.resetKnife();
             }
