@@ -103,12 +103,14 @@ public class Game {
      */
     public void update(double delta){
         //System.out.println("dqdqzsqzdqsqdqzdqz");
+        double adjustedDelta = delta / 3;
         knife1.updateMovement();
         for(Cible c : this.listeCible1){
             if (c instanceof MovingTarget){
                 ((MovingTarget) c).updateMovement();
             } else if (c instanceof BossType1){
-                //((BossType1) c).updateMovement();
+                ((BossType1) c).updateMovement(adjustedDelta);
+                System.out.println(c.getY());
             }
         }
         if (!isSolo){
@@ -117,7 +119,7 @@ public class Game {
                 if (c instanceof MovingTarget){
                     ((MovingTarget) c).updateMovement();
                 } else if (c instanceof BossType1){
-                    //((BossType1) c).updateMovement();
+                    ((BossType1) c).updateMovement(delta);
                 }
             }
         }

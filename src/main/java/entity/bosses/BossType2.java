@@ -37,7 +37,7 @@ public class BossType2 extends Boss{
     }
 
     @Override
-    public void updateMovement() {
+    public void updateMovement(double delta) {
 
     }
 

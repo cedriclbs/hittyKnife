@@ -6,11 +6,9 @@ import geometry.Coordinate;
 /**
  * Classe abstraite représentant un boss du jeu.
  */
-public abstract class Boss extends Cible {
+public class Boss extends Cible {
     private int health;
     private TypeCible bosstype;
-    private boolean isBuffed = false;
-    private boolean isDebuffed = false;
     protected double velocite;
     protected boolean isInTheAir;
     public boolean redescend;
@@ -79,25 +77,32 @@ public abstract class Boss extends Cible {
     }
 
     /**
-     * Méthode abstraite pour gérer une attaque contre le boss avec un couteau.
-     *
+     * Méthode pour gérer une attaque contre le boss avec un couteau.
      */
-    public abstract void attacked();
+    public void attacked() {
+
+    }
 
     /**
-     * Méthode abstraite pour faire sauter le boss.
+     * Méthode pour faire sauter le boss.
      */
-    public abstract void jump();
+    public void jump() {
+
+    }
 
     /**
-     * Méthode abstraite pour déplacer le boss sur le côté.
+     * Méthode pour déplacer le boss sur le côté.
      */
-    public abstract void sideWalk();
+    public void sideWalk() {
+
+    }
 
     /**
      * Méthode pour mettre à jour le mouvement du boss.
      */
-    public abstract void updateMovement();
+    public void updateMovement(double delta) {
+
+    }
 
     protected void setHealth(int x) { health = x;
     }
