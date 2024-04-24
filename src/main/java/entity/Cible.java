@@ -29,6 +29,33 @@ public class Cible {
     /**
      * Constructeur de la classe Cible.
      *
+     * @param x Coordonnée x de la cible.
+     * @param y Coordonnée y de la cible.
+     */
+    public Cible(TypeCible type, double x, double y) {
+        this.typeCible = type;
+        coordinate = new Coordinate(x, y);
+    }
+
+ /**
+     * Constructeur de la classe Cible.
+     *
+     * @param typeCible Type de la cible.
+     * @param x         Coordonnée x de la cible.
+     * @param y         Coordonnée y de la cible.
+     * @param velocite  Vitesse de la cible.
+     */
+    public Cible(TypeCible typeCible,double x, double y, double velocite) {
+        this.typeCible = typeCible;
+        this.coordinate = new Coordinate(x, y);
+        this.velocite = velocite;
+        this.isInTheAir = false;
+        this.redescend = false;
+    }
+
+    /**
+     * Constructeur de la classe Cible.
+     *
      * @param typeCible Type de la cible.
      * @param health    Santé de la cible.
      * @param x         Coordonnée x de la cible.
@@ -43,6 +70,8 @@ public class Cible {
         this.isInTheAir = false;
         this.redescend = false;
     }
+
+
 
     /**
      * Méthode pour obtenir la coordonnée y de la cible.
