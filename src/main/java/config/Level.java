@@ -7,7 +7,7 @@ package config;
 public class Level {
     private int level;
     private int argent;
-    private Round round;
+    private RoundManagement round;
     //private GameSave gameSave;
 
     /**
@@ -17,7 +17,7 @@ public class Level {
     public Level() {
         this.level = 1;
         this.argent = 0; 
-        this.round = new Round(); 
+        this.round = new RoundManagement(); 
         //this.gameSave = new GameSave(new Knife(), new ArrayList<Cible>(),argent,level);
     }
 
@@ -25,9 +25,7 @@ public class Level {
      * Méthode appelée pour gérer la progression des cibles.
      * Vérifie si tous les rounds et le boss ont été terminés pour passer au niveau suivant.
      */
-    public void nextTargetAndUpdateLevel() {
-        round.nextTarget();
-
+    public void nextTargetAndUpdateLevel() { //Obselete pour l'instant
         // Vérifie si tous les rounds et le boss ont été terminés
         if (round.isAllRoundCompleted()) {
             bossDefeated(); // Méthode pour gérer la fin du boss et passer au niveau suivant

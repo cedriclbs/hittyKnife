@@ -21,6 +21,8 @@ public class Game {
     transient private List<Cible> listeCible1 = new ArrayList<>();
     transient private List<Cible> listeCible2 = new ArrayList<>();
     transient private int life;
+    private RoundManagement roundManagement;
+    private int currentRoundIndex;
 
     //Attribut du User pour JSON
     @JsonProperty("nomUtilisateur")
@@ -49,21 +51,21 @@ public class Game {
         if (!isSolo){
             this.knife2 = new Knife();
         }
+        this.roundManagement = new RoundManagement();
+        initGame();
+
         //knife.addAngle(90);
-        Cible c1 = new Cible(20,20);
-        Cible c2 = new Cible(-15,30);
-        MovingTarget m1 = new MovingTarget(-20,10);
-        Cible c12 = new Cible(20,20);
-        Cible c22 = new Cible(-15,30);
-        MovingTarget m12 = new MovingTarget(-20,10);
-        BossType1 b1 = new BossType1(30, 15); //x changera entre -30 et 30  et  y deplacera de -21 à 49 pour sortir de l'écran et apparaitre de l'autre côté
-        listeCible1.add(c1);listeCible1.add(c2);
-        listeCible1.add(m1);
-        listeCible2.add(c12);listeCible2.add(c22);
-        listeCible2.add(m12);
-        listeCible1.add(b1);
-        life = 3;
-        argent = 100;
+        // Cible c1 = new Cible(20,20);
+        // Cible c2 = new Cible(-15,30);
+        // MovingTarget m1 = new MovingTarget(-20,10);
+        // Cible c12 = new Cible(20,20);
+        // Cible c22 = new Cible(-15,30);
+        // MovingTarget m12 = new MovingTarget(-20,10);
+        // listeCible1.add(c1);listeCible1.add(c2);
+        // listeCible1.add(m1);
+        // listeCible2.add(c12);listeCible2.add(c22);
+        // listeCible2.add(m12);
+        // life = 3;
     }
 
     /**
@@ -96,6 +98,22 @@ public class Game {
         return this.nomUtilisateur;
     }
 
+    private void initGame() {
+        ChargerRound(currentRoundIndex);
+    }
+
+    private void ChargerRound(int roundIndex) {
+        Round currentRound = roundManagement.getListeRounds().get(roundIndex);
+        this.listeCible1.clear();
+        this.listeCible1.addAll(currentRound.getListeCibles());
+
+        if (!isSolo) {
+            this.listeCible2.clear();
+            this.listeCible2.addAll(currentRound.getListeCibles());
+        }
+    }
+
+
     /**
      * Met à jour l'état du jeu en fonction du temps écoulé depuis la dernière mise à jour.
      *
@@ -123,8 +141,16 @@ public class Game {
                 }
             }
         }
+        if(listeCible1.isEmpty()){
+            currentRoundIndex++;
+            if (currentRoundIndex < roundManagement.getListeRounds().size()) {
+                ChargerRound(currentRoundIndex);
+            }
+        }
         //Debug.affichage(knife);
     }
+
+
 
     /**
      * Sauvegarde l'état actuel du jeu dans un fichier spécifié.

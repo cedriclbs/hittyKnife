@@ -12,8 +12,8 @@ public class BossType2 extends Boss{
      * Constructeur de la classe BossType2.
      * Initialise un boss de type 2.
      */
-    public BossType2() {
-        super(TypeCible.CIBLE_BOSS2, 4, 10, 0, 0);
+    public BossType2(TypeCible bosstype, int health, double x, double y, double velocite) {
+        super(bosstype, health, x, y, velocite);
     }
 
     @Override
