@@ -77,7 +77,7 @@ public class EntityDisplay extends JPanel {
      * Redimensionne également les images pour les adapter à la taille souhaitée.
      */
     private void initImage () {
-        this.knifeImage = new ImageIcon("src/main/ressources/knifes/knifeRotate2.png").getImage();
+        this.knifeImage = new ImageIcon("src/main/ressources/knifes/knife#2.png").getImage();
         this.cibleImage = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
         this.ciblesMouventeImage =  new ImageIcon("src/main/ressources/targets/target#2.png").getImage();
         this.boss = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
