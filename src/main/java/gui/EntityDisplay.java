@@ -80,7 +80,7 @@ public class EntityDisplay extends JPanel {
         this.knifeImage = new ImageIcon("src/main/ressources/knifes/knife#2.png").getImage();
         this.cibleImage = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
         this.ciblesMouventeImage =  new ImageIcon("src/main/ressources/targets/target#2.png").getImage();
-        this.boss = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
+        this.boss = new ImageIcon("src/main/ressources/targets/boss2 (1).png").getImage();
         int w = this.knifeImage.getWidth(null)/3;
         int h = this.knifeImage.getHeight(null)/3;
         this.knifeImage = this.knifeImage.getScaledInstance(w,h,Image.SCALE_SMOOTH);
