@@ -30,12 +30,7 @@ public class ShopMenu extends JPanel {
      *
      * @param backgroundPath Le chemin de l'image de fond du magasin.
      */
-    public ShopMenu(String title, String backgroundPath, HomeMenu hm) {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //this.game = new Game();
-        Main.loop = new Loop(game);
-        Main.loop.startTickFunction();
-        this.homeMenu = hm;
+    public ShopMenu(String backgroundPath) {
         this.cart = new ShopCart();
         this.tabbedPane = new JTabbedPane();
         this.saveB = true;
