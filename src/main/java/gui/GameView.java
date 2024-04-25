@@ -103,7 +103,6 @@ public class GameView extends JPanel{
         }
     }
 
-
     /**
      * Initialise l'image de fond du jeu.
      *
@@ -130,5 +129,5 @@ public class GameView extends JPanel{
     public void startSoloGame() {
         initialize();
     }
-
+    
 }

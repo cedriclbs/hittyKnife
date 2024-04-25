@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+
 /**
  * La classe KnifeDisplay représente le panneau graphique où le couteau et les cibles sont affichés.
  * Elle étend JPanel pour permettre l'affichage des éléments graphiques du jeu Hitty Knife.
@@ -107,7 +108,6 @@ public class EntityDisplay extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-
         g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 
         int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
@@ -149,6 +149,6 @@ public class EntityDisplay extends JPanel {
             listeCible.remove(c);
         }
         repaint();
-    }
-
+    }    
+    
 }
