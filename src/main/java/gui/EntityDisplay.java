@@ -29,6 +29,16 @@ public class EntityDisplay extends JPanel {
     private double RATIO_Y;
     private final int RATIO = 18;
     private int RATIO1v1;
+
+    private int collisionX;
+    private int collisionY;
+    private double cibleColliX;
+    private double cibleColliY;
+    private double collisionAngle;
+    private boolean animCollision = false;
+    private boolean isCollisionMovingTarget= false;
+    final float baseOpacity = 1f;
+    float opacity;
     Dimension screenSize;
 
     /**
@@ -126,6 +136,27 @@ public class EntityDisplay extends JPanel {
         transform.rotate(Math.toRadians(knife.getAngle()), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
         g2d.drawImage(knifeImage, transform, this);
 
+        //--------------------------AFFICHAGE ANIMATION COLLISION -------------------------------
+        if (animCollision){
+            Composite oldComposite = g2d.getComposite();
+            AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
+
+            g2d.setComposite(alphaComposite);
+            AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - (double) knifeImgWidth / 2, collisionY - (double) knifeImgHeight / 2);
+            transformColli.rotate(Math.toRadians(collisionAngle), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
+            g2d.drawImage(knifeImage, transformColli, this);
+
+            AffineTransform transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - (double) cibleImWidth / 2, cibleColliY - (double) cibleImHeight / 2);
+            if (isCollisionMovingTarget) g2d.drawImage(ciblesMouventeImage, transformCibleColli, this);
+            else g2d.drawImage(cibleImage, transformCibleColli, this);
+
+            g2d.setComposite(oldComposite);
+            if (opacity>0.01f)opacity-=0.001f;
+            else animCollision=false;
+        }
+
+        //-------------------------------AFFICHAGE NORMAL DES CIBLES -------------------------------
+
         ArrayList<Cible> deleteCible= new ArrayList<>();
         for (Cible cible : listeCible){
             double cibleX = (RATIO_X-cible.getX()*RATIO);
@@ -139,10 +170,23 @@ public class EntityDisplay extends JPanel {
                 g2d.drawImage(cibleImage, transformCible, this);
             }
 
-            int cw=50;int ch=50;
+            //--------------------COLLISIONS------------------------
+
+
+
+
+            int cw=55;int ch=55;
             if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
+                collisionX = knifeX;
+                collisionY = knifeY;
+                cibleColliX = cibleX;
+                cibleColliY = cibleY;
+                collisionAngle = knife.getAngle();
+                animCollision = true;
                 deleteCible.add(cible);
                 knife.resetKnife();
+                opacity = baseOpacity;
+                isCollisionMovingTarget=cible instanceof MovingTarget;
             }
         }
         for (Cible c : deleteCible){
