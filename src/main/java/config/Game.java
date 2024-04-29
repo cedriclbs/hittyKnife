@@ -137,7 +137,7 @@ public class Game {
                 if (c instanceof MovingTarget){
                     ((MovingTarget) c).updateMovement();
                 } else if (c instanceof BossType1){
-                    ((BossType1) c).updateMovement(delta);
+                    ((BossType1) c).updateMovement(adjustedDelta);
                 }
             }
         }

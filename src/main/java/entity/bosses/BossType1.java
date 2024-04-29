@@ -1,15 +1,12 @@
 package entity.bosses;
 
 import entity.*;
-import geometry.Geometry;
 
 /**
  * Classe représentant un type spécifique de boss.
  */
 public class BossType1 extends Boss {
     private int hitCount;
-    private final int maxHits = 3;
-    private double angle = 90;
     private boolean directionPositive = true; // Indique si le boss se déplace vers la droite (+x) ou vers la gauche (-x)
 
     /**
@@ -17,7 +14,7 @@ public class BossType1 extends Boss {
      * Initialise un boss de type 1.
      */
     public BossType1(double  x, double y) {
-        super(TypeCible.CIBLE_BOSS1, 3, x, y, 0);
+        super(TypeCible.CIBLE_BOSS1, 3, x, y);
         this.hitCount = 0;
     }
     
@@ -27,17 +24,8 @@ public class BossType1 extends Boss {
     }
 
     public boolean isDead() {
+        int maxHits = 3;
         return hitCount >= maxHits;
-    }
-
-    @Override
-    public void jump(){
-        isInTheAir = true;
-        velocite = 10;
-    }
-
-    @Override
-    public void sideWalk() {
     }
 
     @Override
