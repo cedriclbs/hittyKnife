@@ -31,11 +31,11 @@ public class BossType1 extends Boss {
     @Override
     public void updateMovement(double delta) {
         // Définir les limites de déplacement sur l'axe vertical
-        double limitTop = 40; // Position Y la plus haute
-        double limitBottom = -5; // Position Y la plus basse
+        double limitTop = 50; // Position Y la plus haute
+        double limitBottom = -15; // Position Y la plus basse
 
         // Calculer le déplacement en fonction de la vitesse et du temps écoulé depuis la dernière mise à jour
-        double speed = 1; // Vitesse du mouvement en pixels par seconde
+        double speed = 0.7; // Vitesse du mouvement en pixels par seconde
         double movement = speed * delta; // Déplacement en pixels
         double newY = getY() + (directionPositive ? movement : -movement);
 
@@ -46,7 +46,7 @@ public class BossType1 extends Boss {
             // Corriger la position verticale pour rester dans les limites
             newY = limitTop;
             // Changer la position horizontale
-            setX(40); // Changer la valeur selon les besoins
+            setX(30); // Changer la valeur selon les besoins
         }
         // Vérifier si le mouvement dépasse la limite inférieure
         else if (newY <= limitBottom) {
@@ -55,7 +55,7 @@ public class BossType1 extends Boss {
             // Corriger la position verticale pour rester dans les limites
             newY = limitBottom;
             // Changer la position horizontale
-            setX(-40); // Changer la valeur selon les besoins
+            setX(-30); // Changer la valeur selon les besoins
         }
 
         double newX = getX(); // Garder la position horizontale inchangée si le mouvement est vertical
