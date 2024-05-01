@@ -188,7 +188,6 @@ public class EntityDisplay extends JPanel {
                 cibleColliY = cibleY;
                 collisionAngle = knife.getAngle();
                 animCollision = true;
-                deleteCible.add(cible);
                 if (cible instanceof BossType1) {
                     ((BossType1) cible).attacked();
                     if (((BossType1) cible).isDead()) {

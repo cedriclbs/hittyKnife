@@ -30,41 +30,37 @@ public class BossType1 extends Boss {
 
     @Override
     public void updateMovement(double delta) {
-        // Définir les limites de déplacement sur l'axe horizontal
-        double limitLeft = -56;
-        double limitRight = 56;
-
         // Définir les limites de déplacement sur l'axe vertical
-        double limitTop = 30; // Changer la valeur selon les besoins
-        double limitBottom = 15; // Changer la valeur selon les besoins
+        double limitTop = 40; // Position Y la plus haute
+        double limitBottom = -5; // Position Y la plus basse
 
         // Calculer le déplacement en fonction de la vitesse et du temps écoulé depuis la dernière mise à jour
-        double speed = 2; // Vitesse du mouvement en pixels par seconde
+        double speed = 1; // Vitesse du mouvement en pixels par seconde
         double movement = speed * delta; // Déplacement en pixels
-        double newX = getX() + (directionPositive ? movement : -movement);
+        double newY = getY() + (directionPositive ? movement : -movement);
 
-        // Vérifier si le mouvement dépasse la limite gauche
-        if (newX <= limitLeft) {
-            // Inverser la direction du mouvement horizontal
-            directionPositive = true;
-            // Corriger la position horizontale pour rester dans les limites
-            newX = limitLeft;
-            // Changer la position verticale
-            setY(limitTop);
-        }
-        // Vérifier si le mouvement dépasse la limite droite
-        else if (newX >= limitRight) {
-            // Inverser la direction du mouvement horizontal
+        // Vérifier si le mouvement dépasse la limite supérieure
+        if (newY >= limitTop) {
+            // Inverser la direction du mouvement vertical
             directionPositive = false;
-            // Corriger la position horizontale pour rester dans les limites
-            newX = limitRight;
-            // Changer la position verticale
-            setY(limitBottom);
+            // Corriger la position verticale pour rester dans les limites
+            newY = limitTop;
+            // Changer la position horizontale
+            setX(40); // Changer la valeur selon les besoins
+        }
+        // Vérifier si le mouvement dépasse la limite inférieure
+        else if (newY <= limitBottom) {
+            // Inverser la direction du mouvement vertical
+            directionPositive = true;
+            // Corriger la position verticale pour rester dans les limites
+            newY = limitBottom;
+            // Changer la position horizontale
+            setX(-40); // Changer la valeur selon les besoins
         }
 
-        double newY = getY(); // Garder la position verticale inchangée si le mouvement est horizontal
-        setX(newX);
+        double newX = getX(); // Garder la position horizontale inchangée si le mouvement est vertical
         setY(newY);
+        setX(newX);
     }
 
 }
