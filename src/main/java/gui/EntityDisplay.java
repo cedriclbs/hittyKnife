@@ -7,6 +7,7 @@ import entity.MovingTarget;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -108,6 +109,14 @@ public class EntityDisplay extends JPanel {
         bgImgHeight = this.backgroundImage.getHeight(null);
         bgImgWidth = this.backgroundImage.getWidth(null);
     }
+
+    public Shape createCollisionMask(Image image) {
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = bufferedImage.createGraphics();
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+        return new Rectangle(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
+    }
     /**
      * Redessine le composant en dessinant l'image de fond, les couteaux et les cibles.
      * Effectue également la gestion des collisions entre les couteaux et les cibles.
@@ -161,7 +170,9 @@ public class EntityDisplay extends JPanel {
         for (Cible cible : listeCible){
             double cibleX = (RATIO_X-cible.getX()*RATIO);
             double cibleY = (RATIO_Y-cible.getY()*RATIO);
-            AffineTransform transformCible = AffineTransform.getTranslateInstance(cibleX - (double) cibleImWidth / 2, cibleY - (double) cibleImHeight / 2);
+            //AffineTransform transformCible = AffineTransform.getTranslateInstance(cibleX - (double) cibleImWidth / 2, cibleY - (double) cibleImHeight / 2);
+            AffineTransform transformCible = AffineTransform.getTranslateInstance(cibleX - (double) cibleImWidth /2, cibleY - (double) cibleImHeight / 2);
+            //transformCible.scale(0.5,0.5);
             if (cible instanceof MovingTarget){
                 g2d.drawImage(ciblesMouventeImage,transformCible,this);
 
@@ -172,11 +183,19 @@ public class EntityDisplay extends JPanel {
 
             //--------------------COLLISIONS------------------------
 
+            Shape knifeMask = createCollisionMask(knifeImage);
+            Shape cibleMask = createCollisionMask(cibleImage);
+            Shape transformedCibleMask = transformCible.createTransformedShape(cibleMask);
+            Shape transformedKnifeMask = transform.createTransformedShape(knifeMask);
 
+            g2d.setColor(Color.RED);
+            g2d.draw(transformedCibleMask);
+            g2d.setColor(Color.BLUE);
+            g2d.draw(transformedKnifeMask);
 
-
-            int cw=55;int ch=55;
-            if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
+            //int cw=55;int ch=55;
+            //if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
+            if (transformedCibleMask.intersects(transformedKnifeMask.getBounds2D())) {
                 collisionX = knifeX;
                 collisionY = knifeY;
                 cibleColliX = cibleX;
