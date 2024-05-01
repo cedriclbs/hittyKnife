@@ -3,6 +3,7 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 
+
 public class MainFrame extends JFrame {
     private JPanel cardPanel;
     private CardLayout cardLayout;
@@ -21,6 +22,12 @@ public class MainFrame extends JFrame {
         shopButton = new JButton("Shop");
         versusButton = new JButton("Versus");
 
+        // Supprimer le rectangle de sélection lorsqu'un bouton est enfoncé
+        homeButton.setFocusPainted(false);
+        soloButton.setFocusPainted(false);
+        shopButton.setFocusPainted(false);
+        versusButton.setFocusPainted(false);
+
         // Ajout des actions aux boutons de navigation
         homeButton.addActionListener(e -> cardLayout.show(cardPanel, "Home"));
         soloButton.addActionListener(e -> cardLayout.show(cardPanel, "Solo"));
@@ -28,7 +35,7 @@ public class MainFrame extends JFrame {
         versusButton.addActionListener(e -> cardLayout.show(cardPanel, "Versus"));
 
         // Création du panneau de menu principal
-        JPanel homePanel = createHomePanel();
+        JPanel homePanel = createTitleScreen();
         JPanel soloPanel = createSoloPanel();
         JPanel shopPanel = createShopPanel();
         JPanel versusPanel = createVersusPanel();
@@ -49,18 +56,22 @@ public class MainFrame extends JFrame {
         navPanel.add(shopButton);
         navPanel.add(versusButton);
 
-        // Ajout des composants à la fenêtre principale
-        getContentPane().add(navPanel, BorderLayout.NORTH);
-        getContentPane().add(cardPanel, BorderLayout.CENTER);
+        // Utilisation d'un BorderLayout pour la JFrame
+        setLayout(new BorderLayout());
+
+        // Ajout du navPanel en haut et du cardPanel au centre
+        add(navPanel, BorderLayout.NORTH);
+        add(cardPanel, BorderLayout.CENTER);
 
         pack();
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setLocationRelativeTo(null);
         setVisible(true);
     }
 
 
-    private JPanel createHomePanel() {
-        return new HomeMenu("src/main/ressources/background/Background_MainMenu.png", "");
+    private JPanel createTitleScreen() {
+        return new HomeMenu("src/main/ressources/background/Background_MainMenu.png", Menu.linkClip+"Main_theme.wav");
     }
 
 
