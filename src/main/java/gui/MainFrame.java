@@ -1,37 +1,51 @@
 package gui;
 
+import config.Game;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
+
+    private Game game;
     private JPanel cardPanel;
     private CardLayout cardLayout;
     private JButton homeButton;
     private JButton soloButton;
     private JButton shopButton;
     private JButton versusButton;
+    private JButton libraryButton;
 
-    public MainFrame() {
+
+    public MainFrame(Game game) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Hitty Knife");
+
+        this.game = game;
 
         // Création des boutons de navigation
         homeButton = new JButton("Home");
         soloButton = new JButton("Solo");
         shopButton = new JButton("Shop");
         versusButton = new JButton("Versus");
+        libraryButton = new JButton("Bibliothèque");
+
 
         // Ajout des actions aux boutons de navigation
         homeButton.addActionListener(e -> cardLayout.show(cardPanel, "Home"));
         soloButton.addActionListener(e -> cardLayout.show(cardPanel, "Solo"));
         shopButton.addActionListener(e -> cardLayout.show(cardPanel, "Shop"));
         versusButton.addActionListener(e -> cardLayout.show(cardPanel, "Versus"));
+        libraryButton.addActionListener(e -> cardLayout.show(cardPanel, "Bibliothèque"));
+
 
         // Création du panneau de menu principal
         JPanel homePanel = createHomePanel();
         JPanel soloPanel = createSoloPanel();
         JPanel shopPanel = createShopPanel();
         JPanel versusPanel = createVersusPanel();
+        JPanel libraryPanel = createLibraryPanel();
+
 
         // Création du conteneur de panneaux avec CardLayout
         cardPanel = new JPanel();
@@ -41,6 +55,8 @@ public class MainFrame extends JFrame {
         cardPanel.add(soloPanel, "Solo");
         cardPanel.add(shopPanel, "Shop");
         cardPanel.add(versusPanel, "Versus");
+        cardPanel.add(libraryPanel, "Bibliothèque");
+
 
         // Ajout des boutons de navigation en haut de la fenêtre
         JPanel navPanel = new JPanel(new FlowLayout());
@@ -48,6 +64,8 @@ public class MainFrame extends JFrame {
         navPanel.add(soloButton);
         navPanel.add(shopButton);
         navPanel.add(versusButton);
+        navPanel.add(libraryButton);
+
 
         // Ajout des composants à la fenêtre principale
         getContentPane().add(navPanel, BorderLayout.NORTH);
@@ -65,7 +83,7 @@ public class MainFrame extends JFrame {
 
 
     private JPanel createShopPanel() {
-        return new ShopMenu("src/main/ressources/background/bgShopMenu.png");
+        return new ShopMenu("src/main/ressources/background/bgShopMenu.png", game);
     }
 
     private JPanel createSoloPanel() {
@@ -76,5 +94,10 @@ public class MainFrame extends JFrame {
     private JPanel createVersusPanel() {
         return new GameView(false);
     }
+
+    private JPanel createLibraryPanel(){
+        return new Library(game);
+    }
+
 
 }

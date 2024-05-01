@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ShopCart {
 
-
+    private Game game;
     private List<ShopItem> cart;
     private int cartTotal;
 
@@ -20,18 +20,21 @@ public class ShopCart {
     /**
      * Initialise un nouveau panier d'achats vide.
      */
-    public ShopCart (){
+    public ShopCart (Game game){
+        this.game = game;
         this.cart = new ArrayList<>();
         this.cartTotal = 0;
     }
 
 
     public void addArticle (ShopItem article){
-        if (!this.cart.contains(article)) {
+        if (this.cart.contains(article)){
+            JOptionPane.showMessageDialog(null, "Cet article est déjà dans le panier.");
+        } else if (this.game.library.contains(article)) {
+            JOptionPane.showMessageDialog(null, "Article déjà approprié.");
+        } else {
             cart.add(article);
             this.cartTotal+=article.getArticlePrice();
-        } else {
-            JOptionPane.showMessageDialog(null, "Cet article est déjà dans le panier.");
         }
     }
 

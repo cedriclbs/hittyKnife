@@ -1,5 +1,7 @@
 package config;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Objects;
 
 
@@ -12,7 +14,11 @@ public class ShopItem {
     private int articlePrice;
     private String articleImagePath;
 
+    @JsonCreator
+    public ShopItem(){
+        // Constructeur sans arguments pour la désérialisation JSON
 
+    }
 
     /**
      * Initialise un nouvel article avec un nom, un prix et un chemin d'image.

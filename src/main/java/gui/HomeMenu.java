@@ -108,7 +108,7 @@ public class HomeMenu extends Menu {
 
     private void showShop() {
         if (shopMenu == null) {
-            shopMenu = new ShopMenu("src/main/ressources/background/bgShopMenu.png");
+            shopMenu = new ShopMenu("src/main/ressources/background/bgShopMenu.png", null);
         }
         shopMenu.startShopMenu();
     }

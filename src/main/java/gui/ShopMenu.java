@@ -1,10 +1,19 @@
 package gui;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import config.Game;
 import config.ShopCart;
+import config.ShopItem;
+import entity.Cible;
+import entity.Knife;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+
 import static config.States.*;
 
 
@@ -15,6 +24,8 @@ import static config.States.*;
 
 
 public class ShopMenu extends JPanel {
+    private Game game;
+
     JLabel argentLabel;
     ShopCart cart;
     JTabbedPane tabbedPane;
@@ -30,10 +41,11 @@ public class ShopMenu extends JPanel {
      *
      * @param backgroundPath Le chemin de l'image de fond du magasin.
      */
-    public ShopMenu(String backgroundPath) {
-        this.cart = new ShopCart();
+    public ShopMenu(String backgroundPath, Game game) {
+        this.cart = new ShopCart(game);
         this.tabbedPane = new JTabbedPane();
         this.saveB = true;
+        this.game = game;
         initialize();
     }
 
@@ -58,9 +70,6 @@ public class ShopMenu extends JPanel {
 
         add(tabbedPane, BorderLayout.CENTER);
 
-        // Création et ajout du label d'argent
-        //argentLabel = new JLabel("Argent disponible: " + User.getArgent());
-        //add(argentLabel, BorderLayout.NORTH);
 
     }
 
@@ -74,11 +83,18 @@ public class ShopMenu extends JPanel {
     public void saveCart() {
         if (cart != null) {
             saveB = true;
+            game.updateLibrary(cart);
             JOptionPane.showMessageDialog(null, "Le panier a été sauvegardé avec succès.");
+
         } else {
             JOptionPane.showMessageDialog(null, "Le panier est vide.");
         }
     }
+
+
+
+
+
 
     /**
      * Configure un bouton avec des paramètres standard.

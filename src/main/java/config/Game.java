@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import entity.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,12 +34,15 @@ public class Game {
     private String cheminSauvegarde;
     @JsonProperty("argent")
     private int argent;
+    @JsonProperty("library")
+    List<ShopItem> library;
 
 
     @JsonCreator
     public Game() {
         // Constructeur sans arguments pour la désérialisation JSON
     }
+
 
     /**
      * Constructeur qui initialise le jeu avec un couteau, une liste de cibles vide, et un nombre initial de vies.
@@ -148,14 +153,41 @@ public class Game {
     /**
      * Sauvegarde l'état actuel du jeu dans un fichier spécifié.
      */
+
     public void sauvegarderEtat() {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            mapper.writeValue(new File( "src/main/saves/sauvegarde_"+ nomUtilisateur + ".json"), this);
+            mapper.writeValue(new File("src/main/saves/sauvegarde_"+ nomUtilisateur + ".json"), this);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
+    public void updateLibrary(ShopCart cart) {
+        if (cart != null) {
+            if (library == null) {
+                library = new ArrayList<>();
+            }
+            for (ShopItem item : cart.getCart()) {
+                if (!library.contains(item)) {
+                    library.add(item);
+                }
+            }
+        }
+        sauvegarderEtat();
+    }
+
+
+
+
+    /**
+     * Sauvegarde le panier du ShopMenu dans un fichier spécifié pour l'afficher dans la bibliothèque du joueur
+     */
+
+
+
+
 
     /**
      * Charge l'état du jeu à partir d'un fichier spécifié.
