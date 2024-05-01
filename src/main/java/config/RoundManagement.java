@@ -141,8 +141,8 @@ public class RoundManagement {
      * @return Un nombre aléatoire de cibles, entre 4 et 10.
      */
     private int getRndIntTargetRounds() {
-        return 4 + random.nextInt(4);
-        //return 1;
+        //return 4 + random.nextInt(4);
+        return 1;
     }
 
 

@@ -128,7 +128,7 @@ public class Game {
                 ((MovingTarget) c).updateMovement();
             } else if (c instanceof BossType1){
                 ((BossType1) c).updateMovement(adjustedDelta);
-                System.out.println(c.getY());
+                //System.out.println(c.getY());
             }
         }
         if (!isSolo){

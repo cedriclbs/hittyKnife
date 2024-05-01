@@ -35,11 +35,11 @@ public class BossType1 extends Boss {
         double limitRight = 56;
 
         // Définir les limites de déplacement sur l'axe vertical
-        double limitTop = 20; // Changer la valeur selon les besoins
-        double limitBottom = 40; // Changer la valeur selon les besoins
+        double limitTop = 30; // Changer la valeur selon les besoins
+        double limitBottom = 15; // Changer la valeur selon les besoins
 
         // Calculer le déplacement en fonction de la vitesse et du temps écoulé depuis la dernière mise à jour
-        double speed = 1; // Vitesse du mouvement en pixels par seconde
+        double speed = 2; // Vitesse du mouvement en pixels par seconde
         double movement = speed * delta; // Déplacement en pixels
         double newX = getX() + (directionPositive ? movement : -movement);
 

@@ -8,7 +8,6 @@ import entity.*;
 public class Boss extends Cible {
     private int health;
     private TypeCible bosstype;
-    protected boolean isInTheAir;
 
     /**
      * Constructeur de la classe Boss prenant les coordonnées x et y du boss.
