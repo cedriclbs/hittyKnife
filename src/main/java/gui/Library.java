@@ -23,6 +23,7 @@ public class Library extends JPanel {
         charger();
         afficher();
         add(libraryPanel, BorderLayout.SOUTH);
+        //test
     }
 
 
