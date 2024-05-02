@@ -15,6 +15,7 @@ import java.io.IOException;
  */
 abstract class Menu extends JPanel {
 
+    public static String linkClip = "src/main/ressources/music/";
     Game game;
 
     /**
