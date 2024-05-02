@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -16,10 +17,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Permet la sauvegarde et le chargement de l'état du jeu.
  */
 public class Game {
+    @JsonIgnore
     transient public Knife knife1;
+    @JsonIgnore
     transient public Knife knife2;
+    @JsonIgnore
     transient boolean isSolo;
+    @JsonIgnore
     transient private List<Cible> listeCible1 = new ArrayList<>();
+    @JsonIgnore
     transient private List<Cible> listeCible2 = new ArrayList<>();
     transient private int life;
     private RoundManagement roundManagement;  
@@ -86,8 +92,8 @@ public class Game {
 
 
     // Getters et setters pour la sérialisation/désérialisation
-    public Knife getKnife() { return knife1; }
-    public Knife getKnife2(){ return knife2;}
+    //public Knife getKnife() { return knife1; }
+    //public Knife getKnife2(){ return knife2;}
     //public void setKnife(Knife knife) { this.knife = knife; }
 
     public List<Cible> getListeCible() { return listeCible1; }
