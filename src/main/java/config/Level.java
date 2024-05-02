@@ -8,7 +8,6 @@ public class Level {
     private int level;
     private int argent;
     private RoundManagement round;
-    //private GameSave gameSave;
 
     /**
      * Constructeur pour initialiser un nouveau niveau.
@@ -17,7 +16,7 @@ public class Level {
     public Level() {
         this.level = 1;
         this.argent = 0; 
-        this.round = new RoundManagement(); 
+        this.round = new RoundManagement();
         //this.gameSave = new GameSave(new Knife(), new ArrayList<Cible>(),argent,level);
     }
 

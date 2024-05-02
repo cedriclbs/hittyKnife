@@ -118,7 +118,6 @@ public class EntityDisplay extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-
         g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 
         int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
@@ -205,6 +204,6 @@ public class EntityDisplay extends JPanel {
             listeCible.remove(c);
         }
         repaint();
-    }
-
+    }    
+    
 }

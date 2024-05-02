@@ -175,4 +175,8 @@ public class Game {
         return mapper.readValue(new File(cheminFichier), Game.class);
     }
 
+    public int getCurrentRoundIndex() {
+        return currentRoundIndex;
+    }
+
 }
