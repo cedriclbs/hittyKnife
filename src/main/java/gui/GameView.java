@@ -128,22 +128,25 @@ public class GameView extends JPanel{
                     }
                 }
             });
-            playersPanel.addKeyListener(new KeyAdapter() {
-                public void keyPressed(KeyEvent e) {
-                    if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                        if (!game.knife1.throwing && !game.knife1.isInTheAir) {
-                            game.knife1.jump();
-                        } else if (!game.knife1.throwing && game.knife1.isInTheAir) {
-                            game.knife1.throwKnife();
-                        }
+    
+            // Key Bindings pour la touche espace
+            playersPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("SPACE"), "jumpOrThrow");
+            playersPanel.getActionMap().put("jumpOrThrow", new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (!game.knife1.throwing && !game.knife1.isInTheAir) {
+                        game.knife1.jump();
+                    } else if (!game.knife1.throwing && game.knife1.isInTheAir) {
+                        game.knife1.throwKnife();
                     }
                 }
             });
+    
             add(playersPanel, BorderLayout.CENTER);
             playersPanel.requestFocusInWindow();
         }
     }
-
+    
 
     /**
      * Initialise l'image de fond du jeu.
@@ -171,5 +174,5 @@ public class GameView extends JPanel{
     public void startSoloGame() {
         initialize();
     }
-
+    
 }

@@ -3,7 +3,6 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 
-
 public class MainFrame extends JFrame {
     private JPanel cardPanel;
     private CardLayout cardLayout;
@@ -28,11 +27,17 @@ public class MainFrame extends JFrame {
         shopButton.setFocusPainted(false);
         versusButton.setFocusPainted(false);
 
+        // Désactive la possibilité pour les boutons de prendre le focus
+        homeButton.setFocusable(false);
+        soloButton.setFocusable(false);
+        shopButton.setFocusable(false);
+        versusButton.setFocusable(false);
+
         // Ajout des actions aux boutons de navigation
-        homeButton.addActionListener(e -> cardLayout.show(cardPanel, "Home"));
-        soloButton.addActionListener(e -> cardLayout.show(cardPanel, "Solo"));
-        shopButton.addActionListener(e -> cardLayout.show(cardPanel, "Shop"));
-        versusButton.addActionListener(e -> cardLayout.show(cardPanel, "Versus"));
+        homeButton.addActionListener(e -> switchToPanel("Home"));
+        soloButton.addActionListener(e -> switchToPanel("Solo"));
+        shopButton.addActionListener(e -> switchToPanel("Shop"));
+        versusButton.addActionListener(e -> switchToPanel("Versus"));
 
         // Création du panneau de menu principal
         JPanel homePanel = createTitleScreen();
@@ -69,11 +74,19 @@ public class MainFrame extends JFrame {
         setVisible(true);
     }
 
+    private void switchToPanel(String name) {
+        cardLayout.show(cardPanel, name);
+        for (Component comp : cardPanel.getComponents()) {
+            if (comp.isVisible() && comp instanceof JPanel) {
+                comp.requestFocusInWindow();
+                break;
+            }
+        }
+    }
 
     private JPanel createTitleScreen() {
         return new HomeMenu("src/main/ressources/background/Background_MainMenu.png", Menu.linkClip+"Main_theme.wav");
     }
-
 
     private JPanel createShopPanel() {
         return new ShopMenu("src/main/ressources/background/bgShopMenu.png");
@@ -83,9 +96,7 @@ public class MainFrame extends JFrame {
         return new GameView(true);
     }
 
-
     private JPanel createVersusPanel() {
         return new GameView(false);
     }
-
 }
