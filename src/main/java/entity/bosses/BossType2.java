@@ -7,7 +7,6 @@ import entity.*;
  */
 public class BossType2 extends Boss{
     private int hitCount;
-    private boolean directionPositive = true; // Indique si le boss se déplace vers la droite (+x) ou vers la gauche (-x)
 
     /**
      * Constructeur de la classe BossType2.

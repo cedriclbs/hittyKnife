@@ -131,7 +131,11 @@ public class Game {
                 //System.out.println(c.getX());
             } else if (c instanceof BossType2){
                 ((BossType2) c).updateMovement(adjustedDelta);
-                System.out.println(c.getX());
+                //System.out.println(c.getX());
+                //System.out.println(c.getY());
+            } else if (c instanceof BossType3) {
+                ((BossType3) c).updateMovement(adjustedDelta);
+                //System.out.println(c.getX());
                 System.out.println(c.getY());
             }
         }
