@@ -29,7 +29,30 @@ public class BossType2 extends Boss{
 
     @Override
     public void updateMovement(double delta) {
-        double a = 5.5;
+        // Définir le centre du cercle
+        double centerX = 0;
+        double centerY = 20;
+
+        // Définir le rayon du cercle
+        double radius = 30;
+
+        // Définir la vitesse de rotation
+        double angularSpeed = 0.1; // en radians par seconde
+
+        // Calculer l'angle de rotation en fonction du temps écoulé depuis la dernière mise à jour
+        double movement = 0.5 * delta;
+        double angle = angularSpeed * movement;
+
+        // Ajouter l'angle à l'angle actuel
+        double currentAngle = Math.atan2(getY() - centerY, getX() - centerX);
+        double newAngle = currentAngle + angle;
+
+        // Calculer la nouvelle position en utilisant la formule paramétrique du cercle
+        double newX = centerX + radius * Math.cos(newAngle);
+        double newY = centerY + radius * Math.sin(newAngle);
+
+        setX(newX);
+        setY(newY);
     }
 
 }
