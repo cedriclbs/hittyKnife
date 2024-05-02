@@ -40,7 +40,7 @@ public class GameView extends JPanel{
         //this.knife = game.knife1;
         //this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);
         if (isSolo) {
-            this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgForet.png", (ArrayList<Cible>) game.getListeCible(),isSolo);
+            this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/cave_trees.gif", (ArrayList<Cible>) game.getListeCible(),isSolo);
         }
         else{
             this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/fond1v1.jpg", (ArrayList<Cible>) game.getListeCible(),isSolo);
