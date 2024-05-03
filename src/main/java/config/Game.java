@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import entity.*;
+import entity.bosses.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -102,12 +103,12 @@ public class Game {
     }
 
     private void initGame() {
-        ChargerRound(roundManagement.getCurrentRoundIndex()); 
+        ChargerRound(roundManagement.getCurrentRoundIndex());
     }
 
     private void ChargerRound(int roundIndex) {
         Round currentRound = roundManagement.getListeRounds().get(roundIndex);
-        this.listeCible1.clear(); 
+        this.listeCible1.clear();
         this.listeCible1.addAll(currentRound.getListeCibles());
 
         if (!isSolo) {
@@ -115,17 +116,32 @@ public class Game {
             this.listeCible2.addAll(currentRound.getListeCibles());
         }
     }
-    
+
+
+
     /**
      * Met à jour l'état du jeu en fonction du temps écoulé depuis la dernière mise à jour.
      *
      * @param delta Le temps écoulé depuis la dernière mise à jour, utilisé pour calculer les mouvements.
      */
     public void update(double delta){
+        double adjustedDelta = delta / 3;
         knife1.updateMovement();
         for (Cible c : this.listeCible1) {
             if (c instanceof MovingTarget) {
                 ((MovingTarget) c).updateMovement();
+            } else if (c instanceof BossType1){
+                ((BossType1) c).updateMovement(adjustedDelta);
+                //System.out.println(c.getX());
+                //System.out.println(c.getY());
+            } else if (c instanceof BossType2){
+                ((BossType2) c).updateMovement(adjustedDelta);
+                //System.out.println(c.getX());
+                //System.out.println(c.getY());
+            } else if (c instanceof BossType3) {
+                ((BossType3) c).updateMovement(adjustedDelta);
+                //System.out.println(c.getX());
+                //System.out.println(c.getY());
             }
         }
         if (!isSolo) {
@@ -133,10 +149,12 @@ public class Game {
             for (Cible c : this.listeCible2) {
                 if (c instanceof MovingTarget) {
                     ((MovingTarget) c).updateMovement();
+                } else if (c instanceof BossType1){
+                    ((BossType1) c).updateMovement(adjustedDelta);
                 }
             }
         }
-    
+
         if (listeCible1.isEmpty()) {
             // Incrémentation de l'indice de round dans RoundManagement
             roundManagement.setCurrentRoundIndex(roundManagement.getCurrentRoundIndex() + 1);
@@ -152,9 +170,9 @@ public class Game {
             ChargerRound(roundManagement.getCurrentRoundIndex()); // Recharge le premier round du nouveau niveau
         }
     }
-    
 
-    
+
+
 
     /**
      * Sauvegarde l'état actuel du jeu dans un fichier spécifié.

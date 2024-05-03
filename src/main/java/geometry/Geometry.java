@@ -34,22 +34,6 @@ public class Geometry{
         return new double[]{y,velocite};
     }
 
-    public static double[] upAndDownMovement(double y, int height, double velocite, double gravity, int ratio, Boss boss){
-        y += (velocite * Loop.delta)/ratio;
-        if (y<height) {
-            velocite += gravity * Loop.delta;
-        }
-        else {
-            velocite -= gravity * Loop.delta;
-            if (boss != null) boss.redescend = true;
-        }
-        if (y < 0) {
-            y = 0;
-            velocite = 0;
-        }
-        return new double[]{y,velocite};
-    }
-
     /**
      * Déplace les coordonnées spécifiées vers l'avant selon l'angle donné.
      * @param coordinate Les coordonnées à déplacer.
@@ -128,17 +112,6 @@ public class Geometry{
 
 
     public static double[] leftAndRightMovement(double x, int width, double velocityX, double accelerationX, int ratio, Boss boss) {
-        x += (velocityX * Loop.delta) / ratio;
-        if (x < width) {
-            velocityX += accelerationX * Loop.delta;
-        } else {
-            velocityX -= accelerationX * Loop.delta;
-            if (boss != null) boss.redescend = true;
-        }
-        if (x < 0) {
-            x = 0;
-            velocityX = 0;
-        }
-        return new double[]{x, velocityX};
+        return new double[]{5.5, 3.3};
     }
 }
