@@ -115,6 +115,22 @@ public class GameView extends JPanel{
         bgImgWidth = this.backgroundImage.getWidth(null);
     }
 
+
+    public void updateKnifeImage(String knifePathClicked) {
+        this.entityDisplay.updateKnifeImage(knifePathClicked);
+        if (!isSolo) {
+            this.entityDisplay2.updateKnifeImage(knifePathClicked);
+        }
+    }
+
+    public void updateBackgroundImage(String backgroundPath) {
+        this.entityDisplay.initBg(backgroundPath);
+        repaint();
+    }
+
+
+
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

@@ -1,6 +1,7 @@
 package gui;
 
 import config.Game;
+import config.RessourcesPaths;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,12 +17,16 @@ public class MainFrame extends JFrame {
     private JButton versusButton;
     private JButton libraryButton;
 
+    public static String knifePathClicked;
+
 
     public MainFrame(Game game) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Hitty Knife");
 
         this.game = game;
+        this.knifePathClicked = RessourcesPaths.knifePath + "knife#3.png";
+
 
         // Création des boutons de navigation
         homeButton = new JButton("Home");
@@ -77,13 +82,24 @@ public class MainFrame extends JFrame {
     }
 
 
+    public GameView getGameView() {
+        Component[] components = cardPanel.getComponents();
+        for (Component component : components) {
+            if (component instanceof GameView) {
+                return (GameView) component;
+            }
+        }
+        return null;
+    }
+
+
     private JPanel createHomePanel() {
         return new HomeMenu("src/main/ressources/background/Background_MainMenu.png", "");
     }
 
 
     private JPanel createShopPanel() {
-        return new ShopMenu("src/main/ressources/background/bgShopMenu.png", game);
+        return new ShopMenu(game);
     }
 
     private JPanel createSoloPanel() {
@@ -96,8 +112,10 @@ public class MainFrame extends JFrame {
     }
 
     private JPanel createLibraryPanel(){
-        return new Library(game);
+        return new Library(game.getNomUtilisateur());
     }
+
+
 
 
 }

@@ -50,7 +50,7 @@ public class HomeMenu extends Menu {
         campaignButton.setFocusPainted(false);
         campaignButton.setBorderPainted(false);
         campaignButton.setContentAreaFilled(false);
-        campaignButton.addActionListener(e -> showGame());
+        //campaignButton.addActionListener(e -> showGame());
         campaignButtonPanel.add(campaignButton);
         panel.add(campaignButtonPanel);
 
@@ -61,7 +61,7 @@ public class HomeMenu extends Menu {
         versusButton.setFocusPainted(false);
         versusButton.setBorderPainted(false);
         versusButton.setContentAreaFilled(false);
-        versusButton.addActionListener(e -> show1v1Menu());
+        //versusButton.addActionListener(e -> show1v1Menu());
         versusButtonPanel.add(versusButton);
         panel.add(versusButtonPanel);
 
@@ -96,19 +96,19 @@ public class HomeMenu extends Menu {
     /**
      * Affiche le jeu en mode solo lorsque le bouton "Solo" est cliqué.
      */
-    private void showGame() {
-        GameView gameView = new GameView(true);
-        gameView.startSoloGame();
-    }
-
-    private void show1v1Menu() {
-        GameView gameView = new GameView(false);
-        gameView.startSoloGame();
-    }
+//    private void showGame() {
+//        GameView gameView = new GameView(true);
+//        gameView.startSoloGame();
+//    }
+//
+//    private void show1v1Menu() {
+//        GameView gameView = new GameView(false);
+//        gameView.startSoloGame();
+//    }
 
     private void showShop() {
         if (shopMenu == null) {
-            shopMenu = new ShopMenu("src/main/ressources/background/bgShopMenu.png", null);
+            shopMenu = new ShopMenu(null);
         }
         shopMenu.startShopMenu();
     }

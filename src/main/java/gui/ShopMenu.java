@@ -3,8 +3,6 @@ package gui;
 import config.Game;
 import config.RessourcesPaths;
 import config.ShopCart;
-import User.User;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -30,9 +28,8 @@ public class ShopMenu extends JPanel {
     /**
      * Constructeur de la fenêtre du magasin.
      *
-     * @param backgroundPath Le chemin de l'image de fond du magasin.
      */
-    public ShopMenu(String backgroundPath, Game game) {
+    public ShopMenu(Game game) {
         this.cart = new ShopCart(game);
         this.tabbedPane = new JTabbedPane();
         this.saveB = true;
@@ -70,6 +67,7 @@ public class ShopMenu extends JPanel {
      */
     public void saveCart() {
         if (cart != null) {
+            //TODO : Argent disponible pour acheter ? Faire la vérif
             //if (User.getArgent() - cart.getCartTotal() >= 0){
                 saveB = true;
                 //updateMoney();
@@ -77,8 +75,9 @@ public class ShopMenu extends JPanel {
                 cart.getCart().clear();
                 //refreshCartTab(); TODO : actualiser la liste une fois le panier sauvegarder
                 JOptionPane.showMessageDialog(null, "Le panier a été sauvegardé avec succès.");
-            //}
-            JOptionPane.showMessageDialog(null, "Pas assez de ressources.");
+            //} else {
+                //JOptionPane.showMessageDialog(null, "Pas assez de ressources.");
+            //
         } else {
             JOptionPane.showMessageDialog(null, "Le panier est vide.");
         }

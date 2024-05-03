@@ -26,20 +26,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class Library extends JPanel {
 
-    private Game game;
+    private String username;
     private List<ShopItem> libraryItems;
 
-    public Library(Game game) {
-        initialize(game);
+
+    public Library(String username) {
+        initialize(username);
         charger();
         afficher();
     }
 
 
 
-    // Méthode pour initialiser la bibliothèque avec des données de jeu
-    public void initialize(Game game) {
-        this.game = game;
+    public void initialize(String username) {
+        this.username = username;
         this.libraryItems = new ArrayList<>();
     }
 
@@ -48,7 +48,7 @@ public class Library extends JPanel {
         ObjectMapper mapper = new ObjectMapper();
 
         try {
-            JsonNode readFile = mapper.readTree(new File("src/main/saves/sauvegarde_"+ game.getNomUtilisateur() + ".json"));
+            JsonNode readFile = mapper.readTree(new File("src/main/saves/sauvegarde_"+ this.username + ".json"));
 
             JsonNode libraryNode = readFile.get("library");
             if (libraryNode != null && libraryNode.isArray()) {
@@ -103,7 +103,16 @@ public class Library extends JPanel {
             itemsPanel.add(itemPanel);
 
             itemButton.addActionListener(e -> {
-
+                if (item.getArticleImagePath().contains("music")) {
+                    // TODO : Changer de musique
+                } else if (item.getArticleImagePath().contains("background")) {
+                    MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+                    mainFrame.getGameView().updateBackgroundImage(item.getArticleImagePath());
+                }
+                else {
+                    MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+                    mainFrame.getGameView().updateKnifeImage(item.getArticleImagePath());
+                }
             });
 
 

@@ -1,5 +1,6 @@
 package gui;
 
+import config.RessourcesPaths;
 import entity.Cible;
 import entity.Knife;
 import entity.MovingTarget;
@@ -88,7 +89,7 @@ public class EntityDisplay extends JPanel {
      * Redimensionne également les images pour les adapter à la taille souhaitée.
      */
     private void initImage () {
-        this.knifeImage = new ImageIcon("src/main/ressources/knifes/knifeRotate2.png").getImage();
+        this.knifeImage = new ImageIcon(RessourcesPaths.knifePath + "knifeRotate1.png").getImage();
         this.cibleImage = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
         this.ciblesMouventeImage =  new ImageIcon("src/main/ressources/targets/target#2.png").getImage();
         int w = this.knifeImage.getWidth(null)/3;
@@ -103,11 +104,40 @@ public class EntityDisplay extends JPanel {
      *
      * @param backgroundPath Le chemin de l'image de fond à charger.
      */
-    private void initBg(String backgroundPath) {
+    void initBg(String backgroundPath) {
         this.backgroundImage = new ImageIcon(backgroundPath).getImage();
         bgImgHeight = this.backgroundImage.getHeight(null);
         bgImgWidth = this.backgroundImage.getWidth(null);
     }
+
+
+
+
+    public void updateKnifeImage(String knifePathClicked) {
+        knifePathClicked = verifImage(knifePathClicked);
+        this.knifeImage = new ImageIcon(knifePathClicked).getImage();
+        int w = this.knifeImage.getWidth(null)/3;
+        int h = this.knifeImage.getHeight(null)/3;
+        this.knifeImage = this.knifeImage.getScaledInstance(w,h,Image.SCALE_SMOOTH);
+        repaint();
+    }
+
+
+
+    private String verifImage(String knifePathClicked) {
+        String res = knifePathClicked;
+        String abr = RessourcesPaths.knifePath;
+        if (knifePathClicked.equals(abr +"knife.png")){
+            res = abr + "knifeRotate1.png";
+        } else if (knifePathClicked.equals(abr +"knife#2.png")){
+            res = abr + "knifeRotate2.png";
+        } else if (knifePathClicked.equals(abr +"knife#3.png")){
+            res = abr+ "knifeRotate3.png";
+        }
+        return res;
+    }
+
+
     /**
      * Redessine le composant en dessinant l'image de fond, les couteaux et les cibles.
      * Effectue également la gestion des collisions entre les couteaux et les cibles.
