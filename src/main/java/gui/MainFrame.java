@@ -28,7 +28,7 @@ public class MainFrame extends JFrame {
         soloButton = new JButton("Solo");
         shopButton = new JButton("Shop");
         versusButton = new JButton("Versus");
-        libraryButton = new JButton("Bibliothèque");
+        libraryButton = new JButton("Inventaire");
 
 
         // Ajout des actions aux boutons de navigation
@@ -36,7 +36,7 @@ public class MainFrame extends JFrame {
         soloButton.addActionListener(e -> cardLayout.show(cardPanel, "Solo"));
         shopButton.addActionListener(e -> cardLayout.show(cardPanel, "Shop"));
         versusButton.addActionListener(e -> cardLayout.show(cardPanel, "Versus"));
-        libraryButton.addActionListener(e -> cardLayout.show(cardPanel, "Bibliothèque"));
+        libraryButton.addActionListener(e -> cardLayout.show(cardPanel, "Inventaire"));
 
 
         // Création du panneau de menu principal
@@ -55,7 +55,7 @@ public class MainFrame extends JFrame {
         cardPanel.add(soloPanel, "Solo");
         cardPanel.add(shopPanel, "Shop");
         cardPanel.add(versusPanel, "Versus");
-        cardPanel.add(libraryPanel, "Bibliothèque");
+        cardPanel.add(libraryPanel, "Inventaire");
 
 
         // Ajout des boutons de navigation en haut de la fenêtre

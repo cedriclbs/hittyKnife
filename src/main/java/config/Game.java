@@ -184,7 +184,9 @@ public class Game {
                     library.add(item);
                 }
             }
+            //library.charger();
         }
+
         sauvegarderEtat();
     }
 

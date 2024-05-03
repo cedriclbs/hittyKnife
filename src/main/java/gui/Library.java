@@ -1,80 +1,47 @@
 package gui;
 
-import User.User;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import config.Game;
+import config.RessourcesPaths;
 import config.ShopItem;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
+
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
+
+import java.io.File;
+import java.io.IOException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+
+
+
+
+/**
+ * Cette classe représente une bibliothèque dans l'interface graphique du jeu.
+ * Elle utilise un panneau avec une image de fond pour personnaliser son apparence.
+ */
 public class Library extends JPanel {
 
     private Game game;
-    private JPanel libraryPanel;
-    List<ShopItem> libraryItems;
+    private List<ShopItem> libraryItems;
 
-    public Library (Game game) {
+    public Library(Game game) {
         initialize(game);
         charger();
         afficher();
-        add(libraryPanel, BorderLayout.SOUTH);
-        //test
     }
 
 
+
+    // Méthode pour initialiser la bibliothèque avec des données de jeu
     public void initialize(Game game) {
-        BackgroundPanel backgroundPanel = new BackgroundPanel("src/main/ressources/background/bgLibrary.png");
-        setLayout(new BorderLayout());
-        add(backgroundPanel, BorderLayout.CENTER);
-
         this.game = game;
-
-        libraryPanel = new JPanel(new GridLayout(3, 3, 20, 20));
-        libraryPanel.setOpaque(false);
-
-        libraryItems = new ArrayList<>();
-
+        this.libraryItems = new ArrayList<>();
     }
-
-    private void afficher() {
-        for (ShopItem item : libraryItems) {
-            JPanel itemPanel = new JPanel(new BorderLayout());
-            itemPanel.setOpaque(false);
-
-            ImageIcon icon = new ImageIcon(item.getArticleImagePath());
-            JButton itemButton = new JButton();
-            itemButton.setIcon(icon);
-            itemButton.setBorderPainted(false);
-            itemButton.setContentAreaFilled(false);
-            itemButton.setFocusPainted(false);
-
-
-            JLabel itemNameLabel = new JLabel(item.getArticleName());
-            itemNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            itemNameLabel.setFont(itemNameLabel.getFont().deriveFont(Font.BOLD | Font.ITALIC, 14f));
-
-
-            itemPanel.add(itemButton, BorderLayout.CENTER);
-            itemPanel.add(itemNameLabel, BorderLayout.SOUTH);
-
-
-            libraryPanel.add(itemPanel);
-
-            itemButton.addActionListener(e -> {
-
-            });
-
-        }
-
-    }
-
-
-
 
 
     private void charger () {
@@ -99,9 +66,69 @@ public class Library extends JPanel {
 
 
 
+    private void afficher() {
+
+        BackgroundPanel backgroundPanel = new BackgroundPanel(RessourcesPaths.backgroundPath + "bgInventaire.gif");
+        setLayout(new BorderLayout());
+
+
+        JPanel itemsPanel = new JPanel(new GridLayout(3, 3, 10, 10));
+        itemsPanel.setBorder(new EmptyBorder(300, 200, 300, 200));
+        itemsPanel.setOpaque(false);
+
+        for (ShopItem item : libraryItems) {
+            JPanel itemPanel = new JPanel(new BorderLayout());
+            itemPanel.setOpaque(false);
+
+
+
+            ImageIcon icon = new ImageIcon(item.getArticleImagePath());
+            if (item.getArticleImagePath().contains("knife") || item.getArticleImagePath().contains("music")){
+                Image resizedImage = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+                icon = new ImageIcon(resizedImage);
+            } else if (item.getArticleImagePath().contains("background")){
+                Image resizedImage = icon.getImage().getScaledInstance(1920/5, 1080/5, Image.SCALE_SMOOTH);
+                icon = new ImageIcon(resizedImage);
+            }
+
+
+            JButton itemButton = new JButton();
+            itemButton.setIcon(icon);
+            itemButton.setBorderPainted(true);
+            itemButton.setContentAreaFilled(false);
+            itemButton.setFocusPainted(false);
+
+            itemPanel.add(itemButton, BorderLayout.CENTER);
+
+            itemsPanel.add(itemPanel);
+
+            itemButton.addActionListener(e -> {
+
+            });
+
+
+        }
+
+
+        backgroundPanel.add(itemsPanel, BorderLayout.CENTER);
+
+        add(backgroundPanel);
+
+
+
+
+
+
+    }
+
+
+
 
 
 
 
 
 }
+
+
+
