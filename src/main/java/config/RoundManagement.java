@@ -149,13 +149,6 @@ public class RoundManagement {
         //return 4 + random.nextInt(4);
         return 1;
     }
-
-
-    public List<Cible> getListeCibleSuivant(){
-        return rounds.get(currentRoundIndex++).getListeCibles();
-    }
-
-
     // méthode pour vérifier si tous les rounds sont complétés
     public boolean isAllRoundsCompleted() {
         return currentRoundIndex == rounds.size();
