@@ -2,14 +2,10 @@ package App;
 
 import config.Game;
 
+import java.util.Timer;
+import java.util.TimerTask;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
-/**
- * Cette classe gère la boucle de jeu et l'exécution des mises à jour du jeu à intervalles réguliers.
- */
 public class Loop {
 
     private final Game g;
@@ -33,63 +29,22 @@ public class Loop {
      */
     void tickAction() {
         long now = System.nanoTime();
-        long updateLength = now - lastLoopTime;
-        lastLoopTime = now;
-
-        double delta0 = updateLength / ((double) OPTIMAL_TIME);
+        double delta0 = (now - lastLoopTime) / ((double) OPTIMAL_TIME);
         delta = delta0;
         g.update(delta0);
+        lastLoopTime = now;
     }
 
     /**
      * Méthode pour démarrer la fonction de tick.
      */
     public void startTickFunction() {
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-
-        int INITIAL_DELAY = 0;
-        int TICK_INTERVAL = 1;
-        executor.scheduleAtFixedRate(this::tickAction, INITIAL_DELAY, TICK_INTERVAL, TimeUnit.MILLISECONDS);
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                tickAction();
+            }
+        }, 0, 100 / TARGET_FPS);
     }
 }
-
-/*public class Loop {
-    private static final int TARGET_FPS = 60;
-    private static final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
-
-    private boolean isRunning;
-    private Game g;
-    public static double delta;
-
-    public Loop(Game game) {
-        isRunning = true;
-        this.g = game;
-
-        long lastLoopTime = System.nanoTime();
-
-        while (isRunning) {
-            long now = System.nanoTime();
-            long updateLength = now - lastLoopTime;
-            lastLoopTime = now;
-
-            double delta0 = updateLength / ((double) OPTIMAL_TIME);
-
-            updateGame(delta0);
-
-            delta = delta0;
-
-            long sleepTime = Math.max(0, (lastLoopTime - System.nanoTime() + OPTIMAL_TIME) / 1000000);
-
-            try {
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void updateGame(double delta) {
-        g.update(delta);
-    }
-
-}*/

@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import entity.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,14 +17,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Permet la sauvegarde et le chargement de l'état du jeu.
  */
 public class Game {
+    @JsonIgnore
     transient public Knife knife1;
+    @JsonIgnore
     transient public Knife knife2;
+    @JsonIgnore
     transient boolean isSolo;
+    @JsonIgnore
     transient private List<Cible> listeCible1 = new ArrayList<>();
+    @JsonIgnore
     transient private List<Cible> listeCible2 = new ArrayList<>();
     transient private int life;
     private RoundManagement roundManagement;  
-    private int currentRoundIndex;
+    private int currentLevel;
 
     //Attribut du User pour JSON
     @JsonProperty("nomUtilisateur")
@@ -32,12 +40,15 @@ public class Game {
     private String cheminSauvegarde;
     @JsonProperty("argent")
     private int argent;
+    @JsonProperty("library")
+    List<ShopItem> library;
 
 
     @JsonCreator
     public Game() {
         // Constructeur sans arguments pour la désérialisation JSON
     }
+
 
     /**
      * Constructeur qui initialise le jeu avec un couteau, une liste de cibles vide, et un nombre initial de vies.
@@ -51,20 +62,9 @@ public class Game {
             this.knife2 = new Knife();
         }
         this.roundManagement = new RoundManagement();
+        this.currentLevel = 1;
         initGame();
-        
-        //knife.addAngle(90);
-        // Cible c1 = new Cible(20,20);
-        // Cible c2 = new Cible(-15,30);
-        // MovingTarget m1 = new MovingTarget(-20,10);
-        // Cible c12 = new Cible(20,20);
-        // Cible c22 = new Cible(-15,30);
-        // MovingTarget m12 = new MovingTarget(-20,10);
-        // listeCible1.add(c1);listeCible1.add(c2);
-        // listeCible1.add(m1);
-        // listeCible2.add(c12);listeCible2.add(c22);
-        // listeCible2.add(m12);
-        // life = 3;
+
     }
 
     /**
@@ -81,8 +81,8 @@ public class Game {
 
 
     // Getters et setters pour la sérialisation/désérialisation
-    public Knife getKnife() { return knife1; }
-    public Knife getKnife2(){ return knife2;}
+    //public Knife getKnife() { return knife1; }
+    //public Knife getKnife2(){ return knife2;}
     //public void setKnife(Knife knife) { this.knife = knife; }
 
     public List<Cible> getListeCible() { return listeCible1; }
@@ -97,8 +97,12 @@ public class Game {
         return this.nomUtilisateur;
     }
 
+    public List<ShopItem> getLibrary () {
+        return library;
+    }
+
     private void initGame() {
-        ChargerRound(currentRoundIndex); 
+        ChargerRound(roundManagement.getCurrentRoundIndex()); 
     }
 
     private void ChargerRound(int roundIndex) {
@@ -112,50 +116,87 @@ public class Game {
         }
     }
     
-
     /**
      * Met à jour l'état du jeu en fonction du temps écoulé depuis la dernière mise à jour.
      *
      * @param delta Le temps écoulé depuis la dernière mise à jour, utilisé pour calculer les mouvements.
      */
     public void update(double delta){
-        //System.out.println("dqdqzsqzdqsqdqzdqz");
         knife1.updateMovement();
-        for(Cible c : this.listeCible1){
-            if (c instanceof MovingTarget){
+        for (Cible c : this.listeCible1) {
+            if (c instanceof MovingTarget) {
                 ((MovingTarget) c).updateMovement();
             }
         }
-        if (!isSolo){
+        if (!isSolo) {
             knife2.updateMovement();
-            for(Cible c : this.listeCible2){
-                if (c instanceof MovingTarget){
+            for (Cible c : this.listeCible2) {
+                if (c instanceof MovingTarget) {
                     ((MovingTarget) c).updateMovement();
                 }
             }
         }
-        if(listeCible1.isEmpty()){
-            currentRoundIndex++;
-            if (currentRoundIndex < roundManagement.getListeRounds().size()) {
-                ChargerRound(currentRoundIndex); 
+    
+        if (listeCible1.isEmpty()) {
+            // Incrémentation de l'indice de round dans RoundManagement
+            roundManagement.setCurrentRoundIndex(roundManagement.getCurrentRoundIndex() + 1);
+            if (roundManagement.getCurrentRoundIndex() < roundManagement.getListeRounds().size()) {
+                ChargerRound(roundManagement.getCurrentRoundIndex()); // Chargement du round suivant
+                //System.out.println(roundManagement.getCurrentRoundIndex());
             }
         }
-        //Debug.affichage(knife);
+        if (roundManagement.isAllRoundsCompleted()) {
+            currentLevel++; // Incrémentation du niveau
+            System.out.println("Level : " + currentLevel);
+            roundManagement.resetRounds(); // Réinitialisation des rounds pour le nouveau niveau
+            roundManagement.setCurrentRoundIndex(0); // Réinitialisation de l'indice de round
+            ChargerRound(roundManagement.getCurrentRoundIndex()); // Recharge le premier round du nouveau niveau
+        }
     }
+    
 
     
 
     /**
      * Sauvegarde l'état actuel du jeu dans un fichier spécifié.
      */
+
     public void sauvegarderEtat() {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            mapper.writeValue(new File( "src/main/saves/sauvegarde_"+ nomUtilisateur + ".json"), this);
+            mapper.writeValue(new File("src/main/saves/sauvegarde_"+ nomUtilisateur + ".json"), this);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
+    public void updateLibrary(ShopCart cart) {
+        if (cart != null) {
+            if (library == null) {
+                library = new ArrayList<>();
+            }
+            for (ShopItem item : cart.getCart()) {
+                if (!library.contains(item)) {
+                    library.add(item);
+                }
+            }
+            //library.charger();
+        }
+
+        sauvegarderEtat();
+    }
+
+
+
+
+    /**
+     * Sauvegarde le panier du ShopMenu dans un fichier spécifié pour l'afficher dans la bibliothèque du joueur
+     */
+
+
+
+
 
     /**
      * Charge l'état du jeu à partir d'un fichier spécifié.
@@ -168,8 +209,8 @@ public class Game {
         return mapper.readValue(new File(cheminFichier), Game.class);
     }
 
-    public int getCurrentRoundIndex() {
-        return currentRoundIndex;
+    public int getCurrentLevel() {
+        return currentLevel;
     }
 
 }

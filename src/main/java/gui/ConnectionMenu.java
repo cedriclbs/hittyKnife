@@ -67,13 +67,16 @@ public class ConnectionMenu extends JDialog {
             this.dispose();
 
             // Charge l'état du jeu pour l'utilisateur connecté
+            Game game = null;
             try {
-                Game game = Game.chargerEtat("src/main/saves/sauvegarde_" + nomUtilisateur + ".json");
+                game = Game.chargerEtat("src/main/saves/sauvegarde_" + nomUtilisateur + ".json");
             } catch (IOException e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Erreur lors du chargement de la sauvegarde de jeu.", "Erreur", JOptionPane.ERROR_MESSAGE);
-            } 
-            MainFrame mainFrame = new MainFrame();
+            }
+            if (game != null) {
+                MainFrame mainFrame = new MainFrame(game);
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Échec de la connexion. Vérifiez votre nom d'utilisateur et mot de passe.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
