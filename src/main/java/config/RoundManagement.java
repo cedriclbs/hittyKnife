@@ -49,7 +49,7 @@ public class RoundManagement {
     
             for (int j = 0; j < targetsCount; j++) {
                 // Détermine le type de cible
-                TypeCible typeCible = i < lastIndex ? getRandomTypeCible() : getRandomTypeCible(); //mettre le truc du boss
+                TypeCible typeCible = i < lastIndex ? getRandomTypeCible() : getRandomTypeBoss(); //mettre le truc du boss
                 
                 double x,y;
                 
@@ -79,11 +79,15 @@ public class RoundManagement {
     
             case CIBLE_BOSS1:
                 // Créer un BossType1
-                return new BossType1(typeCible, 3, x, y, 0);
+                return new BossType1(x, y);
     
             case CIBLE_BOSS2:
                 // Créer un BossType2
-                return new BossType2(typeCible, 3, x, y, 0);
+                return new BossType2(x,y);
+
+            case CIBLE_BOSS3:
+                // Créer un BossType3
+                return new BossType3(x, y);
     
             default:
                 return new Cible(x, y);
@@ -142,8 +146,8 @@ public class RoundManagement {
      * @return Un nombre aléatoire de cibles, entre 4 et 10.
      */
     private int getRndIntTargetRounds() {
-        return 4 + random.nextInt(4);
-        //return 1;
+        //return 4 + random.nextInt(4);
+        return 1;
     }
 
 
@@ -151,7 +155,7 @@ public class RoundManagement {
         return rounds.get(currentRoundIndex++).getListeCibles();
     }
 
-   
+
     // méthode pour vérifier si tous les rounds sont complétés
     public boolean isAllRoundsCompleted() {
         return currentRoundIndex == rounds.size();
