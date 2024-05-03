@@ -39,7 +39,7 @@ public abstract class Boss extends Cible {
      * @param velocite Vitesse du boss.
      */
     public Boss(TypeCible bosstype, int health, double x, double y, double velocite) {
-        super(bosstype, health, x, y, velocite);        
+        super(bosstype, health, x, y);
     }
 
     /**
