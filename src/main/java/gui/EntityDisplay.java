@@ -8,6 +8,7 @@ import entity.MovingTarget;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -113,6 +114,7 @@ public class EntityDisplay extends JPanel {
 
 
 
+
     public void updateKnifeImage(String knifePathClicked) {
         knifePathClicked = verifImage(knifePathClicked);
         this.knifeImage = new ImageIcon(knifePathClicked).getImage();
@@ -137,6 +139,19 @@ public class EntityDisplay extends JPanel {
         return res;
     }
 
+
+    /**
+     * Crée et retourne un masque de collision à partir de l'image spécifiée.
+     * @param image L'image à partir de laquelle créer le masque de collision.
+     * @return Un objet de type Shape représentant le masque de collision créé.
+     */
+    public Shape createCollisionMask(Image image) {
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = bufferedImage.createGraphics();
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+        return new Rectangle(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
+    }
 
     /**
      * Redessine le composant en dessinant l'image de fond, les couteaux et les cibles.
@@ -202,11 +217,21 @@ public class EntityDisplay extends JPanel {
 
             //--------------------COLLISIONS------------------------
 
+            Shape knifeMask = createCollisionMask(knifeImage);
+            Shape cibleMask = createCollisionMask(cibleImage);
+            Shape transformedCibleMask = transformCible.createTransformedShape(cibleMask);
+            Shape transformedKnifeMask = transform.createTransformedShape(knifeMask);
 
+            //AFFICHAGE COLLISIONS
 
+            g2d.setColor(Color.RED);
+            g2d.draw(transformedCibleMask);
+            g2d.setColor(Color.BLUE);
+            g2d.draw(transformedKnifeMask);
 
-            int cw=55;int ch=55;
-            if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
+            //int cw=55;int ch=55;
+            //if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
+            if (transformedCibleMask.intersects(transformedKnifeMask.getBounds2D())) {
                 collisionX = knifeX;
                 collisionY = knifeY;
                 cibleColliX = cibleX;
@@ -226,3 +251,4 @@ public class EntityDisplay extends JPanel {
     }
 
 }
+

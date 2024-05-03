@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 
-
 /**
  * Cette classe représente une bibliothèque dans l'interface graphique du jeu.
  * Elle utilise un panneau avec une image de fond pour personnaliser son apparence.
@@ -30,6 +29,12 @@ public class Library extends JPanel {
     private List<ShopItem> libraryItems;
 
 
+
+    /**
+     * Constructeur de la classe Library.
+     *
+     * @param username Le nom d'utilisateur pour lequel la bibliothèque est créée.
+     */
     public Library(String username) {
         initialize(username);
         charger();
@@ -37,13 +42,21 @@ public class Library extends JPanel {
     }
 
 
-
+    /**
+     * Initialise la bibliothèque avec le nom d'utilisateur spécifié.
+     *
+     * @param username Le nom d'utilisateur pour lequel la bibliothèque est initialisée.
+     */
     public void initialize(String username) {
         this.username = username;
         this.libraryItems = new ArrayList<>();
     }
 
 
+
+    /**
+     * Charge les éléments de la bibliothèque à partir du fichier JSON correspondant à l'utilisateur.
+     */
     private void charger () {
         ObjectMapper mapper = new ObjectMapper();
 
@@ -66,20 +79,22 @@ public class Library extends JPanel {
 
 
 
+    /**
+     * Affiche les éléments de la bibliothèque dans un panneau graphique avec une image de fond.
+     */
     private void afficher() {
 
         BackgroundPanel backgroundPanel = new BackgroundPanel(RessourcesPaths.backgroundPath + "bgInventaire.gif");
         setLayout(new BorderLayout());
-
 
         JPanel itemsPanel = new JPanel(new GridLayout(3, 3, 10, 10));
         itemsPanel.setBorder(new EmptyBorder(300, 200, 300, 200));
         itemsPanel.setOpaque(false);
 
         for (ShopItem item : libraryItems) {
+
             JPanel itemPanel = new JPanel(new BorderLayout());
             itemPanel.setOpaque(false);
-
 
 
             ImageIcon icon = new ImageIcon(item.getArticleImagePath());
@@ -91,7 +106,6 @@ public class Library extends JPanel {
                 icon = new ImageIcon(resizedImage);
             }
 
-
             JButton itemButton = new JButton();
             itemButton.setIcon(icon);
             itemButton.setBorderPainted(true);
@@ -99,8 +113,8 @@ public class Library extends JPanel {
             itemButton.setFocusPainted(false);
 
             itemPanel.add(itemButton, BorderLayout.CENTER);
-
             itemsPanel.add(itemPanel);
+
 
             itemButton.addActionListener(e -> {
                 if (item.getArticleImagePath().contains("music")) {
@@ -114,27 +128,12 @@ public class Library extends JPanel {
                     mainFrame.getGameView().updateKnifeImage(item.getArticleImagePath());
                 }
             });
-
-
         }
 
-
         backgroundPanel.add(itemsPanel, BorderLayout.CENTER);
-
         add(backgroundPanel);
 
-
-
-
-
-
     }
-
-
-
-
-
-
 
 
 }

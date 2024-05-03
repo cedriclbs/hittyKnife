@@ -8,7 +8,6 @@ public class Level {
     private int level;
     private int argent;
     private RoundManagement round;
-    //private GameSave gameSave;
 
     /**
      * Constructeur pour initialiser un nouveau niveau.
@@ -17,37 +16,27 @@ public class Level {
     public Level() {
         this.level = 1;
         this.argent = 0; 
-        this.round = new RoundManagement(); 
-        //this.gameSave = new GameSave(new Knife(), new ArrayList<Cible>(),argent,level);
+        this.round = new RoundManagement();
+        //this.gameSave = new GameSave(new Knife(), new ArrayList<Cible>(), argent, level);
     }
 
     /**
      * Méthode appelée pour gérer la progression des cibles.
-     * Vérifie si tous les rounds et le boss ont été terminés pour passer au niveau suivant.
+     * Vérifie si tous les rounds sont terminés pour passer au niveau suivant.
      */
-    public void nextTargetAndUpdateLevel() { //Obselete pour l'instant
-        // Vérifie si tous les rounds et le boss ont été terminés
-        if (round.isAllRoundCompleted()) {
-            bossDefeated(); // Méthode pour gérer la fin du boss et passer au niveau suivant
+    public void nextTargetAndUpdateLevel() {
+        if (round.isAllRoundsCompleted()) {
+            level++;           // Incrémente le niveau
+            round.resetRounds();  // Réinitialise les rounds
         }
     }
 
     /**
-     * Gère les actions à effectuer lorsque le boss est vaincu, comme incrémenter le niveau,
-     * réinitialiser le round et sauvegarder le jeu.
-     */
-    public void bossDefeated() {
-        level++; 
-        round.reset(); 
-        saveGame();
-    }
-
-    /**
-     * Sauvegarde l'état actuel du jeu, incluant le couteau en cours, la liste des cibles,l'argent
+     * Sauvegarde l'état actuel du jeu, incluant le couteau en cours, la liste des cibles, l'argent
      * et le niveau actuel.
      */
     public void saveGame() {
-        //gameSave = new GameSave(gameSave.getKnife(), gameSave.getListeCible(),gameSave.getArgent(),gameSave.getLevel());
+        //gameSave = new GameSave(gameSave.getKnife(), gameSave.getListeCible(), gameSave.getArgent(), gameSave.getLevel());
     }
 
     /**
@@ -58,5 +47,4 @@ public class Level {
     public int getLevel() {
         return level;
     }
-
 }

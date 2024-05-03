@@ -157,6 +157,9 @@ public class ShopCart {
     }
 
 
+    /**
+     * Met à jour le montant total du panier et met à jour l'affichage.
+     */
     private void updateCartTotal() {
         this.cartTotalLabel.setText("Total du panier : " + getCartTotal());
     }
