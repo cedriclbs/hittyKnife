@@ -1,25 +1,46 @@
 package gui;
 
+import config.Game;
+import config.RessourcesPaths;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class MainFrame extends JFrame {
+
+    private Game game;
     private JPanel cardPanel;
     private CardLayout cardLayout;
     private JButton homeButton;
     private JButton soloButton;
     private JButton shopButton;
     private JButton versusButton;
+    private JButton libraryButton;
 
-    public MainFrame() {
+    public static String knifePathClicked;
+
+
+    /**
+     * Constructeur de la classe MainFrame se basant sur la logique du CardLayout.
+     *
+     * @param game L'objet Game représentant l'état du jeu.
+     */
+    public MainFrame(Game game) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Hitty Knife");
+        setTitle("Hitty Knife - Redux");
+        setIconImage(new ImageIcon(RessourcesPaths.iconPath + "icon.png").getImage());
+
+        this.game = game;
+        this.knifePathClicked = RessourcesPaths.knifePath + "knife#3.png";
+
 
         // Création des boutons de navigation
         homeButton = new JButton("Home");
         soloButton = new JButton("Solo");
         shopButton = new JButton("Shop");
         versusButton = new JButton("Versus");
+        libraryButton = new JButton("Inventaire");
+
 
         // Supprimer le rectangle de sélection lorsqu'un bouton est enfoncé
         homeButton.setFocusPainted(false);
@@ -34,16 +55,21 @@ public class MainFrame extends JFrame {
         versusButton.setFocusable(false);
 
         // Ajout des actions aux boutons de navigation
+
         homeButton.addActionListener(e -> switchToPanel("Home"));
         soloButton.addActionListener(e -> switchToPanel("Solo"));
         shopButton.addActionListener(e -> switchToPanel("Shop"));
         versusButton.addActionListener(e -> switchToPanel("Versus"));
+        libraryButton.addActionListener(e -> switchToPanel("Inventaire"));
+
 
         // Création du panneau de menu principal
         JPanel homePanel = createTitleScreen();
         JPanel soloPanel = createSoloPanel();
         JPanel shopPanel = createShopPanel();
         JPanel versusPanel = createVersusPanel();
+        JPanel libraryPanel = createLibraryPanel();
+
 
         // Création du conteneur de panneaux avec CardLayout
         cardPanel = new JPanel();
@@ -53,6 +79,8 @@ public class MainFrame extends JFrame {
         cardPanel.add(soloPanel, "Solo");
         cardPanel.add(shopPanel, "Shop");
         cardPanel.add(versusPanel, "Versus");
+        cardPanel.add(libraryPanel, "Inventaire");
+
 
         // Ajout des boutons de navigation en haut de la fenêtre
         JPanel navPanel = new JPanel(new FlowLayout());
@@ -60,6 +88,8 @@ public class MainFrame extends JFrame {
         navPanel.add(soloButton);
         navPanel.add(shopButton);
         navPanel.add(versusButton);
+        navPanel.add(libraryButton);
+
 
         // Utilisation d'un BorderLayout pour la JFrame
         setLayout(new BorderLayout());
@@ -74,6 +104,27 @@ public class MainFrame extends JFrame {
         setVisible(true);
     }
 
+
+
+    /**
+     * Récupère la vue de jeu actuellement affichée dans le conteneur de panneaux.
+     *
+     * @return La vue de jeu actuellement affichée, ou null s'il n'y en a pas.
+     */
+    public GameView getGameView() {
+        Component[] components = cardPanel.getComponents();
+        for (Component component : components) {
+            if (component instanceof GameView) {
+                return (GameView) component;
+            }
+        }
+        return null;
+    }
+
+
+    private JPanel createHomePanel() {
+        return new HomeMenu("src/main/ressources/background/Background_MainMenu.png", "");
+    }
     /**
      * Basculer vers le panneau spécifié par son nom et lui attribuer le focus.
      * Cette méthode change la vue visible dans le conteneur géré par le {@link CardLayout},
@@ -83,6 +134,7 @@ public class MainFrame extends JFrame {
      *
      * @param name le nom du panneau à afficher, tel que spécifié lors de l'ajout du panneau au {@link CardLayout}.
      */
+
     private void switchToPanel(String name) {
         cardLayout.show(cardPanel, name);
         for (Component comp : cardPanel.getComponents()) {
@@ -99,7 +151,7 @@ public class MainFrame extends JFrame {
     }
 
     private JPanel createShopPanel() {
-        return new ShopMenu("src/main/ressources/background/bgShopMenu.png");
+        return new ShopMenu(game);
     }
 
     private JPanel createSoloPanel() {
@@ -109,4 +161,12 @@ public class MainFrame extends JFrame {
     private JPanel createVersusPanel() {
         return new GameView(false);
     }
+
+    private JPanel createLibraryPanel(){
+        return new Library(game.getNomUtilisateur());
+    }
+
+
+
+
 }

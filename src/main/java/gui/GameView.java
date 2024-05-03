@@ -159,6 +159,32 @@ public class GameView extends JPanel{
         bgImgWidth = this.backgroundImage.getWidth(null);
     }
 
+
+    /**
+     * Met à jour l'image du couteau suite au choix du joueur dans l'inventaire.
+     *
+     * @param knifePathClicked Le chemin d'accès vers l'image du couteau.
+     */
+    public void updateKnifeImage(String knifePathClicked) {
+        this.entityDisplay.updateKnifeImage(knifePathClicked);
+        if (!isSolo) {
+            this.entityDisplay2.updateKnifeImage(knifePathClicked);
+        }
+    }
+
+    /**
+     * Met à jour l'image de fond du jeu suite au choix du joueur dans l'inventaire.
+     *
+     * @param backgroundPath Le chemin d'accès à la nouvelle image de fond.
+     */
+    public void updateBackgroundImage(String backgroundPath) {
+        this.entityDisplay.initBg(backgroundPath);
+        repaint();
+    }
+
+
+
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

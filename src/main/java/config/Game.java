@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import entity.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,10 +17,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Permet la sauvegarde et le chargement de l'état du jeu.
  */
 public class Game {
+    @JsonIgnore
     transient public Knife knife1;
+    @JsonIgnore
     transient public Knife knife2;
+    @JsonIgnore
     transient boolean isSolo;
+    @JsonIgnore
     transient private List<Cible> listeCible1 = new ArrayList<>();
+    @JsonIgnore
     transient private List<Cible> listeCible2 = new ArrayList<>();
     transient private int life;
     private RoundManagement roundManagement;  
@@ -32,12 +40,15 @@ public class Game {
     private String cheminSauvegarde;
     @JsonProperty("argent")
     private int argent;
+    @JsonProperty("library")
+    List<ShopItem> library;
 
 
     @JsonCreator
     public Game() {
         // Constructeur sans arguments pour la désérialisation JSON
     }
+
 
     /**
      * Constructeur qui initialise le jeu avec un couteau, une liste de cibles vide, et un nombre initial de vies.
@@ -70,8 +81,8 @@ public class Game {
 
 
     // Getters et setters pour la sérialisation/désérialisation
-    public Knife getKnife() { return knife1; }
-    public Knife getKnife2(){ return knife2;}
+    //public Knife getKnife() { return knife1; }
+    //public Knife getKnife2(){ return knife2;}
     //public void setKnife(Knife knife) { this.knife = knife; }
 
     public List<Cible> getListeCible() { return listeCible1; }
@@ -84,6 +95,10 @@ public class Game {
 
     public String getNomUtilisateur() {
         return this.nomUtilisateur;
+    }
+
+    public List<ShopItem> getLibrary () {
+        return library;
     }
 
     private void initGame() {
@@ -145,14 +160,43 @@ public class Game {
     /**
      * Sauvegarde l'état actuel du jeu dans un fichier spécifié.
      */
+
     public void sauvegarderEtat() {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            mapper.writeValue(new File( "src/main/saves/sauvegarde_"+ nomUtilisateur + ".json"), this);
+            mapper.writeValue(new File("src/main/saves/sauvegarde_"+ nomUtilisateur + ".json"), this);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
+    public void updateLibrary(ShopCart cart) {
+        if (cart != null) {
+            if (library == null) {
+                library = new ArrayList<>();
+            }
+            for (ShopItem item : cart.getCart()) {
+                if (!library.contains(item)) {
+                    library.add(item);
+                }
+            }
+            //library.charger();
+        }
+
+        sauvegarderEtat();
+    }
+
+
+
+
+    /**
+     * Sauvegarde le panier du ShopMenu dans un fichier spécifié pour l'afficher dans la bibliothèque du joueur
+     */
+
+
+
+
 
     /**
      * Charge l'état du jeu à partir d'un fichier spécifié.

@@ -1,5 +1,6 @@
 package gui;
 
+import config.RessourcesPaths;
 import entity.Cible;
 import entity.Knife;
 import entity.MovingTarget;
@@ -11,7 +12,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-
 
 /**
  * La classe KnifeDisplay représente le panneau graphique où le couteau et les cibles sont affichés.
@@ -90,7 +90,7 @@ public class EntityDisplay extends JPanel {
      * Redimensionne également les images pour les adapter à la taille souhaitée.
      */
     private void initImage () {
-        this.knifeImage = new ImageIcon("src/main/ressources/knifes/knifeRotate2.png").getImage();
+        this.knifeImage = new ImageIcon(RessourcesPaths.knifePath + "knifeRotate1.png").getImage();
         this.cibleImage = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
         this.ciblesMouventeImage =  new ImageIcon("src/main/ressources/targets/target#2.png").getImage();
         int w = this.knifeImage.getWidth(null)/3;
@@ -105,11 +105,49 @@ public class EntityDisplay extends JPanel {
      *
      * @param backgroundPath Le chemin de l'image de fond à charger.
      */
-    private void initBg(String backgroundPath) {
+    void initBg(String backgroundPath) {
         this.backgroundImage = new ImageIcon(backgroundPath).getImage();
         bgImgHeight = this.backgroundImage.getHeight(null);
         bgImgWidth = this.backgroundImage.getWidth(null);
     }
+
+
+
+
+    /**
+     * Met à jour l'image du couteau suite au choix du joueur dans l'inventaire.
+     *
+     * @param knifePathClicked Le chemin d'accès vers l'image du couteau.
+     */
+    public void updateKnifeImage(String knifePathClicked) {
+        knifePathClicked = verifImage(knifePathClicked);
+        this.knifeImage = new ImageIcon(knifePathClicked).getImage();
+        int w = this.knifeImage.getWidth(null)/3;
+        int h = this.knifeImage.getHeight(null)/3;
+        this.knifeImage = this.knifeImage.getScaledInstance(w,h,Image.SCALE_SMOOTH);
+        repaint();
+    }
+
+
+    /**
+     * Vérifie et met à jour le chemin d'accès à l'image du couteau.
+     *
+     * @param knifePathClicked Le chemin d'accès à l'image du couteau.
+     * @return Le chemin d'accès mis à jour à l'image du couteau.
+     */
+    private String verifImage(String knifePathClicked) {
+        String res = knifePathClicked;
+        String abr = RessourcesPaths.knifePath;
+        if (knifePathClicked.equals(abr +"knife.png")){
+            res = abr + "knifeRotate1.png";
+        } else if (knifePathClicked.equals(abr +"knife#2.png")){
+            res = abr + "knifeRotate2.png";
+        } else if (knifePathClicked.equals(abr +"knife#3.png")){
+            res = abr+ "knifeRotate3.png";
+        }
+        return res;
+    }
+
 
     /**
      * Crée et retourne un masque de collision à partir de l'image spécifiée.
@@ -123,6 +161,7 @@ public class EntityDisplay extends JPanel {
         g2d.dispose();
         return new Rectangle(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
     }
+
     /**
      * Redessine le composant en dessinant l'image de fond, les couteaux et les cibles.
      * Effectue également la gestion des collisions entre les couteaux et les cibles.
@@ -132,6 +171,7 @@ public class EntityDisplay extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
+
         g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 
         int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
@@ -175,9 +215,7 @@ public class EntityDisplay extends JPanel {
         for (Cible cible : listeCible){
             double cibleX = (RATIO_X-cible.getX()*RATIO);
             double cibleY = (RATIO_Y-cible.getY()*RATIO);
-            //AffineTransform transformCible = AffineTransform.getTranslateInstance(cibleX - (double) cibleImWidth / 2, cibleY - (double) cibleImHeight / 2);
-            AffineTransform transformCible = AffineTransform.getTranslateInstance(cibleX - (double) cibleImWidth /2, cibleY - (double) cibleImHeight / 2);
-            //transformCible.scale(0.5,0.5);
+            AffineTransform transformCible = AffineTransform.getTranslateInstance(cibleX - (double) cibleImWidth / 2, cibleY - (double) cibleImHeight / 2);
             if (cible instanceof MovingTarget){
                 g2d.drawImage(ciblesMouventeImage,transformCible,this);
 
@@ -219,6 +257,7 @@ public class EntityDisplay extends JPanel {
             listeCible.remove(c);
         }
         repaint();
-    }    
-    
+    }
+
 }
+
