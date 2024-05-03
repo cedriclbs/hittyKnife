@@ -74,6 +74,15 @@ public class MainFrame extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Basculer vers le panneau spécifié par son nom et lui attribuer le focus.
+     * Cette méthode change la vue visible dans le conteneur géré par le {@link CardLayout},
+     * en affichant le panneau correspondant au nom spécifié. Après avoir affiché le panneau,
+     * cette méthode parcourt également tous les composants du conteneur de panneaux pour trouver le panneau nouvellement visible
+     * et lui attribue le focus pour permettre la gestion correcte des entrées clavier.
+     *
+     * @param name le nom du panneau à afficher, tel que spécifié lors de l'ajout du panneau au {@link CardLayout}.
+     */
     private void switchToPanel(String name) {
         cardLayout.show(cardPanel, name);
         for (Component comp : cardPanel.getComponents()) {
@@ -83,6 +92,7 @@ public class MainFrame extends JFrame {
             }
         }
     }
+
 
     private JPanel createTitleScreen() {
         return new HomeMenu("src/main/ressources/background/Background_MainMenu.png", Menu.linkClip+"Main_theme.wav");
