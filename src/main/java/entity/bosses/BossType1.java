@@ -31,7 +31,7 @@ public class BossType1 extends Boss {
     @Override
     public void updateMovement(double delta) {
         // Définir les limites de déplacement sur l'axe vertical
-        double limitTop = 50; // Position Y la plus haute
+        double limitTop = 55; // Position Y la plus haute
         double limitBottom = -15; // Position Y la plus basse
 
         // Calculer le déplacement en fonction de la vitesse et du temps écoulé depuis la dernière mise à jour

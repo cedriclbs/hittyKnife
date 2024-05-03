@@ -95,9 +95,6 @@ public class EntityDisplay extends JPanel {
         this.cibleImage = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
         this.ciblesMouventeImage =  new ImageIcon("src/main/ressources/targets/target#2.png").getImage();
         String filepath = "src/main/ressources/targets/";
-        this.knifeImage = new ImageIcon("src/main/ressources/knifes/knife#2.png").getImage();
-        this.cibleImage = new ImageIcon(filepath + "target#1.png").getImage();
-        this.ciblesMouventeImage =  new ImageIcon(filepath + "target#2.png").getImage();
         this.bossT1 = new ImageIcon(filepath + "Boss2 (1).png").getImage();
         this.bossT2 = new ImageIcon(filepath + "Boss2 (1).png").getImage();
         this.bossT3 = new ImageIcon(filepath + "Boss2 (1).png").getImage();
