@@ -110,6 +110,11 @@ public class EntityDisplay extends JPanel {
         bgImgWidth = this.backgroundImage.getWidth(null);
     }
 
+    /**
+     * Crée et retourne un masque de collision à partir de l'image spécifiée.
+     * @param image L'image à partir de laquelle créer le masque de collision.
+     * @return Un objet de type Shape représentant le masque de collision créé.
+     */
     public Shape createCollisionMask(Image image) {
         BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = bufferedImage.createGraphics();
@@ -187,6 +192,8 @@ public class EntityDisplay extends JPanel {
             Shape cibleMask = createCollisionMask(cibleImage);
             Shape transformedCibleMask = transformCible.createTransformedShape(cibleMask);
             Shape transformedKnifeMask = transform.createTransformedShape(knifeMask);
+
+            //AFFICHAGE COLLISIONS
 
             g2d.setColor(Color.RED);
             g2d.draw(transformedCibleMask);
