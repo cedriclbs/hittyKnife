@@ -167,7 +167,6 @@ public class Game {
             currentLevel++; // Incrémentation du niveau
             System.out.println("Level : " + currentLevel);
             roundManagement.resetRounds(); // Réinitialisation des rounds pour le nouveau niveau
-            roundManagement.setCurrentRoundIndex(0); // Réinitialisation de l'indice de round
             ChargerRound(roundManagement.getCurrentRoundIndex()); // Recharge le premier round du nouveau niveau
         }
     }
