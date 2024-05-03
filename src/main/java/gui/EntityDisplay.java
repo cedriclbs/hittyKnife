@@ -91,7 +91,7 @@ public class EntityDisplay extends JPanel {
      * Redimensionne également les images pour les adapter à la taille souhaitée.
      */
     private void initImage () {
-        this.knifeImage = new ImageIcon(RessourcesPaths.knifePath + "knifeRotate1.png").getImage();
+        this.knifeImage = new ImageIcon(RessourcesPaths.knifePath + "knifeRotate2.png").getImage();
         this.cibleImage = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
         this.ciblesMouventeImage =  new ImageIcon("src/main/ressources/targets/target#2.png").getImage();
         String filepath = "src/main/ressources/targets/";
@@ -193,6 +193,9 @@ public class EntityDisplay extends JPanel {
         int knifeImgHeight = knifeImage.getHeight(this);
         int cibleImWidth = cibleImage.getWidth(this);
         int cibleImHeight = cibleImage.getHeight(this);
+        int bossImgWidth = bossT1.getWidth(this);
+        int bossImgHeight = bossT1.getHeight(this);
+
 
         AffineTransform transform = AffineTransform.getTranslateInstance(knifeX - (double) knifeImgWidth / 2, knifeY - (double) knifeImgHeight / 2);
         transform.rotate(Math.toRadians(knife.getAngle()), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
@@ -223,7 +226,15 @@ public class EntityDisplay extends JPanel {
         for (Cible cible : listeCible){
             double cibleX = (RATIO_X-cible.getX()*RATIO);
             double cibleY = (RATIO_Y-cible.getY()*RATIO);
-            AffineTransform transformCible = AffineTransform.getTranslateInstance(cibleX - (double) cibleImWidth / 2, cibleY - (double) cibleImHeight / 2);
+            AffineTransform transformCible;
+
+            if (cible instanceof Boss){
+                transformCible = AffineTransform.getTranslateInstance(cibleX - (double) bossImgWidth / 2, cibleY - (double) bossImgHeight / 2);
+            }
+            else {
+                transformCible = AffineTransform.getTranslateInstance(cibleX - (double) cibleImWidth / 2, cibleY - (double) cibleImHeight / 2);
+            }
+
             if (cible instanceof MovingTarget){
                 g2d.drawImage(ciblesMouventeImage,transformCible,this);
 
