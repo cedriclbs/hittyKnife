@@ -52,7 +52,7 @@ public class GameView extends JPanel{
         //this.knife = game.knife1;
         //this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);
         if (isSolo) {
-            this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/cave_trees.gif", (ArrayList<Cible>) game.getListeCible(),isSolo);
+            this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgPokemon2.gif", (ArrayList<Cible>) game.getListeCible(),isSolo);
         }
         else{
             this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/fond1v1.jpg", (ArrayList<Cible>) game.getListeCible(),isSolo);
@@ -158,6 +158,32 @@ public class GameView extends JPanel{
         bgImgHeight = this.backgroundImage.getHeight(null);
         bgImgWidth = this.backgroundImage.getWidth(null);
     }
+
+
+    /**
+     * Met à jour l'image du couteau suite au choix du joueur dans l'inventaire.
+     *
+     * @param knifePathClicked Le chemin d'accès vers l'image du couteau.
+     */
+    public void updateKnifeImage(String knifePathClicked) {
+        this.entityDisplay.updateKnifeImage(knifePathClicked);
+        if (!isSolo) {
+            this.entityDisplay2.updateKnifeImage(knifePathClicked);
+        }
+    }
+
+    /**
+     * Met à jour l'image de fond du jeu suite au choix du joueur dans l'inventaire.
+     *
+     * @param backgroundPath Le chemin d'accès à la nouvelle image de fond.
+     */
+    public void updateBackgroundImage(String backgroundPath) {
+        this.entityDisplay.initBg(backgroundPath);
+        repaint();
+    }
+
+
+
 
     @Override
     protected void paintComponent(Graphics g) {
