@@ -133,6 +133,7 @@ public class Game {
             } else if (c instanceof BossType1){
                 ((BossType1) c).updateMovement(adjustedDelta);
                 //System.out.println(c.getX());
+                //System.out.println(c.getY());
             } else if (c instanceof BossType2){
                 ((BossType2) c).updateMovement(adjustedDelta);
                 //System.out.println(c.getX());
@@ -140,7 +141,7 @@ public class Game {
             } else if (c instanceof BossType3) {
                 ((BossType3) c).updateMovement(adjustedDelta);
                 //System.out.println(c.getX());
-                System.out.println(c.getY());
+                //System.out.println(c.getY());
             }
         }
         if (!isSolo) {
