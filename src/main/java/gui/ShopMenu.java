@@ -1,17 +1,13 @@
 package gui;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import config.Game;
+import config.RessourcesPaths;
 import config.ShopCart;
-import config.ShopItem;
-import entity.Cible;
-import entity.Knife;
+import User.User;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 
 import static config.States.*;
@@ -25,16 +21,11 @@ import static config.States.*;
 
 public class ShopMenu extends JPanel {
     private Game game;
-
-    JLabel argentLabel;
     ShopCart cart;
-    JTabbedPane tabbedPane;
+    public JTabbedPane tabbedPane;
     boolean saveB;
+    boolean assezArgent;
 
-    String knifePath = "src/main/ressources/knifes/";
-    String backgroundPath = "src/main/ressources/background/";
-    String buttonPath = "src/main/ressources/button/";
-    String tabPath = "src/main/ressources/onglets/";
 
     /**
      * Constructeur de la fenêtre du magasin.
@@ -53,6 +44,8 @@ public class ShopMenu extends JPanel {
         setStates(SHOPMENU);
     }
 
+
+
     /**
      * Initialise le ShopMenu avec sa disposition et les onglets du magasin.
      */
@@ -62,37 +55,39 @@ public class ShopMenu extends JPanel {
         tabbedPane.setOpaque(false);
 
         ShopTab accueil = new ShopTab(tabbedPane, "Accueil", null, "shopWelcomeTab.png", "welcome", this);
-        ShopTab couteaux = new ShopTab(tabbedPane, "Couteaux", knifePath, "knifeTab.png", "couteaux", this);
-        ShopTab background = new ShopTab(tabbedPane, "Background", backgroundPath, "bgTab.png", "background", this);
-        ShopTab music = new ShopTab(tabbedPane, "Music", buttonPath, "musicTab.png", "music", this);
+        ShopTab couteaux = new ShopTab(tabbedPane, "Couteaux", RessourcesPaths.knifePath, "knifeTab.png", "couteaux", this);
+        ShopTab background = new ShopTab(tabbedPane, "Background", RessourcesPaths.backgroundPath, "bgTab.png", "background", this);
+        ShopTab music = new ShopTab(tabbedPane, "Music", RessourcesPaths.buttonPath, "musicTab.png", "music", this);
         ShopTab cart = new ShopTab(tabbedPane, "Panier", null, "cartTab.png", "cart", this);
-        //ShopTab bibliotheque = new ShopTab(tabbedPane, "Bibliothèque", null, "biblioTab.png", "bibliotheque", this);
 
         add(tabbedPane, BorderLayout.CENTER);
 
-
     }
 
-    /*
-    void updateTotal() {
-        argentLabel.setText("Total: " + (User.getArgent() - cart.getCartTotal()));
-    }
+
+    /**
+     * Sauvegarde le panier d'achats actuel.
      */
-
-
     public void saveCart() {
         if (cart != null) {
-            saveB = true;
-            game.updateLibrary(cart);
-            JOptionPane.showMessageDialog(null, "Le panier a été sauvegardé avec succès.");
-
+            //if (User.getArgent() - cart.getCartTotal() >= 0){
+                saveB = true;
+                //updateMoney();
+                game.updateLibrary(cart);
+                cart.getCart().clear();
+                //refreshCartTab(); TODO : actualiser la liste une fois le panier sauvegarder
+                JOptionPane.showMessageDialog(null, "Le panier a été sauvegardé avec succès.");
+            //}
+            JOptionPane.showMessageDialog(null, "Pas assez de ressources.");
         } else {
             JOptionPane.showMessageDialog(null, "Le panier est vide.");
         }
     }
 
 
-
+    //private void updateMoney () {
+    //    User.setArgent(User.getArgent() - cart.getCartTotal());
+    //}
 
 
 
@@ -143,6 +138,10 @@ public class ShopMenu extends JPanel {
             //showMenuOnceVerif();
         }
 
+    }
+
+    public ShopCart getCart() {
+        return this.cart;
     }
 
     /*

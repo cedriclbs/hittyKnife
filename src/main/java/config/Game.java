@@ -108,6 +108,10 @@ public class Game {
         return this.nomUtilisateur;
     }
 
+    public List<ShopItem> getLibrary () {
+        return library;
+    }
+
     private void initGame() {
         ChargerRound(currentRoundIndex); 
     }
