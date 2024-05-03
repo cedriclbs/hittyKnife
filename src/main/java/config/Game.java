@@ -21,7 +21,7 @@ public class Game {
     transient private List<Cible> listeCible2 = new ArrayList<>();
     transient private int life;
     private RoundManagement roundManagement;  
-    private int currentRoundIndex;
+    private int currentLevel;
 
     //Attribut du User pour JSON
     @JsonProperty("nomUtilisateur")
@@ -51,6 +51,7 @@ public class Game {
             this.knife2 = new Knife();
         }
         this.roundManagement = new RoundManagement();
+        this.currentLevel = 1;
         initGame();
 
     }
@@ -86,7 +87,7 @@ public class Game {
     }
 
     private void initGame() {
-        ChargerRound(currentRoundIndex); 
+        ChargerRound(roundManagement.getCurrentRoundIndex()); 
     }
 
     private void ChargerRound(int roundIndex) {
@@ -100,36 +101,44 @@ public class Game {
         }
     }
     
-
     /**
      * Met à jour l'état du jeu en fonction du temps écoulé depuis la dernière mise à jour.
      *
      * @param delta Le temps écoulé depuis la dernière mise à jour, utilisé pour calculer les mouvements.
      */
     public void update(double delta){
-        //System.out.println("dqdqzsqzdqsqdqzdqz");
         knife1.updateMovement();
-        for(Cible c : this.listeCible1){
-            if (c instanceof MovingTarget){
+        for (Cible c : this.listeCible1) {
+            if (c instanceof MovingTarget) {
                 ((MovingTarget) c).updateMovement();
             }
         }
-        if (!isSolo){
+        if (!isSolo) {
             knife2.updateMovement();
-            for(Cible c : this.listeCible2){
-                if (c instanceof MovingTarget){
+            for (Cible c : this.listeCible2) {
+                if (c instanceof MovingTarget) {
                     ((MovingTarget) c).updateMovement();
                 }
             }
         }
-        if(listeCible1.isEmpty()){
-            currentRoundIndex++;
-            if (currentRoundIndex < roundManagement.getListeRounds().size()) {
-                ChargerRound(currentRoundIndex); 
+    
+        if (listeCible1.isEmpty()) {
+            // Incrémentation de l'indice de round dans RoundManagement
+            roundManagement.setCurrentRoundIndex(roundManagement.getCurrentRoundIndex() + 1);
+            if (roundManagement.getCurrentRoundIndex() < roundManagement.getListeRounds().size()) {
+                ChargerRound(roundManagement.getCurrentRoundIndex()); // Chargement du round suivant
+                //System.out.println(roundManagement.getCurrentRoundIndex());
             }
         }
-        //Debug.affichage(knife);
+        if (roundManagement.isAllRoundsCompleted()) {
+            currentLevel++; // Incrémentation du niveau
+            System.out.println("Level : " + currentLevel);
+            roundManagement.resetRounds(); // Réinitialisation des rounds pour le nouveau niveau
+            roundManagement.setCurrentRoundIndex(0); // Réinitialisation de l'indice de round
+            ChargerRound(roundManagement.getCurrentRoundIndex()); // Recharge le premier round du nouveau niveau
+        }
     }
+    
 
     
 
@@ -156,8 +165,8 @@ public class Game {
         return mapper.readValue(new File(cheminFichier), Game.class);
     }
 
-    public int getCurrentRoundIndex() {
-        return currentRoundIndex;
+    public int getCurrentLevel() {
+        return currentLevel;
     }
 
 }
