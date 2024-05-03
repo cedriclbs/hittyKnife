@@ -114,7 +114,11 @@ public class EntityDisplay extends JPanel {
 
 
 
-
+    /**
+     * Met à jour l'image du couteau suite au choix du joueur dans l'inventaire.
+     *
+     * @param knifePathClicked Le chemin d'accès vers l'image du couteau.
+     */
     public void updateKnifeImage(String knifePathClicked) {
         knifePathClicked = verifImage(knifePathClicked);
         this.knifeImage = new ImageIcon(knifePathClicked).getImage();
@@ -125,7 +129,12 @@ public class EntityDisplay extends JPanel {
     }
 
 
-
+    /**
+     * Vérifie et met à jour le chemin d'accès à l'image du couteau.
+     *
+     * @param knifePathClicked Le chemin d'accès à l'image du couteau.
+     * @return Le chemin d'accès mis à jour à l'image du couteau.
+     */
     private String verifImage(String knifePathClicked) {
         String res = knifePathClicked;
         String abr = RessourcesPaths.knifePath;
