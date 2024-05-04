@@ -15,6 +15,7 @@ public class RoundManagement {
     private List<Round> rounds; // Liste des rounds contenant des cibles pour chaque round
     private int currentRoundIndex; // Indice du round actuel
     private Random random; // Pour générer des valeurs aléatoires
+    private TypeCible lastBossType = null; 
 
     /**
      * Constructeur pour initialiser les rounds et leurs cibles.
@@ -133,12 +134,17 @@ public class RoundManagement {
     }
 
     /**
-     * Sélectionne un type de boss aléatoire pour le round final.
+     * Sélectionne un type de boss aléatoire pour le round final, en évitant de répéter le dernier boss utilisé.
      * @return Un type de boss aléatoire.
      */
     private TypeCible getRandomTypeBoss() {
-        int randomNum = random.nextInt(3);
-        return TypeCible.values()[TypeCible.values().length - 3 + randomNum];
+        TypeCible newBossType;
+        do {
+            int randomNum = random.nextInt(3); // Il y a 3 types de boss à choisir
+            newBossType = TypeCible.values()[TypeCible.values().length - 3 + randomNum]; // Sélectionne parmi les types de boss
+        } while (newBossType == lastBossType); 
+        lastBossType = newBossType; 
+        return newBossType;
     }
 
     /**
