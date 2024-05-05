@@ -209,7 +209,6 @@ public class Game {
         }
         if (!isSolo) {
             knife2.updateMovement();
-            System.out.println(listeCible2.size());
             for (Cible c : this.listeCible2) {
                 if (c instanceof MovingTarget) {
                     ((MovingTarget) c).updateMovement();
