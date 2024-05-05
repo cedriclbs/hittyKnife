@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
+import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
+
+
 /**
  * La classe KnifeDisplay représente le panneau graphique où le couteau et les cibles sont affichés.
  * Elle étend JPanel pour permettre l'affichage des éléments graphiques du jeu Hitty Knife.
@@ -163,11 +167,41 @@ public class EntityDisplay extends JPanel {
      * @return Un objet de type Shape représentant le masque de collision créé.
      */
     public Shape createCollisionMask(Image image) {
-        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        int width = image.getWidth(null);
+        int height = image.getHeight(null);
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = bufferedImage.createGraphics();
         g2d.drawImage(image, 0, 0, null);
         g2d.dispose();
-        return new Rectangle(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight());
+    
+        Area mask = new Area();
+    
+        // Traite chaque ligne de l'image
+        for (int y = 0; y < height; y++) {
+            int startX = -1;
+            for (int x = 0; x < width; x++) {
+                boolean isPixelVisible = (bufferedImage.getRGB(x, y) & 0xFF000000) != 0x00000000;
+                
+                if (isPixelVisible) {
+                    if (startX == -1) {
+                        startX = x; // Début d'une nouvelle séquence de pixels visibles
+                    }
+                } else {
+                    if (startX != -1) {
+                        // Fin d'une séquence de pixels visibles, ajouter au masque
+                        mask.add(new Area(new Rectangle2D.Float(startX, y, x - startX, 1)));
+                        startX = -1; // Réinitialise le début de la séquences
+                    }
+                }
+            }
+            
+            // Vérifie si une séquence se termine à la fin de la ligne
+            if (startX != -1) {
+                mask.add(new Area(new Rectangle2D.Float(startX, y, width - startX, 1)));
+            }
+        }
+    
+        return mask;
     }
 
     /**
@@ -308,4 +342,3 @@ public class EntityDisplay extends JPanel {
     }
 
 }
-
