@@ -6,14 +6,15 @@ import static entity.TypeCible.CIBLE_BONUS;
 
 public class Bonus extends Cible{
 
-    TypeBonus typeBonnus;
-    Game game;
+    private TypeBonus typeBonus;
 
     public Bonus(double x,double y,TypeBonus typeBonnus){
         super (CIBLE_BONUS,x,y);
-        this.typeBonnus = typeBonnus;
+        this.typeBonus = typeBonnus;
     }
-
+    public TypeBonus getTypeBonus(){
+        return typeBonus;
+    }
 
     public enum TypeBonus{
         BONUS_GEL,

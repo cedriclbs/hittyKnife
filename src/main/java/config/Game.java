@@ -20,7 +20,13 @@ public class Game {
     transient private List<Cible> listeCible1 = new ArrayList<>();
     transient private List<Cible> listeCible2 = new ArrayList<>();
     transient private int life;
-    private RoundManagement roundManagement;  
+    private RoundManagement roundManagement;
+    public BonusManager bonusManager = new BonusManager(this);
+    //-----------------VARIABLE BONUS-----------------------
+    public boolean gel;
+    public boolean powered;
+
+
     private int currentRoundIndex;
 
     //Attribut du User pour JSON
@@ -109,18 +115,24 @@ public class Game {
     public void update(double delta){
         //System.out.println("dqdqzsqzdqsqdqzdqz");
         knife1.updateMovement();
-        for(Cible c : this.listeCible1){
-            if (c instanceof MovingTarget){
-                ((MovingTarget) c).updateMovement();
-            }
-        }
-        if (!isSolo){
-            knife2.updateMovement();
-            for(Cible c : this.listeCible2){
+        if (!gel){
+            for(Cible c : this.listeCible1){
                 if (c instanceof MovingTarget){
                     ((MovingTarget) c).updateMovement();
                 }
             }
+        }
+
+        if (!isSolo){
+            knife2.updateMovement();
+            if (!gel){
+                for(Cible c : this.listeCible2){
+                    if (c instanceof MovingTarget){
+                        ((MovingTarget) c).updateMovement();
+                    }
+                }
+            }
+
         }
         if(listeCible1.isEmpty()){
             currentRoundIndex++;
@@ -129,6 +141,7 @@ public class Game {
             }
         }
         //Debug.affichage(knife);
+        bonusManager.updateBonusEffect();
     }
 
     

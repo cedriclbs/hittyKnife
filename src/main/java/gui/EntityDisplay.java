@@ -1,5 +1,7 @@
 package gui;
 
+import config.Game;
+import entity.Bonus;
 import entity.Cible;
 import entity.Knife;
 import entity.MovingTarget;
@@ -41,6 +43,7 @@ public class EntityDisplay extends JPanel {
     private boolean isCollisionMovingTarget= false;
     final float baseOpacity = 1f;
     float opacity;
+    Game game;
     Dimension screenSize;
 
     /**
@@ -49,7 +52,7 @@ public class EntityDisplay extends JPanel {
      * @param backgroundPath Le chemin d'accès à l'image de fond du panneau.
      * @param listeCible La liste des cibles à afficher dans le panneau.
      */
-    public EntityDisplay(Knife knife, String backgroundPath, ArrayList<Cible> listeCible,boolean isSolo) {
+    public EntityDisplay(Knife knife, String backgroundPath, ArrayList<Cible> listeCible, boolean isSolo, Game game) {
         //System.out.println("bg x : "+RATIO_X+" bg y : "+RATIO_Y);
         this.listeCible = listeCible;
         this.knife = knife;
@@ -156,9 +159,11 @@ public class EntityDisplay extends JPanel {
             AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
 
             g2d.setComposite(alphaComposite);
-            AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - (double) knifeImgWidth / 2, collisionY - (double) knifeImgHeight / 2);
-            transformColli.rotate(Math.toRadians(collisionAngle), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
-            g2d.drawImage(knifeImage, transformColli, this);
+            if (!game.powered) {
+                AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - (double) knifeImgWidth / 2, collisionY - (double) knifeImgHeight / 2);
+                transformColli.rotate(Math.toRadians(collisionAngle), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
+                g2d.drawImage(knifeImage, transformColli, this);
+            }
 
             AffineTransform transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - (double) cibleImWidth / 2, cibleColliY - (double) cibleImHeight / 2);
             if (isCollisionMovingTarget) g2d.drawImage(ciblesMouventeImage, transformCibleColli, this);
@@ -210,9 +215,14 @@ public class EntityDisplay extends JPanel {
                 collisionAngle = knife.getAngle();
                 animCollision = true;
                 deleteCible.add(cible);
-                knife.resetKnife();
+                if (!game.powered) {
+                    knife.resetKnife();
+                }
                 opacity = baseOpacity;
                 isCollisionMovingTarget=cible instanceof MovingTarget;
+                if (cible instanceof Bonus){
+                    game.bonusManager.appliquerBonus(((Bonus) cible).getTypeBonus());
+                }
             }
         }
         for (Cible c : deleteCible){
