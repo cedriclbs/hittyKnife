@@ -176,7 +176,7 @@ public class EntityDisplay extends JPanel {
     
         Area mask = new Area();
     
-        // Traiter chaque ligne de l'image
+        // Traite chaque ligne de l'image
         for (int y = 0; y < height; y++) {
             int startX = -1;
             for (int x = 0; x < width; x++) {
@@ -190,7 +190,7 @@ public class EntityDisplay extends JPanel {
                     if (startX != -1) {
                         // Fin d'une séquence de pixels visibles, ajouter au masque
                         mask.add(new Area(new Rectangle2D.Float(startX, y, x - startX, 1)));
-                        startX = -1; // Réinitialiser le début de la séquences
+                        startX = -1; // Réinitialise le début de la séquences
                     }
                 }
             }
