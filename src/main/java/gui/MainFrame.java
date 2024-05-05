@@ -137,14 +137,21 @@ public class MainFrame extends JFrame {
 
     private void switchToPanel(String name) {
         cardLayout.show(cardPanel, name);
+        SwingUtilities.invokeLater(() -> {
+            cardPanel.revalidate();
+            cardPanel.repaint();
+        });
+        Component visibleComp = null;
         for (Component comp : cardPanel.getComponents()) {
-            if (comp.isVisible() && comp instanceof JPanel) {
-                comp.requestFocusInWindow();
-                break;
+            if (comp.isVisible()) {
+                visibleComp = comp;
             }
         }
+        if (visibleComp != null) {
+            visibleComp.requestFocusInWindow();
+        }
     }
-
+    
 
     private JPanel createTitleScreen() {
         return new HomeMenu("src/main/ressources/background/Background_MainMenu.png", Menu.linkClip+"Main_theme.wav");
