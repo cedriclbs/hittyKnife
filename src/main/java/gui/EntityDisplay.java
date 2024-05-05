@@ -257,52 +257,69 @@ public class EntityDisplay extends JPanel {
         //-------------------------------AFFICHAGE NORMAL DES CIBLES -------------------------------
 
         ArrayList<Cible> deleteCible= new ArrayList<>();
+        Shape knifeMask = createCollisionMask(knifeImage);
+        Shape transformedKnifeMask = transform.createTransformedShape(knifeMask);
         for (Cible cible : listeCible){
+            boolean collision = false;
             double cibleX = (RATIO_X-cible.getX()*RATIO);
             double cibleY = (RATIO_Y-cible.getY()*RATIO);
             AffineTransform transformCible;
+            AffineTransform transformBoss;
 
             if (cible instanceof Boss){
-                transformCible = AffineTransform.getTranslateInstance(cibleX - (double) bossImgWidth / 2, cibleY - (double) bossImgHeight / 2);
+                transformBoss = AffineTransform.getTranslateInstance(cibleX - (double) bossImgWidth / 2, cibleY - (double) bossImgHeight / 2);
+                if (cible instanceof BossType1) {
+                    g2d.drawImage(bossT1, transformBoss , this);
+                }
+                else if (cible instanceof BossType2) {
+                    g2d.drawImage(bossT2, transformBoss , this);
+                }
+                else if (cible instanceof BossType3) {
+                    g2d.drawImage(bossT3, transformBoss, this);
+                }
+                Shape bossMask = createCollisionMask(bossT1);
+                Shape transformedBossMask = transformBoss.createTransformedShape(bossMask);
+                g2d.setColor(Color.RED);
+                g2d.draw(transformedBossMask);
+                if (transformedBossMask.intersects(transformedKnifeMask.getBounds2D())) {
+                    collision = true;
+                }
+
             }
             else {
                 transformCible = AffineTransform.getTranslateInstance(cibleX - (double) cibleImWidth / 2, cibleY - (double) cibleImHeight / 2);
+                if (cible instanceof MovingTarget){
+                    g2d.drawImage(ciblesMouventeImage,transformCible,this);
+
+                }
+                else{
+                    g2d.drawImage(cibleImage, transformCible, this);
+                }
+                Shape cibleMask = createCollisionMask(cibleImage);
+                Shape transformedCibleMask = transformCible.createTransformedShape(cibleMask);
+                g2d.setColor(Color.RED);
+                g2d.draw(transformedCibleMask);
+                if (transformedCibleMask.intersects(transformedKnifeMask.getBounds2D())) {
+                    collision = true;
+                }
             }
 
-            if (cible instanceof MovingTarget){
-                g2d.drawImage(ciblesMouventeImage,transformCible,this);
 
-            }
-            else if (cible instanceof BossType1) {
-                g2d.drawImage(bossT1, transformCible , this);
-            }
-            else if (cible instanceof BossType2) {
-                g2d.drawImage(bossT2, transformCible , this);
-            }
-            else if (cible instanceof BossType3) {
-                g2d.drawImage(bossT3, transformCible, this);
-            }
-            else {
-                g2d.drawImage(cibleImage, transformCible, this);
-            }
 
             //--------------------COLLISIONS------------------------
 
-            Shape knifeMask = createCollisionMask(knifeImage);
-            Shape cibleMask = createCollisionMask(cibleImage);
-            Shape transformedCibleMask = transformCible.createTransformedShape(cibleMask);
-            Shape transformedKnifeMask = transform.createTransformedShape(knifeMask);
+
+
 
             //AFFICHAGE COLLISIONS
 
-            g2d.setColor(Color.RED);
-            g2d.draw(transformedCibleMask);
+
             g2d.setColor(Color.BLUE);
             g2d.draw(transformedKnifeMask);
 
             //int cw=55;int ch=55;
             //if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
-            if (transformedCibleMask.intersects(transformedKnifeMask.getBounds2D())) {
+            if (collision) {
                 collisionX = knifeX;
                 collisionY = knifeY;
                 cibleColliX = cibleX;
