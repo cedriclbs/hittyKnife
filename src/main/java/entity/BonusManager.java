@@ -42,10 +42,10 @@ public class BonusManager {
         game.powered=false;
     }
     public void updateBonusEffect() {
-        if (activeGel && System.currentTimeMillis() - activationTimeGel >= 20000) {
+        if (activeGel && System.currentTimeMillis() - activationTimeGel >= 10000) {
             deactivateGel();
         }
-        if (activePower && System.currentTimeMillis() - activationTimePower >= 20000) {
+        if (activePower && System.currentTimeMillis() - activationTimePower >= 10000) {
             deactivatePower();
         }
     }

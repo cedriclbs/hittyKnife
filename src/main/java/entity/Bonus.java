@@ -1,6 +1,5 @@
 package entity;
 
-import config.Game;
 
 import static entity.TypeCible.CIBLE_BONUS;
 

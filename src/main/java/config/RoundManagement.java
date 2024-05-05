@@ -1,5 +1,6 @@
 package config;
 
+import entity.Bonus;
 import entity.TypeCible;
 import entity.bosses.*;
 import entity.Cible;
@@ -60,11 +61,16 @@ public class RoundManagement {
     
                 // Créer la cible en fonction du type
                 Cible cible = createCibleWithType(typeCible, x, y);
+
     
                 // Ajouter la cible au round
-                round.addCible(cible); 
+                round.addCible(cible);
+
             }
+            Cible testBonus = new Bonus(10,30,Bonus.TypeBonus.BONUS_POWER);
+            round.addCible(testBonus);
         }
+
     }
 
     private Cible createCibleWithType(TypeCible typeCible, double x, double y) {
