@@ -22,7 +22,7 @@ public class Game {
     @JsonIgnore
     transient public Knife knife2;
     @JsonIgnore
-    transient boolean isSolo;
+    transient boolean isSolo = false;
     @JsonIgnore
     transient private List<Cible> listeCible1 = new ArrayList<>();
     @JsonIgnore
@@ -61,7 +61,7 @@ public class Game {
      * Fait également sauter le couteau dès le début.
      */
     public Game(boolean isSolo, String cheminSauvegarde){
-        this.isSolo = isSolo;
+        this.isSolo = false;
         this.cheminSauvegarde = cheminSauvegarde;
         System.out.println("creation game");
         this.knife1 = new Knife();
@@ -161,6 +161,9 @@ public class Game {
     public void removeObserver(GameObserver observer) {
         observers.remove(observer);
     }
+    public void setIsSOlo(boolean b){
+        this.isSolo =b;
+    }
 
     private void notifyObservers() {
         for (GameObserver observer : observers) {
@@ -189,7 +192,8 @@ public class Game {
         for (Cible c : this.listeCible1) {
             if (c instanceof MovingTarget) {
                 ((MovingTarget) c).updateMovement();
-            } else if (c instanceof BossType1){
+            }
+            else if (c instanceof BossType1){
                 ((BossType1) c).updateMovement(adjustedDelta);
                 //System.out.println(c.getX());
                 //System.out.println(c.getY());
@@ -205,6 +209,7 @@ public class Game {
         }
         if (!isSolo) {
             knife2.updateMovement();
+            System.out.println(listeCible2.size());
             for (Cible c : this.listeCible2) {
                 if (c instanceof MovingTarget) {
                     ((MovingTarget) c).updateMovement();

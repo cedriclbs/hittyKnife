@@ -103,6 +103,7 @@ public class GameView extends JPanel{
     public void initialize() {
         setLayout(new BorderLayout());
         if (isSolo) {
+            game.setIsSOlo(true);
             add(entityDisplay);
             addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
@@ -115,6 +116,7 @@ public class GameView extends JPanel{
             });
             requestFocusInWindow();
         } else {
+            game.setIsSOlo(false);
             JPanel playersPanel = new JPanel(new GridLayout(1, 2));
             playersPanel.add(entityDisplay);
             playersPanel.add(entityDisplay2);
