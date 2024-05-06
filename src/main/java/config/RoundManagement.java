@@ -61,14 +61,19 @@ public class RoundManagement {
                 // Détermine le type de cible
                 TypeCible typeCible = i < lastIndex ? getRandomTypeCible() : getRandomTypeBoss(); //mettre le truc du boss
                 //System.out.println("Création de cible: " + typeCible + " pour le round " + i);
-
                 double x,y;
-                
-                do {
-                    x = getRandomPositionX();
-                    y = getRandomPositionY();
-                } while (EstTropProche(x, y, round.getListeCibles()) || (x > -7 && x < 7 && y >= 0 && y <= 15)); // Réessaye tant que la cible est trop proche des autres
-            
+
+                if (typeCible == TypeCible.CIBLE_BOSS1 || typeCible == TypeCible.CIBLE_BOSS2 || typeCible == TypeCible.CIBLE_BOSS3) {
+                    // Si c'est un boss, fixe les positions x et y à -60 pour qu'ils apparaissent hors de l'écran 
+                    x = -60;
+                    y = -60;
+                }
+                else{
+                    do {
+                        x = getRandomPositionX();
+                        y = getRandomPositionY();
+                    } while (EstTropProche(x, y, round.getListeCibles()) || (x > -7 && x < 7 && y >= 0 && y <= 15)); // Réessaye tant que la cible est trop proche des autres
+                }
     
                 // Créer la cible en fonction du type
                 Cible cible = createCibleWithType(typeCible, x, y);
