@@ -224,6 +224,69 @@ public class EntityDisplay extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        System.out.println(game.getIsSolo());
+
+        if(game.getIsSolo()){
+            // Affichage des niveaux et des rounds avec effet d'ombre sur le texte
+            g2d.setFont(new Font("SansSerif", Font.BOLD, 24)); 
+
+            // Texte principal pour le niveau
+            String niveauTexte = "LEVEL : " + game.getCurrentLevel();
+            int niveauTexteWidth = g2d.getFontMetrics().stringWidth(niveauTexte);
+
+            // Coordonnées pour le texte
+            int xPosition = (getWidth() - niveauTexteWidth) / 2;
+            int yPosi = 30;
+
+            // Dessine l'ombre
+            g2d.setColor(Color.GRAY); 
+            int shadowOffset = 2; 
+            g2d.drawString(niveauTexte, xPosition + shadowOffset, yPosi + shadowOffset);
+
+            // Dessine le texte principal
+            g2d.setColor(Color.WHITE); // Couleur du texte
+            g2d.drawString(niveauTexte, xPosition, yPosi);
+
+        // Affiche les cercles pour les rounds
+            int totalRounds = game.getRoundManagement().getListeRounds().size();
+            int currentRoundIndex = game.getRoundManagement().getCurrentRoundIndex(); // Index commence à 0
+
+            int circleDiameter = 20; // Diamètre de chaque cercle
+            int spacing = 28; // Espacement entre les cercles
+            int startX = (getWidth() - (totalRounds * spacing + (totalRounds - 1) * circleDiameter)) / 2; // Position de départ X pour centrer les cercles
+            int yPosition = 50; // Position Y des cercles 
+
+        // Dessine une barre semi-transparente avec des bords arrondis en arrière-plan des cercles
+            int barHeight = 30; // Hauteur de la barre de fond
+            int arcWidth = 25; // Largeur de l'arc pour les coins arrondis
+            int arcHeight = 25; // Hauteur de l'arc pour les coins arrondis
+            g2d.setColor(new Color(0, 0, 0, 64)); 
+            g2d.fillRoundRect(startX - 10, yPosition - (barHeight / 2) + (circleDiameter / 2), (totalRounds * (circleDiameter + spacing)) - spacing + 20, barHeight, arcWidth, arcHeight);
+
+
+            for (int i = 0; i < totalRounds; i++) {
+                if (i == totalRounds - 1 && currentRoundIndex == totalRounds - 1) {
+                    g2d.setColor(Color.RED); 
+                } else if (i <= currentRoundIndex) {
+                    g2d.setColor(Color.WHITE); 
+                } else {
+                    g2d.setColor(Color.BLACK); 
+                }
+                // Dessine le cercle
+                g2d.fillOval(startX + i * (circleDiameter + spacing), yPosition, circleDiameter, circleDiameter);
+            }
+
+
+            // Si c'est le dernier round, affiche "Boss Fight!"
+            if (currentRoundIndex == totalRounds - 1) {
+                g2d.setFont(new Font("SansSerif", Font.BOLD, 24)); 
+                String bossFightText = "Boss Fight!";
+                int textWidth = g2d.getFontMetrics().stringWidth(bossFightText);
+                int textYPosition = yPosition + circleDiameter + 30; // Position Y du texte sous les cercles
+                g2d.drawString(bossFightText, (getWidth() - textWidth) / 2, textYPosition);
+            }
+        }
+
 
         int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
         int knifeY = (int) (RATIO_Y-(knife.getY()*RATIO));

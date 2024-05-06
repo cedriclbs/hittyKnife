@@ -177,7 +177,7 @@ public class Game {
     public synchronized void update(double delta) {
         double adjustedDelta = delta / 3;
         knife1.updateMovement();
-        
+
         synchronized (listeCible1) {
             for (Cible c : new ArrayList<>(listeCible1)) {
                 updateCible(c, adjustedDelta);
@@ -348,4 +348,12 @@ public class Game {
         return currentLevel;
     }
 
+
+    public RoundManagement getRoundManagement() {
+        return roundManagement;
+    }
+
+    public boolean getIsSolo(){
+        return isSolo;
+    }
 }
