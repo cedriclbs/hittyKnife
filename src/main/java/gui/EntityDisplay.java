@@ -181,7 +181,7 @@ public class EntityDisplay extends JPanel {
         Area mask = new Area();
         int lastY = -1; // Dernière ligne où un rectangle a été démarré
     
-        // Utiliser un tableau pour mémoriser le début des rectangles pour chaque colonne
+        // Utilise un tableau pour mémoriser le début des rectangles pour chaque colonne
         int[] startX = new int[width];
         boolean[] active = new boolean[width]; // Si un rectangle est actif dans la colonne
     

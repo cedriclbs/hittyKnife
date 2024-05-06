@@ -34,13 +34,12 @@ public class RoundManagement {
      */
     private void initRounds() {
         this.rounds.clear(); // Assurez-vous de vider la liste avant de l'initialiser
-        System.out.println(rounds.size());
-        System.out.println("Initialisation des rounds...");
+        //System.out.println("Initialisation des rounds...");
         for (int i = 0; i < 4; i++) {
             this.rounds.add(new Round());
-            System.out.println("Round " + i + " ajouté.");
+            //System.out.println("Round " + i + " ajouté.");
         }
-        System.out.println("Population des rounds...");
+        //System.out.println("Population des rounds...");
         populateRounds();
     
     }
@@ -50,19 +49,18 @@ public class RoundManagement {
      * Remplit chaque round avec un ensemble déterminé de cibles.
      */
     private void populateRounds() {
-        System.out.println("Début de la population des rounds...");
+        //System.out.println("Début de la population des rounds...");
         int lastIndex = rounds.size() - 1; // Index du dernier round
-        System.out.println(lastIndex);
     
         for (int i = 0; i < rounds.size(); i++) {
             Round round = rounds.get(i);
             int targetsCount = i < lastIndex ? getRndIntTargetRounds() : 1; // Plusieurs cibles pour les rounds normaux, une pour le boss
-            System.out.println("Round " + i + ", nombre de cibles: " + targetsCount);
+            //System.out.println("Round " + i + ", nombre de cibles: " + targetsCount);
     
             for (int j = 0; j < targetsCount; j++) {
                 // Détermine le type de cible
                 TypeCible typeCible = i < lastIndex ? getRandomTypeCible() : getRandomTypeBoss(); //mettre le truc du boss
-                System.out.println("Création de cible: " + typeCible + " pour le round " + i);
+                //System.out.println("Création de cible: " + typeCible + " pour le round " + i);
 
                 double x,y;
                 
