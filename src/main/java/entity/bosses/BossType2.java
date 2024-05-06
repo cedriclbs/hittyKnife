@@ -39,7 +39,7 @@ public class BossType2 extends Boss{
         double angularSpeed = 0.1; // en radians par seconde
 
         // Calculer l'angle de rotation en fonction du temps écoulé depuis la dernière mise à jour
-        double movement = 0.28 * delta;
+        double movement = 0.1 * delta;
         double angle = angularSpeed * movement;
 
         // Ajouter l'angle à l'angle actuel

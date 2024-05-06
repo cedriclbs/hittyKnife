@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
+import java.util.List;
 
 
 /**
@@ -29,7 +30,7 @@ public class EntityDisplay extends JPanel {
     private Image bossT1;
     private Image bossT2;
     private Image bossT3;
-    private ArrayList<Cible> listeCible;
+    private List<Cible> listeCible;
     private static double bgImgWidth;
     private static double bgImgHeight;
     private double RATIO_X;
@@ -48,6 +49,7 @@ public class EntityDisplay extends JPanel {
     float opacity;
     Dimension screenSize;
     private Game game;
+    
 
 
     /**
@@ -177,34 +179,39 @@ public class EntityDisplay extends JPanel {
         g2d.dispose();
     
         Area mask = new Area();
+        int lastY = -1; // Dernière ligne où un rectangle a été démarré
     
-        // Traite chaque ligne de l'image
+        // Utiliser un tableau pour mémoriser le début des rectangles pour chaque colonne
+        int[] startX = new int[width];
+        boolean[] active = new boolean[width]; // Si un rectangle est actif dans la colonne
+    
         for (int y = 0; y < height; y++) {
-            int startX = -1;
             for (int x = 0; x < width; x++) {
                 boolean isPixelVisible = (bufferedImage.getRGB(x, y) & 0xFF000000) != 0x00000000;
-                
+    
                 if (isPixelVisible) {
-                    if (startX == -1) {
-                        startX = x; // Début d'une nouvelle séquence de pixels visibles
+                    if (!active[x]) {
+                        startX[x] = y; // Démarre un nouveau rectangle
+                        active[x] = true;
                     }
-                } else {
-                    if (startX != -1) {
-                        // Fin d'une séquence de pixels visibles, ajouter au masque
-                        mask.add(new Area(new Rectangle2D.Float(startX, y, x - startX, 1)));
-                        startX = -1; // Réinitialise le début de la séquences
-                    }
+                } else if (active[x]) {
+                    // Fin d'un rectangle, l'ajouter au masque
+                    mask.add(new Area(new Rectangle2D.Float(x, startX[x], 1, y - startX[x])));
+                    active[x] = false;
                 }
             }
-            
-            // Vérifie si une séquence se termine à la fin de la ligne
-            if (startX != -1) {
-                mask.add(new Area(new Rectangle2D.Float(startX, y, width - startX, 1)));
+        }
+    
+        // Ferme les rectangles ouverts à la fin de l'image
+        for (int x = 0; x < width; x++) {
+            if (active[x]) {
+                mask.add(new Area(new Rectangle2D.Float(x, startX[x], 1, height - startX[x])));
             }
         }
     
         return mask;
     }
+    
 
     /**
      * Redessine le composant en dessinant l'image de fond, les couteaux et les cibles.

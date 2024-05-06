@@ -16,6 +16,7 @@ public class RoundManagement {
     private int currentRoundIndex; // Indice du round actuel
     private Random random; // Pour générer des valeurs aléatoires
     private TypeCible lastBossType = null; 
+    
 
     /**
      * Constructeur pour initialiser les rounds et leurs cibles.
@@ -32,26 +33,37 @@ public class RoundManagement {
      * Prépare les rounds en créant une liste de cibles pour chacun.
      */
     private void initRounds() {
-        for (int i = 0; i < 4; i++) { // Pour 3 rounds et 1 round de boss
-            rounds.add(new Round());
+        this.rounds.clear(); // Assurez-vous de vider la liste avant de l'initialiser
+        System.out.println(rounds.size());
+        System.out.println("Initialisation des rounds...");
+        for (int i = 0; i < 4; i++) {
+            this.rounds.add(new Round());
+            System.out.println("Round " + i + " ajouté.");
         }
-        populateRounds(); // remplit chaque round de cible
+        System.out.println("Population des rounds...");
+        populateRounds();
+    
     }
+    
 
     /**
      * Remplit chaque round avec un ensemble déterminé de cibles.
      */
     private void populateRounds() {
+        System.out.println("Début de la population des rounds...");
         int lastIndex = rounds.size() - 1; // Index du dernier round
+        System.out.println(lastIndex);
     
         for (int i = 0; i < rounds.size(); i++) {
             Round round = rounds.get(i);
             int targetsCount = i < lastIndex ? getRndIntTargetRounds() : 1; // Plusieurs cibles pour les rounds normaux, une pour le boss
+            System.out.println("Round " + i + ", nombre de cibles: " + targetsCount);
     
             for (int j = 0; j < targetsCount; j++) {
                 // Détermine le type de cible
                 TypeCible typeCible = i < lastIndex ? getRandomTypeCible() : getRandomTypeBoss(); //mettre le truc du boss
-                
+                System.out.println("Création de cible: " + typeCible + " pour le round " + i);
+
                 double x,y;
                 
                 do {
@@ -162,7 +174,7 @@ public class RoundManagement {
 
     //méthode pour réinitialiser les rounds
     public void resetRounds() {
-        rounds.clear();
+        this.rounds.clear();
         currentRoundIndex = 0;
         initRounds();
     }

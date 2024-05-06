@@ -157,7 +157,7 @@ public class MainFrame extends JFrame {
     }
 
     private JPanel createTitleScreen() {
-        return new HomeMenu("src/main/ressources/background/Background_MainMenu.png", Menu.linkClip+"Main_theme.wav");
+        return new HomeMenu("src/main/ressources/background/Background_MainMenu.png","Main_theme.wav");
     }
 
     private JPanel createShopPanel() {

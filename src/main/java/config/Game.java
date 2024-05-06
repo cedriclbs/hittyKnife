@@ -22,11 +22,13 @@ public class Game {
     @JsonIgnore
     transient public Knife knife2;
     @JsonIgnore
-    transient boolean isSolo;
+    transient boolean isSolo = false;
+
     @JsonIgnore
     transient private List<Cible> listeCible1 = new ArrayList<>();
     @JsonIgnore
     transient private List<Cible> listeCible2 = new ArrayList<>();
+
     transient private int xpThreshold;
     private RoundManagement roundManagement;
 
@@ -61,7 +63,7 @@ public class Game {
      * Fait également sauter le couteau dès le début.
      */
     public Game(boolean isSolo, String cheminSauvegarde){
-        this.isSolo = isSolo;
+        this.isSolo = false;
         this.cheminSauvegarde = cheminSauvegarde;
         System.out.println("creation game");
         this.knife1 = new Knife();
@@ -139,35 +141,93 @@ public class Game {
         return library;
     }
 
-    private void initGame() {
+    private synchronized void initGame() {
         ChargerRound(roundManagement.getCurrentRoundIndex());
     }
 
-    private void ChargerRound(int roundIndex) {
-        Round currentRound = roundManagement.getListeRounds().get(roundIndex);
-        this.listeCible1.clear();
-        this.listeCible1.addAll(currentRound.getListeCibles());
+    private synchronized void ChargerRound(int roundIndex) {
+            Round currentRound = roundManagement.getListeRounds().get(roundIndex);
+            listeCible1.clear();
+            listeCible1.addAll(currentRound.getListeCibles());
+            roundManagement.setCurrentRoundIndex(roundIndex);
 
-        if (!isSolo) {
-            this.listeCible2.clear();
-            this.listeCible2.addAll(currentRound.getListeCibles());
-        }
+            if (!isSolo) {
+                listeCible2.clear();
+                listeCible2.addAll(currentRound.getListeCibles());
+            }
+        
     }
 
-    public void addObserver(GameObserver observer) {
+    public synchronized void addObserver(GameObserver observer) {
         observers.add(observer);
     }
 
-    public void removeObserver(GameObserver observer) {
+    public synchronized void removeObserver(GameObserver observer) {
         observers.remove(observer);
     }
 
-    private void notifyObservers() {
+    public void setIsSOlo(boolean b){
+        this.isSolo =b;
+    }
+
+
+    private synchronized void notifyObservers() {
         for (GameObserver observer : observers) {
             observer.onLevelChange();
-            System.out.println("Nouveau niveau");
         }
     }
+
+    public synchronized void update(double delta) {
+        double adjustedDelta = delta / 3;
+        knife1.updateMovement();
+
+        synchronized (listeCible1) {
+            for (Cible c : new ArrayList<>(listeCible1)) {
+                updateCible(c, adjustedDelta);
+            }
+        }
+        if (!isSolo) {
+            knife2.updateMovement();
+            synchronized (listeCible2) {
+                for (Cible c : new ArrayList<>(listeCible2)) {
+                    updateCible(c, adjustedDelta);
+                }
+            }
+        }
+
+        checkRoundCompletion();
+    }
+
+    private void updateCible(Cible c, double adjustedDelta) {
+        if (c instanceof MovingTarget) {
+            ((MovingTarget) c).updateMovement();
+        } else if (c instanceof BossType1) {
+            ((BossType1) c).updateMovement(adjustedDelta);
+        } else if (c instanceof BossType2) {
+            ((BossType2) c).updateMovement(adjustedDelta);
+        } else if (c instanceof BossType3) {
+            ((BossType3) c).updateMovement(adjustedDelta);
+        }
+    }
+
+    private synchronized void checkRoundCompletion() {
+        if (listeCible1.isEmpty()) {
+            roundManagement.setCurrentRoundIndex(roundManagement.getCurrentRoundIndex() + 1);
+            if (roundManagement.getCurrentRoundIndex() < roundManagement.getListeRounds().size()) {
+                ChargerRound(roundManagement.getCurrentRoundIndex()); // Chargement du round suivant
+                //System.out.println(roundManagement.getCurrentRoundIndex());
+
+            }  
+            else {
+                currentLevel++; // Incrémentation du niveau
+                System.out.println("Level : " + currentLevel);
+                roundManagement.resetRounds(); // Réinitialisation des rounds pour le nouveau niveau
+                ChargerRound(roundManagement.getCurrentRoundIndex()); // Recharge le premier round du nouveau niveau
+            }
+    
+        }
+    }
+
 
     // Méthode pour vérifier si un niveau a été atteint et attribuer les récompenses
     private void checkLevelUp() {
@@ -175,59 +235,6 @@ public class Game {
         notifyObservers();
         giveRewards(); // Appel à une méthode pour attribuer les récompenses du niveau
         System.out.println("+1 Niveau");
-    }
-
-
-    /**
-     * Met à jour l'état du jeu en fonction du temps écoulé depuis la dernière mise à jour.
-     *
-     * @param delta Le temps écoulé depuis la dernière mise à jour, utilisé pour calculer les mouvements.
-     */
-    public void update(double delta){
-        double adjustedDelta = delta / 3;
-        knife1.updateMovement();
-        for (Cible c : this.listeCible1) {
-            if (c instanceof MovingTarget) {
-                ((MovingTarget) c).updateMovement();
-            } else if (c instanceof BossType1){
-                ((BossType1) c).updateMovement(adjustedDelta);
-                //System.out.println(c.getX());
-                //System.out.println(c.getY());
-            } else if (c instanceof BossType2){
-                ((BossType2) c).updateMovement(adjustedDelta);
-                //System.out.println(c.getX());
-                //System.out.println(c.getY());
-            } else if (c instanceof BossType3) {
-                ((BossType3) c).updateMovement(adjustedDelta);
-                //System.out.println(c.getX());
-                //System.out.println(c.getY());
-            }
-        }
-        if (!isSolo) {
-            knife2.updateMovement();
-            for (Cible c : this.listeCible2) {
-                if (c instanceof MovingTarget) {
-                    ((MovingTarget) c).updateMovement();
-                } else if (c instanceof BossType1){
-                    ((BossType1) c).updateMovement(adjustedDelta);
-                }
-            }
-        }
-
-        if (listeCible1.isEmpty()) {
-            // Incrémentation de l'indice de round dans RoundManagement
-            roundManagement.setCurrentRoundIndex(roundManagement.getCurrentRoundIndex() + 1);
-            if (roundManagement.getCurrentRoundIndex() < roundManagement.getListeRounds().size()) {
-                ChargerRound(roundManagement.getCurrentRoundIndex()); // Chargement du round suivant
-                //System.out.println(roundManagement.getCurrentRoundIndex());
-            }
-        }
-        if (roundManagement.isAllRoundsCompleted()) {
-            currentLevel++; // Incrémentation du niveau
-            System.out.println("Level : " + currentLevel);
-            roundManagement.resetRounds(); // Réinitialisation des rounds pour le nouveau niveau
-            ChargerRound(roundManagement.getCurrentRoundIndex()); // Recharge le premier round du nouveau niveau
-        }
     }
 
     /**

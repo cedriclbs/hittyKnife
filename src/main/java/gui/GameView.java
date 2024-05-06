@@ -52,11 +52,11 @@ public class GameView extends JPanel{
         //this.knife = game.knife1;
         //this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);
         if (isSolo) {
-            this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgForet.png", (ArrayList<Cible>) game.getListeCible(),isSolo, game);
+            this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgForet.png", (ArrayList<Cible>)game.getListeCible(),isSolo, game);
         }
         else{
-            this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/fond1v1.jpg", (ArrayList<Cible>) game.getListeCible(),isSolo, game);
-            this.entityDisplay2 = new EntityDisplay(game.knife2, "src/main/ressources/background/fond1v1.jpg", (ArrayList<Cible>) game.getListeCible2(),isSolo, game);
+            this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/fond1v1.jpg",  (ArrayList<Cible>)game.getListeCible(),isSolo, game);
+            this.entityDisplay2 = new EntityDisplay(game.knife2, "src/main/ressources/background/fond1v1.jpg",  (ArrayList<Cible>)game.getListeCible2(),isSolo, game);
         }
         initialize();
         //playCombatMusic();
@@ -103,6 +103,7 @@ public class GameView extends JPanel{
     public void initialize() {
         setLayout(new BorderLayout());
         if (isSolo) {
+            game.setIsSOlo(true);
             add(entityDisplay);
             addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
@@ -115,6 +116,7 @@ public class GameView extends JPanel{
             });
             requestFocusInWindow();
         } else {
+            game.setIsSOlo(false);
             JPanel playersPanel = new JPanel(new GridLayout(1, 2));
             playersPanel.add(entityDisplay);
             playersPanel.add(entityDisplay2);
