@@ -23,10 +23,6 @@ public class Game {
     transient public Knife knife2;
     @JsonIgnore
     transient boolean isSolo = false;
-<<<<<<< HEAD
-
-=======
->>>>>>> 04afe3684705ee543a97d24805325844c50ec1db
     @JsonIgnore
     transient private List<Cible> listeCible1 = new ArrayList<>();
     @JsonIgnore
@@ -172,11 +168,6 @@ public class Game {
         this.isSolo =b;
     }
 
-    public void setIsSOlo(boolean b){
-        this.isSolo =b;
-    }
-
-
     private synchronized void notifyObservers() {
         for (GameObserver observer : observers) {
             observer.onLevelChange();
@@ -186,29 +177,10 @@ public class Game {
     public synchronized void update(double delta) {
         double adjustedDelta = delta / 3;
         knife1.updateMovement();
-<<<<<<< HEAD
-
+        
         synchronized (listeCible1) {
             for (Cible c : new ArrayList<>(listeCible1)) {
                 updateCible(c, adjustedDelta);
-=======
-        for (Cible c : this.listeCible1) {
-            if (c instanceof MovingTarget) {
-                ((MovingTarget) c).updateMovement();
-            }
-            else if (c instanceof BossType1){
-                ((BossType1) c).updateMovement(adjustedDelta);
-                //System.out.println(c.getX());
-                //System.out.println(c.getY());
-            } else if (c instanceof BossType2){
-                ((BossType2) c).updateMovement(adjustedDelta);
-                //System.out.println(c.getX());
-                //System.out.println(c.getY());
-            } else if (c instanceof BossType3) {
-                ((BossType3) c).updateMovement(adjustedDelta);
-                //System.out.println(c.getX());
-                //System.out.println(c.getY());
->>>>>>> 04afe3684705ee543a97d24805325844c50ec1db
             }
         }
         if (!isSolo) {
