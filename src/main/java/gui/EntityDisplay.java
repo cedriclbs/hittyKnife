@@ -247,7 +247,7 @@ public class EntityDisplay extends JPanel {
             g2d.setColor(Color.WHITE); // Couleur du texte
             g2d.drawString(niveauTexte, xPosition, yPosi);
 
-        // Affiche les cercles pour les rounds
+            // Affiche les cercles pour les rounds
             int totalRounds = game.getRoundManagement().getListeRounds().size();
             int currentRoundIndex = game.getRoundManagement().getCurrentRoundIndex(); // Index commence à 0
 
@@ -256,7 +256,7 @@ public class EntityDisplay extends JPanel {
             int startX = (getWidth() - (totalRounds * spacing + (totalRounds - 1) * circleDiameter)) / 2; // Position de départ X pour centrer les cercles
             int yPosition = 50; // Position Y des cercles 
 
-        // Dessine une barre semi-transparente avec des bords arrondis en arrière-plan des cercles
+            // Dessine une barre semi-transparente avec des bords arrondis en arrière-plan des cercles
             int barHeight = 30; // Hauteur de la barre de fond
             int arcWidth = 25; // Largeur de l'arc pour les coins arrondis
             int arcHeight = 25; // Hauteur de l'arc pour les coins arrondis
@@ -275,18 +275,24 @@ public class EntityDisplay extends JPanel {
                 // Dessine le cercle
                 g2d.fillOval(startX + i * (circleDiameter + spacing), yPosition, circleDiameter, circleDiameter);
             }
+        
 
 
             // Si c'est le dernier round, affiche "Boss Fight!"
             if (currentRoundIndex == totalRounds - 1) {
-                g2d.setFont(new Font("SansSerif", Font.BOLD, 24)); 
                 String bossFightText = "Boss Fight!";
                 int textWidth = g2d.getFontMetrics().stringWidth(bossFightText);
-                int textYPosition = yPosition + circleDiameter + 30; // Position Y du texte sous les cercles
+                int textYPosition = yPosition + circleDiameter + 30;
+
+                // Dessiner l'ombre pour "Boss Fight!" en noir pour plus de visibilité sur le rouge
+                g2d.setColor(Color.BLACK);
+                g2d.drawString(bossFightText, (getWidth() - textWidth) / 2 + shadowOffset, textYPosition + shadowOffset);
+
+                // Dessiner le texte principal pour "Boss Fight!" en rouge
+                g2d.setColor(Color.RED);
                 g2d.drawString(bossFightText, (getWidth() - textWidth) / 2, textYPosition);
             }
         }
-
 
         int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
         int knifeY = (int) (RATIO_Y-(knife.getY()*RATIO));
