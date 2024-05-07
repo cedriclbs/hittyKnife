@@ -234,17 +234,16 @@ public class EntityDisplay extends JPanel {
             String niveauTexte = "LEVEL : " + game.getCurrentLevel();
             int niveauTexteWidth = g2d.getFontMetrics().stringWidth(niveauTexte);
 
-            // Coordonnées pour le texte
             int xPosition = (getWidth() - niveauTexteWidth) / 2;
             int yPosi = 30;
 
             // Dessine l'ombre
-            g2d.setColor(Color.GRAY); 
+            g2d.setColor(new Color(0, 0, 0, 64)); 
             int shadowOffset = 2; 
             g2d.drawString(niveauTexte, xPosition + shadowOffset, yPosi + shadowOffset);
 
             // Dessine le texte principal
-            g2d.setColor(Color.WHITE); // Couleur du texte
+            g2d.setColor(Color.WHITE); 
             g2d.drawString(niveauTexte, xPosition, yPosi);
 
             // Affiche les cercles pour les rounds
@@ -284,11 +283,11 @@ public class EntityDisplay extends JPanel {
                 int textWidth = g2d.getFontMetrics().stringWidth(bossFightText);
                 int textYPosition = yPosition + circleDiameter + 30;
 
-                // Dessiner l'ombre pour "Boss Fight!" en noir pour plus de visibilité sur le rouge
+                // Dessine l'ombre pour "Boss Fight!" en noir pour plus de visibilité sur le rouge
                 g2d.setColor(Color.BLACK);
                 g2d.drawString(bossFightText, (getWidth() - textWidth) / 2 + shadowOffset, textYPosition + shadowOffset);
 
-                // Dessiner le texte principal pour "Boss Fight!" en rouge
+                // Dessine le texte principal pour "Boss Fight!" en rouge
                 g2d.setColor(Color.RED);
                 g2d.drawString(bossFightText, (getWidth() - textWidth) / 2, textYPosition);
             }
