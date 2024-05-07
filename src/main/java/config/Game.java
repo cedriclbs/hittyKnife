@@ -28,6 +28,7 @@ public class Game {
     @JsonIgnore
     transient private List<Cible> listeCible2 = new ArrayList<>();
 
+
     transient private int xpThreshold;
     private RoundManagement roundManagement;
 
@@ -40,7 +41,7 @@ public class Game {
     private String cheminSauvegarde;
     @JsonProperty("argent")
     private int argent;
-    @JsonProperty("library")
+    @JsonIgnore()
     Library library;
     @JsonProperty("level")
     private int level;
