@@ -5,6 +5,8 @@ import config.RessourcesPaths;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainFrame extends JFrame {
 
@@ -15,16 +17,12 @@ public class MainFrame extends JFrame {
     private JButton soloButton;
     private JButton shopButton;
     private JButton versusButton;
+    private JButton battlePassButton;
     private JButton libraryButton;
 
     public static String knifePathClicked;
 
 
-    /**
-     * Constructeur de la classe MainFrame se basant sur la logique du CardLayout.
-     *
-     * @param game L'objet Game représentant l'état du jeu.
-     */
     public MainFrame(Game game) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Hitty Knife - Redux");
@@ -33,12 +31,23 @@ public class MainFrame extends JFrame {
         this.game = game;
         this.knifePathClicked = RessourcesPaths.knifePath + "knife#3.png";
 
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                if (game != null) {
+                    game.sauvegarderEtat(); // Appel de la méthode de sauvegarde
+                }
+            }
+        });
 
         // Création des boutons de navigation
         homeButton = new JButton("Home");
         soloButton = new JButton("Solo");
         shopButton = new JButton("Shop");
         versusButton = new JButton("Versus");
+        battlePassButton = new JButton("BattlePass");
+
         libraryButton = new JButton("Inventaire");
 
 
@@ -47,19 +56,21 @@ public class MainFrame extends JFrame {
         soloButton.setFocusPainted(false);
         shopButton.setFocusPainted(false);
         versusButton.setFocusPainted(false);
+        battlePassButton.setFocusPainted(false);
 
         // Désactive la possibilité pour les boutons de prendre le focus
         homeButton.setFocusable(false);
         soloButton.setFocusable(false);
         shopButton.setFocusable(false);
         versusButton.setFocusable(false);
+        battlePassButton.setFocusable(false);
 
         // Ajout des actions aux boutons de navigation
-
         homeButton.addActionListener(e -> switchToPanel("Home"));
         soloButton.addActionListener(e -> switchToPanel("Solo"));
         shopButton.addActionListener(e -> switchToPanel("Shop"));
         versusButton.addActionListener(e -> switchToPanel("Versus"));
+        battlePassButton.addActionListener(e -> switchToPanel("BattlePass"));
         libraryButton.addActionListener(e -> switchToPanel("Inventaire"));
 
 
@@ -68,6 +79,7 @@ public class MainFrame extends JFrame {
         JPanel soloPanel = createSoloPanel();
         JPanel shopPanel = createShopPanel();
         JPanel versusPanel = createVersusPanel();
+        JPanel battlepassPanel = createBattlepassPanel();
         JPanel libraryPanel = createLibraryPanel();
 
 
@@ -79,6 +91,7 @@ public class MainFrame extends JFrame {
         cardPanel.add(soloPanel, "Solo");
         cardPanel.add(shopPanel, "Shop");
         cardPanel.add(versusPanel, "Versus");
+        cardPanel.add(battlepassPanel, "BattlePass");
         cardPanel.add(libraryPanel, "Inventaire");
 
 
@@ -88,6 +101,7 @@ public class MainFrame extends JFrame {
         navPanel.add(soloButton);
         navPanel.add(shopButton);
         navPanel.add(versusButton);
+        navPanel.add(battlePassButton);
         navPanel.add(libraryButton);
 
 
@@ -104,8 +118,6 @@ public class MainFrame extends JFrame {
         setVisible(true);
     }
 
-
-
     /**
      * Récupère la vue de jeu actuellement affichée dans le conteneur de panneaux.
      *
@@ -121,19 +133,10 @@ public class MainFrame extends JFrame {
         return null;
     }
 
-
     private JPanel createHomePanel() {
         return new HomeMenu("src/main/ressources/background/Background_MainMenu.png", "");
     }
-    /**
-     * Basculer vers le panneau spécifié par son nom et lui attribuer le focus.
-     * Cette méthode change la vue visible dans le conteneur géré par le {@link CardLayout},
-     * en affichant le panneau correspondant au nom spécifié. Après avoir affiché le panneau,
-     * cette méthode parcourt également tous les composants du conteneur de panneaux pour trouver le panneau nouvellement visible
-     * et lui attribue le focus pour permettre la gestion correcte des entrées clavier.
-     *
-     * @param name le nom du panneau à afficher, tel que spécifié lors de l'ajout du panneau au {@link CardLayout}.
-     */
+
 
     private void switchToPanel(String name) {
         cardLayout.show(cardPanel, name);
@@ -150,11 +153,18 @@ public class MainFrame extends JFrame {
         if (visibleComp != null) {
             visibleComp.requestFocusInWindow();
         }
+        if(name == "Solo"){
+            game.setIsSOlo(true);
+        }
+        else {
+            game.setIsSOlo(false);
+        }
+
+
     }
-    
 
     private JPanel createTitleScreen() {
-        return new HomeMenu("src/main/ressources/background/Background_MainMenu.png", Menu.linkClip+"Main_theme.wav");
+        return new HomeMenu("src/main/ressources/background/Background_MainMenu.png",Menu.linkClip+"Main_theme.wav");
     }
 
     private JPanel createShopPanel() {
@@ -162,18 +172,31 @@ public class MainFrame extends JFrame {
     }
 
     private JPanel createSoloPanel() {
-        return new GameView(true);
+        return new GameView(true, game);
     }
 
     private JPanel createVersusPanel() {
-        return new GameView(false);
+        return new GameView(false, game);
     }
 
     private JPanel createLibraryPanel(){
-        return new Library(game.getNomUtilisateur());
+        return new Library(game.getCheminSauvegarde());
     }
 
+    private JPanel createBattlepassPanel() {
+        JPanel mainPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.anchor = GridBagConstraints.CENTER;
 
+        BattlePassPanel battlePassPanel = new BattlePassPanel(game);
+        mainPanel.add(battlePassPanel, gbc);
 
+        game.addObserver(battlePassPanel); // Enregistrement de BattlePassPanel en tant qu'observateur
 
+        return mainPanel;
+    }
 }

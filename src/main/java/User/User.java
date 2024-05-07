@@ -9,6 +9,9 @@ public final class User {
     private String motDePasse;
     private String cheminSauvegarde;
     private int argent;
+    private int level;
+    private int xp;
+
 
     //Constructeur par défaut pour la sérialisation en JSON
     public User() {
@@ -16,13 +19,18 @@ public final class User {
         this.motDePasse = null;
         this.cheminSauvegarde = null;
         this.argent = 0;
+        this.level = 1;
+        this.xp = 0;
+
     }
 
-    public User(String nomUtilisateur, String motDePasse, String cheminSauvegarde, int argent) {
+    public User(String nomUtilisateur, String motDePasse, String cheminSauvegarde, int argent, int level, int xp) {
         this.nomUtilisateur = nomUtilisateur;
         this.motDePasse = motDePasse;
         this.cheminSauvegarde = cheminSauvegarde;
         this.argent = argent;
+        this.level = level;
+        this.xp = xp;
     }
 
     @Override
@@ -32,6 +40,27 @@ public final class User {
                 "motDePasse=" + motDePasse + ", " +
                 "cheminSauvegarde=" + cheminSauvegarde + "]\n";
     }
+
+    @JsonProperty("xp")
+    public int getXp() {
+        return xp;
+    }
+
+    @JsonProperty("xp")
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
+    @JsonProperty("level")
+    public int getLevel() {
+        return level;
+    }
+
+    @JsonProperty("level")
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
 
     @JsonProperty("nomUtilisateur")
     public String getNomUtilisateur() {
