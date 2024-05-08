@@ -28,7 +28,7 @@ public class BossType4 extends Boss{
 
     @Override
     public void updateMovement(double delta) {
-        double speed = 0.5;
+        double speed = 0.3;
         double deplacement = speed * delta; // Déplacement en pixels
 
         double newX = getX();
@@ -74,6 +74,12 @@ public class BossType4 extends Boss{
                 }
                 break;
         }
+        // Vérifier si le mouvement dépasse la limite
+        if (newY  <= -50) {
+            newX = -56;
+            newY = 5;
+        }
+
         setX(newX);
         setY(newY);
     }
