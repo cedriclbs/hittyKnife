@@ -1,13 +1,17 @@
 package config;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Random;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import entity.*;
 import entity.bosses.*;
+import gui.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gui.Library;
@@ -27,10 +31,16 @@ public class Game {
     transient private List<Cible> listeCible1 = new ArrayList<>();
     @JsonIgnore
     transient private List<Cible> listeCible2 = new ArrayList<>();
+    @JsonIgnore 
+    private GameView gameView;
 
 
     transient private int xpThreshold;
     private RoundManagement roundManagement;
+    private List<GameObserver> observers = new ArrayList<>();
+    private int lastBackgroundIndex = -1; // Dernier indice utilisé
+    private Queue<Integer> recentBackgrounds = new LinkedList<>(); // Indices récents pour éviter la répétition
+    private Random rand = new Random();
 
     //Attribut du User pour JSON
     @JsonProperty("nomUtilisateur")
@@ -48,7 +58,10 @@ public class Game {
     @JsonProperty("xp")
     private int xp;
     private int currentLevel;
-    private List<GameObserver> observers = new ArrayList<>();
+    @JsonProperty("currentBackgroundPath")
+    private String currentBackgroundPath; 
+
+
 
 
 
@@ -69,12 +82,15 @@ public class Game {
         this.knife1 = new Knife();
         this.knife2 = new Knife();
         this.roundManagement = new RoundManagement();
+        this.gameView = new GameView(isSolo,this);
         this.currentLevel = 1;
         this.xpThreshold = 100;
         this.xp = 0;
         this.level = 1;
+        this.currentBackgroundPath = null;
         loadGameState();
         initGame();
+        
     }
 
 
@@ -162,11 +178,25 @@ public class Game {
             this.xp = loadedGame.getXp();
             this.level = loadedGame.getLevel();
             this.argent = loadedGame.getArgent();
+            this.currentBackgroundPath = loadedGame.getCurrentBackgroundPath();
+            updateBackground();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }   
+    /**
+     * Met à jour l'arrière-plan de l'interface graphique du jeu si les conditions sont remplies.
+     * Cette méthode vérifie que l'objet gameView et le chemin de l'arrière-plan (currentBackgroundPath) ne sont pas null.
+     * Si les deux conditions sont remplies, l'arrière-plan de l'interface graphique est mis à jour avec la nouvelle image spécifiée.
+     * Ceci est utilisé pour refléter les changements visuels dans l'arrière-plan au cours du jeu.
+     */
+    private void updateBackground() {
+        if (gameView != null && currentBackgroundPath != null) {
+            gameView.updateBackgroundImage(currentBackgroundPath); 
+        }
     }
-
+    
     private synchronized void initGame() {
         ChargerRound(roundManagement.getCurrentRoundIndex());
     }
@@ -233,7 +263,12 @@ public class Game {
             ((BossType3) c).updateMovement(adjustedDelta);
         }
     }
-
+    /**
+     * Vérifie si le round actuel est terminé en examinant si la liste des cibles du premier joueur est vide.
+     * Si toutes les cibles sont éliminées, la méthode avance le jeu au round suivant ou, si tous les rounds sont terminés,
+     * augmente le niveau du jeu, réinitialise les rounds et charge le premier round du nouveau niveau.
+     * Cette méthode synchronisée assure que le contrôle du jeu reste cohérent lors de l'actualisation des états des rounds.
+     */
     private synchronized void checkRoundCompletion() {
         if (listeCible1.isEmpty()) {
             roundManagement.setCurrentRoundIndex(roundManagement.getCurrentRoundIndex() + 1);
@@ -244,6 +279,7 @@ public class Game {
             }  
             else {
                 currentLevel++; // Incrémentation du niveau
+                notifyBackgroundChange();
                 System.out.println("Level : " + currentLevel);
                 roundManagement.resetRounds(); // Réinitialisation des rounds pour le nouveau niveau
                 ChargerRound(roundManagement.getCurrentRoundIndex()); // Recharge le premier round du nouveau niveau
@@ -251,6 +287,53 @@ public class Game {
     
         }
     }
+
+    /**
+     * Met à jour l'image de fond du jeu. Cette méthode sélectionne un nouvel arrière-plan
+     * aléatoire et met à jour l'interface graphique si elle est initialisée.
+     * Assure que l'arrière-plan affiché est toujours rafraîchi en fonction du contexte du jeu.
+     */
+    private void notifyBackgroundChange() {
+        String newPath = selectRandomBackground();
+        setCurrentBackgroundPath(newPath);
+        if (gameView != null) {
+            gameView.updateBackgroundImage(currentBackgroundPath);
+        }
+    }
+    
+    
+    /**
+     * Sélectionne un chemin d'image de fond aléatoire à partir d'un ensemble prédéfini de ressources.
+     * Utilise un système pour éviter de répéter les arrière-plans récemment utilisés,
+     * assurant une variété visuelle.
+     *
+     * @return Le chemin d'accès au fichier de l'image de fond sélectionnée.
+     */
+    private String selectRandomBackground() {
+        int bgIndex;
+        do {
+            bgIndex = rand.nextInt(11); // Génère un indice aléatoire
+        } while (bgIndex == lastBackgroundIndex || recentBackgrounds.contains(bgIndex)); // Vérifie les conditions
+
+        updateRecentBackgrounds(bgIndex);
+        return "src/main/ressources/background/bgJap" + bgIndex + ".gif";
+    }
+    
+    /**
+     * Met à jour la file d'indices des arrière-plans utilisés récemment pour assurer
+     * que les arrière-plans ne se répètent pas trop fréquemment.
+     * Conserve une file des indices des 5 derniers arrière-plans utilisés.
+     *
+     * @param newIndex Le nouvel indice à ajouter à la file.
+     */
+    private void updateRecentBackgrounds(int newIndex) {
+        lastBackgroundIndex = newIndex;
+        recentBackgrounds.offer(newIndex); // Ajoute le nouvel indice à la file
+        if (recentBackgrounds.size() > 5) {
+            recentBackgrounds.poll(); // Retire l'indice le plus ancien
+        }
+    }
+
 
 
     // Méthode pour vérifier si un niveau a été atteint et attribuer les récompenses
@@ -275,6 +358,7 @@ public class Game {
             savedGame.setLevel(this.level);
             savedGame.setLibrary(this.library);
             savedGame.setCurrentLevel(this.currentLevel);
+            savedGame.setCurrentBackgroundPath(currentBackgroundPath);
 
             // Sauvegarde l'état mis à jour dans le fichier de sauvegarde
             ObjectMapper mapper = new ObjectMapper();
@@ -368,9 +452,6 @@ public class Game {
         }
     }
 
-
-
-
     public int getCurrentLevel() {
         return currentLevel;
     }
@@ -383,4 +464,21 @@ public class Game {
     public boolean getIsSolo(){
         return isSolo;
     }
+
+    public void setGameView(GameView gameView) {
+        this.gameView = gameView;
+        updateBackground();
+    }
+
+    @JsonProperty("currentBackgroundPath")
+    public String getCurrentBackgroundPath() {
+        return currentBackgroundPath;
+    }
+
+    @JsonProperty("currentBackgroundPath")
+    public void setCurrentBackgroundPath(String currentBackgroundPath) {
+        this.currentBackgroundPath = currentBackgroundPath;
+    }
+
+    
 }

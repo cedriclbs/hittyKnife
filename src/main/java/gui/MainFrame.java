@@ -148,6 +148,9 @@ public class MainFrame extends JFrame {
         for (Component comp : cardPanel.getComponents()) {
             if (comp.isVisible()) {
                 visibleComp = comp;
+                if (comp instanceof GameView) {
+                    game.setGameView((GameView) comp);  
+                }
             }
         }
         if (visibleComp != null) {
