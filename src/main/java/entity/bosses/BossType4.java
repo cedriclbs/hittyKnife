@@ -41,7 +41,7 @@ public class BossType4 extends Boss{
                     phase = 2; // Passer à la phase suivante
                 }
                 break;
-            case 2: // De haut en bas jusqu'à une certaine Y
+            case 2: // De bas en haut jusqu'à une certaine Y
                 newY -= deplacement;
                 if (newY <= 5) {
                     phase = 3; // Passer à la phase suivante
@@ -60,7 +60,7 @@ public class BossType4 extends Boss{
                     phase = 5; // Passer à la phase suivante
                 }
                 break;
-            case 5: // De bas en haut jusqu'à une certaine Y
+            case 5: // De haut en bas jusqu'à une certaine Y
                 newY += deplacement;
                 if (newY >= 30) {
                     phase = 6; // Passer à la phase suivante
