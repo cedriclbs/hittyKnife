@@ -70,7 +70,7 @@ public class RoundManagement {
                 }
 
                 double x, y;
-                if (typeCible == TypeCible.CIBLE_BOSS1 || typeCible == TypeCible.CIBLE_BOSS2 || typeCible == TypeCible.CIBLE_BOSS3) {
+                if (typeCible == TypeCible.CIBLE_BOSS1 || typeCible == TypeCible.CIBLE_BOSS2 || typeCible == TypeCible.CIBLE_BOSS3 || typeCible == TypeCible.CIBLE_BOSS4) {
                     // Si c'est un boss, fixe les positions x et y à -60 pour qu'ils apparaissent hors de l'écran
                     x = -60;
                     y = -60;
