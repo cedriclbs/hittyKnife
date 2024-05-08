@@ -42,6 +42,9 @@ public class Game {
     private Queue<Integer> recentBackgrounds = new LinkedList<>(); // Indices récents pour éviter la répétition
     private Random rand = new Random();
 
+    public boolean gel = false;
+    public boolean powered = false;
+
     //Attribut du User pour JSON
     @JsonProperty("nomUtilisateur")
     private String nomUtilisateur;

@@ -158,7 +158,7 @@ public class Knife {
 
             } else {
                 updateJump();
-                addAngle(0.4);
+                addAngle(0.3);
             }
         }
     }
