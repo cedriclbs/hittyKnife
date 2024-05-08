@@ -9,11 +9,11 @@ public class BossType4 extends Boss{
     private int hitCount;
     private int phase = 1;
     /**
-     * Constructeur de la classe BossType3.
-     * Initialise un boss de type 3.
+     * Constructeur de la classe BossType4.
+     * Initialise un boss de type 4.
      */
     public BossType4(double x, double y) {
-        super(TypeCible.CIBLE_BOSS2, 3, x, y);
+        super(TypeCible.CIBLE_BOSS4, 3, x, y);
         this.hitCount = 0;
     }
     @Override

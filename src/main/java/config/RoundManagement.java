@@ -62,7 +62,7 @@ public class RoundManagement {
             for (int j = 0; j < targetsCount; j++) {
                 TypeCible typeCible;
                 do {
-                    typeCible = i < lastIndex ? getRandomTypeCible() : getRandomTypeBoss();
+                    typeCible = i < lastIndex ? getRandomTypeCible() : TypeCible.CIBLE_BOSS4;
                 } while ((typeCible == TypeCible.CIBLE_ARGENT && cibleargentCount >= 2)); // Vérifie qu'il n'y a pas plus de 2 cibles argent
 
                 if (typeCible == TypeCible.CIBLE_ARGENT) {
@@ -178,8 +178,8 @@ public class RoundManagement {
      * @return Un nombre aléatoire de cibles, entre 4 et 10.
      */
     private int getRndIntTargetRounds() {
-        return 4 + random.nextInt(4);
-        //return 1;
+        //return 4 + random.nextInt(4);
+        return 1;
     }
     // méthode pour vérifier si tous les rounds sont complétés
     public boolean isAllRoundsCompleted() {

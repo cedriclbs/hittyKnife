@@ -233,6 +233,7 @@ public class Game {
             ((BossType3) c).updateMovement(adjustedDelta);
         } else if (c instanceof BossType4) {
             ((BossType4) c).updateMovement(adjustedDelta);
+            System.out.println("X : " + c.getX() + "|| Y : " + c.getY());
         }
     }
 
