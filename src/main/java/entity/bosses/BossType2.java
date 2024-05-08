@@ -30,7 +30,7 @@ public class BossType2 extends Boss{
     public void updateMovement(double delta) {
         // Définir le centre du cercle
         double centerX = 0;
-        double centerY = 20;
+        double centerY = 13;
 
         // Définir le rayon du cercle
         double radius = 30;
@@ -39,7 +39,7 @@ public class BossType2 extends Boss{
         double angularSpeed = 0.1; // en radians par seconde
 
         // Calculer l'angle de rotation en fonction du temps écoulé depuis la dernière mise à jour
-        double movement = 0.5 * delta;
+        double movement = 0.1 * delta;
         double angle = angularSpeed * movement;
 
         // Ajouter l'angle à l'angle actuel

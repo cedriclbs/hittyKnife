@@ -54,10 +54,12 @@ public class Debug {
 
     }
 
+
     /**
      * Méthode de test pour la sérialisation des objets.
      * Cette méthode sérialise et désérialise un objet Game pour tester la fonctionnalité.
      */
+    /*
     public static void testSerialization() {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -74,5 +76,6 @@ public class Debug {
             e.printStackTrace();
         }
     }
+     */
 
 }
