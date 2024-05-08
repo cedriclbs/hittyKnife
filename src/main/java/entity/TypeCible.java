@@ -6,7 +6,8 @@ public enum TypeCible {
     CIBLE_BONUSGEL,
     CIBLE_BOSS1,
     CIBLE_BOSS2,
-    CIBLE_BOSS3;
+    CIBLE_BOSS3,
+    CIBLE_BOSS4;
 
 
     public static TypeCible typecible = CIBLE_NORMALE;

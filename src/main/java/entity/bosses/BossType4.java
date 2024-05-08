@@ -1,0 +1,84 @@
+package entity.bosses;
+
+import entity.*;
+
+/**
+ * Classe représentant un type spécifique de boss.
+ */
+public class BossType4 extends Boss{
+    private int hitCount;
+    private int phase = 1;
+    /**
+     * Constructeur de la classe BossType3.
+     * Initialise un boss de type 3.
+     */
+    public BossType4(double x, double y) {
+        super(TypeCible.CIBLE_BOSS2, 3, x, y);
+        this.hitCount = 0;
+    }
+    @Override
+    public void attacked() {
+        this.hitCount++;
+    }
+
+    public boolean isDead() {
+        int maxHits = 3;
+        return hitCount >= maxHits;
+    }
+
+    @Override
+    public void updateMovement(double delta) {
+        double speed = 0.7;
+        double deplacement = speed * delta; // Déplacement en pixels
+
+        double newX = getX();
+        double newY = getY();
+        // Mettre à jour la position du boss en fonction de la phase actuelle
+        switch (phase) {
+            case 1: // Gauche à droite jusqu'à une certaine X
+                newX += deplacement;
+                if (newX >= -40) {
+                    phase = 2; // Passer à la phase suivante
+                }
+                break;
+            case 2: // De haut en bas jusqu'à une certaine Y
+                newY -= deplacement;
+                if (newY <= 10) {
+                    phase = 3; // Passer à la phase suivante
+                }
+                break;
+            case 3: // De droite à gauche jusqu'à sortir de l'écran
+                newX -= deplacement;
+                if (newX <= -56) {
+                    newX = 56;
+                    phase = 4; // Passer à la phase suivante
+                }
+                break;
+            case 4: // Continuer de droite à gauche jusqu'à une certaine -X (opposée à la première phase)
+                newX -= deplacement;
+                if (newX <= 40) {
+                    phase = 5; // Passer à la phase suivante
+                }
+                break;
+            case 5: // De bas en haut jusqu'à une certaine Y
+                newY += deplacement;
+                if (newY >= 30) {
+                    phase = 6; // Passer à la phase suivante
+                }
+                break;
+            case 6: // De gauche à droite jusqu'à sortir de l'écran et revenir à la position initiale
+                newX += deplacement;
+                if (newX >= 56) {
+                    newX = -56; // Réinitialiser la position X
+                    phase = 1; // Réinitialiser le motif
+                }
+                break;
+        }
+        setX(newX);
+        setY(newY);
+    }
+
+
+
+
+}

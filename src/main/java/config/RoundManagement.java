@@ -49,7 +49,7 @@ public class RoundManagement {
     
             for (int j = 0; j < targetsCount; j++) {
                 // Détermine le type de cible
-                TypeCible typeCible = i < lastIndex ? getRandomTypeCible() : getRandomTypeBoss(); //mettre le truc du boss
+                TypeCible typeCible = i < lastIndex ? getRandomTypeCible() : TypeCible.CIBLE_BOSS3; //mettre le truc du boss
                 
                 double x,y;
                 
@@ -88,7 +88,11 @@ public class RoundManagement {
             case CIBLE_BOSS3:
                 // Créer un BossType3
                 return new BossType3(x, y);
-    
+
+            case CIBLE_BOSS4:
+                // Créer un BossType4
+                return new BossType4(x, y);
+
             default:
                 return new Cible(x, y);
         }

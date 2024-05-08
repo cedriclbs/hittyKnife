@@ -142,6 +142,10 @@ public class Game {
                 ((BossType3) c).updateMovement(adjustedDelta);
                 //System.out.println(c.getX());
                 //System.out.println(c.getY());
+            } else if (c instanceof BossType4) {
+                ((BossType4) c).updateMovement(adjustedDelta);
+                //System.out.println(c.getX());
+                System.out.println(c.getY());
             }
         }
         if (!isSolo) {

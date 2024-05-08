@@ -25,6 +25,7 @@ public class EntityDisplay extends JPanel {
     private Image bossT1;
     private Image bossT2;
     private Image bossT3;
+    private Image bossT4;
     private ArrayList<Cible> listeCible;
     private static double bgImgWidth;
     private static double bgImgHeight;
@@ -98,6 +99,7 @@ public class EntityDisplay extends JPanel {
         this.bossT1 = new ImageIcon(filepath + "Boss2 (1).png").getImage();
         this.bossT2 = new ImageIcon(filepath + "Boss2 (1).png").getImage();
         this.bossT3 = new ImageIcon(filepath + "Boss2 (1).png").getImage();
+        this.bossT4 = new ImageIcon(filepath + "Boss2 (1).png").getImage();
         int w = this.knifeImage.getWidth(null)/3;
         int h = this.knifeImage.getHeight(null)/3;
         this.knifeImage = this.knifeImage.getScaledInstance(w,h,Image.SCALE_SMOOTH);
@@ -106,6 +108,7 @@ public class EntityDisplay extends JPanel {
         this.bossT1 = this.bossT1.getScaledInstance(this.bossT1.getWidth(null)/2, this.bossT1.getHeight(null)/2, Image.SCALE_SMOOTH);
         this.bossT2 = this.bossT2.getScaledInstance(this.bossT2.getWidth(null)/2, this.bossT2.getHeight(null)/2, Image.SCALE_SMOOTH);
         this.bossT3 = this.bossT3.getScaledInstance(this.bossT3.getWidth(null)/2, this.bossT3.getHeight(null)/2, Image.SCALE_SMOOTH);
+        this.bossT4 = this.bossT4.getScaledInstance(this.bossT4.getWidth(null)/2, this.bossT4.getHeight(null)/2, Image.SCALE_SMOOTH);
     }
 
     /**
@@ -237,6 +240,9 @@ public class EntityDisplay extends JPanel {
             else if (cible instanceof BossType3) {
                 g2d.drawImage(bossT3, transformCible, this);
             }
+            else if (cible instanceof BossType4) {
+                g2d.drawImage(bossT4, transformCible, this);
+            }
             else {
                 g2d.drawImage(cibleImage, transformCible, this);
             }
@@ -279,6 +285,12 @@ public class EntityDisplay extends JPanel {
                 else if (cible instanceof BossType3) {
                     ((BossType3) cible).attacked();
                     if (((BossType3) cible).isDead()) {
+                        deleteCible.add(cible);
+                    }
+                }
+                else if (cible instanceof BossType4) {
+                    ((BossType4) cible).attacked();
+                    if (((BossType4) cible).isDead()) {
                         deleteCible.add(cible);
                     }
                 }
