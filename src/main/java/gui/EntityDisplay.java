@@ -24,8 +24,10 @@ import java.util.List;
 public class EntityDisplay extends JPanel {
     private final Knife knife;
     private Image knifeImage;
+    private Image knifeImagePowered;
     private Image cibleImage;
     private Image backgroundImage;
+    private Image bonusPower;
     private Image ciblesMouventeImage;
     private Image bossT1;
     private Image bossT2;
@@ -100,8 +102,10 @@ public class EntityDisplay extends JPanel {
      */
     private void initImage () {
         this.knifeImage = new ImageIcon(RessourcesPaths.knifePath + "knifeRotate2.png").getImage();
+        this.knifeImagePowered = new ImageIcon("src/main/ressources/knifes/knifeRotate2Powered.png").getImage();
         this.cibleImage = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
         this.ciblesMouventeImage =  new ImageIcon("src/main/ressources/targets/target#2.png").getImage();
+        this.bonusPower = new ImageIcon("src/main/ressources/targets/target#1Power.png").getImage();
         String filepath = "src/main/ressources/targets/";
         this.bossT1 = new ImageIcon(filepath + "Boss2 (1).png").getImage();
         this.bossT2 = new ImageIcon(filepath + "Boss2 (1).png").getImage();
@@ -109,7 +113,9 @@ public class EntityDisplay extends JPanel {
         int w = this.knifeImage.getWidth(null)/3;
         int h = this.knifeImage.getHeight(null)/3;
         this.knifeImage = this.knifeImage.getScaledInstance(w,h,Image.SCALE_SMOOTH);
+        this.knifeImagePowered = this.knifeImagePowered.getScaledInstance(w,h,Image.SCALE_SMOOTH);
         this.cibleImage = this.cibleImage.getScaledInstance(this.cibleImage.getWidth(null)/2,this.cibleImage.getHeight(null)/2,Image.SCALE_SMOOTH);
+        this.bonusPower = this.bonusPower.getScaledInstance(this.bonusPower.getWidth(null)/2,this.bonusPower.getHeight(null)/2,Image.SCALE_SMOOTH);
         this.ciblesMouventeImage = this.ciblesMouventeImage.getScaledInstance(this.ciblesMouventeImage.getWidth(null)/2,this.ciblesMouventeImage.getHeight(null)/2,Image.SCALE_SMOOTH);
         this.bossT1 = this.bossT1.getScaledInstance(this.bossT1.getWidth(null)/2, this.bossT1.getHeight(null)/2, Image.SCALE_SMOOTH);
         this.bossT2 = this.bossT2.getScaledInstance(this.bossT2.getWidth(null)/2, this.bossT2.getHeight(null)/2, Image.SCALE_SMOOTH);
@@ -311,7 +317,12 @@ public class EntityDisplay extends JPanel {
 
         AffineTransform transform = AffineTransform.getTranslateInstance(knifeX - (double) knifeImgWidth / 2, knifeY - (double) knifeImgHeight / 2);
         transform.rotate(Math.toRadians(knife.getAngle()), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
-        g2d.drawImage(knifeImage, transform, this);
+        if(!game.powered) {
+            g2d.drawImage(knifeImage, transform, this);
+        }
+        else{
+            g2d.drawImage(knifeImagePowered, transform, this);
+        }
 
         //--------------------------AFFICHAGE ANIMATION COLLISION -------------------------------
         if (animCollision){
@@ -319,9 +330,11 @@ public class EntityDisplay extends JPanel {
             AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
 
             g2d.setComposite(alphaComposite);
-            AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - (double) knifeImgWidth / 2, collisionY - (double) knifeImgHeight / 2);
-            transformColli.rotate(Math.toRadians(collisionAngle), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
-            g2d.drawImage(knifeImage, transformColli, this);
+            if (!game.powered) {
+                AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - (double) knifeImgWidth / 2, collisionY - (double) knifeImgHeight / 2);
+                transformColli.rotate(Math.toRadians(collisionAngle), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
+                g2d.drawImage(knifeImage, transformColli, this);
+            }
 
             AffineTransform transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - (double) cibleImWidth / 2, cibleColliY - (double) cibleImHeight / 2);
             if (isCollisionMovingTarget) g2d.drawImage(ciblesMouventeImage, transformCibleColli, this);
@@ -370,7 +383,12 @@ public class EntityDisplay extends JPanel {
                     g2d.drawImage(ciblesMouventeImage,transformCible,this);
 
                 }
-                else{
+                else if (cible instanceof Bonus){
+                    if (((Bonus) cible).getTypeBonus()== Bonus.TypeBonus.BONUS_POWER){
+                        g2d.drawImage(bonusPower, transformCible, this);
+                    }
+                }
+                else {
                     g2d.drawImage(cibleImage, transformCible, this);
                 }
                 Shape cibleMask = createCollisionMask(cibleImage);
@@ -428,9 +446,14 @@ public class EntityDisplay extends JPanel {
                 else {
                     deleteCible.add(cible);
                 }
-                knife.resetKnife();
+                if (!game.powered) {
+                    knife.resetKnife();
+                }
                 opacity = baseOpacity;
                 isCollisionMovingTarget=cible instanceof MovingTarget;
+                if (cible instanceof Bonus){
+                    game.bonusManager.appliquerBonus(((Bonus) cible).getTypeBonus());
+                }
             }
         }
         for (Cible c : deleteCible){
