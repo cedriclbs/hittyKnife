@@ -328,10 +328,10 @@ public class EntityDisplay extends JPanel {
             else g2d.drawImage(cibleImage, transformCibleColli, this);
 
             g2d.setComposite(oldComposite);
-            if (opacity>0.01f)opacity-=0.001f;
+            if (opacity>0.01f)opacity-=0.007f;
             else animCollision=false;
         }
-
+        
         //-------------------------------AFFICHAGE NORMAL DES CIBLES -------------------------------
 
         ArrayList<Cible> deleteCible= new ArrayList<>();
