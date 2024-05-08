@@ -1,10 +1,13 @@
 package gui;
 
+import config.Game;
+import config.RessourcesPaths;
 import config.ShopCart;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+
+
 import static config.States.*;
 
 
@@ -15,31 +18,30 @@ import static config.States.*;
 
 
 public class ShopMenu extends JPanel {
-    JLabel argentLabel;
+    private Game game;
     ShopCart cart;
-    JTabbedPane tabbedPane;
+    public JTabbedPane tabbedPane;
     boolean saveB;
+    boolean assezArgent;
 
-    String knifePath = "src/main/ressources/knifes/";
-    String backgroundPath = "src/main/ressources/background/";
-    String buttonPath = "src/main/ressources/button/";
-    String tabPath = "src/main/ressources/onglets/";
 
     /**
      * Constructeur de la fenêtre du magasin.
      *
-     * @param backgroundPath Le chemin de l'image de fond du magasin.
      */
-    public ShopMenu(String backgroundPath) {
-        this.cart = new ShopCart();
+    public ShopMenu(Game game) {
+        this.cart = new ShopCart(game);
         this.tabbedPane = new JTabbedPane();
         this.saveB = true;
+        this.game = game;
         initialize();
     }
 
     public void startShopMenu() {
         setStates(SHOPMENU);
     }
+
+
 
     /**
      * Initialise le ShopMenu avec sa disposition et les onglets du magasin.
@@ -50,35 +52,43 @@ public class ShopMenu extends JPanel {
         tabbedPane.setOpaque(false);
 
         ShopTab accueil = new ShopTab(tabbedPane, "Accueil", null, "shopWelcomeTab.png", "welcome", this);
-        ShopTab couteaux = new ShopTab(tabbedPane, "Couteaux", knifePath, "knifeTab.png", "couteaux", this);
-        ShopTab background = new ShopTab(tabbedPane, "Background", backgroundPath, "bgTab.png", "background", this);
-        ShopTab music = new ShopTab(tabbedPane, "Music", buttonPath, "musicTab.png", "music", this);
+        ShopTab couteaux = new ShopTab(tabbedPane, "Couteaux", RessourcesPaths.knifePath, "knifeTab.png", "couteaux", this);
+        ShopTab background = new ShopTab(tabbedPane, "Background", RessourcesPaths.backgroundPath, "bgTab.png", "background", this);
+        ShopTab music = new ShopTab(tabbedPane, "Music", RessourcesPaths.buttonPath, "musicTab.png", "music", this);
         ShopTab cart = new ShopTab(tabbedPane, "Panier", null, "cartTab.png", "cart", this);
-        //ShopTab bibliotheque = new ShopTab(tabbedPane, "Bibliothèque", null, "biblioTab.png", "bibliotheque", this);
 
         add(tabbedPane, BorderLayout.CENTER);
 
-        // Création et ajout du label d'argent
-        //argentLabel = new JLabel("Argent disponible: " + User.getArgent());
-        //add(argentLabel, BorderLayout.NORTH);
-
     }
 
-    /*
-    void updateTotal() {
-        argentLabel.setText("Total: " + (User.getArgent() - cart.getCartTotal()));
-    }
+
+    /**
+     * Sauvegarde le panier d'achats actuel.
      */
-
-
     public void saveCart() {
         if (cart != null) {
-            saveB = true;
-            JOptionPane.showMessageDialog(null, "Le panier a été sauvegardé avec succès.");
+            //TODO : Argent disponible pour acheter ? Faire la vérif
+            //if (User.getArgent() - cart.getCartTotal() >= 0){
+                saveB = true;
+                //updateMoney();
+                game.updateLibrary(cart);
+                cart.getCart().clear();
+                //refreshCartTab(); TODO : actualiser la liste une fois le panier sauvegarder
+                JOptionPane.showMessageDialog(null, "Le panier a été sauvegardé avec succès.");
+            //} else {
+                //JOptionPane.showMessageDialog(null, "Pas assez de ressources.");
+            //
         } else {
             JOptionPane.showMessageDialog(null, "Le panier est vide.");
         }
     }
+
+
+    //private void updateMoney () {
+    //    User.setArgent(User.getArgent() - cart.getCartTotal());
+    //}
+
+
 
     /**
      * Configure un bouton avec des paramètres standard.
@@ -127,6 +137,10 @@ public class ShopMenu extends JPanel {
             //showMenuOnceVerif();
         }
 
+    }
+
+    public ShopCart getCart() {
+        return this.cart;
     }
 
     /*

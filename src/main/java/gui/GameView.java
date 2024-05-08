@@ -43,20 +43,20 @@ public class GameView extends JPanel{
      * Constructeur de la classe SoloMode.
      *
      */
-    public GameView(boolean isSolo)  {
+    public GameView(boolean isSolo, Game game)  {
         this.isSolo = isSolo;
         initBg("src/main/ressources/background/bgForet.png");
-        this.game = new Game(isSolo);
+        this.game = game;
         Main.loop = new Loop(game);
         Main.loop.startTickFunction();
         //this.knife = game.knife1;
         //this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);
         if (isSolo) {
-            this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgForet.png", (ArrayList<Cible>) game.getListeCible(),isSolo,game);
+            this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgJap10.gif", (ArrayList<Cible>)game.getListeCible(),isSolo, game);
         }
         else{
-            this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/fond1v1.jpg", (ArrayList<Cible>) game.getListeCible(),isSolo,game);
-            this.entityDisplay2 = new EntityDisplay(game.knife2, "src/main/ressources/background/fond1v1.jpg", (ArrayList<Cible>) game.getListeCible2(),isSolo,game);
+            this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/fond1v1.jpg",  (ArrayList<Cible>)game.getListeCible(),isSolo, game);
+            this.entityDisplay2 = new EntityDisplay(game.knife2, "src/main/ressources/background/fond1v1.jpg",  (ArrayList<Cible>)game.getListeCible2(),isSolo, game);
         }
         initialize();
         //playCombatMusic();
@@ -103,6 +103,7 @@ public class GameView extends JPanel{
     public void initialize() {
         setLayout(new BorderLayout());
         if (isSolo) {
+            game.setIsSOlo(true);
             add(entityDisplay);
             addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
@@ -115,6 +116,7 @@ public class GameView extends JPanel{
             });
             requestFocusInWindow();
         } else {
+            game.setIsSOlo(false);
             JPanel playersPanel = new JPanel(new GridLayout(1, 2));
             playersPanel.add(entityDisplay);
             playersPanel.add(entityDisplay2);
@@ -158,6 +160,32 @@ public class GameView extends JPanel{
         bgImgHeight = this.backgroundImage.getHeight(null);
         bgImgWidth = this.backgroundImage.getWidth(null);
     }
+
+
+    /**
+     * Met à jour l'image du couteau suite au choix du joueur dans l'inventaire.
+     *
+     * @param knifePathClicked Le chemin d'accès vers l'image du couteau.
+     */
+    public void updateKnifeImage(String knifePathClicked) {
+        this.entityDisplay.updateKnifeImage(knifePathClicked);
+        if (!isSolo) {
+            this.entityDisplay2.updateKnifeImage(knifePathClicked);
+        }
+    }
+
+    /**
+     * Met à jour l'image de fond du jeu suite au choix du joueur dans l'inventaire.
+     *
+     * @param backgroundPath Le chemin d'accès à la nouvelle image de fond.
+     */
+    public void updateBackgroundImage(String backgroundPath) {
+        this.entityDisplay.initBg(backgroundPath);
+        repaint();
+    }
+
+
+
 
     @Override
     protected void paintComponent(Graphics g) {

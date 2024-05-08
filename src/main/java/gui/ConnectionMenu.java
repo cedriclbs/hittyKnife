@@ -17,6 +17,7 @@ public class ConnectionMenu extends JDialog {
     private JTextField champNomUtilisateur;
     private JPasswordField champMotDePasse;
     private UserManager gestionUtilisateurs;
+    private Game game;
 
     /**
      * Constructeur de la fenêtre de connexion.
@@ -66,18 +67,23 @@ public class ConnectionMenu extends JDialog {
             JOptionPane.showMessageDialog(this, "Connexion réussie !");
             this.dispose();
 
+            // Crée un nouveau jeu avec le nom d'utilisateur et le chemin de sauvegarde
+            String cheminSauvegarde = "src/main/saves/sauvegarde_" + nomUtilisateur + ".json";
+            game = new Game(true, cheminSauvegarde);
+
             // Charge l'état du jeu pour l'utilisateur connecté
             try {
-                Game game = Game.chargerEtat("src/main/saves/sauvegarde_" + nomUtilisateur + ".json");
+                game.chargerEtat(cheminSauvegarde);
             } catch (IOException e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Erreur lors du chargement de la sauvegarde de jeu.", "Erreur", JOptionPane.ERROR_MESSAGE);
-            } 
-            MainFrame mainFrame = new MainFrame();
+            }
+            MainFrame mainFrame = new MainFrame(game);
         } else {
             JOptionPane.showMessageDialog(this, "Échec de la connexion. Vérifiez votre nom d'utilisateur et mot de passe.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     /**
      * Méthode appelée lorsqu'un utilisateur souhaite créer un compte.
@@ -97,22 +103,36 @@ public class ConnectionMenu extends JDialog {
             String cheminSauvegarde = "src/main/saves/sauvegarde_" + nomUtilisateur + ".json";
             creerFichierSauvegardeUtilisateur(cheminSauvegarde, nomUtilisateur);
             JOptionPane.showMessageDialog(this, "Compte créé avec succès !");
+
+            // Crée un nouveau jeu avec le nom d'utilisateur et le chemin de sauvegarde
+            game = new Game(true, cheminSauvegarde);
+
+            // Charge l'état du jeu pour l'utilisateur connecté
+            try {
+                game.chargerEtat(cheminSauvegarde);
+            } catch (IOException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Erreur lors du chargement de la sauvegarde de jeu.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+            this.dispose();
+            MainFrame mainFrame = new MainFrame(game);
         } else {
             JOptionPane.showMessageDialog(this, "Le nom d'utilisateur est déjà pris. Veuillez essayer un nom différent.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
+
     }
 
     /**
      * Crée un fichier de sauvegarde pour un nouvel utilisateur.
      *
      * @param cheminSauvegarde Le chemin du fichier de sauvegarde.
-     * @param username Le nom d'utilisateur.
+     * @param username         Le nom d'utilisateur.
      */
     private void creerFichierSauvegardeUtilisateur(String cheminSauvegarde, String username) {
         try {
             // Créer un nouvel utilisateur avec le nom d'utilisateur et un mot de passe par défaut
             String motDePasse = "password"; // Mot de passe par défaut pour un nouvel utilisateur
-            User nouvelUtilisateur = new User(username, motDePasse, cheminSauvegarde, 100); // 100 est l'argent initial
+            User nouvelUtilisateur = new User(username, motDePasse, cheminSauvegarde, 100, 1, 0); // 100 est l'argent initial
 
             // Sérialiser l'objet User dans le fichier JSON
             ObjectMapper mapper = new ObjectMapper();
@@ -121,7 +141,4 @@ public class ConnectionMenu extends JDialog {
             e.printStackTrace();
         }
     }
-
-    //TODO: connexion automatique après une création de compte réussie
-
 }

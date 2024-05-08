@@ -15,7 +15,7 @@ public class MovingTarget extends Cible{
      * Si la nouvelle position dépasse les limites verticales définies, ajuste l'angle en conséquence.
      */
     public void updateMovement(){
-        double[] result = Geometry.forwardMovement(getCoord(),angle,15);
+        double[] result = Geometry.forwardMovement(getCoord(),angle,45);
         setX(result[0]);
         setY(result[1]);
 

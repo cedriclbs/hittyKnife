@@ -32,10 +32,10 @@ public class Cible {
      * @param x Coordonnée x de la cible.
      * @param y Coordonnée y de la cible.
      */
-    /*public Cible(TypeCible type, double x, double y) {
+    public Cible(TypeCible type, double x, double y) {
         this.typeCible = type;
         coordinate = new Coordinate(x, y);
-    }*/
+    }
 
  /**
      * Constructeur de la classe Cible.
@@ -43,10 +43,12 @@ public class Cible {
      * @param typeCible Type de la cible.
      * @param x         Coordonnée x de la cible.
      * @param y         Coordonnée y de la cible.
+     * @param velocite  Vitesse de la cible.
      */
-    public Cible(TypeCible typeCible,double x, double y) {
+    public Cible(TypeCible typeCible,double x, double y, double velocite) {
         this.typeCible = typeCible;
         this.coordinate = new Coordinate(x, y);
+        this.velocite = velocite;
         this.isInTheAir = false;
         this.redescend = false;
     }
@@ -58,11 +60,13 @@ public class Cible {
      * @param health    Santé de la cible.
      * @param x         Coordonnée x de la cible.
      * @param y         Coordonnée y de la cible.
+     * @param velocite  Vitesse de la cible.
      */
-    public Cible(TypeCible typeCible, int health, double x, double y) {
+    public Cible(TypeCible typeCible, int health, double x, double y, double velocite) {
         this.typeCible = typeCible;
         this.health = health;
         this.coordinate = new Coordinate(x, y);
+        this.velocite = velocite;
         this.isInTheAir = false;
         this.redescend = false;
     }
