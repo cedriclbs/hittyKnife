@@ -1,11 +1,14 @@
 package config;
 
+import entity.Bonus;
 import entity.TypeCible;
 import entity.bosses.*;
 import entity.Cible;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import static entity.Bonus.TypeBonus.BONUS_POWER;
 
 
 /**
@@ -87,6 +90,8 @@ public class RoundManagement {
                 // Ajoute la cible au round
                 round.addCible(cible); 
             }
+            Bonus bonus = new Bonus(15,15,BONUS_POWER);
+            round.addCible(bonus);
         }
     }
     
@@ -174,8 +179,8 @@ public class RoundManagement {
      * @return Un nombre aléatoire de cibles, entre 4 et 10.
      */
     private int getRndIntTargetRounds() {
-        return 4 + random.nextInt(4);
-        //return 1;
+        //return 4 + random.nextInt(4);
+        return 1;
     }
     // méthode pour vérifier si tous les rounds sont complétés
     public boolean isAllRoundsCompleted() {

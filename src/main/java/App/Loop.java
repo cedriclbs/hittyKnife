@@ -10,7 +10,7 @@ public class Loop {
 
     private final Game g;
     private long lastLoopTime;
-    private static final int TARGET_FPS = 100;
+    private static final int TARGET_FPS = 40;
     private static final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
     public static double delta;
 
