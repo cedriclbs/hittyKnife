@@ -44,6 +44,7 @@ public class Game {
 
     public boolean gel = false;
     public boolean powered = false;
+    public BonusManager bonusManager = new BonusManager(this);
 
     //Attribut du User pour JSON
     @JsonProperty("nomUtilisateur")
@@ -253,6 +254,7 @@ public class Game {
         }
 
         checkRoundCompletion();
+        bonusManager.updateBonusEffect();
     }
 
     private void updateCible(Cible c, double adjustedDelta) {
