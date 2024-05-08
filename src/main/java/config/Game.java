@@ -73,6 +73,7 @@ public class Game {
         this.xpThreshold = 100;
         this.xp = 0;
         this.level = 1;
+        loadGameState();
         initGame();
     }
 
@@ -114,6 +115,11 @@ public class Game {
         this.setArgent(this.argent + i);
     }
 
+    public int getArgent() {
+        return argent;
+    }
+
+
 
     public void setXp(int xp) {
         this.xp = xp;
@@ -139,6 +145,26 @@ public class Game {
 
     public Library getLibrary () {
         return library;
+    }
+
+    /**
+    * Charge l'état du jeu à partir du fichier de sauvegarde spécifié dans cheminSauvegarde.
+    * Cette méthode lit les données sauvegardées comme le niveau actuel, les points d'expérience,
+    * le niveau, et l'argent, puis les affecte aux attributs correspondants de l'instance en cours.
+    * 
+    * Le chemin du fichier de sauvegarde est déterminé par l'attribut cheminSauvegarde de l'instance.
+    * Si une erreur se produit lors du chargement, l'erreur est enregistrée dans la console.
+    */
+    private void loadGameState() {
+        try {
+            Game loadedGame = chargerEtat(this.cheminSauvegarde);
+            this.currentLevel = loadedGame.getCurrentLevel();  
+            this.xp = loadedGame.getXp();
+            this.level = loadedGame.getLevel();
+            this.argent = loadedGame.getArgent();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private synchronized void initGame() {

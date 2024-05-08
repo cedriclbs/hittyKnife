@@ -224,7 +224,7 @@ public class EntityDisplay extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-        System.out.println(game.getIsSolo());
+        //System.out.println(game.getIsSolo());
 
         if(game.getIsSolo()){
             // Affichage des niveaux et des rounds avec effet d'ombre sur le texte
@@ -243,12 +243,12 @@ public class EntityDisplay extends JPanel {
             g2d.drawString(niveauTexte, xPosition + shadowOffset, yPosi + shadowOffset);
 
             // Dessine le texte principal
-            g2d.setColor(Color.WHITE); 
+            g2d.setColor(Color.WHITE); // Couleur du texte
             g2d.drawString(niveauTexte, xPosition, yPosi);
 
             // Affiche les cercles pour les rounds
             int totalRounds = game.getRoundManagement().getListeRounds().size();
-            int currentRoundIndex = game.getRoundManagement().getCurrentRoundIndex(); // Index commence à 0
+            int currentRoundIndex = game.getRoundManagement().getCurrentRoundIndex(); 
 
             int circleDiameter = 20; // Diamètre de chaque cercle
             int spacing = 28; // Espacement entre les cercles
@@ -283,7 +283,7 @@ public class EntityDisplay extends JPanel {
                 int textWidth = g2d.getFontMetrics().stringWidth(bossFightText);
                 int textYPosition = yPosition + circleDiameter + 30;
 
-                // Dessine l'ombre pour "Boss Fight!" en noir pour plus de visibilité sur le rouge
+                // Dessine l'ombre pour "Boss Fight!" en noir
                 g2d.setColor(Color.BLACK);
                 g2d.drawString(bossFightText, (getWidth() - textWidth) / 2 + shadowOffset, textYPosition + shadowOffset);
 
@@ -292,6 +292,7 @@ public class EntityDisplay extends JPanel {
                 g2d.drawString(bossFightText, (getWidth() - textWidth) / 2, textYPosition);
             }
         }
+
 
         int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
         int knifeY = (int) (RATIO_Y-(knife.getY()*RATIO));
