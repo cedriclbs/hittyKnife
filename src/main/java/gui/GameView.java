@@ -181,6 +181,7 @@ public class GameView extends JPanel{
      */
     public void updateBackgroundImage(String backgroundPath) {
         this.entityDisplay.initBg(backgroundPath);
+
         repaint();
     }
 
@@ -191,7 +192,7 @@ public class GameView extends JPanel{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g.create();
-        g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        //g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         g2d.dispose();
     }
 

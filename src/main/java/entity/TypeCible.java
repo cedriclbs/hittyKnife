@@ -3,7 +3,7 @@ package entity;
 public enum TypeCible {
     CIBLE_NORMALE,
     CIBLE_ARGENT,
-    CIBLE_BONUSGEL,
+    CIBLE_BONUS,
     CIBLE_BOSS1,
     CIBLE_BOSS2,
     CIBLE_BOSS3,
