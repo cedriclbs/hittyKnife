@@ -167,7 +167,7 @@ public class RoundManagement {
         TypeCible newBossType;
         do {
             int randomNum = random.nextInt(4); // Il y a 4 types de boss à choisir
-            newBossType = TypeCible.values()[TypeCible.values().length - 3 + randomNum]; // Sélectionne parmi les types de boss
+            newBossType = TypeCible.values()[TypeCible.values().length - 4 + randomNum]; // Sélectionne parmi les types de boss
         } while (newBossType == lastBossType);
         lastBossType = newBossType;
         return newBossType;
