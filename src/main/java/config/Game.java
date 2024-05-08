@@ -6,12 +6,11 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import entity.*;
 import entity.bosses.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gui.Library;
 
 /**
  * Classe principale du jeu gérant l'état du jeu, y compris le couteau, les cibles et les vies.
@@ -23,14 +22,15 @@ public class Game {
     @JsonIgnore
     transient public Knife knife2;
     @JsonIgnore
-    transient boolean isSolo;
+    transient boolean isSolo = false;
     @JsonIgnore
     transient private List<Cible> listeCible1 = new ArrayList<>();
     @JsonIgnore
     transient private List<Cible> listeCible2 = new ArrayList<>();
-    transient private int life;
-    private RoundManagement roundManagement;  
-    private int currentLevel;
+
+
+    transient private int xpThreshold;
+    private RoundManagement roundManagement;
 
     //Attribut du User pour JSON
     @JsonProperty("nomUtilisateur")
@@ -41,8 +41,15 @@ public class Game {
     private String cheminSauvegarde;
     @JsonProperty("argent")
     private int argent;
-    @JsonProperty("library")
-    List<ShopItem> library;
+    @JsonIgnore()
+    Library library;
+    @JsonProperty("level")
+    private int level;
+    @JsonProperty("xp")
+    private int xp;
+    private int currentLevel;
+    private List<GameObserver> observers = new ArrayList<>();
+
 
 
     @JsonCreator
@@ -55,29 +62,19 @@ public class Game {
      * Constructeur qui initialise le jeu avec un couteau, une liste de cibles vide, et un nombre initial de vies.
      * Fait également sauter le couteau dès le début.
      */
-    public Game(boolean isSolo){
-        this.isSolo = isSolo;
+    public Game(boolean isSolo, String cheminSauvegarde){
+        this.isSolo = false;
+        this.cheminSauvegarde = cheminSauvegarde;
         System.out.println("creation game");
         this.knife1 = new Knife();
-        if (!isSolo){
-            this.knife2 = new Knife();
-        }
+        this.knife2 = new Knife();
         this.roundManagement = new RoundManagement();
         this.currentLevel = 1;
+        this.xpThreshold = 100;
+        this.xp = 0;
+        this.level = 1;
+        loadGameState();
         initGame();
-
-    }
-
-    /**
-     * Constructeur qui initialise le jeu avec un nom d'utilisateur spécifié.
-     * @param nomUtilisateur Le nom de l'utilisateur.
-     */
-    public Game(String nomUtilisateur, String motDePasse, String cheminSauvegarde, int argent){
-        super();
-        this.nomUtilisateur = nomUtilisateur;
-        this.motDePasse = motDePasse;
-        this.cheminSauvegarde = cheminSauvegarde;
-        this.argent = argent;
     }
 
 
@@ -86,7 +83,10 @@ public class Game {
     //public Knife getKnife2(){ return knife2;}
     //public void setKnife(Knife knife) { this.knife = knife; }
 
+    @JsonIgnore
     public List<Cible> getListeCible() { return listeCible1; }
+    @JsonIgnore
+
     public List<Cible> getListeCible2() { return listeCible2; }
     //public void setListeCible(List<Cible> listeCible) { this.listeCible = listeCible; }
 
@@ -94,55 +94,143 @@ public class Game {
         this.nomUtilisateur = nomUtilisateur;
     }
 
+    public int getXp() {
+        return xp;
+    }
+
+    public String getCheminSauvegarde(){
+        return cheminSauvegarde;
+    }
+
+    @JsonProperty("level")
+    public int getLevel() {
+        return level;
+    }
+
+    public void setArgent(int argent) {
+        this.argent = argent;
+    }
+
+    public void addArgent(int i) {
+        this.setArgent(this.argent + i);
+    }
+
+    public int getArgent() {
+        return argent;
+    }
+
+
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
+    // Méthode pour ajouter de l'XP au jeu et vérifier si un niveau a été atteint
+    public void addXP(int xp) {
+        this.setXp(this.xp + xp);
+        checkLevelUp();
+    }
+    @JsonProperty("level")
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public void addLevel(int i) {
+        this.setLevel(this.level + i);
+    }
+
     public String getNomUtilisateur() {
         return this.nomUtilisateur;
     }
 
-    public List<ShopItem> getLibrary () {
+    public Library getLibrary () {
         return library;
     }
 
-    private void initGame() {
-        ChargerRound(roundManagement.getCurrentRoundIndex());
-    }
-
-    private void ChargerRound(int roundIndex) {
-        Round currentRound = roundManagement.getListeRounds().get(roundIndex);
-        this.listeCible1.clear();
-        this.listeCible1.addAll(currentRound.getListeCibles());
-
-        if (!isSolo) {
-            this.listeCible2.clear();
-            this.listeCible2.addAll(currentRound.getListeCibles());
+    /**
+    * Charge l'état du jeu à partir du fichier de sauvegarde spécifié dans cheminSauvegarde.
+    * Cette méthode lit les données sauvegardées comme le niveau actuel, les points d'expérience,
+    * le niveau, et l'argent, puis les affecte aux attributs correspondants de l'instance en cours.
+    *
+    * Le chemin du fichier de sauvegarde est déterminé par l'attribut cheminSauvegarde de l'instance.
+    * Si une erreur se produit lors du chargement, l'erreur est enregistrée dans la console.
+    */
+    private void loadGameState() {
+        try {
+            Game loadedGame = chargerEtat(this.cheminSauvegarde);
+            this.currentLevel = loadedGame.getCurrentLevel();
+            this.xp = loadedGame.getXp();
+            this.level = loadedGame.getLevel();
+            this.argent = loadedGame.getArgent();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
+    private synchronized void initGame() {
+        ChargerRound(roundManagement.getCurrentRoundIndex());
+    }
 
+    private synchronized void ChargerRound(int roundIndex) {
+            Round currentRound = roundManagement.getListeRounds().get(roundIndex);
+            listeCible1.clear();
+            listeCible1.addAll(currentRound.getListeCibles());
+            roundManagement.setCurrentRoundIndex(roundIndex);
 
-    /**
-     * Met à jour l'état du jeu en fonction du temps écoulé depuis la dernière mise à jour.
-     *
-     * @param delta Le temps écoulé depuis la dernière mise à jour, utilisé pour calculer les mouvements.
-     */
-    public void update(double delta){
+            if (!isSolo) {
+                listeCible2.clear();
+                listeCible2.addAll(currentRound.getListeCibles());
+            }
+
+    }
+
+    public synchronized void addObserver(GameObserver observer) {
+        observers.add(observer);
+    }
+
+    public synchronized void removeObserver(GameObserver observer) {
+        observers.remove(observer);
+    }
+    public void setIsSOlo(boolean b){
+        this.isSolo =b;
+    }
+
+    private synchronized void notifyObservers() {
+        for (GameObserver observer : observers) {
+            observer.onLevelChange();
+        }
+    }
+
+    public synchronized void update(double delta) {
         double adjustedDelta = delta / 3;
         knife1.updateMovement();
-        for (Cible c : this.listeCible1) {
-            if (c instanceof MovingTarget) {
-                ((MovingTarget) c).updateMovement();
-            } else if (c instanceof BossType1){
-                ((BossType1) c).updateMovement(adjustedDelta);
-                //System.out.println(c.getX());
-                //System.out.println(c.getY());
-            } else if (c instanceof BossType2){
-                ((BossType2) c).updateMovement(adjustedDelta);
-                //System.out.println(c.getX());
-                //System.out.println(c.getY());
-            } else if (c instanceof BossType3) {
-                ((BossType3) c).updateMovement(adjustedDelta);
-                //System.out.println(c.getX());
-                //System.out.println(c.getY());
+
+        synchronized (listeCible1) {
+            for (Cible c : new ArrayList<>(listeCible1)) {
+                updateCible(c, adjustedDelta);
             }
+        }
+        if (!isSolo) {
+            knife2.updateMovement();
+            synchronized (listeCible2) {
+                for (Cible c : new ArrayList<>(listeCible2)) {
+                    updateCible(c, adjustedDelta);
+                }
+            }
+        }
+
+        checkRoundCompletion();
+    }
+
+    private void updateCible(Cible c, double adjustedDelta) {
+        if (c instanceof MovingTarget) {
+            ((MovingTarget) c).updateMovement();
+        } else if (c instanceof BossType1) {
+            ((BossType1) c).updateMovement(adjustedDelta);
+        } else if (c instanceof BossType2) {
+            ((BossType2) c).updateMovement(adjustedDelta);
+        } else if (c instanceof BossType3) {
+            ((BossType3) c).updateMovement(adjustedDelta);
         }
         if (!isSolo) {
             knife2.updateMovement();
@@ -158,65 +246,65 @@ public class Game {
                 }
             }
         }
+    }
 
+    private synchronized void checkRoundCompletion() {
         if (listeCible1.isEmpty()) {
-            // Incrémentation de l'indice de round dans RoundManagement
             roundManagement.setCurrentRoundIndex(roundManagement.getCurrentRoundIndex() + 1);
             if (roundManagement.getCurrentRoundIndex() < roundManagement.getListeRounds().size()) {
                 ChargerRound(roundManagement.getCurrentRoundIndex()); // Chargement du round suivant
                 //System.out.println(roundManagement.getCurrentRoundIndex());
+
             }
-        }
-        if (roundManagement.isAllRoundsCompleted()) {
-            currentLevel++; // Incrémentation du niveau
-            System.out.println("Level : " + currentLevel);
-            roundManagement.resetRounds(); // Réinitialisation des rounds pour le nouveau niveau
-            ChargerRound(roundManagement.getCurrentRoundIndex()); // Recharge le premier round du nouveau niveau
+            else {
+                currentLevel++; // Incrémentation du niveau
+                System.out.println("Level : " + currentLevel);
+                roundManagement.resetRounds(); // Réinitialisation des rounds pour le nouveau niveau
+                ChargerRound(roundManagement.getCurrentRoundIndex()); // Recharge le premier round du nouveau niveau
+            }
+
         }
     }
 
 
-
+    // Méthode pour vérifier si un niveau a été atteint et attribuer les récompenses
+    private void checkLevelUp() {
+        this.addLevel(1);
+        notifyObservers();
+        giveRewards(); // Appel à une méthode pour attribuer les récompenses du niveau
+        System.out.println("+1 Niveau");
+    }
 
     /**
      * Sauvegarde l'état actuel du jeu dans un fichier spécifié.
      */
 
     public void sauvegarderEtat() {
-        ObjectMapper mapper = new ObjectMapper();
         try {
-            mapper.writeValue(new File("src/main/saves/sauvegarde_"+ nomUtilisateur + ".json"), this);
+            Game savedGame = chargerEtat(cheminSauvegarde);
+
+            // Met à jour les informations sauvegardées avec les informations actuelles
+            savedGame.setArgent(this.argent);
+            savedGame.setXp(this.xp);
+            savedGame.setLevel(this.level);
+            savedGame.setLibrary(this.library);
+            savedGame.setCurrentLevel(this.currentLevel);
+
+            // Sauvegarde l'état mis à jour dans le fichier de sauvegarde
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.writeValue(new File(cheminSauvegarde), savedGame);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    public void updateLibrary(ShopCart cart) {
-        if (cart != null) {
-            if (library == null) {
-                library = new ArrayList<>();
-            }
-            for (ShopItem item : cart.getCart()) {
-                if (!library.contains(item)) {
-                    library.add(item);
-                }
-            }
-            //library.charger();
-        }
-
-        sauvegarderEtat();
+    private void setCurrentLevel(int currentLevel) {
+        this.currentLevel = currentLevel;
     }
 
-
-
-
-    /**
-     * Sauvegarde le panier du ShopMenu dans un fichier spécifié pour l'afficher dans la bibliothèque du joueur
-     */
-
-
-
+    private void setLibrary(Library library) {
+        this.library = library;
+    }
 
 
     /**
@@ -225,13 +313,88 @@ public class Game {
      * @return L'état du jeu chargé.
      * @throws IOException En cas d'erreur de lecture du fichier.
      */
-    public static Game chargerEtat(String cheminFichier) throws IOException {
+    public Game chargerEtat(String cheminFichier) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(new File(cheminFichier), Game.class);
     }
+
+
+    public void updateLibrary(ShopCart cart) {
+        if (cart != null) {
+            if (library == null) {
+                library = new Library(cheminSauvegarde);
+            }
+            for (ShopItem item : cart.getCart()) {
+                if (!library.getLibraryItems().contains(item)) {
+                    library.getLibraryItems().add(item);
+                }
+            }
+            //library.charger();
+        }
+
+        sauvegarderEtat();
+    }
+
+    // Méthode pour attribuer les récompenses en fonction du niveau
+    private void giveRewards() {
+        switch (level) {
+            case 2:
+                this.argent += 10;
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+            case 10:
+                break;
+            case 11:
+                break;
+            case 12:
+                break;
+            case 13:
+                break;
+            case 14:
+                break;
+            case 15:
+                break;
+            case 16:
+                break;
+            case 17:
+                break;
+            case 18:
+                break;
+            case 19:
+                break;
+            case 20:
+                break;
+            default:
+                break;
+        }
+    }
+
+
+
 
     public int getCurrentLevel() {
         return currentLevel;
     }
 
+
+    public RoundManagement getRoundManagement() {
+        return roundManagement;
+    }
+
+    public boolean getIsSolo(){
+        return isSolo;
+    }
 }

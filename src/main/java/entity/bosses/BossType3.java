@@ -38,7 +38,7 @@ public class BossType3 extends Boss{
         double limitBottom = 25; // Position Y la plus basse
 
         // Calculer le déplacement en fonction de la vitesse et du temps écoulé depuis la dernière mise à jour
-        double speed = 0.7; // Vitesse du mouvement en pixels par seconde
+        double speed = 0.3; // Vitesse du mouvement en pixels par seconde
         double movement = speed * delta; // Déplacement en pixels
 
         double newX = getX();
