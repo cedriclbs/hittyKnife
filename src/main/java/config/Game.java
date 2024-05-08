@@ -232,20 +232,6 @@ public class Game {
         } else if (c instanceof BossType3) {
             ((BossType3) c).updateMovement(adjustedDelta);
         }
-        if (!isSolo) {
-            knife2.updateMovement();
-            for (Cible c : this.listeCible2) {
-                if (c instanceof MovingTarget) {
-                    ((MovingTarget) c).updateMovement();
-                } else if (c instanceof BossType1){
-                    ((BossType1) c).updateMovement(adjustedDelta);
-                } else if (c instanceof BossType2){
-                    ((BossType2) c).updateMovement(adjustedDelta);
-                } else if (c instanceof BossType3) {
-                    ((BossType3) c).updateMovement(adjustedDelta);
-                }
-            }
-        }
     }
 
     private synchronized void checkRoundCompletion() {
