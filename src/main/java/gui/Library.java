@@ -16,27 +16,21 @@ import java.io.File;
 import java.io.IOException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
-
-
 /**
  * Cette classe représente une bibliothèque dans l'interface graphique du jeu.
  * Elle utilise un panneau avec une image de fond pour personnaliser son apparence.
  */
 public class Library extends JPanel {
-
-    private String username;
+    private String cheminSauvegarde;
     private List<ShopItem> libraryItems;
-
-
 
     /**
      * Constructeur de la classe Library.
      *
-     * @param username Le nom d'utilisateur pour lequel la bibliothèque est créée.
+     * @param cheminSauvegarde Le nom d'utilisateur pour lequel la bibliothèque est créée.
      */
-    public Library(String username) {
-        initialize(username);
+    public Library(String cheminSauvegarde) {
+        initialize(cheminSauvegarde);
         charger();
         afficher();
     }
@@ -45,10 +39,10 @@ public class Library extends JPanel {
     /**
      * Initialise la bibliothèque avec le nom d'utilisateur spécifié.
      *
-     * @param username Le nom d'utilisateur pour lequel la bibliothèque est initialisée.
+     * @param cheminSauvegarde Le nom d'utilisateur pour lequel la bibliothèque est initialisée.
      */
-    public void initialize(String username) {
-        this.username = username;
+    public void initialize(String cheminSauvegarde) {
+        this.cheminSauvegarde = cheminSauvegarde;
         this.libraryItems = new ArrayList<>();
     }
 
@@ -61,7 +55,8 @@ public class Library extends JPanel {
         ObjectMapper mapper = new ObjectMapper();
 
         try {
-            JsonNode readFile = mapper.readTree(new File("src/main/saves/sauvegarde_"+ this.username + ".json"));
+            System.out.println(cheminSauvegarde);
+            JsonNode readFile = mapper.readTree(cheminSauvegarde);
 
             JsonNode libraryNode = readFile.get("library");
             if (libraryNode != null && libraryNode.isArray()) {
@@ -75,6 +70,10 @@ public class Library extends JPanel {
         }
 
 
+    }
+
+    public List<ShopItem> getLibraryItems() {
+        return libraryItems;
     }
 
 
@@ -134,6 +133,8 @@ public class Library extends JPanel {
         add(backgroundPanel);
 
     }
+
+
 
 
 }

@@ -16,6 +16,7 @@ public class RoundManagement {
     private int currentRoundIndex; // Indice du round actuel
     private Random random; // Pour générer des valeurs aléatoires
     private TypeCible lastBossType = null; 
+    
 
     /**
      * Constructeur pour initialiser les rounds et leurs cibles.
@@ -32,42 +33,63 @@ public class RoundManagement {
      * Prépare les rounds en créant une liste de cibles pour chacun.
      */
     private void initRounds() {
-        for (int i = 0; i < 4; i++) { // Pour 3 rounds et 1 round de boss
-            rounds.add(new Round());
+        this.rounds.clear(); // Assurez-vous de vider la liste avant de l'initialiser
+        //System.out.println("Initialisation des rounds...");
+        for (int i = 0; i < 4; i++) {
+            this.rounds.add(new Round());
+            //System.out.println("Round " + i + " ajouté.");
         }
-        populateRounds(); // remplit chaque round de cible
+        //System.out.println("Population des rounds...");
+        populateRounds();
+    
     }
+    
 
     /**
      * Remplit chaque round avec un ensemble déterminé de cibles.
      */
-    private void populateRounds() {
+    private synchronized void populateRounds() {
+        //System.out.println("Début de la population des rounds...");
         int lastIndex = rounds.size() - 1; // Index du dernier round
     
         for (int i = 0; i < rounds.size(); i++) {
             Round round = rounds.get(i);
             int targetsCount = i < lastIndex ? getRndIntTargetRounds() : 1; // Plusieurs cibles pour les rounds normaux, une pour le boss
+            int cibleargentCount = 0; 
+    
+            //System.out.println("Round " + i + ", nombre de cibles: " + targetsCount);
     
             for (int j = 0; j < targetsCount; j++) {
-                // Détermine le type de cible
-                TypeCible typeCible = i < lastIndex ? getRandomTypeCible() : getRandomTypeBoss(); //mettre le truc du boss
-                
-                double x,y;
-                
+                TypeCible typeCible;
                 do {
-                    x = getRandomPositionX();
-                    y = getRandomPositionY();
-                } while (EstTropProche(x, y, round.getListeCibles()) || (x > -7 && x < 7 && y >= 0 && y <= 15)); // Réessaye tant que la cible est trop proche des autres
-            
+                    typeCible = i < lastIndex ? getRandomTypeCible() : getRandomTypeBoss(); 
+                } while ((typeCible == TypeCible.CIBLE_ARGENT && cibleargentCount >= 2)); // Vérifie qu'il n'y a pas plus de 2 cibles argent
+    
+                if (typeCible == TypeCible.CIBLE_ARGENT) {
+                    cibleargentCount++;
+                }
+
+                double x, y;
+                if (typeCible == TypeCible.CIBLE_BOSS1 || typeCible == TypeCible.CIBLE_BOSS2 || typeCible == TypeCible.CIBLE_BOSS3) {
+                    // Si c'est un boss, fixe les positions x et y à -60 pour qu'ils apparaissent hors de l'écran 
+                    x = -60;
+                    y = -60;
+                } else {
+                    do {
+                        x = getRandomPositionX();
+                        y = getRandomPositionY();
+                    } while (EstTropProche(x, y, round.getListeCibles()) || (x > -7 && x < 7 && y >= 0 && y <= 15)); // Réessaye tant que la cible est trop proche des autres
+                }
     
                 // Créer la cible en fonction du type
                 Cible cible = createCibleWithType(typeCible, x, y);
     
-                // Ajouter la cible au round
+                // Ajoute la cible au round
                 round.addCible(cible); 
             }
         }
     }
+    
 
     private Cible createCibleWithType(TypeCible typeCible, double x, double y) {
         switch (typeCible) {
@@ -162,7 +184,7 @@ public class RoundManagement {
 
     //méthode pour réinitialiser les rounds
     public void resetRounds() {
-        rounds.clear();
+        this.rounds.clear();
         currentRoundIndex = 0;
         initRounds();
     }

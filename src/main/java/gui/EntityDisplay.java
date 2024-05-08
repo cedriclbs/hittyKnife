@@ -5,7 +5,7 @@ import entity.*;
 import entity.bosses.*;
 
 import java.awt.*;
-import java.awt.event.*;
+import config.Game;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
+import java.util.List;
 
 
 /**
@@ -29,7 +30,7 @@ public class EntityDisplay extends JPanel {
     private Image bossT1;
     private Image bossT2;
     private Image bossT3;
-    private ArrayList<Cible> listeCible;
+    private List<Cible> listeCible;
     private static double bgImgWidth;
     private static double bgImgHeight;
     private double RATIO_X;
@@ -47,6 +48,9 @@ public class EntityDisplay extends JPanel {
     final float baseOpacity = 1f;
     float opacity;
     Dimension screenSize;
+    private Game game;
+    
+
 
     /**
      * Constructeur de la classe KnifeDisplay.
@@ -54,7 +58,7 @@ public class EntityDisplay extends JPanel {
      * @param backgroundPath Le chemin d'accès à l'image de fond du panneau.
      * @param listeCible La liste des cibles à afficher dans le panneau.
      */
-    public EntityDisplay(Knife knife, String backgroundPath, ArrayList<Cible> listeCible,boolean isSolo) {
+    public EntityDisplay(Knife knife, String backgroundPath, ArrayList<Cible> listeCible,boolean isSolo, Game game) {
         //System.out.println("bg x : "+RATIO_X+" bg y : "+RATIO_Y);
         this.listeCible = listeCible;
         this.knife = knife;
@@ -69,7 +73,7 @@ public class EntityDisplay extends JPanel {
 
         RATIO_Y = screenSize.height*3/4;//getBgImgHeight()*3/4;
 
-
+        this.game = game;
     }
 
     /**
@@ -175,34 +179,39 @@ public class EntityDisplay extends JPanel {
         g2d.dispose();
     
         Area mask = new Area();
+        int lastY = -1; // Dernière ligne où un rectangle a été démarré
     
-        // Traite chaque ligne de l'image
+        // Utilise un tableau pour mémoriser le début des rectangles pour chaque colonne
+        int[] startX = new int[width];
+        boolean[] active = new boolean[width]; // Si un rectangle est actif dans la colonne
+    
         for (int y = 0; y < height; y++) {
-            int startX = -1;
             for (int x = 0; x < width; x++) {
                 boolean isPixelVisible = (bufferedImage.getRGB(x, y) & 0xFF000000) != 0x00000000;
-                
+    
                 if (isPixelVisible) {
-                    if (startX == -1) {
-                        startX = x; // Début d'une nouvelle séquence de pixels visibles
+                    if (!active[x]) {
+                        startX[x] = y; // Démarre un nouveau rectangle
+                        active[x] = true;
                     }
-                } else {
-                    if (startX != -1) {
-                        // Fin d'une séquence de pixels visibles, ajouter au masque
-                        mask.add(new Area(new Rectangle2D.Float(startX, y, x - startX, 1)));
-                        startX = -1; // Réinitialise le début de la séquences
-                    }
+                } else if (active[x]) {
+                    // Fin d'un rectangle, l'ajouter au masque
+                    mask.add(new Area(new Rectangle2D.Float(x, startX[x], 1, y - startX[x])));
+                    active[x] = false;
                 }
             }
-            
-            // Vérifie si une séquence se termine à la fin de la ligne
-            if (startX != -1) {
-                mask.add(new Area(new Rectangle2D.Float(startX, y, width - startX, 1)));
+        }
+    
+        // Ferme les rectangles ouverts à la fin de l'image
+        for (int x = 0; x < width; x++) {
+            if (active[x]) {
+                mask.add(new Area(new Rectangle2D.Float(x, startX[x], 1, height - startX[x])));
             }
         }
     
         return mask;
     }
+    
 
     /**
      * Redessine le composant en dessinant l'image de fond, les couteaux et les cibles.
@@ -215,6 +224,75 @@ public class EntityDisplay extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        //System.out.println(game.getIsSolo());
+
+        if(game.getIsSolo()){
+            // Affichage des niveaux et des rounds avec effet d'ombre sur le texte
+            g2d.setFont(new Font("SansSerif", Font.BOLD, 24)); 
+
+            // Texte principal pour le niveau
+            String niveauTexte = "LEVEL : " + game.getCurrentLevel();
+            int niveauTexteWidth = g2d.getFontMetrics().stringWidth(niveauTexte);
+
+            int xPosition = (getWidth() - niveauTexteWidth) / 2;
+            int yPosi = 30;
+
+            // Dessine l'ombre
+            g2d.setColor(new Color(0, 0, 0, 64)); 
+            int shadowOffset = 2; 
+            g2d.drawString(niveauTexte, xPosition + shadowOffset, yPosi + shadowOffset);
+
+            // Dessine le texte principal
+            g2d.setColor(Color.WHITE); // Couleur du texte
+            g2d.drawString(niveauTexte, xPosition, yPosi);
+
+            // Affiche les cercles pour les rounds
+            int totalRounds = game.getRoundManagement().getListeRounds().size();
+            int currentRoundIndex = game.getRoundManagement().getCurrentRoundIndex(); 
+
+            int circleDiameter = 20; // Diamètre de chaque cercle
+            int spacing = 28; // Espacement entre les cercles
+            int startX = (getWidth() - (totalRounds * spacing + (totalRounds - 1) * circleDiameter)) / 2; // Position de départ X pour centrer les cercles
+            int yPosition = 50; // Position Y des cercles 
+
+            // Dessine une barre semi-transparente avec des bords arrondis en arrière-plan des cercles
+            int barHeight = 30; // Hauteur de la barre de fond
+            int arcWidth = 25; // Largeur de l'arc pour les coins arrondis
+            int arcHeight = 25; // Hauteur de l'arc pour les coins arrondis
+            g2d.setColor(new Color(0, 0, 0, 64)); 
+            g2d.fillRoundRect(startX - 10, yPosition - (barHeight / 2) + (circleDiameter / 2), (totalRounds * (circleDiameter + spacing)) - spacing + 20, barHeight, arcWidth, arcHeight);
+
+
+            for (int i = 0; i < totalRounds; i++) {
+                if (i == totalRounds - 1 && currentRoundIndex == totalRounds - 1) {
+                    g2d.setColor(Color.RED); 
+                } else if (i <= currentRoundIndex) {
+                    g2d.setColor(Color.WHITE); 
+                } else {
+                    g2d.setColor(Color.BLACK); 
+                }
+                // Dessine le cercle
+                g2d.fillOval(startX + i * (circleDiameter + spacing), yPosition, circleDiameter, circleDiameter);
+            }
+        
+
+
+            // Si c'est le dernier round, affiche "Boss Fight!"
+            if (currentRoundIndex == totalRounds - 1) {
+                String bossFightText = "Boss Fight!";
+                int textWidth = g2d.getFontMetrics().stringWidth(bossFightText);
+                int textYPosition = yPosition + circleDiameter + 30;
+
+                // Dessine l'ombre pour "Boss Fight!" en noir
+                g2d.setColor(Color.BLACK);
+                g2d.drawString(bossFightText, (getWidth() - textWidth) / 2 + shadowOffset, textYPosition + shadowOffset);
+
+                // Dessine le texte principal pour "Boss Fight!" en rouge
+                g2d.setColor(Color.RED);
+                g2d.drawString(bossFightText, (getWidth() - textWidth) / 2, textYPosition);
+            }
+        }
+
 
         int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
         int knifeY = (int) (RATIO_Y-(knife.getY()*RATIO));
@@ -250,10 +328,10 @@ public class EntityDisplay extends JPanel {
             else g2d.drawImage(cibleImage, transformCibleColli, this);
 
             g2d.setComposite(oldComposite);
-            if (opacity>0.01f)opacity-=0.001f;
+            if (opacity>0.01f)opacity-=0.007f;
             else animCollision=false;
         }
-
+        
         //-------------------------------AFFICHAGE NORMAL DES CIBLES -------------------------------
 
         ArrayList<Cible> deleteCible= new ArrayList<>();
@@ -326,6 +404,9 @@ public class EntityDisplay extends JPanel {
                 cibleColliY = cibleY;
                 collisionAngle = knife.getAngle();
                 animCollision = true;
+                game.addXP(10);
+                game.addArgent(10);
+                System.out.println("XP+10 ");
                 if (cible instanceof BossType1) {
                     ((BossType1) cible).attacked();
                     if (((BossType1) cible).isDead()) {

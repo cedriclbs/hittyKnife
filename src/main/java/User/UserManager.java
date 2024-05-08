@@ -120,7 +120,7 @@ public class UserManager {
         if (!userList.containsKey(nomUtilisateur)) {
             String cheminSauvegarde = "src/main/saves/sauvegarde_" + nomUtilisateur + ".json";
             String motDePasseHache = hasherMotDePasse(motDePasse);
-            User nouvelUtilisateur = new User(nomUtilisateur, motDePasseHache, cheminSauvegarde, 100);
+            User nouvelUtilisateur = new User(nomUtilisateur, motDePasseHache, cheminSauvegarde, 100, 1, 0);
             userList.put(nomUtilisateur, nouvelUtilisateur);
             sauvegarderInstance(); // Sauvegarder l'instance UserManager pour inclure le nouvel utilisateur.
             return true;
