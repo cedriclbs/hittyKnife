@@ -28,7 +28,7 @@ public class BossType4 extends Boss{
 
     @Override
     public void updateMovement(double delta) {
-        double speed = 1;
+        double speed = 0.5;
         double deplacement = speed * delta; // Déplacement en pixels
 
         double newX = getX();

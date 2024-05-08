@@ -231,6 +231,8 @@ public class Game {
             ((BossType2) c).updateMovement(adjustedDelta);
         } else if (c instanceof BossType3) {
             ((BossType3) c).updateMovement(adjustedDelta);
+        } else if (c instanceof BossType4) {
+            ((BossType4) c).updateMovement(adjustedDelta);
         }
     }
 

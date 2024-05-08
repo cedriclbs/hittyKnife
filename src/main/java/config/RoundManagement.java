@@ -62,7 +62,7 @@ public class RoundManagement {
             for (int j = 0; j < targetsCount; j++) {
                 TypeCible typeCible;
                 do {
-                    typeCible = i < lastIndex ? getRandomTypeCible() : getRandomTypeBoss();
+                    typeCible = i < lastIndex ? getRandomTypeCible() : TypeCible.CIBLE_BOSS4;
                 } while ((typeCible == TypeCible.CIBLE_ARGENT && cibleargentCount >= 2)); // Vérifie qu'il n'y a pas plus de 2 cibles argent
 
                 if (typeCible == TypeCible.CIBLE_ARGENT) {
