@@ -62,7 +62,7 @@ public class RoundManagement {
             for (int j = 0; j < targetsCount; j++) {
                 TypeCible typeCible;
                 do {
-                    typeCible = i < lastIndex ? getRandomTypeCible() : TypeCible.CIBLE_BOSS4;
+                    typeCible = i < lastIndex ? getRandomTypeCible() : getRandomTypeBoss();
                 } while ((typeCible == TypeCible.CIBLE_ARGENT && cibleargentCount >= 2)); // Vérifie qu'il n'y a pas plus de 2 cibles argent
 
                 if (typeCible == TypeCible.CIBLE_ARGENT) {
@@ -166,7 +166,7 @@ public class RoundManagement {
     private TypeCible getRandomTypeBoss() {
         TypeCible newBossType;
         do {
-            int randomNum = random.nextInt(3); // Il y a 3 types de boss à choisir
+            int randomNum = random.nextInt(4); // Il y a 4 types de boss à choisir
             newBossType = TypeCible.values()[TypeCible.values().length - 3 + randomNum]; // Sélectionne parmi les types de boss
         } while (newBossType == lastBossType);
         lastBossType = newBossType;
