@@ -180,12 +180,8 @@ public class GameView extends JPanel{
      * @param backgroundPath Le chemin d'accès à la nouvelle image de fond.
      */
     public void updateBackgroundImage(String backgroundPath) {
-        if (!isSolo) {
-            this.entityDisplay.initBg(backgroundPath);
-        }
-        else{
-            this.entityDisplay.initBg("src/main/ressources/background/fond1v1.jpg");
-        }
+        this.entityDisplay.initBg(backgroundPath);
+
         repaint();
     }
 
@@ -196,7 +192,7 @@ public class GameView extends JPanel{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g.create();
-        g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        //g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         g2d.dispose();
     }
 
