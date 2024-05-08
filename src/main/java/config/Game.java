@@ -33,6 +33,12 @@ public class Game {
     transient private List<Cible> listeCible2 = new ArrayList<>();
     @JsonIgnore 
     private GameView gameView;
+    @JsonIgnore
+    public boolean gel = false;
+    @JsonIgnore
+    public boolean powered = false;
+    @JsonIgnore
+    public BonusManager bonusManager = new BonusManager(this);
 
 
     transient private int xpThreshold;
@@ -42,9 +48,6 @@ public class Game {
     private Queue<Integer> recentBackgrounds = new LinkedList<>(); // Indices récents pour éviter la répétition
     private Random rand = new Random();
 
-    public boolean gel = false;
-    public boolean powered = false;
-    public BonusManager bonusManager = new BonusManager(this);
 
     //Attribut du User pour JSON
     @JsonProperty("nomUtilisateur")
