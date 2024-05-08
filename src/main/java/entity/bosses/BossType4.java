@@ -28,7 +28,7 @@ public class BossType4 extends Boss{
 
     @Override
     public void updateMovement(double delta) {
-        double speed = 0.7;
+        double speed = 1;
         double deplacement = speed * delta; // Déplacement en pixels
 
         double newX = getX();
@@ -37,13 +37,13 @@ public class BossType4 extends Boss{
         switch (phase) {
             case 1: // Gauche à droite jusqu'à une certaine X
                 newX += deplacement;
-                if (newX >= -40) {
+                if (newX >= -30) {
                     phase = 2; // Passer à la phase suivante
                 }
                 break;
             case 2: // De haut en bas jusqu'à une certaine Y
                 newY -= deplacement;
-                if (newY <= 10) {
+                if (newY <= 5) {
                     phase = 3; // Passer à la phase suivante
                 }
                 break;
@@ -56,7 +56,7 @@ public class BossType4 extends Boss{
                 break;
             case 4: // Continuer de droite à gauche jusqu'à une certaine -X (opposée à la première phase)
                 newX -= deplacement;
-                if (newX <= 40) {
+                if (newX <= 30) {
                     phase = 5; // Passer à la phase suivante
                 }
                 break;
