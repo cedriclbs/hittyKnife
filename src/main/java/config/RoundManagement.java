@@ -91,7 +91,7 @@ public class RoundManagement {
                 round.addCible(cible);
             }
             if (i<=1) {
-                Bonus bonus = new Bonus(15, 15, BONUS_TNT);
+                Bonus bonus = new Bonus(15, 15, BONUS_GOLD);
                 Cible cible1 = createCibleWithType(TypeCible.CIBLE_NORMALE, 20, 20);
                 Cible cible2 = createCibleWithType(TypeCible.CIBLE_NORMALE, 10, 10);
                 Cible cible3 = createCibleWithType(TypeCible.CIBLE_NORMALE, 20, 40);

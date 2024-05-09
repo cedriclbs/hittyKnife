@@ -29,6 +29,9 @@ public class EntityDisplay extends JPanel {
     private Image cibleImage;
     private Image backgroundImage;
     private Image bonusPower;
+    private Image bonusGold;
+    private Image bonusXP;
+    private Image bonusGel;
     private Image ciblesMouventeImage;
     private Image explosionIcon;
     boolean explose = false;
@@ -52,10 +55,12 @@ public class EntityDisplay extends JPanel {
     private double collisionAngle;
     private boolean animCollision = false;
     private boolean isCollisionMovingTarget= false;
+    private Bonus.TypeBonus currentAnimBonusType;
     final float baseOpacity = 1f;
     float opacity;
     Dimension screenSize;
     private Game game;
+
     //private ArrayList<Cible> deleteCible;
     
 
@@ -116,6 +121,8 @@ public class EntityDisplay extends JPanel {
         this.cibleImage = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
         this.ciblesMouventeImage =  new ImageIcon("src/main/ressources/targets/target#2.png").getImage();
         this.bonusPower = new ImageIcon("src/main/ressources/targets/target#1Power.png").getImage();
+        this.bonusGold = new ImageIcon("src/main/ressources/targets/targetCoin.png").getImage();
+        this.bonusXP = new ImageIcon("src/main/ressources/targets/targetXP.png").getImage();
         this.targetTNT = new ImageIcon("src/main/ressources/targets/targetTNT.png").getImage();
         String filepath = "src/main/ressources/targets/";
         this.bossT1 = new ImageIcon(filepath + "Boss2 (1).png").getImage();
@@ -127,6 +134,8 @@ public class EntityDisplay extends JPanel {
         this.knifeImagePowered = this.knifeImagePowered.getScaledInstance(w,h,Image.SCALE_SMOOTH);
         this.cibleImage = this.cibleImage.getScaledInstance(this.cibleImage.getWidth(null)/2,this.cibleImage.getHeight(null)/2,Image.SCALE_SMOOTH);
         this.bonusPower = this.bonusPower.getScaledInstance(this.bonusPower.getWidth(null)/2,this.bonusPower.getHeight(null)/2,Image.SCALE_SMOOTH);
+        this.bonusGold = this.bonusGold.getScaledInstance(this.bonusGold.getWidth(null)/2,this.bonusGold.getHeight(null)/2,Image.SCALE_SMOOTH);
+        this.bonusXP = this.bonusXP.getScaledInstance(this.bonusXP.getWidth(null)/2,this.bonusXP.getHeight(null)/2,Image.SCALE_SMOOTH);
         this.targetTNT = this.targetTNT.getScaledInstance(this.targetTNT.getWidth(null)/2,this.targetTNT.getHeight(null)/2,Image.SCALE_SMOOTH);
         this.ciblesMouventeImage = this.ciblesMouventeImage.getScaledInstance(this.ciblesMouventeImage.getWidth(null)/2,this.ciblesMouventeImage.getHeight(null)/2,Image.SCALE_SMOOTH);
         this.explosionIcon = this.explosionIcon.getScaledInstance(this.explosionIcon.getWidth(null)/2,this.explosionIcon.getHeight(null)/2,Image.SCALE_SMOOTH);
@@ -264,7 +273,17 @@ public class EntityDisplay extends JPanel {
             else {
                 transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - (double) cibleImWidth / 2, cibleColliY - (double) cibleImHeight / 2);
                 if (isCollisionMovingTarget) g2d.drawImage(ciblesMouventeImage, transformCibleColli, this);
-                else g2d.drawImage(cibleImage, transformCibleColli, this);}
+                else {
+                    if (currentAnimBonusType!=null){
+                        switch (currentAnimBonusType){
+                            case BONUS_POWER : g2d.drawImage(bonusPower, transformCibleColli, this);break;
+                            case BONUS_TNT : g2d.drawImage(targetTNT, transformCibleColli, this);break;
+                            case BONUS_GOLD : g2d.drawImage(bonusGold, transformCibleColli, this);break;
+                            case BONUS_XP : g2d.drawImage(bonusXP, transformCibleColli, this);break;
+                        }
+                    }
+                    else g2d.drawImage(cibleImage, transformCibleColli, this);
+                }}
 
             g2d.setComposite(oldComposite);
             if (opacity>0.01f){
@@ -424,11 +443,11 @@ public class EntityDisplay extends JPanel {
 
                 }
                 else if (cible instanceof Bonus){
-                    if (((Bonus) cible).getTypeBonus()== Bonus.TypeBonus.BONUS_POWER){
-                        g2d.drawImage(bonusPower, transformCible, this);
-                    }
-                    if (((Bonus) cible).getTypeBonus()== Bonus.TypeBonus.BONUS_TNT){
-                        g2d.drawImage(targetTNT, transformCible, this);
+                    switch (((Bonus) cible).getTypeBonus()){
+                        case BONUS_POWER : g2d.drawImage(bonusPower, transformCible, this);break;
+                        case BONUS_TNT : g2d.drawImage(targetTNT, transformCible, this);break;
+                        case BONUS_GOLD : g2d.drawImage(bonusGold, transformCible, this);break;
+                        case BONUS_XP : g2d.drawImage(bonusXP, transformCible, this);break;
                     }
                 }
                 else {
@@ -464,7 +483,7 @@ public class EntityDisplay extends JPanel {
                 cibleColliX = cibleX;
                 cibleColliY = cibleY;
                 collisionAngle = knife.getAngle();
-                if (!(cible instanceof Boss))animCollision = true;
+                if (!(cible instanceof Boss)){animCollision = true;currentAnimBonusType=null;}
                 game.addXP(10);
                 game.addArgent(10);
                 System.out.println("XP+10 ");
@@ -495,6 +514,7 @@ public class EntityDisplay extends JPanel {
                 opacity = baseOpacity;
                 isCollisionMovingTarget=cible instanceof MovingTarget;
                 if (cible instanceof Bonus){
+                    currentAnimBonusType = ((Bonus) cible).getTypeBonus();
                     game.bonusManager.appliquerBonus(((Bonus) cible).getTypeBonus());
                     if (((Bonus) cible).getTypeBonus()== Bonus.TypeBonus.BONUS_TNT){
                         explose = true;
