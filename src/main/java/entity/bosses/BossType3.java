@@ -14,7 +14,7 @@ public class BossType3 extends Boss{
      * Initialise un boss de type 3.
      */
     public BossType3(double x, double y) {
-        super(TypeCible.CIBLE_BOSS2, 3, x, y);
+        super(TypeCible.CIBLE_BOSS3, 3, x, y);
         this.hitCount = 0;
     }
     @Override
@@ -38,7 +38,7 @@ public class BossType3 extends Boss{
         double limitBottom = 25; // Position Y la plus basse
 
         // Calculer le déplacement en fonction de la vitesse et du temps écoulé depuis la dernière mise à jour
-        double speed = 0.3; // Vitesse du mouvement en pixels par seconde
+        double speed = 0.6; // Vitesse du mouvement en pixels par seconde
         double movement = speed * delta; // Déplacement en pixels
 
         double newX = getX();

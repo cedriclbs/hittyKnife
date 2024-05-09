@@ -12,6 +12,15 @@ public class BattlePassPanel extends JPanel implements GameObserver {
     private Map<Integer, Boolean> rewardsReached;
     private int currentLevel;
     private Game game;
+    private Image backgroundImage;
+
+    public Image getBackgroundImage() {
+        return backgroundImage;
+    }
+
+    public void setBackgroundImage(Image backgroundImage) {
+        this.backgroundImage = backgroundImage;
+    }
 
     public BattlePassPanel(Game game) {
         this.game = game;
@@ -20,8 +29,16 @@ public class BattlePassPanel extends JPanel implements GameObserver {
         for (int i = 0; i <= MAX_PALIER; i++) {
             rewardsReached.put(i, false);
         }
+
         setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10)); // FlowLayout horizontal, centré, avec un espacement de 10 pixels
         updatePaliers();
+
+        try{
+            backgroundImage = new ImageIcon("src/main/ressources/background/bgBattlePass.gif").getImage(); 
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     // Méthode pour mettre à jour les paliers en fonction du niveau/XP du jeu
@@ -103,4 +120,5 @@ public class BattlePassPanel extends JPanel implements GameObserver {
         updatePaliers();
         repaint();
     }
+
 }
