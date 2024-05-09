@@ -48,7 +48,7 @@ public class ShopCart {
     public void addArticle (ShopItem article){
         if (this.cart.contains(article)){
             JOptionPane.showMessageDialog(null, "Cet article est déjà dans le panier.");
-        } else if (this.game.library != null && this.game.library.getLibraryItems().contains(article)) {
+        } else if (this.game.getInventaire() != null && this.game.getInventaire().contains(article)) {
             JOptionPane.showMessageDialog(null, "Article déjà approprié.");
         } else {
             cart.add(article);

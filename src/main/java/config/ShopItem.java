@@ -1,6 +1,7 @@
 package config;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
@@ -27,10 +28,13 @@ public class ShopItem {
      * @param articlePrice    Le prix de l'article.
      * @param articleImagePath Le chemin de l'image de l'article.
      */
-    public ShopItem(String articleName, int articlePrice, String articleImagePath){
+    @JsonCreator
+    public ShopItem(@JsonProperty("articleName") String articleName,
+                    @JsonProperty("articlePrice") int articlePrice,
+                    @JsonProperty("articleImagePath") String articleImagePath) {
+        this.articleImagePath = articleImagePath;
         this.articleName = articleName;
         this.articlePrice = articlePrice;
-        this.articleImagePath = articleImagePath;
     }
 
 

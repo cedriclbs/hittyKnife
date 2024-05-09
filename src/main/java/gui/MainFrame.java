@@ -183,7 +183,7 @@ public class MainFrame extends JFrame {
     }
 
     private JPanel createLibraryPanel(){
-        return new Library(game.getCheminSauvegarde());
+        return new Library(game);
     }
 
     private JPanel createBattlepassPanel() {

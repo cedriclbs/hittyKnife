@@ -2,6 +2,7 @@ package gui;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import config.Game;
+import config.GameObserver;
 import config.RessourcesPaths;
 import config.ShopItem;
 
@@ -21,62 +22,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Elle utilise un panneau avec une image de fond pour personnaliser son apparence.
  */
 public class Library extends JPanel {
-    private String cheminSauvegarde;
-    private List<ShopItem> libraryItems;
+    private List<ShopItem> inventaire;
+    private Game game;
+// implements InventoryObserver
 
-    /**
-     * Constructeur de la classe Library.
-     *
-     * @param cheminSauvegarde Le nom d'utilisateur pour lequel la bibliothèque est créée.
-     */
-    public Library(String cheminSauvegarde) {
-        initialize(cheminSauvegarde);
-        charger();
+    public Library(Game game) {
+        this.game = game;
+        this.inventaire = game.getInventaire();
+        this.game.addObserver((GameObserver) this); // Ajout de l'observateur pour mettre à jour l'inventaire
         afficher();
     }
 
-
-    /**
-     * Initialise la bibliothèque avec le nom d'utilisateur spécifié.
-     *
-     * @param cheminSauvegarde Le nom d'utilisateur pour lequel la bibliothèque est initialisée.
-     */
-    public void initialize(String cheminSauvegarde) {
-        this.cheminSauvegarde = cheminSauvegarde;
-        this.libraryItems = new ArrayList<>();
+    //@Override
+    public void updateInventory() {
+        this.inventaire = game.getInventaire(); // Mettre à jour l'inventaire
+        afficher(); // Mettre à jour l'affichage de l'inventaire
     }
-
-
-
-    /**
-     * Charge les éléments de la bibliothèque à partir du fichier JSON correspondant à l'utilisateur.
-     */
-    private void charger () {
-        ObjectMapper mapper = new ObjectMapper();
-
-        try {
-            System.out.println(cheminSauvegarde);
-            JsonNode readFile = mapper.readTree(cheminSauvegarde);
-
-            JsonNode libraryNode = readFile.get("library");
-            if (libraryNode != null && libraryNode.isArray()) {
-                for (JsonNode itemNode : libraryNode) {
-                    libraryItems.add(new ShopItem(itemNode.get("articleName").asText(), itemNode.get("articlePrice").asInt(), itemNode.get("articleImagePath").asText()));
-                }
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    public List<ShopItem> getLibraryItems() {
-        return libraryItems;
-    }
-
-
 
     /**
      * Affiche les éléments de la bibliothèque dans un panneau graphique avec une image de fond.
@@ -90,8 +51,8 @@ public class Library extends JPanel {
         itemsPanel.setBorder(new EmptyBorder(300, 200, 300, 200));
         itemsPanel.setOpaque(false);
 
-        for (ShopItem item : libraryItems) {
-
+        for (ShopItem item : inventaire) {
+            System.out.println(item);
             JPanel itemPanel = new JPanel(new BorderLayout());
             itemPanel.setOpaque(false);
 

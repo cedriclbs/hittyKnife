@@ -58,8 +58,9 @@ public class Game {
     private String cheminSauvegarde;
     @JsonProperty("argent")
     private int argent;
-    @JsonIgnore()
-    Library library;
+    @JsonProperty("inventaire")
+    private List<ShopItem> inventaire = new ArrayList<>();
+
     @JsonProperty("level")
     private int level;
     @JsonProperty("xp")
@@ -143,7 +144,6 @@ public class Game {
     }
 
 
-
     public void setXp(int xp) {
         this.xp = xp;
     }
@@ -166,9 +166,6 @@ public class Game {
         return this.nomUtilisateur;
     }
 
-    public Library getLibrary () {
-        return library;
-    }
 
     /**
     * Charge l'état du jeu à partir du fichier de sauvegarde spécifié dans cheminSauvegarde.
@@ -367,7 +364,7 @@ public class Game {
             savedGame.setArgent(this.argent);
             savedGame.setXp(this.xp);
             savedGame.setLevel(this.level);
-            savedGame.setLibrary(this.library);
+            savedGame.setInventaire(this.inventaire);
             savedGame.setCurrentLevel(this.currentLevel);
             savedGame.setCurrentBackgroundPath(currentBackgroundPath);
 
@@ -379,13 +376,22 @@ public class Game {
         }
     }
 
+    private void setInventaire(List<ShopItem> inv) {
+        if (this.inventaire == null){
+            this.inventaire = new ArrayList<>();
+        }
+        for (ShopItem item : inv) {
+            if (!inventaire.contains(item)) {
+                inventaire.add(item);
+            }
+        }
+
+    }
+
     private void setCurrentLevel(int currentLevel) {
         this.currentLevel = currentLevel;
     }
 
-    private void setLibrary(Library library) {
-        this.library = library;
-    }
 
 
     /**
@@ -394,27 +400,43 @@ public class Game {
      * @return L'état du jeu chargé.
      * @throws IOException En cas d'erreur de lecture du fichier.
      */
+
+
     public Game chargerEtat(String cheminFichier) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(new File(cheminFichier), Game.class);
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(new File(cheminFichier), Game.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
     public void updateLibrary(ShopCart cart) {
         if (cart != null) {
-            if (library == null) {
-                library = new Library(cheminSauvegarde);
+            if (this.inventaire == null){
+                this.inventaire = new ArrayList<>();
             }
             for (ShopItem item : cart.getCart()) {
-                if (!library.getLibraryItems().contains(item)) {
-                    library.getLibraryItems().add(item);
+                if (!inventaire.contains(item)) {
+                    inventaire.add(item);
                 }
             }
-            //library.charger();
         }
 
         sauvegarderEtat();
     }
+
+
+
+
+
+
+
+
+
+
 
     // Méthode pour attribuer les récompenses en fonction du niveau
     private void giveRewards() {
@@ -492,4 +514,7 @@ public class Game {
     }
 
 
+    public List<ShopItem> getInventaire() {
+        return this.inventaire;
+    }
 }
