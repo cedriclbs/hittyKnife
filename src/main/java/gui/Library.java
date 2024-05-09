@@ -1,6 +1,5 @@
 package gui;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import config.Game;
 import config.GameObserver;
 import config.RessourcesPaths;
@@ -9,35 +8,29 @@ import config.ShopItem;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
-
-
-import java.io.File;
-import java.io.IOException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Cette classe représente une bibliothèque dans l'interface graphique du jeu.
  * Elle utilise un panneau avec une image de fond pour personnaliser son apparence.
  */
-public class Library extends JPanel {
+public class Library extends JPanel  {
     private List<ShopItem> inventaire;
     private Game game;
-// implements InventoryObserver
 
     public Library(Game game) {
         this.game = game;
         this.inventaire = game.getInventaire();
-        this.game.addObserver((GameObserver) this); // Ajout de l'observateur pour mettre à jour l'inventaire
         afficher();
     }
 
-    //@Override
-    public void updateInventory() {
+
+    public void updateInventaire() {
         this.inventaire = game.getInventaire(); // Mettre à jour l'inventaire
         afficher(); // Mettre à jour l'affichage de l'inventaire
     }
+
+
 
     /**
      * Affiche les éléments de la bibliothèque dans un panneau graphique avec une image de fond.
@@ -94,8 +87,6 @@ public class Library extends JPanel {
         add(backgroundPanel);
 
     }
-
-
 
 
 }

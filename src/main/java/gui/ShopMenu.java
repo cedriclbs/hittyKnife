@@ -71,7 +71,7 @@ public class ShopMenu extends JPanel {
             //if (User.getArgent() - cart.getCartTotal() >= 0){
                 saveB = true;
                 //updateMoney();
-                game.updateLibrary(cart);
+                game.updateLibrary(cart.getCart());
                 cart.getCart().clear();
                 //refreshCartTab(); TODO : actualiser la liste une fois le panier sauvegarder
                 JOptionPane.showMessageDialog(null, "Le panier a été sauvegardé avec succès.");

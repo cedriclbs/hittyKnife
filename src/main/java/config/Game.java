@@ -44,9 +44,12 @@ public class Game {
     transient private int xpThreshold;
     private RoundManagement roundManagement;
     private List<GameObserver> observers = new ArrayList<>();
+
     private int lastBackgroundIndex = -1; // Dernier indice utilisé
     private Queue<Integer> recentBackgrounds = new LinkedList<>(); // Indices récents pour éviter la répétition
     private Random rand = new Random();
+
+
 
 
     //Attribut du User pour JSON
@@ -143,7 +146,6 @@ public class Game {
         return argent;
     }
 
-
     public void setXp(int xp) {
         this.xp = xp;
     }
@@ -182,6 +184,7 @@ public class Game {
             this.xp = loadedGame.getXp();
             this.level = loadedGame.getLevel();
             this.argent = loadedGame.getArgent();
+            this.inventaire = loadedGame.getInventaire();
             this.currentBackgroundPath = loadedGame.getCurrentBackgroundPath();
             this.roundManagement.setCurrentRoundIndex(0);
             updateBackground();
@@ -230,11 +233,15 @@ public class Game {
         this.isSolo =b;
     }
 
-    private synchronized void notifyObservers() {
+    public synchronized void notifyLevelObservers() {
         for (GameObserver observer : observers) {
             observer.onLevelChange();
         }
     }
+
+
+
+
 
     public synchronized void update(double delta) {
         double adjustedDelta = delta / 3;
@@ -347,7 +354,7 @@ public class Game {
     // Méthode pour vérifier si un niveau a été atteint et attribuer les récompenses
     private void checkLevelUp() {
         this.addLevel(1);
-        notifyObservers();
+        notifyLevelObservers();
         giveRewards(); // Appel à une méthode pour attribuer les récompenses du niveau
         System.out.println("+1 Niveau");
     }
@@ -376,17 +383,29 @@ public class Game {
         }
     }
 
-    private void setInventaire(List<ShopItem> inv) {
+    private void setInventaire(List<ShopItem> list) {
         if (this.inventaire == null){
             this.inventaire = new ArrayList<>();
         }
-        for (ShopItem item : inv) {
-            if (!inventaire.contains(item)) {
-                inventaire.add(item);
+        if (list != null){
+            for (ShopItem item : list) {
+                if (!inventaire.contains(item)) {
+                    inventaire.add(item);
+                }
             }
         }
 
     }
+
+    public void updateLibrary(List<ShopItem> list) {
+        setInventaire(list);
+        sauvegarderEtat();
+    }
+
+
+
+
+
 
     private void setCurrentLevel(int currentLevel) {
         this.currentLevel = currentLevel;
@@ -410,22 +429,6 @@ public class Game {
             e.printStackTrace();
             return null;
         }
-    }
-
-
-    public void updateLibrary(ShopCart cart) {
-        if (cart != null) {
-            if (this.inventaire == null){
-                this.inventaire = new ArrayList<>();
-            }
-            for (ShopItem item : cart.getCart()) {
-                if (!inventaire.contains(item)) {
-                    inventaire.add(item);
-                }
-            }
-        }
-
-        sauvegarderEtat();
     }
 
 
