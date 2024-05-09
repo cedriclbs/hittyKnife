@@ -156,7 +156,14 @@ public class EntityDisplay extends JPanel {
         bgImgHeight = this.backgroundImage.getHeight(null);
         bgImgWidth = this.backgroundImage.getWidth(null);
     }
-
+    /**
+     * Cette méthode déclenche une explosion à une position donnée (x, y), supprimant les cibles
+     * se trouvant dans la zone d'explosion et ajoutant des points d'expérience et d'argent au jeu.
+     *
+     * @param x La coordonnée x de la position de l'explosion.
+     * @param y La coordonnée y de la position de l'explosion.
+     * @param deleteCible La liste des cibles à supprimer suite à l'explosion.
+     */
     private void explosion( double x, double y,ArrayList<Cible> deleteCible) {
         for (Cible cible : listeCible){
             double cibleX = (RATIO_X-cible.getX()*RATIO);
@@ -254,6 +261,18 @@ public class EntityDisplay extends JPanel {
         return mask;
     }
 
+    /**
+     * Cette méthode anime une collision entre un couteau et une cible.
+     * Si une animation de collision est en cours, elle dessine le couteau et la cible
+     * en fonction des paramètres fournis, avec une opacité réglée selon l'état actuel
+     * de l'animation.
+     *
+     * @param g2d Le contexte graphique dans lequel dessiner l'animation de collision.
+     * @param knifeImgWidth La largeur de l'image du couteau.
+     * @param knifeImgHeight La hauteur de l'image du couteau.
+     * @param cibleImWidth La largeur de l'image de la cible.
+     * @param cibleImHeight La hauteur de l'image de la cible.
+     */
     public void animationCollision(Graphics2D g2d, double knifeImgWidth, double knifeImgHeight, double cibleImWidth, double cibleImHeight){
         if (animCollision){
             Composite oldComposite = g2d.getComposite();
@@ -432,8 +451,8 @@ public class EntityDisplay extends JPanel {
                 }
                 Shape bossMask = createCollisionMask(bossT1);
                 Shape transformedBossMask = transformBoss.createTransformedShape(bossMask);
-                g2d.setColor(Color.RED);
-                g2d.draw(transformedBossMask);
+                //g2d.setColor(Color.RED);
+                //g2d.draw(transformedBossMask);
                 if (transformedBossMask.intersects(transformedKnifeMask.getBounds2D())) {
                     collision = true;
                 }
@@ -459,8 +478,8 @@ public class EntityDisplay extends JPanel {
                 }
                 Shape cibleMask = createCollisionMask(cibleImage);
                 Shape transformedCibleMask = transformCible.createTransformedShape(cibleMask);
-                g2d.setColor(Color.RED);
-                g2d.draw(transformedCibleMask);
+                //g2d.setColor(Color.RED);
+                //g2d.draw(transformedCibleMask);
                 if (transformedCibleMask.intersects(transformedKnifeMask.getBounds2D())) {
                     collision = true;
                 }
@@ -476,8 +495,8 @@ public class EntityDisplay extends JPanel {
             //AFFICHAGE COLLISIONS
 
 
-            g2d.setColor(Color.BLUE);
-            g2d.draw(transformedKnifeMask);
+            //g2d.setColor(Color.BLUE);
+            //g2d.draw(transformedKnifeMask);
 
             //int cw=55;int ch=55;
             //if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
