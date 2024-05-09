@@ -65,13 +65,14 @@ public class RoundManagement {
     
             for (int j = 0; j < targetsCount; j++) {
                 TypeCible typeCible;
-                do {
-                    typeCible = i < lastIndex ? getRandomTypeCible() : getRandomTypeBoss(); 
+                typeCible = i < lastIndex ? TypeCible.CIBLE_NORMALE : getRandomTypeBoss();
+                /*do {
+                    typeCible = i < lastIndex ? getRandomTypeCible() : getRandomTypeBoss();
                 } while ((typeCible == TypeCible.CIBLE_ARGENT && cibleargentCount >= 2)); // Vérifie qu'il n'y a pas plus de 2 cibles argent
     
                 if (typeCible == TypeCible.CIBLE_ARGENT) {
                     cibleargentCount++;
-                }
+                }*/
 
                 double x, y;
                 if (typeCible == TypeCible.CIBLE_BOSS1 || typeCible == TypeCible.CIBLE_BOSS2 || typeCible == TypeCible.CIBLE_BOSS3) {
@@ -84,23 +85,26 @@ public class RoundManagement {
                         y = getRandomPositionY();
                     } while (EstTropProche(x, y, round.getListeCibles()) || (x > -7 && x < 7 && y >= 0 && y <= 15)); // Réessaye tant que la cible est trop proche des autres
                 }
-    
+
+                Cible cible;
+                if (i < lastIndex && j < targetsCount-2){
+                    int randomNum = random.nextInt(2);
+                    if (randomNum==0){
+                        cible = createCibleWithType(TypeCible.CIBLE_MOUVANTE, x, y);
+                    }
+                    else cible = createCibleWithType(typeCible, x, y);
+                }
+                else if (i < lastIndex && j < targetsCount-1){
+                    cible = createCibleWithType(TypeCible.CIBLE_BONUS, x, y);
+                }
+
                 // Créer la cible en fonction du type
-                Cible cible = createCibleWithType(typeCible, x, y);
-    
+                else cible = createCibleWithType(typeCible, x, y);
+
                 // Ajoute la cible au round
                 round.addCible(cible);
             }
-            if (i<=1) {
-                Bonus bonus = new Bonus(15, 15, BONUS_GEL);
-                Cible cible1 = createCibleWithType(TypeCible.CIBLE_NORMALE, 20, 20);
-                Cible cible2 = createCibleWithType(TypeCible.CIBLE_NORMALE, 10, 10);
-                MovingTarget cible3 = new MovingTarget(-20,30);
-                round.addCible(bonus);
-                round.addCible(cible1);
-                round.addCible(cible2);
-                round.addCible(cible3);
-            }
+
         }
     }
     
@@ -110,9 +114,21 @@ public class RoundManagement {
             case CIBLE_NORMALE:
                 // Créer une cible normale
                 return new Cible(typeCible,x, y);
-    
-            case CIBLE_ARGENT:
-                return new Cible(typeCible,x, y);
+            case CIBLE_MOUVANTE:
+                // Créer une cible mouvante
+                return new MovingTarget(x, y);
+            case CIBLE_BONUS:
+                int randomNum = random.nextInt(5);
+                Bonus.TypeBonus typeBonus;
+                switch (randomNum){
+                    case 0: typeBonus = BONUS_XP;System.out.println("dqzsqzdqzszqd");break;
+                    case 1: typeBonus = BONUS_GOLD;break;
+                    case 2 : typeBonus = BONUS_GEL;break;
+                    case 3 : typeBonus = BONUS_POWER;break;
+                    case 4 : typeBonus = BONUS_TNT;break;
+                    default: typeBonus = BONUS_TNT;break;
+                }
+                return new Bonus(x, y,typeBonus);
     
             case CIBLE_BOSS1:
                 // Créer un BossType1
@@ -189,7 +205,7 @@ public class RoundManagement {
      */
     private int getRndIntTargetRounds() {
         //return 4 + random.nextInt(4);
-        return 1;
+        return 4;
     }
     // méthode pour vérifier si tous les rounds sont complétés
     public boolean isAllRoundsCompleted() {
