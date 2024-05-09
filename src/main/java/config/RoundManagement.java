@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Queue;
+
 import static entity.Bonus.TypeBonus.*;
 
 
@@ -20,6 +25,8 @@ public class RoundManagement {
     private int currentRoundIndex; // Indice du round actuel
     private Random random; // Pour générer des valeurs aléatoires
     private TypeCible lastBossType = null; 
+    private Queue<TypeCible> bossQueue;    // File principale pour les bosses
+    private Queue<TypeCible> tempQueue;    // File temporaire pour stocker les bosses récemment utilisés
     
 
     /**
@@ -29,6 +36,7 @@ public class RoundManagement {
         this.random = new Random();
         this.rounds = new ArrayList<>();
         this.currentRoundIndex = 0;
+        initBossQueues();
         initRounds();
     }
 
@@ -47,66 +55,123 @@ public class RoundManagement {
         populateRounds();
     
     }
+
+    private void initBossQueues() {
+        List<TypeCible> bosses = Arrays.asList(TypeCible.CIBLE_BOSS1, TypeCible.CIBLE_BOSS2, TypeCible.CIBLE_BOSS3, TypeCible.CIBLE_BOSS4);
+        Collections.shuffle(bosses);  // Mélange les types de boss
+        bossQueue = new LinkedList<>(bosses);
+        tempQueue = new LinkedList<>();
+    }
+
+    // /**
+    //  * Remplit chaque round avec un ensemble déterminé de cibles.
+    //  */
+    // private synchronized void populateRounds() {
+    //     //System.out.println("Début de la population des rounds...");
+    //     int lastIndex = rounds.size() - 1; // Index du dernier round
     
+    //     for (int i = 0; i < rounds.size(); i++) {
+    //         Round round = rounds.get(i);
+    //         int targetsCount = i < lastIndex ? getRndIntTargetRounds() : 1; // Plusieurs cibles pour les rounds normaux, une pour le boss
+    //         int cibleargentCount = 0; 
+    
+    //         //System.out.println("Round " + i + ", nombre de cibles: " + targetsCount);
+    
+    //         for (int j = 0; j < targetsCount; j++) {
+    //             TypeCible typeCible;
+    //             typeCible = i < lastIndex ? getRandomTypeCible() : getRandomTypeBoss();
+    //             /*do {
+    //                 typeCible = i < lastIndex ? getRandomTypeCible() : getRandomTypeBoss();
+    //             } while ((typeCible == TypeCible.CIBLE_ARGENT && cibleargentCount >= 2)); // Vérifie qu'il n'y a pas plus de 2 cibles argent
+    
+    //             if (typeCible == TypeCible.CIBLE_ARGENT) {
+    //                 cibleargentCount++;
+    //             }*/
+
+    //             double x, y;
+    //             if (typeCible == TypeCible.CIBLE_BOSS1 || typeCible == TypeCible.CIBLE_BOSS2 || typeCible == TypeCible.CIBLE_BOSS3 || typeCible == TypeCible.CIBLE_BOSS4) {
+    //                 // Si c'est un boss, fixe les positions x et y à -60 pour qu'ils apparaissent hors de l'écran 
+    //                 x = -60;
+    //                 y = -60;
+    //             } else {
+    //                 do {
+    //                     x = getRandomPositionX();
+    //                     y = getRandomPositionY();
+    //                 } while (EstTropProche(x, y, round.getListeCibles()) || (x > -7 && x < 7 && y >= 0 && y <= 15)); // Réessaye tant que la cible est trop proche des autres
+    //             }
+
+    //             Cible cible;
+    //             if (i < lastIndex && j < targetsCount-2){
+    //                 int randomNum = random.nextInt(2);
+    //                 if (randomNum==0){
+    //                     cible = createCibleWithType(TypeCible.CIBLE_MOUVANTE, x, y);
+    //                 }
+    //                 else cible = createCibleWithType(typeCible, x, y);
+    //             }
+    //             else if (i < lastIndex && j < targetsCount-1){
+    //                 cible = createCibleWithType(TypeCible.CIBLE_BONUS, x, y);
+    //             }
+
+    //             // Créer la cible en fonction du type
+    //             else cible = createCibleWithType(typeCible, x, y);
+
+    //             // Ajoute la cible au round
+    //             round.addCible(cible);
+    //         }
+
+    //     }
+    // }
 
     /**
      * Remplit chaque round avec un ensemble déterminé de cibles.
      */
     private synchronized void populateRounds() {
-        //System.out.println("Début de la population des rounds...");
         int lastIndex = rounds.size() - 1; // Index du dernier round
-    
+
         for (int i = 0; i < rounds.size(); i++) {
             Round round = rounds.get(i);
             int targetsCount = i < lastIndex ? getRndIntTargetRounds() : 1; // Plusieurs cibles pour les rounds normaux, une pour le boss
-            int cibleargentCount = 0; 
-    
-            //System.out.println("Round " + i + ", nombre de cibles: " + targetsCount);
-    
+
             for (int j = 0; j < targetsCount; j++) {
                 TypeCible typeCible;
-                typeCible = i < lastIndex ? TypeCible.CIBLE_NORMALE : getRandomTypeBoss();
-                /*do {
-                    typeCible = i < lastIndex ? getRandomTypeCible() : getRandomTypeBoss();
-                } while ((typeCible == TypeCible.CIBLE_ARGENT && cibleargentCount >= 2)); // Vérifie qu'il n'y a pas plus de 2 cibles argent
-    
-                if (typeCible == TypeCible.CIBLE_ARGENT) {
-                    cibleargentCount++;
-                }*/
-
                 double x, y;
-                if (typeCible == TypeCible.CIBLE_BOSS1 || typeCible == TypeCible.CIBLE_BOSS2 || typeCible == TypeCible.CIBLE_BOSS3 || typeCible == TypeCible.CIBLE_BOSS4) {
-                    // Si c'est un boss, fixe les positions x et y à -60 pour qu'ils apparaissent hors de l'écran 
+
+                if (i == lastIndex) {  // S'assure que c'est le dernier round
+                    typeCible = getRandomTypeBoss();
                     x = -60;
                     y = -60;
-                } else {
-                    do {
-                        x = getRandomPositionX();
-                        y = getRandomPositionY();
-                    } while (EstTropProche(x, y, round.getListeCibles()) || (x > -7 && x < 7 && y >= 0 && y <= 15)); // Réessaye tant que la cible est trop proche des autres
+                    Cible cible = createCibleWithType(typeCible, x, y);
+                    System.out.println("ajout boss" + typeCible);
+                    round.addCible(cible);
+                    continue;  // S'assure que seul un boss est ajouté dans le dernier round
                 }
+
+                // Sélection du type de cible pour les rounds autres que le dernier
+                typeCible = getRandomTypeCible();
+                do {
+                    x = getRandomPositionX();
+                    y = getRandomPositionY();
+                } while (EstTropProche(x, y, round.getListeCibles()) || (x > -7 && x < 7 && y >= 0 && y <= 15)); // Réessaye tant que la cible est trop proche des autres
 
                 Cible cible;
-                if (i < lastIndex && j < targetsCount-2){
+                if (j < targetsCount - 2) {
                     int randomNum = random.nextInt(2);
-                    if (randomNum==0){
+                    if (randomNum == 0) {
                         cible = createCibleWithType(TypeCible.CIBLE_MOUVANTE, x, y);
+                    } else {
+                        cible = createCibleWithType(typeCible, x, y);
                     }
-                    else cible = createCibleWithType(typeCible, x, y);
-                }
-                else if (i < lastIndex && j < targetsCount-1){
+                } else if (j == targetsCount - 2) {
                     cible = createCibleWithType(TypeCible.CIBLE_BONUS, x, y);
+                } else {
+                    cible = createCibleWithType(typeCible, x, y);
                 }
 
-                // Créer la cible en fonction du type
-                else cible = createCibleWithType(typeCible, x, y);
-
-                // Ajoute la cible au round
                 round.addCible(cible);
             }
-
         }
     }
+
     
 
     private Cible createCibleWithType(TypeCible typeCible, double x, double y) {
@@ -194,13 +259,30 @@ public class RoundManagement {
      * @return Un type de boss aléatoire.
      */
     private TypeCible getRandomTypeBoss() {
-        TypeCible newBossType;
-        do {
-            int randomNum = random.nextInt(4); // Il y a 4 types de boss à choisir
-            newBossType = TypeCible.values()[TypeCible.values().length - 3 + randomNum]; // Sélectionne parmi les types de boss
-        } while (newBossType == lastBossType); 
-        lastBossType = newBossType; 
-        return newBossType;
+        // Assurez-vous que la queue principale a des éléments à offrir
+        if (bossQueue.isEmpty()) {
+            refillBossQueue();
+        }
+
+        TypeCible boss = bossQueue.poll();  // Retire le prochain boss de la file principale
+        tempQueue.offer(boss);  // Ajoute ce boss à la file temporaire
+
+        // Si la file temporaire atteint 3 éléments, réintégre le premier élément retiré à la file principale
+        if (tempQueue.size() > 2) {
+            bossQueue.offer(tempQueue.poll());
+        }
+
+        return boss;
+    }
+
+    private void refillBossQueue() {
+        // Si la file principale est vide et la file temporaire a moins de 3 éléments, mélange et remplis à nouveau.
+        if (bossQueue.isEmpty() && tempQueue.size() <= 2) {
+            while (!tempQueue.isEmpty()) {
+                bossQueue.offer(tempQueue.poll());
+            }
+            Collections.shuffle((LinkedList<TypeCible>) bossQueue);
+        }
     }
 
     /**
