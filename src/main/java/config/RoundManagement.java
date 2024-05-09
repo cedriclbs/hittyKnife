@@ -75,7 +75,7 @@ public class RoundManagement {
                 }*/
 
                 double x, y;
-                if (typeCible == TypeCible.CIBLE_BOSS1 || typeCible == TypeCible.CIBLE_BOSS2 || typeCible == TypeCible.CIBLE_BOSS3) {
+                if (typeCible == TypeCible.CIBLE_BOSS1 || typeCible == TypeCible.CIBLE_BOSS2 || typeCible == TypeCible.CIBLE_BOSS3 || typeCible == TypeCible.CIBLE_BOSS4) {
                     // Si c'est un boss, fixe les positions x et y à -60 pour qu'ils apparaissent hors de l'écran 
                     x = -60;
                     y = -60;
@@ -141,6 +141,10 @@ public class RoundManagement {
             case CIBLE_BOSS3:
                 // Créer un BossType3
                 return new BossType3(x, y);
+
+            case CIBLE_BOSS4:
+            // Créer un BossType4
+            return new BossType4(x, y);
     
             default:
                 return new Cible(x, y);
@@ -181,7 +185,7 @@ public class RoundManagement {
      * @return Un type de cible aléatoire, à l'exception des boss.
      */
     private TypeCible getRandomTypeCible() {
-        int randomNum = random.nextInt(2);
+        int randomNum = random.nextInt(3);
         return TypeCible.values()[randomNum];
     }
 
@@ -192,7 +196,7 @@ public class RoundManagement {
     private TypeCible getRandomTypeBoss() {
         TypeCible newBossType;
         do {
-            int randomNum = random.nextInt(3); // Il y a 3 types de boss à choisir
+            int randomNum = random.nextInt(4); // Il y a 4 types de boss à choisir
             newBossType = TypeCible.values()[TypeCible.values().length - 3 + randomNum]; // Sélectionne parmi les types de boss
         } while (newBossType == lastBossType); 
         lastBossType = newBossType; 
