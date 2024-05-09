@@ -509,8 +509,11 @@ public class EntityDisplay extends JPanel {
             if (collision) {
                 collisionX = knifeX;
                 collisionY = knifeY;
-                cibleColliX = cibleX;
-                cibleColliY = cibleY;
+                if (!explose) {
+                    cibleColliX = cibleX;
+                    cibleColliY = cibleY;
+                    opacity = baseOpacity;
+                }
                 collisionAngle = knife.getAngle();
                 if (!(cible instanceof Boss)){animCollision = true;currentAnimBonusType=null;}
                 game.addXP(10);
@@ -546,7 +549,6 @@ public class EntityDisplay extends JPanel {
                 if (!game.powered) {
                     knife.resetKnife();
                 }
-                opacity = baseOpacity;
                 isCollisionMovingTarget=cible instanceof MovingTarget;
                 if (cible instanceof Bonus){
                     currentAnimBonusType = ((Bonus) cible).getTypeBonus();
