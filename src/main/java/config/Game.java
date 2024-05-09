@@ -325,7 +325,7 @@ public class Game {
     private String selectRandomBackground() {
         int bgIndex;
         do {
-            bgIndex = rand.nextInt(11); // Génère un indice aléatoire
+            bgIndex = rand.nextInt(16); // Génère un indice aléatoire
         } while (bgIndex == lastBackgroundIndex || recentBackgrounds.contains(bgIndex)); // Vérifie les conditions
 
         updateRecentBackgrounds(bgIndex);
