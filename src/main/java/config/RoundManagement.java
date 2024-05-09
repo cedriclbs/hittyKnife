@@ -92,21 +92,21 @@ public class RoundManagement {
                 }
 
                 // Sélection du type de cible pour les rounds autres que le dernier
-                typeCible = getRandomTypeCible();
+                typeCible = TypeCible.CIBLE_NORMALE;//getRandomTypeCible();
                 do {
                     x = getRandomPositionX();
                     y = getRandomPositionY();
                 } while (EstTropProche(x, y, round.getListeCibles()) || (x > -7 && x < 7 && y >= 0 && y <= 15)); // Réessaye tant que la cible est trop proche des autres
 
                 Cible cible;
-                if (j < targetsCount - 2) {
+                if (j == targetsCount - 2) {
                     int randomNum = random.nextInt(2);
                     if (randomNum == 0) {
                         cible = createCibleWithType(TypeCible.CIBLE_MOUVANTE, x, y);
                     } else {
                         cible = createCibleWithType(typeCible, x, y);
                     }
-                } else if (j == targetsCount - 2) {
+                } else if (j == targetsCount - 1) {
                     cible = createCibleWithType(TypeCible.CIBLE_BONUS, x, y);
                 } else {
                     cible = createCibleWithType(typeCible, x, y);

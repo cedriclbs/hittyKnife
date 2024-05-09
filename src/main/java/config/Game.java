@@ -262,9 +262,12 @@ public class Game {
     }
 
     private void updateCible(Cible c, double adjustedDelta) {
-        if (!gel) {
+
             if (c instanceof MovingTarget) {
-                ((MovingTarget) c).updateMovement();
+                if (!gel) {
+                    ((MovingTarget) c).updateMovement();
+                }
+
             } else if (c instanceof BossType1) {
                 ((BossType1) c).updateMovement(adjustedDelta);
             } else if (c instanceof BossType2) {
@@ -274,7 +277,7 @@ public class Game {
             } else if (c instanceof BossType4) {
                 ((BossType4) c).updateMovement(adjustedDelta);
             } 
-        }
+
     }
     /**
      * Vérifie si le round actuel est terminé en examinant si la liste des cibles du premier joueur est vide.
