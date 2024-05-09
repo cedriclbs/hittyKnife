@@ -17,6 +17,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 
+
 /**
  * La classe KnifeDisplay représente le panneau graphique où le couteau et les cibles sont affichés.
  * Elle étend JPanel pour permettre l'affichage des éléments graphiques du jeu Hitty Knife.
@@ -29,6 +30,10 @@ public class EntityDisplay extends JPanel {
     private Image backgroundImage;
     private Image bonusPower;
     private Image ciblesMouventeImage;
+    private Image explosionIcon;
+    boolean explose = false;
+
+    private Image targetTNT;
     private Image bossT1;
     private Image bossT2;
     private Image bossT3;
@@ -101,11 +106,16 @@ public class EntityDisplay extends JPanel {
      * Redimensionne également les images pour les adapter à la taille souhaitée.
      */
     private void initImage () {
+        //this.explosionImage = new ImageIcon("src/main/ressources/effets/explosion.gif").getImage();
+        //this.explosionIcon = new ImageIcon("src/main/ressources/effets/explosion.gif");
+        this.explosionIcon = new ImageIcon("src/main/ressources/effets/explosion4.png").getImage();
+
         this.knifeImage = new ImageIcon(RessourcesPaths.knifePath + "knifeRotate2.png").getImage();
         this.knifeImagePowered = new ImageIcon("src/main/ressources/knifes/knifeRotate2Powered.png").getImage();
         this.cibleImage = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
         this.ciblesMouventeImage =  new ImageIcon("src/main/ressources/targets/target#2.png").getImage();
         this.bonusPower = new ImageIcon("src/main/ressources/targets/target#1Power.png").getImage();
+        this.targetTNT = new ImageIcon("src/main/ressources/targets/targetTNT.png").getImage();
         String filepath = "src/main/ressources/targets/";
         this.bossT1 = new ImageIcon(filepath + "Boss2 (1).png").getImage();
         this.bossT2 = new ImageIcon(filepath + "Boss2 (1).png").getImage();
@@ -116,7 +126,9 @@ public class EntityDisplay extends JPanel {
         this.knifeImagePowered = this.knifeImagePowered.getScaledInstance(w,h,Image.SCALE_SMOOTH);
         this.cibleImage = this.cibleImage.getScaledInstance(this.cibleImage.getWidth(null)/2,this.cibleImage.getHeight(null)/2,Image.SCALE_SMOOTH);
         this.bonusPower = this.bonusPower.getScaledInstance(this.bonusPower.getWidth(null)/2,this.bonusPower.getHeight(null)/2,Image.SCALE_SMOOTH);
+        this.targetTNT = this.targetTNT.getScaledInstance(this.targetTNT.getWidth(null)/2,this.targetTNT.getHeight(null)/2,Image.SCALE_SMOOTH);
         this.ciblesMouventeImage = this.ciblesMouventeImage.getScaledInstance(this.ciblesMouventeImage.getWidth(null)/2,this.ciblesMouventeImage.getHeight(null)/2,Image.SCALE_SMOOTH);
+        this.explosionIcon = this.explosionIcon.getScaledInstance(this.explosionIcon.getWidth(null)/2,this.explosionIcon.getHeight(null)/2,Image.SCALE_SMOOTH);
         this.bossT1 = this.bossT1.getScaledInstance(this.bossT1.getWidth(null)/2, this.bossT1.getHeight(null)/2, Image.SCALE_SMOOTH);
         this.bossT2 = this.bossT2.getScaledInstance(this.bossT2.getWidth(null)/2, this.bossT2.getHeight(null)/2, Image.SCALE_SMOOTH);
         this.bossT3 = this.bossT3.getScaledInstance(this.bossT3.getWidth(null)/2, this.bossT3.getHeight(null)/2, Image.SCALE_SMOOTH);
@@ -133,6 +145,8 @@ public class EntityDisplay extends JPanel {
         bgImgWidth = this.backgroundImage.getWidth(null);
     }
 
+    private void explosion( double x, double y) {
+    }
 
 
 
@@ -216,6 +230,38 @@ public class EntityDisplay extends JPanel {
         }
     
         return mask;
+    }
+
+    public void animationCollision(Graphics2D g2d, double knifeImgWidth, double knifeImgHeight, double cibleImWidth, double cibleImHeight){
+        if (animCollision){
+            Composite oldComposite = g2d.getComposite();
+            AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
+
+            g2d.setComposite(alphaComposite);
+            if (!game.powered) {
+                AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - (double) knifeImgWidth / 2, collisionY - (double) knifeImgHeight / 2);
+                transformColli.rotate(Math.toRadians(collisionAngle), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
+                g2d.drawImage(knifeImage, transformColli, this);
+            }
+            AffineTransform transformCibleColli;
+            //AffineTransform transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - (double) cibleImWidth / 2, cibleColliY - (double) cibleImHeight / 2);
+            if (explose){
+                double exploseWidth = explosionIcon.getWidth(this);
+                double exploseHeight = explosionIcon.getHeight(this);
+                transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - (double) exploseWidth / 2, cibleColliY - (double) exploseHeight / 2);
+                g2d.drawImage(explosionIcon, transformCibleColli, this);}
+            else {
+                transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - (double) cibleImWidth / 2, cibleColliY - (double) cibleImHeight / 2);
+                if (isCollisionMovingTarget) g2d.drawImage(ciblesMouventeImage, transformCibleColli, this);
+                else g2d.drawImage(cibleImage, transformCibleColli, this);}
+
+            g2d.setComposite(oldComposite);
+            if (opacity>0.01f){
+                if (explose)opacity-=0.002f;
+                else opacity-=0.007f;
+            }
+            else {animCollision=false;explose = false;}
+        }
     }
     
 
@@ -325,7 +371,7 @@ public class EntityDisplay extends JPanel {
         }
 
         //--------------------------AFFICHAGE ANIMATION COLLISION -------------------------------
-        if (animCollision){
+        /*if (animCollision){
             Composite oldComposite = g2d.getComposite();
             AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
 
@@ -343,7 +389,8 @@ public class EntityDisplay extends JPanel {
             g2d.setComposite(oldComposite);
             if (opacity>0.01f)opacity-=0.007f;
             else animCollision=false;
-        }
+        }*/
+        animationCollision(g2d,knifeImgWidth,knifeImgHeight,cibleImWidth,cibleImHeight);
         
         //-------------------------------AFFICHAGE NORMAL DES CIBLES -------------------------------
 
@@ -387,6 +434,9 @@ public class EntityDisplay extends JPanel {
                     if (((Bonus) cible).getTypeBonus()== Bonus.TypeBonus.BONUS_POWER){
                         g2d.drawImage(bonusPower, transformCible, this);
                     }
+                    if (((Bonus) cible).getTypeBonus()== Bonus.TypeBonus.BONUS_TNT){
+                        g2d.drawImage(targetTNT, transformCible, this);
+                    }
                 }
                 else {
                     g2d.drawImage(cibleImage, transformCible, this);
@@ -416,6 +466,8 @@ public class EntityDisplay extends JPanel {
             //int cw=55;int ch=55;
             //if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
             if (collision) {
+                //explosion();
+                explose = true;
                 collisionX = knifeX;
                 collisionY = knifeY;
                 cibleColliX = cibleX;

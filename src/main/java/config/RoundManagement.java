@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static entity.Bonus.TypeBonus.BONUS_POWER;
+import static entity.Bonus.TypeBonus.*;
 
 
 /**
@@ -90,7 +90,7 @@ public class RoundManagement {
                 // Ajoute la cible au round
                 round.addCible(cible); 
             }
-            Bonus bonus = new Bonus(15,15,BONUS_POWER);
+            Bonus bonus = new Bonus(15,15,BONUS_TNT);
             round.addCible(bonus);
         }
     }
