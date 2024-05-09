@@ -81,7 +81,7 @@ public class RoundManagement {
                     do {
                         x = getRandomPositionX();
                         y = getRandomPositionY();
-                    } while (EstTropProche(x, y, round.getListeCibles()) || (x > -7 && x < 7 && y >= 0 && y <= 15)); // Réessaye tant que la cible est trop proche des autres
+                    } while (estTropProche(x, y, round.getListeCibles()) || (x > -7 && x < 7 && y >= 0 && y <= 15)); // Réessaye tant que la cible est trop proche des autres
                 }
     
                 // Créer la cible en fonction du type
@@ -126,7 +126,7 @@ public class RoundManagement {
         }
     }
 
-    private boolean EstTropProche(double x, double y, List<Cible> cibles) {
+    private boolean estTropProche(double x, double y, List<Cible> cibles) {
         double minDistance = 8; 
         for (Cible cible : cibles) {
             double dx = x - cible.getX();
