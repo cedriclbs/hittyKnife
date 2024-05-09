@@ -88,10 +88,18 @@ public class RoundManagement {
                 Cible cible = createCibleWithType(typeCible, x, y);
     
                 // Ajoute la cible au round
-                round.addCible(cible); 
+                round.addCible(cible);
             }
-            Bonus bonus = new Bonus(15,15,BONUS_TNT);
-            round.addCible(bonus);
+            if (i<=1) {
+                Bonus bonus = new Bonus(15, 15, BONUS_TNT);
+                Cible cible1 = createCibleWithType(TypeCible.CIBLE_NORMALE, 20, 20);
+                Cible cible2 = createCibleWithType(TypeCible.CIBLE_NORMALE, 10, 10);
+                Cible cible3 = createCibleWithType(TypeCible.CIBLE_NORMALE, 20, 40);
+                round.addCible(bonus);
+                round.addCible(cible1);
+                round.addCible(cible2);
+                round.addCible(cible3);
+            }
         }
     }
     

@@ -56,6 +56,7 @@ public class EntityDisplay extends JPanel {
     float opacity;
     Dimension screenSize;
     private Game game;
+    //private ArrayList<Cible> deleteCible;
     
 
 
@@ -145,7 +146,15 @@ public class EntityDisplay extends JPanel {
         bgImgWidth = this.backgroundImage.getWidth(null);
     }
 
-    private void explosion( double x, double y) {
+    private void explosion( double x, double y,ArrayList<Cible> deleteCible) {
+        for (Cible cible : listeCible){
+            double cibleX = (RATIO_X-cible.getX()*RATIO);
+            double cibleY = (RATIO_Y-cible.getY()*RATIO);
+            int cw=200;int ch=200;
+            if (x > cibleX-cw && x<cibleX+cw && y > cibleY-ch && y<cibleY+ch){
+                deleteCible.add(cible);
+            }
+        }
     }
 
 
@@ -466,8 +475,6 @@ public class EntityDisplay extends JPanel {
             //int cw=55;int ch=55;
             //if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
             if (collision) {
-                //explosion();
-                explose = true;
                 collisionX = knifeX;
                 collisionY = knifeY;
                 cibleColliX = cibleX;
@@ -505,7 +512,12 @@ public class EntityDisplay extends JPanel {
                 isCollisionMovingTarget=cible instanceof MovingTarget;
                 if (cible instanceof Bonus){
                     game.bonusManager.appliquerBonus(((Bonus) cible).getTypeBonus());
+                    if (((Bonus) cible).getTypeBonus()== Bonus.TypeBonus.BONUS_TNT){
+                        explose = true;
+                        explosion(cibleX,cibleY,deleteCible);
+                    }
                 }
+
             }
         }
         for (Cible c : deleteCible){
