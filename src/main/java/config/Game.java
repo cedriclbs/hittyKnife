@@ -342,7 +342,7 @@ public class Game {
     private void updateRecentBackgrounds(int newIndex) {
         lastBackgroundIndex = newIndex;
         recentBackgrounds.offer(newIndex); // Ajoute le nouvel indice à la file
-        if (recentBackgrounds.size() > 5) {
+        if (recentBackgrounds.size() > 8) {
             recentBackgrounds.poll(); // Retire l'indice le plus ancien
         }
     }
