@@ -153,6 +153,8 @@ public class EntityDisplay extends JPanel {
             int cw=200;int ch=200;
             if (x > cibleX-cw && x<cibleX+cw && y > cibleY-ch && y<cibleY+ch){
                 deleteCible.add(cible);
+                game.addXP(10);
+                game.addArgent(10);
             }
         }
     }
@@ -380,25 +382,7 @@ public class EntityDisplay extends JPanel {
         }
 
         //--------------------------AFFICHAGE ANIMATION COLLISION -------------------------------
-        /*if (animCollision){
-            Composite oldComposite = g2d.getComposite();
-            AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
 
-            g2d.setComposite(alphaComposite);
-            if (!game.powered) {
-                AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - (double) knifeImgWidth / 2, collisionY - (double) knifeImgHeight / 2);
-                transformColli.rotate(Math.toRadians(collisionAngle), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
-                g2d.drawImage(knifeImage, transformColli, this);
-            }
-
-            AffineTransform transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - (double) cibleImWidth / 2, cibleColliY - (double) cibleImHeight / 2);
-            if (isCollisionMovingTarget) g2d.drawImage(ciblesMouventeImage, transformCibleColli, this);
-            else g2d.drawImage(cibleImage, transformCibleColli, this);
-
-            g2d.setComposite(oldComposite);
-            if (opacity>0.01f)opacity-=0.007f;
-            else animCollision=false;
-        }*/
         animationCollision(g2d,knifeImgWidth,knifeImgHeight,cibleImWidth,cibleImHeight);
         
         //-------------------------------AFFICHAGE NORMAL DES CIBLES -------------------------------
@@ -480,7 +464,7 @@ public class EntityDisplay extends JPanel {
                 cibleColliX = cibleX;
                 cibleColliY = cibleY;
                 collisionAngle = knife.getAngle();
-                animCollision = true;
+                if (!(cible instanceof Boss))animCollision = true;
                 game.addXP(10);
                 game.addArgent(10);
                 System.out.println("XP+10 ");
