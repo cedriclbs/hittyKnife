@@ -323,7 +323,7 @@ public class Game {
     private String selectRandomBackground() {
         int bgIndex;
         do {
-            bgIndex = rand.nextInt(11); // Génère un indice aléatoire
+            bgIndex = rand.nextInt(12); // Génère un indice aléatoire
         } while (bgIndex == lastBackgroundIndex || recentBackgrounds.contains(bgIndex)); // Vérifie les conditions
 
         updateRecentBackgrounds(bgIndex);
@@ -340,7 +340,7 @@ public class Game {
     private void updateRecentBackgrounds(int newIndex) {
         lastBackgroundIndex = newIndex;
         recentBackgrounds.offer(newIndex); // Ajoute le nouvel indice à la file
-        if (recentBackgrounds.size() > 5) {
+        if (recentBackgrounds.size() > 7) {
             recentBackgrounds.poll(); // Retire l'indice le plus ancien
         }
     }
