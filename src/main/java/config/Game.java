@@ -31,7 +31,7 @@ public class Game {
     transient private List<Cible> listeCible1 = new ArrayList<>();
     @JsonIgnore
     transient private List<Cible> listeCible2 = new ArrayList<>();
-    @JsonIgnore
+    @JsonIgnore 
     private GameView gameView;
     @JsonIgnore
     public boolean gel = false;
@@ -66,7 +66,7 @@ public class Game {
     private int xp;
     private int currentLevel;
     @JsonProperty("currentBackgroundPath")
-    private String currentBackgroundPath;
+    private String currentBackgroundPath; 
 
 
 
@@ -97,7 +97,7 @@ public class Game {
         this.currentBackgroundPath = null;
         loadGameState();
         initGame();
-
+        
     }
 
 
@@ -174,25 +174,24 @@ public class Game {
     * Charge l'état du jeu à partir du fichier de sauvegarde spécifié dans cheminSauvegarde.
     * Cette méthode lit les données sauvegardées comme le niveau actuel, les points d'expérience,
     * le niveau, et l'argent, puis les affecte aux attributs correspondants de l'instance en cours.
-    *
+    * 
     * Le chemin du fichier de sauvegarde est déterminé par l'attribut cheminSauvegarde de l'instance.
     * Si une erreur se produit lors du chargement, l'erreur est enregistrée dans la console.
     */
     private void loadGameState() {
         try {
             Game loadedGame = chargerEtat(this.cheminSauvegarde);
-            this.currentLevel = loadedGame.getCurrentLevel();
+            this.currentLevel = loadedGame.getCurrentLevel();  
             this.xp = loadedGame.getXp();
             this.level = loadedGame.getLevel();
             this.argent = loadedGame.getArgent();
             this.currentBackgroundPath = loadedGame.getCurrentBackgroundPath();
-            this.roundManagement.setCurrentRoundIndex(0);
             updateBackground();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }   
     /**
      * Met à jour l'arrière-plan de l'interface graphique du jeu si les conditions sont remplies.
      * Cette méthode vérifie que l'objet gameView et le chemin de l'arrière-plan (currentBackgroundPath) ne sont pas null.
@@ -201,10 +200,10 @@ public class Game {
      */
     private void updateBackground() {
         if (gameView != null && currentBackgroundPath != null) {
-            gameView.updateBackgroundImage(currentBackgroundPath);
+            gameView.updateBackgroundImage(currentBackgroundPath); 
         }
     }
-
+    
     private synchronized void initGame() {
         ChargerRound(roundManagement.getCurrentRoundIndex());
     }
@@ -219,7 +218,7 @@ public class Game {
                 listeCible2.clear();
                 listeCible2.addAll(currentRound.getListeCibles());
             }
-
+        
     }
 
     public synchronized void addObserver(GameObserver observer) {
@@ -262,16 +261,16 @@ public class Game {
     }
 
     private void updateCible(Cible c, double adjustedDelta) {
-        if (c instanceof MovingTarget) {
-            ((MovingTarget) c).updateMovement();
-        } else if (c instanceof BossType1) {
-            ((BossType1) c).updateMovement(adjustedDelta);
-        } else if (c instanceof BossType2) {
-            ((BossType2) c).updateMovement(adjustedDelta);
-        } else if (c instanceof BossType3) {
-            ((BossType3) c).updateMovement(adjustedDelta);
-        } else if (c instanceof BossType4) {
-            ((BossType4) c).updateMovement(adjustedDelta);
+        if (!gel) {
+            if (c instanceof MovingTarget) {
+                ((MovingTarget) c).updateMovement();
+            } else if (c instanceof BossType1) {
+                ((BossType1) c).updateMovement(adjustedDelta);
+            } else if (c instanceof BossType2) {
+                ((BossType2) c).updateMovement(adjustedDelta);
+            } else if (c instanceof BossType3) {
+                ((BossType3) c).updateMovement(adjustedDelta);
+            }
         }
     }
     /**
@@ -287,7 +286,7 @@ public class Game {
                 ChargerRound(roundManagement.getCurrentRoundIndex()); // Chargement du round suivant
                 //System.out.println(roundManagement.getCurrentRoundIndex());
 
-            }
+            }  
             else {
                 currentLevel++; // Incrémentation du niveau
                 notifyBackgroundChange();
@@ -295,7 +294,7 @@ public class Game {
                 roundManagement.resetRounds(); // Réinitialisation des rounds pour le nouveau niveau
                 ChargerRound(roundManagement.getCurrentRoundIndex()); // Recharge le premier round du nouveau niveau
             }
-
+    
         }
     }
 
@@ -311,8 +310,8 @@ public class Game {
             gameView.updateBackgroundImage(currentBackgroundPath);
         }
     }
-
-
+    
+    
     /**
      * Sélectionne un chemin d'image de fond aléatoire à partir d'un ensemble prédéfini de ressources.
      * Utilise un système pour éviter de répéter les arrière-plans récemment utilisés,
@@ -323,13 +322,13 @@ public class Game {
     private String selectRandomBackground() {
         int bgIndex;
         do {
-            bgIndex = rand.nextInt(12); // Génère un indice aléatoire
+            bgIndex = rand.nextInt(11); // Génère un indice aléatoire
         } while (bgIndex == lastBackgroundIndex || recentBackgrounds.contains(bgIndex)); // Vérifie les conditions
 
         updateRecentBackgrounds(bgIndex);
         return "src/main/ressources/background/bgJap" + bgIndex + ".gif";
     }
-
+    
     /**
      * Met à jour la file d'indices des arrière-plans utilisés récemment pour assurer
      * que les arrière-plans ne se répètent pas trop fréquemment.
@@ -340,7 +339,7 @@ public class Game {
     private void updateRecentBackgrounds(int newIndex) {
         lastBackgroundIndex = newIndex;
         recentBackgrounds.offer(newIndex); // Ajoute le nouvel indice à la file
-        if (recentBackgrounds.size() > 7) {
+        if (recentBackgrounds.size() > 5) {
             recentBackgrounds.poll(); // Retire l'indice le plus ancien
         }
     }
@@ -491,5 +490,5 @@ public class Game {
         this.currentBackgroundPath = currentBackgroundPath;
     }
 
-
+    
 }

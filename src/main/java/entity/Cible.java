@@ -125,12 +125,12 @@ public class Cible {
      *
      * @return La valeur d'argent de la cible.
      */
-    public int getArgentCible() {
+    /*public int getArgentCible() {
         return switch (typeCible) {
             case CIBLE_ARGENT -> 10;
             default -> 0;
         };
-    }
+    }*/
 
     /**
      * Méthode pour marquer la cible comme touchée.
