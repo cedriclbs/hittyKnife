@@ -186,6 +186,7 @@ public class Game {
             this.level = loadedGame.getLevel();
             this.argent = loadedGame.getArgent();
             this.currentBackgroundPath = loadedGame.getCurrentBackgroundPath();
+            this.roundManagement.setCurrentRoundIndex(0);
             updateBackground();
 
         } catch (IOException e) {
