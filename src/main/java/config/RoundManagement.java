@@ -1,6 +1,7 @@
 package config;
 
 import entity.Bonus;
+import entity.MovingTarget;
 import entity.TypeCible;
 import entity.bosses.*;
 import entity.Cible;
@@ -91,10 +92,10 @@ public class RoundManagement {
                 round.addCible(cible);
             }
             if (i<=1) {
-                Bonus bonus = new Bonus(15, 15, BONUS_GOLD);
+                Bonus bonus = new Bonus(15, 15, BONUS_GEL);
                 Cible cible1 = createCibleWithType(TypeCible.CIBLE_NORMALE, 20, 20);
                 Cible cible2 = createCibleWithType(TypeCible.CIBLE_NORMALE, 10, 10);
-                Cible cible3 = createCibleWithType(TypeCible.CIBLE_NORMALE, 20, 40);
+                MovingTarget cible3 = new MovingTarget(-20,30);
                 round.addCible(bonus);
                 round.addCible(cible1);
                 round.addCible(cible2);

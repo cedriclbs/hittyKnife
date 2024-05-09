@@ -123,6 +123,7 @@ public class EntityDisplay extends JPanel {
         this.bonusPower = new ImageIcon("src/main/ressources/targets/target#1Power.png").getImage();
         this.bonusGold = new ImageIcon("src/main/ressources/targets/targetCoin.png").getImage();
         this.bonusXP = new ImageIcon("src/main/ressources/targets/targetXP.png").getImage();
+        this.bonusGel = new ImageIcon("src/main/ressources/targets/targetGel.png").getImage();
         this.targetTNT = new ImageIcon("src/main/ressources/targets/targetTNT.png").getImage();
         String filepath = "src/main/ressources/targets/";
         this.bossT1 = new ImageIcon(filepath + "Boss2 (1).png").getImage();
@@ -136,6 +137,7 @@ public class EntityDisplay extends JPanel {
         this.bonusPower = this.bonusPower.getScaledInstance(this.bonusPower.getWidth(null)/2,this.bonusPower.getHeight(null)/2,Image.SCALE_SMOOTH);
         this.bonusGold = this.bonusGold.getScaledInstance(this.bonusGold.getWidth(null)/2,this.bonusGold.getHeight(null)/2,Image.SCALE_SMOOTH);
         this.bonusXP = this.bonusXP.getScaledInstance(this.bonusXP.getWidth(null)/2,this.bonusXP.getHeight(null)/2,Image.SCALE_SMOOTH);
+        this.bonusGel = this.bonusGel.getScaledInstance(this.bonusGel.getWidth(null)/2,this.bonusGel.getHeight(null)/2,Image.SCALE_SMOOTH);
         this.targetTNT = this.targetTNT.getScaledInstance(this.targetTNT.getWidth(null)/2,this.targetTNT.getHeight(null)/2,Image.SCALE_SMOOTH);
         this.ciblesMouventeImage = this.ciblesMouventeImage.getScaledInstance(this.ciblesMouventeImage.getWidth(null)/2,this.ciblesMouventeImage.getHeight(null)/2,Image.SCALE_SMOOTH);
         this.explosionIcon = this.explosionIcon.getScaledInstance(this.explosionIcon.getWidth(null)/2,this.explosionIcon.getHeight(null)/2,Image.SCALE_SMOOTH);
@@ -280,6 +282,7 @@ public class EntityDisplay extends JPanel {
                             case BONUS_TNT : g2d.drawImage(targetTNT, transformCibleColli, this);break;
                             case BONUS_GOLD : g2d.drawImage(bonusGold, transformCibleColli, this);break;
                             case BONUS_XP : g2d.drawImage(bonusXP, transformCibleColli, this);break;
+                            case BONUS_GEL: g2d.drawImage(bonusGel, transformCibleColli, this);break;
                         }
                     }
                     else g2d.drawImage(cibleImage, transformCibleColli, this);
@@ -448,6 +451,7 @@ public class EntityDisplay extends JPanel {
                         case BONUS_TNT : g2d.drawImage(targetTNT, transformCible, this);break;
                         case BONUS_GOLD : g2d.drawImage(bonusGold, transformCible, this);break;
                         case BONUS_XP : g2d.drawImage(bonusXP, transformCible, this);break;
+                        case BONUS_GEL: g2d.drawImage(bonusGel, transformCible, this);break;
                     }
                 }
                 else {
