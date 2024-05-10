@@ -44,6 +44,8 @@ public class Game {
     transient private int xpThreshold;
     private RoundManagement roundManagement;
     private List<GameObserver> observers = new ArrayList<>();
+    private List<LibraryObserver> libraryObservers = new ArrayList<>();
+
     private int lastBackgroundIndex = -1; // Dernier indice utilisé
     private Queue<Integer> recentBackgrounds = new LinkedList<>(); // Indices récents pour éviter la répétition
     private Random rand = new Random();
@@ -185,6 +187,7 @@ public class Game {
             this.xp = loadedGame.getXp();
             this.level = loadedGame.getLevel();
             this.argent = loadedGame.getArgent();
+            this.inventaire = loadedGame.getInventaire();
             this.currentBackgroundPath = loadedGame.getCurrentBackgroundPath();
             roundManagement.setCurrentRoundIndex(0);
             updateBackground();
@@ -239,7 +242,20 @@ public class Game {
         }
     }
 
+    public synchronized void addLibraryObserver(LibraryObserver observer) {
+        libraryObservers.add(observer);
+    }
 
+
+    public synchronized void removeLibraryObserver(LibraryObserver observer) {
+        libraryObservers.remove(observer);
+    }
+
+    public synchronized void notifyLibraryObservers() {
+        for (LibraryObserver observer : libraryObservers) {
+            observer.updateInventaire();
+        }
+    }
 
 
 
@@ -393,6 +409,7 @@ public class Game {
             this.inventaire = new ArrayList<>();
         }
         if (list != null){
+            //notifyLibraryObservers();
             for (ShopItem item : list) {
                 if (!inventaire.contains(item)) {
                     inventaire.add(item);
@@ -404,10 +421,9 @@ public class Game {
 
     public void updateLibrary(List<ShopItem> list) {
         setInventaire(list);
+        notifyLibraryObservers();
         sauvegarderEtat();
     }
-
-
 
 
 

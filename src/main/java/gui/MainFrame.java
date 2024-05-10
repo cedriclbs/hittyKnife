@@ -183,7 +183,9 @@ public class MainFrame extends JFrame {
     }
 
     private JPanel createLibraryPanel(){
-        return new Library(game);
+        Library library = new Library(game);
+        game.addLibraryObserver(library);
+        return library;
     }
 
     private JPanel createBattlepassPanel() {

@@ -30,6 +30,7 @@ public class ShopMenu extends JPanel {
      *
      */
     public ShopMenu(Game game) {
+        setStates(SHOPMENU);
         this.cart = new ShopCart(game);
         this.tabbedPane = new JTabbedPane();
         this.saveB = true;
@@ -37,9 +38,6 @@ public class ShopMenu extends JPanel {
         initialize();
     }
 
-    public void startShopMenu() {
-        setStates(SHOPMENU);
-    }
 
 
 
@@ -58,6 +56,7 @@ public class ShopMenu extends JPanel {
         ShopTab cart = new ShopTab(tabbedPane, "Panier", null, "cartTab.png", "cart", this);
 
         add(tabbedPane, BorderLayout.CENTER);
+
 
     }
 

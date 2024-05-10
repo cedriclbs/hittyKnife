@@ -14,7 +14,7 @@ import java.util.List;
  * Cette classe représente une bibliothèque dans l'interface graphique du jeu.
  * Elle utilise un panneau avec une image de fond pour personnaliser son apparence.
  */
-public class Library extends JPanel  {
+public class Library extends JPanel implements LibraryObserver {
     private List<ShopItem> inventaire;
     private Game game;
 
@@ -25,9 +25,13 @@ public class Library extends JPanel  {
     }
 
 
+    @Override
     public void updateInventaire() {
-        this.inventaire = game.getInventaire(); // Mettre à jour l'inventaire
-        afficher(); // Mettre à jour l'affichage de l'inventaire
+        this.inventaire = game.getInventaire();
+//        for (ShopItem item : inventaire){
+//            System.out.println(item);
+//        }
+        afficher();
     }
 
 
@@ -45,7 +49,7 @@ public class Library extends JPanel  {
         itemsPanel.setOpaque(false);
 
         for (ShopItem item : inventaire) {
-            System.out.println(item);
+            //System.out.println(item);
             JPanel itemPanel = new JPanel(new BorderLayout());
             itemPanel.setOpaque(false);
 

@@ -72,7 +72,7 @@ public class HomeMenu extends Menu {
         shopButton.setFocusPainted(false);
         shopButton.setBorderPainted(false);
         shopButton.setContentAreaFilled(false);
-        shopButton.addActionListener(e -> showShop());
+        //shopButton.addActionListener(e -> showShop());
         shopButtonPanel.add(shopButton);
         panel.add(shopButtonPanel);
 
@@ -106,10 +106,10 @@ public class HomeMenu extends Menu {
 //        gameView.startSoloGame();
 //    }
 
-    private void showShop() {
-        if (shopMenu == null) {
-            shopMenu = new ShopMenu(null);
-        }
-        shopMenu.startShopMenu();
-    }
+//    private void showShop() {
+//        if (shopMenu == null) {
+//            shopMenu = new ShopMenu(null);
+//        }
+//        shopMenu.startShopMenu();
+//    }
 }
