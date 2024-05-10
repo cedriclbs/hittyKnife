@@ -11,6 +11,7 @@ public class RessourcesPaths {
     public static final String buttonPath = "src/main/ressources/button/";
     public static final String tabPath = "src/main/ressources/onglets/";
     public static final String iconPath = "src/main/ressources/icon/";
+    public static final String targetPath = "src/main/ressources/targets/";
 
 
 
