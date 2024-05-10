@@ -83,7 +83,7 @@ public class Library extends JPanel {
      */
     private void afficher() {
 
-        BackgroundPanel backgroundPanel = new BackgroundPanel(RessourcesPaths.backgroundPath + "bgInventaire.gif");
+        BackgroundPanel backgroundPanel = new BackgroundPanel(RessourcesPaths.backgroundPath + "bgtest.gif");
         setLayout(new BorderLayout());
 
         JPanel itemsPanel = new JPanel(new GridLayout(3, 3, 10, 10));
