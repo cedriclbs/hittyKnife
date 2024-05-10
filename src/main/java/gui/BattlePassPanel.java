@@ -34,7 +34,7 @@ public class BattlePassPanel extends JPanel implements GameObserver {
         updatePaliers();
 
         try{
-            backgroundImage = new ImageIcon("src/main/ressources/background/bgBattlePass.gif").getImage(); 
+            backgroundImage = new ImageIcon("src/main/ressources/background/bgStarWars.gif").getImage(); 
         }
         catch (Exception e){
             e.printStackTrace();
