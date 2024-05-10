@@ -117,11 +117,11 @@ public class EntityDisplay extends JPanel {
         //this.explosionIcon = new ImageIcon("src/main/ressources/effets/explosion.gif");
         this.explosionIcon = new ImageIcon("src/main/ressources/effets/explosion4.png").getImage();
 
-        this.knifeImage = new ImageIcon(RessourcesPaths.knifePath + "knifeRotate2.png").getImage();
-        this.knifeImagePowered = new ImageIcon("src/main/ressources/knifes/knifeRotate2Powered.png").getImage();
+        this.knifeImage = new ImageIcon(RessourcesPaths.knifePath + "knifeRotate1.png").getImage();
+        this.knifeImagePowered = new ImageIcon("src/main/ressources/knifes/knifePowered.png").getImage();
         this.cibleImage = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
         this.ciblesMouventeImage =  new ImageIcon("src/main/ressources/targets/target#2.png").getImage();
-        this.bonusPower = new ImageIcon("src/main/ressources/targets/target#1Power.png").getImage();
+        this.bonusPower = new ImageIcon("src/main/ressources/targets/target#2Power.png").getImage();
         this.bonusGold = new ImageIcon("src/main/ressources/targets/targetCoin.png").getImage();
         this.bonusXP = new ImageIcon("src/main/ressources/targets/targetXP.png").getImage();
         this.bonusGel = new ImageIcon("src/main/ressources/targets/targetGel.png").getImage();

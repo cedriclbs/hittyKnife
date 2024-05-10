@@ -31,7 +31,7 @@ public class Game {
     transient private List<Cible> listeCible1 = new ArrayList<>();
     @JsonIgnore
     transient private List<Cible> listeCible2 = new ArrayList<>();
-    @JsonIgnore 
+    @JsonIgnore
     private GameView gameView;
     @JsonIgnore
     public boolean gel = false;
