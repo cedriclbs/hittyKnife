@@ -56,11 +56,11 @@ public class ShopTab {
 
         JPanel mainMenuPanel = new JPanel(new GridLayout(0, 3, 20, 20));
         if (category.equals("background")){
-            mainMenuPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+            mainMenuPanel.setBorder(new EmptyBorder(150, 150, 150, 150));
         } else if (category.equals("cart")) {
             mainMenuPanel.setBorder(new EmptyBorder(100, 100, 100, 100));
         } else {
-            mainMenuPanel.setBorder(new EmptyBorder(300, 300, 300, 300));
+            mainMenuPanel.setBorder(new EmptyBorder(200, 200, 200, 200));
         }
         mainMenuPanel.setOpaque(false);
 
@@ -72,16 +72,10 @@ public class ShopTab {
                 JPanel temp = new JPanel();
                 temp.setOpaque(false);
 
-                JPanel welcomePanel = new JPanel();
+                JPanel welcomePanel = new RoundedPanel(100, 100, false);
 
                 JLabel welcomeLabel = new JLabel("<html>Bienvenue dans le Shop du jeu.<br>Ajoutez au panier des articles avec la monnaie disponible, et sauvegardez.<br>Vous pouvez également retourner au menu sans effectuer d'achat.</html>");
                 welcomePanel.add(welcomeLabel);
-
-//                JButton retourAuMenuButton = new JButton("Retour au menu");
-//                retourAuMenuButton.addActionListener(e -> shopMenu.showMenu());
-//                ImageIcon retourAuMenuIcon = new ImageIcon(RessourcesPaths.buttonPath + "retourMenu.png");
-//                retourAuMenuButton.setIcon(retourAuMenuIcon);
-//                welcomePanel.add(retourAuMenuButton);
 
 
                 mainMenuPanel.add(temp);
@@ -102,9 +96,6 @@ public class ShopTab {
                 addItemToPanel(mainMenuPanel, path + "Background_MainMenu.png", 20, "Background 1");
                 addItemToPanel(mainMenuPanel, path + "Background_Solo.png", 20, "Background 2");
                 addItemToPanel(mainMenuPanel, path + "bgForet.png", 25, "Background 3");
-                for (int i = 0 ; i < 15 ; i++){
-                    addItemToPanel(mainMenuPanel, path + "bgJap" + i + ".png", 100, "Background " + i);
-                }
                 break;
 
 
@@ -138,13 +129,16 @@ public class ShopTab {
      * @param itemName Le nom de l'article.
      */
     private void addItemToPanel(JPanel panel, String imagePath, int articlePrice, String itemName) {
-        JPanel itemPanel = new JPanel(new BorderLayout());
-        itemPanel.setOpaque(false);
+        // Création d'un panel arrondi pour l'article
+        RoundedPanel itemRoundedPanel = new RoundedPanel(20, 20, true); // Ajustez les dimensions des coins arrondis selon vos préférences
+        itemRoundedPanel.setLayout(new BorderLayout());
+        itemRoundedPanel.setOpaque(false);
+        itemRoundedPanel.setBorder(null);
+        itemRoundedPanel.setFocusable(false);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth = (int) screenSize.getWidth();
         int screenHeight = (int) screenSize.getHeight();
-
 
         //Image
         ImageIcon icon = new ImageIcon(imagePath);
@@ -156,28 +150,29 @@ public class ShopTab {
             icon = new ImageIcon(resizedImage);
         }
 
-        // Image to Bouton
-        JButton itemButton = new JButton();
+
+
+        // Création du bouton pour l'article
+        RoundedButton itemButton = new RoundedButton("");
         itemButton.setIcon(icon);
         itemButton.setBorderPainted(false);
         itemButton.setContentAreaFilled(false);
         itemButton.setFocusPainted(false);
 
-        //Caption de l'article
-        JPanel itemCaption = makeItemCaption(articlePrice, itemName);
+        RoundedPanel itemCaption = makeItemCaption(articlePrice, itemName);
+
+        itemRoundedPanel.add(itemButton);
+        itemRoundedPanel.add(itemCaption, BorderLayout.SOUTH);
 
 
-        itemPanel.add(itemButton, BorderLayout.CENTER);
-        itemPanel.add(itemCaption, BorderLayout.SOUTH);
-        panel.add(itemPanel);
+        panel.add(itemRoundedPanel);
 
         shopMenu.configureButton(itemButton, e -> {
             shopMenu.cart.addArticle(new ShopItem(itemName, articlePrice, imagePath));
-            shopMenu.saveB = false;
             refreshCartTab();
         });
-
     }
+
 
 
     /**
@@ -188,8 +183,9 @@ public class ShopTab {
      * @return Le JPanel contenant le composant de légende.
      */
 
-    private static JPanel makeItemCaption(int articlePrice, String itemName) {
-        JPanel itemCaption = new JPanel(new BorderLayout());
+    private static RoundedPanel makeItemCaption(int articlePrice, String itemName) {
+        RoundedPanel itemCaption = new RoundedPanel(20,20, false);
+        itemCaption.setLayout(new BorderLayout());
 
         JLabel itemNameLabel = new JLabel("  " + itemName);
         itemNameLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -211,7 +207,7 @@ public class ShopTab {
 
         itemCaption.setFont(itemCaption.getFont().deriveFont(Font.BOLD | Font.ITALIC, 14f));
         itemCaption.setBackground(new Color(255, 255, 255, 200));
-        itemCaption.setOpaque(true);
+        itemCaption.setOpaque(false);
         itemCaption.add(itemNameLabel, BorderLayout.WEST);
         itemCaption.add(pricePanel, BorderLayout.EAST);
 
