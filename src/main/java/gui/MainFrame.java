@@ -167,7 +167,7 @@ public class MainFrame extends JFrame {
     }
 
     private JPanel createTitleScreen() {
-        return new HomeMenu("src/main/ressources/background/Background_MainMenu.png",Menu.linkClip+"Main_theme.wav");
+        return new HomeMenu("src/main/ressources/background/Background_MainMenu.png","Main_theme.wav");
     }
 
     private JPanel createShopPanel() {
@@ -187,7 +187,15 @@ public class MainFrame extends JFrame {
     }
 
     private JPanel createBattlepassPanel() {
-        JPanel mainPanel = new JPanel(new GridBagLayout());
+
+        BattlePassPanel battlePassPanel = new BattlePassPanel(game);
+        JPanel mainPanel = new JPanel(new GridBagLayout()){
+            @Override
+            protected void paintComponent(Graphics g){
+                super.paintComponent(g);
+                g.drawImage(battlePassPanel.getBackgroundImage(), 0, 0, getWidth(),getHeight(),this);
+            }   
+        };
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -195,7 +203,6 @@ public class MainFrame extends JFrame {
         gbc.weighty = 1.0;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        BattlePassPanel battlePassPanel = new BattlePassPanel(game);
         mainPanel.add(battlePassPanel, gbc);
 
         game.addObserver(battlePassPanel); // Enregistrement de BattlePassPanel en tant qu'observateur

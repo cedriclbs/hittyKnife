@@ -20,7 +20,7 @@ public class Bonus extends Cible{
         BONUS_POWER,        //traverse les cibles
         BONUS_GOLD,
         BONUS_XP,
-        BONUS_TRAJ;         //change la trajectoire pour pouvoir toucher plusieurs cibles (traj circulaire)
+        BONUS_TNT;         //explose
 
     }
 

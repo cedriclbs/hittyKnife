@@ -44,7 +44,6 @@ public class Game {
     transient private int xpThreshold;
     private RoundManagement roundManagement;
     private List<GameObserver> observers = new ArrayList<>();
-
     private int lastBackgroundIndex = -1; // Dernier indice utilisé
     private Queue<Integer> recentBackgrounds = new LinkedList<>(); // Indices récents pour éviter la répétition
     private Random rand = new Random();
@@ -146,6 +145,8 @@ public class Game {
         return argent;
     }
 
+
+
     public void setXp(int xp) {
         this.xp = xp;
     }
@@ -184,9 +185,8 @@ public class Game {
             this.xp = loadedGame.getXp();
             this.level = loadedGame.getLevel();
             this.argent = loadedGame.getArgent();
-            this.inventaire = loadedGame.getInventaire();
             this.currentBackgroundPath = loadedGame.getCurrentBackgroundPath();
-            this.roundManagement.setCurrentRoundIndex(0);
+            roundManagement.setCurrentRoundIndex(0);
             updateBackground();
 
         } catch (IOException e) {
@@ -266,17 +266,22 @@ public class Game {
     }
 
     private void updateCible(Cible c, double adjustedDelta) {
-        if (c instanceof MovingTarget) {
-            ((MovingTarget) c).updateMovement();
-        } else if (c instanceof BossType1) {
-            ((BossType1) c).updateMovement(adjustedDelta);
-        } else if (c instanceof BossType2) {
-            ((BossType2) c).updateMovement(adjustedDelta);
-        } else if (c instanceof BossType3) {
-            ((BossType3) c).updateMovement(adjustedDelta);
-        } else if (c instanceof BossType4) {
-            ((BossType4) c).updateMovement(adjustedDelta);
-        }
+
+            if (c instanceof MovingTarget) {
+                if (!gel) {
+                    ((MovingTarget) c).updateMovement();
+                }
+
+            } else if (c instanceof BossType1) {
+                ((BossType1) c).updateMovement(adjustedDelta);
+            } else if (c instanceof BossType2) {
+                ((BossType2) c).updateMovement(adjustedDelta);
+            } else if (c instanceof BossType3) {
+                ((BossType3) c).updateMovement(adjustedDelta);
+            } else if (c instanceof BossType4) {
+                ((BossType4) c).updateMovement(adjustedDelta);
+            }
+
     }
     /**
      * Vérifie si le round actuel est terminé en examinant si la liste des cibles du premier joueur est vide.
@@ -327,7 +332,7 @@ public class Game {
     private String selectRandomBackground() {
         int bgIndex;
         do {
-            bgIndex = rand.nextInt(11); // Génère un indice aléatoire
+            bgIndex = rand.nextInt(16); // Génère un indice aléatoire
         } while (bgIndex == lastBackgroundIndex || recentBackgrounds.contains(bgIndex)); // Vérifie les conditions
 
         updateRecentBackgrounds(bgIndex);
@@ -344,7 +349,7 @@ public class Game {
     private void updateRecentBackgrounds(int newIndex) {
         lastBackgroundIndex = newIndex;
         recentBackgrounds.offer(newIndex); // Ajoute le nouvel indice à la file
-        if (recentBackgrounds.size() > 5) {
+        if (recentBackgrounds.size() > 8) {
             recentBackgrounds.poll(); // Retire l'indice le plus ancien
         }
     }
@@ -520,4 +525,5 @@ public class Game {
     public List<ShopItem> getInventaire() {
         return this.inventaire;
     }
+
 }
