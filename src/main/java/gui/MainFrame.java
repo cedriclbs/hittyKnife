@@ -18,7 +18,6 @@ public class MainFrame extends JFrame {
     private JButton shopButton;
     private JButton versusButton;
     private JButton battlePassButton;
-    private JButton libraryButton;
 
     public static String knifePathClicked;
 
@@ -48,8 +47,6 @@ public class MainFrame extends JFrame {
         versusButton = new JButton("Versus");
         battlePassButton = new JButton("BattlePass");
 
-        libraryButton = new JButton("Inventaire");
-
 
         // Supprimer le rectangle de sélection lorsqu'un bouton est enfoncé
         homeButton.setFocusPainted(false);
@@ -71,7 +68,6 @@ public class MainFrame extends JFrame {
         shopButton.addActionListener(e -> switchToPanel("Shop"));
         versusButton.addActionListener(e -> switchToPanel("Versus"));
         battlePassButton.addActionListener(e -> switchToPanel("BattlePass"));
-        //libraryButton.addActionListener(e -> switchToPanel("Inventaire"));
 
 
         // Création du panneau de menu principal
@@ -80,7 +76,6 @@ public class MainFrame extends JFrame {
         JPanel shopPanel = createShopPanel();
         JPanel versusPanel = createVersusPanel();
         JPanel battlepassPanel = createBattlepassPanel();
-        //JPanel libraryPanel = createLibraryPanel();
 
 
         // Création du conteneur de panneaux avec CardLayout
@@ -92,7 +87,6 @@ public class MainFrame extends JFrame {
         cardPanel.add(shopPanel, "Shop");
         cardPanel.add(versusPanel, "Versus");
         cardPanel.add(battlepassPanel, "BattlePass");
-        //cardPanel.add(libraryPanel, "Inventaire");
 
 
         // Ajout des boutons de navigation en haut de la fenêtre
@@ -102,7 +96,6 @@ public class MainFrame extends JFrame {
         navPanel.add(shopButton);
         navPanel.add(versusButton);
         navPanel.add(battlePassButton);
-        navPanel.add(libraryButton);
 
 
         // Utilisation d'un BorderLayout pour la JFrame

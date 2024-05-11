@@ -69,22 +69,6 @@ public class ShopTab {
         switch (category) {
 
 
-            case "welcome":
-                JPanel temp = new JPanel();
-                temp.setOpaque(false);
-
-                JPanel welcomePanel = new RoundedPanel(100, 100, false, true);
-
-                JLabel welcomeLabel = new JLabel("<html>Bienvenue dans le Shop du jeu.<br>Ajoutez au panier des articles avec la monnaie disponible, et sauvegardez.<br>Vous pouvez également retourner au menu sans effectuer d'achat.</html>");
-                welcomePanel.add(welcomeLabel);
-
-
-                mainMenuPanel.add(temp);
-                mainMenuPanel.add(welcomePanel);
-
-                break;
-
-
             case "couteaux":
                 addItemToPanel(mainMenuPanel, path + "knife.png", 15, "Sword 1");
                 addItemToPanel(mainMenuPanel, path + "knife#2.png", 20,"Sword 2");
