@@ -147,7 +147,9 @@ public class Game {
         return argent;
     }
 
-
+    public List<ShopItem> getInventaire() {
+        return this.inventaire;
+    }
 
     public void setXp(int xp) {
         this.xp = xp;
@@ -184,6 +186,7 @@ public class Game {
         try {
             Game loadedGame = chargerEtat(this.cheminSauvegarde);
             this.currentLevel = loadedGame.getCurrentLevel();
+            this.nomUtilisateur = loadedGame.getNomUtilisateur();
             this.xp = loadedGame.getXp();
             this.level = loadedGame.getLevel();
             this.argent = loadedGame.getArgent();
@@ -213,16 +216,15 @@ public class Game {
     }
 
     private synchronized void ChargerRound(int roundIndex) {
-            Round currentRound = roundManagement.getListeRounds().get(roundIndex);
-            listeCible1.clear();
-            listeCible1.addAll(currentRound.getListeCibles());
-            roundManagement.setCurrentRoundIndex(roundIndex);
+        Round currentRound = roundManagement.getListeRounds().get(roundIndex);
+        listeCible1.clear();
+        listeCible1.addAll(currentRound.getListeCibles());
+        roundManagement.setCurrentRoundIndex(roundIndex);
 
-            if (!isSolo) {
-                listeCible2.clear();
-                listeCible2.addAll(currentRound.getListeCibles());
-            }
-
+        if (!isSolo) {
+            listeCible2.clear();
+            listeCible2.addAll(currentRound.getListeCibles());
+        }
     }
 
     public synchronized void addObserver(GameObserver observer) {
@@ -242,15 +244,24 @@ public class Game {
         }
     }
 
+    /**
+     * Ajoute un observateur de bibliothèque à la liste des observateurs dans le but de l'affichage en temps réel de l'inventaire.
+     *
+     * @param observer L'observateur de bibliothèque à ajouter.
+     */
     public synchronized void addLibraryObserver(LibraryObserver observer) {
         libraryObservers.add(observer);
     }
-
 
     public synchronized void removeLibraryObserver(LibraryObserver observer) {
         libraryObservers.remove(observer);
     }
 
+    /**
+     * Notifie tous les observateurs de bibliothèque enregistrés lorsqu'un changement dans l'inventaire est détecté.
+     * Cette méthode est appelée pour informer les observateurs que l'inventaire a été mis à jour et qu'ils doivent
+     * rafraîchir leur affichage en conséquence pour l'affichage en temps réel.
+     */
     public synchronized void notifyLibraryObservers() {
         for (LibraryObserver observer : libraryObservers) {
             observer.updateInventaire();
@@ -259,6 +270,13 @@ public class Game {
 
 
 
+    /**
+     * Met à jour l'état du jeu en fonction du temps écoulé depuis la dernière mise à jour.
+     * Cette méthode gère le mouvement des couteaux et des cibles, vérifie la complétion des rounds,
+     * et met à jour les effets des bonus en cours.
+     *
+     * @param delta Le temps écoulé depuis la dernière mise à jour, en millisecondes.
+     */
     public synchronized void update(double delta) {
         double adjustedDelta = delta / 3;
         knife1.updateMovement();
@@ -281,24 +299,35 @@ public class Game {
         bonusManager.updateBonusEffect();
     }
 
+
+
+    /**
+     * Met à jour le mouvement de la cible spécifiée en fonction du temps écoulé depuis la dernière mise à jour.
+     *
+     * @param c La cible à mettre à jour.
+     * @param adjustedDelta Le temps écoulé depuis la dernière mise à jour, ajusté en fonction de la vitesse du jeu.
+     */
     private void updateCible(Cible c, double adjustedDelta) {
 
-            if (c instanceof MovingTarget) {
-                if (!gel) {
-                    ((MovingTarget) c).updateMovement();
-                }
-
-            } else if (c instanceof BossType1) {
-                ((BossType1) c).updateMovement(adjustedDelta);
-            } else if (c instanceof BossType2) {
-                ((BossType2) c).updateMovement(adjustedDelta);
-            } else if (c instanceof BossType3) {
-                ((BossType3) c).updateMovement(adjustedDelta);
-            } else if (c instanceof BossType4) {
-                ((BossType4) c).updateMovement(adjustedDelta);
+        if (c instanceof MovingTarget) {
+            if (!gel) {
+                ((MovingTarget) c).updateMovement();
             }
 
+        } else if (c instanceof BossType1) {
+            ((BossType1) c).updateMovement(adjustedDelta);
+        } else if (c instanceof BossType2) {
+            ((BossType2) c).updateMovement(adjustedDelta);
+        } else if (c instanceof BossType3) {
+            ((BossType3) c).updateMovement(adjustedDelta);
+        } else if (c instanceof BossType4) {
+            ((BossType4) c).updateMovement(adjustedDelta);
+        }
+
     }
+
+
+
     /**
      * Vérifie si le round actuel est terminé en examinant si la liste des cibles du premier joueur est vide.
      * Si toutes les cibles sont éliminées, la méthode avance le jeu au round suivant ou, si tous les rounds sont terminés,
@@ -404,12 +433,21 @@ public class Game {
         }
     }
 
+
+
+
+    /**
+     * Met à jour l'inventaire du jeu avec la liste spécifiée d'articles de boutique.
+     * Cette méthode ajoute les nouveaux articles à l'inventaire existant, en s'assurant
+     * qu'il n'y a pas de doublons.
+     *
+     * @param list La liste d'articles de boutique à ajouter à l'inventaire.
+     */
     private void setInventaire(List<ShopItem> list) {
         if (this.inventaire == null){
             this.inventaire = new ArrayList<>();
         }
         if (list != null){
-            //notifyLibraryObservers();
             for (ShopItem item : list) {
                 if (!inventaire.contains(item)) {
                     inventaire.add(item);
@@ -419,6 +457,12 @@ public class Game {
 
     }
 
+    /**
+     * Met à jour l'inventaire du jeu avec la fonction setInventaire, appelant les observateurs de Library pour ainsi
+     * mettre à jour l'inventaire, le but étant de sauvegarder l'inventaire dans le fichier JSON.
+     *
+     * @param list La liste d'articles de boutique à ajouter à l'inventaire.
+     */
     public void updateLibrary(List<ShopItem> list) {
         setInventaire(list);
         notifyLibraryObservers();
@@ -451,13 +495,6 @@ public class Game {
             return null;
         }
     }
-
-
-
-
-
-
-
 
 
 
@@ -538,8 +575,5 @@ public class Game {
     }
 
 
-    public List<ShopItem> getInventaire() {
-        return this.inventaire;
-    }
 
 }

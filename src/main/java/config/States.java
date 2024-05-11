@@ -4,21 +4,25 @@ package config;
  * Enumération représentant les différents états du jeu.
  */
 public enum States {
-    HOMEMENU,     // Menu principal
-    SOLOMODE,     // Mode solo
-    VERSUSMODE,   // Mode versus
+    HOMEMENU,
+    SOLOMODE,
+    VERSUSMODE,
     SHOPMENU,
-    GAMEOVERMENU; // Menu de fin de partie
+    GAMEOVERMENU;
 
-    // Variable statique pour stocker l'état actuel du jeu
+
+    /**
+     * Variable statique pour stocker l'état actuel du jeu
+     */
     public static States states = HOMEMENU;
 
     /**
      * Définit l'état actuel du jeu.
-     * @param state Le nouvel état du jeu.
+     * @param s Le nouvel état du jeu.
      */
-    public static void setStates(States state) {
-        states = state;
+    public static void setStates(States s) {
+        states = s;
+
     }
 
 }

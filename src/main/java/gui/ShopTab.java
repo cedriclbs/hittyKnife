@@ -5,7 +5,8 @@ import config.ShopItem;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 
 /**
@@ -56,7 +57,7 @@ public class ShopTab {
 
         JPanel mainMenuPanel = new JPanel(new GridLayout(0, 3, 20, 20));
         if (category.equals("background")){
-            mainMenuPanel.setBorder(new EmptyBorder(150, 150, 150, 150));
+            mainMenuPanel.setBorder(new EmptyBorder(300, 75, 300, 75));
         } else if (category.equals("cart")) {
             mainMenuPanel.setBorder(new EmptyBorder(100, 100, 100, 100));
         } else {
@@ -72,7 +73,7 @@ public class ShopTab {
                 JPanel temp = new JPanel();
                 temp.setOpaque(false);
 
-                JPanel welcomePanel = new RoundedPanel(100, 100, false);
+                JPanel welcomePanel = new RoundedPanel(100, 100, false, true);
 
                 JLabel welcomeLabel = new JLabel("<html>Bienvenue dans le Shop du jeu.<br>Ajoutez au panier des articles avec la monnaie disponible, et sauvegardez.<br>Vous pouvez également retourner au menu sans effectuer d'achat.</html>");
                 welcomePanel.add(welcomeLabel);
@@ -93,9 +94,9 @@ public class ShopTab {
                 break;
 
             case "background":
-                addItemToPanel(mainMenuPanel, path + "Background_MainMenu.png", 20, "Background 1");
-                addItemToPanel(mainMenuPanel, path + "Background_Solo.png", 20, "Background 2");
-                addItemToPanel(mainMenuPanel, path + "bgForet.png", 25, "Background 3");
+                addItemToPanel(mainMenuPanel, path + "bgClassiqueCave.png", 20, "Background 1");
+                addItemToPanel(mainMenuPanel, path + "bgClassiqueLake.png", 25, "Background 2");
+                addItemToPanel(mainMenuPanel, path + "bgClassiqueForet.png", 30, "Background 3");
                 break;
 
 
@@ -122,7 +123,7 @@ public class ShopTab {
 
 
     /**
-     * Ajoute un article à un JPanel en tant qu'élément de liste avec un bouton associé pour le supprimer.
+     * Ajoute un article à un JPanel en tant qu'élément de liste avec un bouton associé pour l'ajouter au panier.
      *
      * @param panel Le JPanel où l'article sera ajouté.
      * @param imagePath Le chemin de l'image de l'article.
@@ -130,26 +131,16 @@ public class ShopTab {
      */
     private void addItemToPanel(JPanel panel, String imagePath, int articlePrice, String itemName) {
         // Création d'un panel arrondi pour l'article
-        RoundedPanel itemRoundedPanel = new RoundedPanel(20, 20, true); // Ajustez les dimensions des coins arrondis selon vos préférences
+        RoundedPanel itemRoundedPanel = new RoundedPanel(20, 20, true, false);
         itemRoundedPanel.setLayout(new BorderLayout());
         itemRoundedPanel.setOpaque(false);
         itemRoundedPanel.setBorder(null);
         itemRoundedPanel.setFocusable(false);
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int screenWidth = (int) screenSize.getWidth();
-        int screenHeight = (int) screenSize.getHeight();
+
 
         //Image
-        ImageIcon icon = new ImageIcon(imagePath);
-        if (itemName.contains("Sword") || itemName.contains("Music")){
-            Image resizedImage = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-            icon = new ImageIcon(resizedImage);
-        } else if (itemName.contains("Background")){
-            Image resizedImage = icon.getImage().getScaledInstance(screenWidth/10, screenHeight/10, Image.SCALE_SMOOTH);
-            icon = new ImageIcon(resizedImage);
-        }
-
+        ImageIcon icon = adapteImage(imagePath, itemName);
 
 
         // Création du bouton pour l'article
@@ -158,20 +149,63 @@ public class ShopTab {
         itemButton.setBorderPainted(false);
         itemButton.setContentAreaFilled(false);
         itemButton.setFocusPainted(false);
+        itemButton.setBackground(new Color(255, 255, 255, 200));
 
         RoundedPanel itemCaption = makeItemCaption(articlePrice, itemName);
 
         itemRoundedPanel.add(itemButton);
         itemRoundedPanel.add(itemCaption, BorderLayout.SOUTH);
 
-
         panel.add(itemRoundedPanel);
 
+
+        // Ajoute un MouseListener pour changer le curseur en main quand la souris survole
+        itemButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                itemButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {itemButton.setCursor(Cursor.getDefaultCursor());
+            }
+        });
+
+
+        // Configure le bouton pour ajouter l'article au panier lorsqu'il est cliqué
         shopMenu.configureButton(itemButton, e -> {
             shopMenu.cart.addArticle(new ShopItem(itemName, articlePrice, imagePath));
             refreshCartTab();
         });
+
     }
+
+
+
+    /**
+     * Adapte la taille de l'image en fonction de la catégorie de l'article pour l'affichage dans l'inventaire et dans la boutique du jeu.
+     *
+     * @param imagePath Le chemin de l'image de l'article.
+     * @param itemName Le nom de l'article.
+     * @return L'ImageIcon adapté à la taille spécifique de la catégorie de l'article.
+     */
+
+    static ImageIcon adapteImage(String imagePath, String itemName) {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenWidth = (int) screenSize.getWidth();
+        int screenHeight = (int) screenSize.getHeight();
+
+        ImageIcon icon = new ImageIcon(imagePath);
+        if (itemName.contains("Sword") || itemName.contains("Music")){
+            Image resizedImage = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+            icon = new ImageIcon(resizedImage);
+        } else if (itemName.contains("Background")){
+            Image resizedImage = icon.getImage().getScaledInstance(screenWidth/5, screenHeight /5, Image.SCALE_SMOOTH);
+            icon = new ImageIcon(resizedImage);
+        }
+        return icon;
+    }
+
 
 
 
@@ -184,35 +218,40 @@ public class ShopTab {
      */
 
     private static RoundedPanel makeItemCaption(int articlePrice, String itemName) {
-        RoundedPanel itemCaption = new RoundedPanel(20,20, false);
+        RoundedPanel itemCaption = new RoundedPanel(125,125, false, false);
         itemCaption.setLayout(new BorderLayout());
 
-        JLabel itemNameLabel = new JLabel("  " + itemName);
-        itemNameLabel.setHorizontalAlignment(SwingConstants.LEFT);
+
+        JLabel itemNameLabel = new JLabel("           " + itemName);
+        itemNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         JLabel itemPriceLabel = new JLabel(String.valueOf(articlePrice));
         itemPriceLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
 
         ImageIcon coinIcon = new ImageIcon(RessourcesPaths.iconPath + "coin.png");
         JLabel coinLabel = new JLabel(coinIcon);
         coinLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         coinLabel.setOpaque(false);
 
-        //JPanel pour priceLabel et coinLabel
+        //JPanel englobant pour priceLabel et coinLabel
         JPanel pricePanel = new JPanel(new BorderLayout());
         pricePanel.add(itemPriceLabel, BorderLayout.CENTER);
         pricePanel.add(coinLabel, BorderLayout.EAST);
         pricePanel.setOpaque(false);
 
 
+
         itemCaption.setFont(itemCaption.getFont().deriveFont(Font.BOLD | Font.ITALIC, 14f));
-        itemCaption.setBackground(new Color(255, 255, 255, 200));
-        itemCaption.setOpaque(false);
-        itemCaption.add(itemNameLabel, BorderLayout.WEST);
+        itemCaption.setBackground(new Color(255, 255, 255, 255));
+        itemCaption.add(itemNameLabel, BorderLayout.CENTER);
         itemCaption.add(pricePanel, BorderLayout.EAST);
 
         return itemCaption;
     }
+
+
+
 
 
     /**

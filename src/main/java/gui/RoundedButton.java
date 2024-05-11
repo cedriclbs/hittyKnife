@@ -4,8 +4,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
-public class RoundedButton extends JButton {
 
+/**
+ * Cette classe représente bouton arrondi personnalisé.
+ * Ce bouton affiche un arrière-plan arrondi avec des coins arrondis.
+ * Elle étend la classe JButton.
+ */
+
+
+public class RoundedButton extends JButton {
+    private Shape shape;
+
+
+    /**
+     * Constructeur de la classe RoundedButton.
+     *
+     * @param text Le texte affiché sur le bouton.
+     */
     public RoundedButton(String text) {
         super(text);
         setContentAreaFilled(false);
@@ -38,5 +53,4 @@ public class RoundedButton extends JButton {
         return shape.contains(x, y);
     }
 
-    private Shape shape;
 }
