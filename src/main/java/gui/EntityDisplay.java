@@ -208,7 +208,7 @@ public class EntityDisplay extends JPanel {
         if (knifePathClicked.equals(abr +"knife.png")){
             res = abr + "knifeRotate1.png";
         } else if (knifePathClicked.equals(abr +"knife#2.png")){
-            res = abr + "knifeRotate2.png";
+            res = abr + "knifeRotated2.png";
         } else if (knifePathClicked.equals(abr +"knife#3.png")){
             res = abr+ "knifeRotate3.png";
         }

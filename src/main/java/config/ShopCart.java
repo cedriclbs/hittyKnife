@@ -48,7 +48,7 @@ public class ShopCart {
     public void addArticle (ShopItem article){
         if (this.cart.contains(article)){
             JOptionPane.showMessageDialog(null, "Cet article est déjà dans le panier.");
-        } else if (this.game.library != null && this.game.library.getLibraryItems().contains(article)) {
+        } else if (this.game.getInventaire() != null && this.game.getInventaire().contains(article)) {
             JOptionPane.showMessageDialog(null, "Article déjà approprié.");
         } else {
             cart.add(article);
@@ -66,6 +66,7 @@ public class ShopCart {
         if (cart.contains(article)) {
             cartTotal -= article.getArticlePrice(); // Soustraire le prix de l'article supprimé du total du panier
             cart.remove(article);
+            updateCartTotal();
         } else {
             JOptionPane.showMessageDialog(null, "Cet article n'est pas dans le panier.");
         }
@@ -83,6 +84,8 @@ public class ShopCart {
      * @param labelName      Le nom du label du panier.
      * @return Le JPanel contenant le panier d'achats.
      */
+
+
     public JPanel displayCart(ShopMenu shopMenu, List<ShopItem> list, ShopTab shopTab, JPanel mainMenuPanel, String labelName) {
         JPanel temp2 = new JPanel();
         temp2.setOpaque(false);
@@ -148,7 +151,7 @@ public class ShopCart {
 
         JButton saveButton = new JButton("Sauvegarder");
         saveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        saveButton.addActionListener(e -> shopMenu.saveCart());
+        saveButton.addActionListener(e -> shopMenu.saveCart(game));
         cartPanel.add(saveButton);
 
 

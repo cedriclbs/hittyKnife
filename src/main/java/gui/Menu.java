@@ -82,7 +82,6 @@ abstract class Menu extends JPanel {
      * Sauvegarde l'état actuel du jeu dans un fichier spécifié et ferme l'application.
      */
     void quitterEtSauvegarder() {
-        //System.out.print("quitter");
         if (game != null) {
             game.sauvegarderEtat();
         }

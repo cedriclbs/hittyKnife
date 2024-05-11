@@ -72,7 +72,7 @@ public class HomeMenu extends Menu {
         shopButton.setFocusPainted(false);
         shopButton.setBorderPainted(false);
         shopButton.setContentAreaFilled(false);
-        shopButton.addActionListener(e -> showShop());
+        //shopButton.addActionListener(e -> showShop());
         shopButtonPanel.add(shopButton);
         panel.add(shopButtonPanel);
 
@@ -93,23 +93,5 @@ public class HomeMenu extends Menu {
         return panel;
     }
 
-    /**
-     * Affiche le jeu en mode solo lorsque le bouton "Solo" est cliqué.
-     */
-//    private void showGame() {
-//        GameView gameView = new GameView(true);
-//        gameView.startSoloGame();
-//    }
-//
-//    private void show1v1Menu() {
-//        GameView gameView = new GameView(false);
-//        gameView.startSoloGame();
-//    }
 
-    private void showShop() {
-        if (shopMenu == null) {
-            shopMenu = new ShopMenu(null);
-        }
-        shopMenu.startShopMenu();
-    }
 }
