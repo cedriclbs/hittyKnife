@@ -174,8 +174,7 @@ public class GameView extends JPanel{
      * @param backgroundPath Le chemin d'accès à la nouvelle image de fond.
      */
     public void updateBackgroundImage(String backgroundPath) {
-        System.out.println(backgroundPath);
-        this.initBg(backgroundPath);
+        this.entityDisplay.initBg(backgroundPath);
         revalidate();
         repaint();
     }
