@@ -424,6 +424,32 @@ public class EntityDisplay extends JPanel {
             g2d.drawImage(knifeImagePowered, transform, this);
         }
 
+        //--------------------------TRAJECTOIRE SOUS FORME DE ROND DU COUTEAU ----------------------------------------
+       
+        // Calcul de la pointe du couteau
+        double angleInRadians = Math.toRadians(knife.getAngle() + 180);
+        int tipX = knifeX + (int) (knifeImgHeight / 2 * Math.cos(angleInRadians));
+        int tipY = knifeY + (int) (knifeImgHeight / 2 * Math.sin(angleInRadians));
+
+        // Longueur de la ligne de trajectoire
+        double lineLength = 280; // 2,7 cm en pixels 
+
+        // Nombre de cercles
+        int numCircles = 11;
+        double stepSize = (lineLength / numCircles) * 0.7; //taille des espacements
+        double radius = 4.5; // Rayon initial des cercles
+
+        for (int i = 0; i < numCircles; i++) {
+            int circleX = tipX + (int) (i * stepSize * Math.cos(angleInRadians));
+            int circleY = tipY + (int) (i * stepSize * Math.sin(angleInRadians));
+            double currentRadius = radius * Math.pow(0.90, i); // Formule exponentielle pour diminuer le rayon
+            int opacity = (int) (255 * (1 - (double) i / numCircles)); // Opacité qui diminue
+            g2d.setColor(new Color(255, 255, 255, opacity)); 
+            g2d.fillOval(circleX - (int) currentRadius, circleY - (int) currentRadius, (int) (2 * currentRadius), (int) (2 * currentRadius));
+        }
+
+
+
         //--------------------------AFFICHAGE ANIMATION COLLISION -------------------------------
 
         animationCollision(g2d,knifeImgWidth,knifeImgHeight,cibleImWidth,cibleImHeight);
