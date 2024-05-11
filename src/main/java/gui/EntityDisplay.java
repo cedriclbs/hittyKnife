@@ -432,7 +432,7 @@ public class EntityDisplay extends JPanel {
         int tipY = knifeY + (int) (knifeImgHeight / 2 * Math.sin(angleInRadians));
 
         // Longueur de la ligne de trajectoire
-        double lineLength = 280; // 2,7 cm en pixels 
+        double lineLength = 280; // 2,8 cm en pixels 
 
         // Nombre de cercles
         int numCircles = 11;
