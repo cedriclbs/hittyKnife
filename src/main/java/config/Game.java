@@ -574,6 +574,11 @@ public class Game {
     @JsonProperty("currentBackgroundPath")
     public void setCurrentBackgroundPath(String currentBackgroundPath) {
         this.currentBackgroundPath = currentBackgroundPath;
+        // Extrait l'indice du chemin de l'image de fond
+        String indexStr = currentBackgroundPath.replaceAll("[^0-9]", ""); // Enlève tout sauf les chiffres
+        if (!indexStr.isEmpty()) {
+            lastBackgroundIndex = Integer.parseInt(indexStr);
+        }
     }
 
 

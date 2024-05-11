@@ -204,7 +204,7 @@ public class RoundManagement {
      * @return Un type de boss aléatoire.
      */
     private TypeCible getRandomTypeBoss() {
-        // Assurez-vous que la queue principale a des éléments à offrir
+        // S'assure que la queue principale a des éléments à offrir
         if (bossQueue.isEmpty()) {
             refillBossQueue();
         }
