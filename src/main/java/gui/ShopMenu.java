@@ -46,7 +46,6 @@ public class ShopMenu extends JPanel {
 
         tabbedPane.setOpaque(false);
 
-        ShopTab accueil = new ShopTab(tabbedPane, "Accueil", null, "shopWelcomeTab.png", "welcome", this);
         ShopTab couteaux = new ShopTab(tabbedPane, "Couteaux", RessourcesPaths.knifePath, "knifeTab.png", "couteaux", this);
         ShopTab background = new ShopTab(tabbedPane, "Background", RessourcesPaths.backgroundPath, "bgTab.png", "background", this);
         ShopTab music = new ShopTab(tabbedPane, "Music", RessourcesPaths.buttonPath, "musicTab.png", "music", this);
