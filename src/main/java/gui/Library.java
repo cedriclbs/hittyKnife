@@ -136,14 +136,14 @@ public class Library extends BackgroundPanel  implements LibraryObserver {
 
         }
 
-        JLabel welcomeLabel = new JLabel("Welcome to Hitty Knife - Redux");
-        JLabel usernameLabel = new JLabel("Dear " + game.getNomUtilisateur());
+        JLabel welcomeLabel = new JLabel(" へようこそ Hitty Knife - Redux");
+        JLabel usernameLabel = new JLabel("先生 " + game.getNomUtilisateur());
 
         welcomeLabel.setFont(new Font("Old English Text MT", Font.BOLD, 24));
-        welcomeLabel.setForeground(Color.WHITE);
+        welcomeLabel.setForeground(new Color(245,13,13));
 
         usernameLabel.setFont(new Font("Old English Text MT", Font.BOLD, 24));
-        usernameLabel.setForeground(Color.WHITE);
+        usernameLabel.setForeground(new Color(245,13,13));
 
         JPanel labelPanel = new JPanel();
         labelPanel.add(welcomeLabel);
