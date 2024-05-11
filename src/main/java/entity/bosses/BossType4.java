@@ -37,7 +37,7 @@ public class BossType4 extends Boss{
         switch (phase) {
             case 1: // Gauche à droite jusqu'à une certaine X
                 newX += deplacement;
-                if (newX >= -30) {
+                if (newX >= -25) {
                     phase = 2; // Passer à la phase suivante
                 }
                 break;
@@ -56,13 +56,13 @@ public class BossType4 extends Boss{
                 break;
             case 4: // Continuer de droite à gauche jusqu'à une certaine -X (opposée à la première phase)
                 newX -= deplacement;
-                if (newX <= 30) {
+                if (newX <= 25) {
                     phase = 5; // Passer à la phase suivante
                 }
                 break;
             case 5: // De haut en bas jusqu'à une certaine Y
                 newY += deplacement;
-                if (newY >= 30) {
+                if (newY >= 25) {
                     phase = 6; // Passer à la phase suivante
                 }
                 break;

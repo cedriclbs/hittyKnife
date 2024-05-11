@@ -117,20 +117,19 @@ public class EntityDisplay extends JPanel {
         //this.explosionIcon = new ImageIcon("src/main/ressources/effets/explosion.gif");
         this.explosionIcon = new ImageIcon("src/main/ressources/effets/explosion4.png").getImage();
 
-        this.knifeImage = new ImageIcon(RessourcesPaths.knifePath + "knifeRotate2.png").getImage();
-        this.knifeImagePowered = new ImageIcon("src/main/ressources/knifes/knifeRotate2Powered.png").getImage();
-        this.cibleImage = new ImageIcon("src/main/ressources/targets/target#1.png").getImage();
-        this.ciblesMouventeImage =  new ImageIcon("src/main/ressources/targets/target#2.png").getImage();
-        this.bonusPower = new ImageIcon("src/main/ressources/targets/target#1Power.png").getImage();
-        this.bonusGold = new ImageIcon("src/main/ressources/targets/targetCoin.png").getImage();
-        this.bonusXP = new ImageIcon("src/main/ressources/targets/targetXP.png").getImage();
-        this.bonusGel = new ImageIcon("src/main/ressources/targets/targetGel.png").getImage();
-        this.targetTNT = new ImageIcon("src/main/ressources/targets/targetTNT.png").getImage();
-        String filepath = "src/main/ressources/targets/";
-        this.bossT1 = new ImageIcon(filepath + "Boss2 (1).png").getImage();
-        this.bossT2 = new ImageIcon(filepath + "Boss2 (1).png").getImage();
-        this.bossT3 = new ImageIcon(filepath + "Boss2 (1).png").getImage();
-        this.bossT4 = new ImageIcon(filepath + "Boss2 (1).png").getImage();
+        this.knifeImage = new ImageIcon(RessourcesPaths.knifePath + "knifeRotate1.png").getImage();
+        this.knifeImagePowered = new ImageIcon(RessourcesPaths.knifePath + "knifePowered.png").getImage();
+        this.cibleImage = new ImageIcon(RessourcesPaths.targetPath + "target#1.png").getImage();
+        this.ciblesMouventeImage =  new ImageIcon(RessourcesPaths.targetPath + "target#2.png").getImage();
+        this.bonusPower = new ImageIcon(RessourcesPaths.targetPath + "target#2Power.png").getImage();
+        this.bonusGold = new ImageIcon(RessourcesPaths.targetPath + "targetCoin.png").getImage();
+        this.bonusXP = new ImageIcon(RessourcesPaths.targetPath + "targetXP.png").getImage();
+        this.bonusGel = new ImageIcon(RessourcesPaths.targetPath + "targetGel.png").getImage();
+        this.targetTNT = new ImageIcon(RessourcesPaths.targetPath + "targetTNT.png").getImage();
+        this.bossT1 = new ImageIcon(RessourcesPaths.targetPath + "Boss2 (1).png").getImage();
+        this.bossT2 = new ImageIcon(RessourcesPaths.targetPath + "Boss2 (1).png").getImage();
+        this.bossT3 = new ImageIcon(RessourcesPaths.targetPath + "Boss2 (1).png").getImage();
+        this.bossT4 = new ImageIcon(RessourcesPaths.targetPath + "Boss2 (1).png").getImage();
         int w = this.knifeImage.getWidth(null)/3;
         int h = this.knifeImage.getHeight(null)/3;
         this.knifeImage = this.knifeImage.getScaledInstance(w,h,Image.SCALE_SMOOTH);
@@ -424,6 +423,32 @@ public class EntityDisplay extends JPanel {
         else{
             g2d.drawImage(knifeImagePowered, transform, this);
         }
+
+        //--------------------------TRAJECTOIRE SOUS FORME DE ROND DU COUTEAU ----------------------------------------
+       
+        // Calcul de la pointe du couteau
+        double angleInRadians = Math.toRadians(knife.getAngle() + 180);
+        int tipX = knifeX + (int) (knifeImgHeight / 2 * Math.cos(angleInRadians));
+        int tipY = knifeY + (int) (knifeImgHeight / 2 * Math.sin(angleInRadians));
+
+        // Longueur de la ligne de trajectoire
+        double lineLength = 280; // 2,8 cm en pixels 
+
+        // Nombre de cercles
+        int numCircles = 11;
+        double stepSize = (lineLength / numCircles) * 0.7; //taille des espacements
+        double radius = 4.5; // Rayon initial des cercles
+
+        for (int i = 0; i < numCircles; i++) {
+            int circleX = tipX + (int) (i * stepSize * Math.cos(angleInRadians));
+            int circleY = tipY + (int) (i * stepSize * Math.sin(angleInRadians));
+            double currentRadius = radius * Math.pow(0.90, i); // Formule exponentielle pour diminuer le rayon
+            int opacity = (int) (255 * (1 - (double) i / numCircles)); // Opacité qui diminue
+            g2d.setColor(new Color(255, 255, 255, opacity)); 
+            g2d.fillOval(circleX - (int) currentRadius, circleY - (int) currentRadius, (int) (2 * currentRadius), (int) (2 * currentRadius));
+        }
+
+
 
         //--------------------------AFFICHAGE ANIMATION COLLISION -------------------------------
 
