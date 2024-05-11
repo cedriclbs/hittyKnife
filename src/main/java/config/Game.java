@@ -69,7 +69,8 @@ public class Game {
     private int level;
     @JsonProperty("xp")
     private int xp;
-    private int currentLevel;
+    @JsonProperty("currentlevel")
+    private int currentLevel = 1;
     @JsonProperty("currentBackgroundPath")
     private String currentBackgroundPath;
 
@@ -546,6 +547,7 @@ public class Game {
         }
     }
 
+    @JsonProperty("currentlevel")
     public int getCurrentLevel() {
         return currentLevel;
     }
