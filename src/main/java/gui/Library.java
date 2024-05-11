@@ -74,6 +74,9 @@ public class Library extends BackgroundPanel  implements LibraryObserver {
     private void afficher() {
         setLayout(new BorderLayout());
 
+        // Vide les panels avant de les remplir à nouveau
+        removeAllPanels();
+
         RoundedPanel leftPanel = new RoundedPanel(20, 20, false, true);
         leftPanel.setLayout(new GridLayout(getRowOrCol("left"), 1, 0, 10));
         JPanel middlePanel = new JPanel(new GridBagLayout());
@@ -175,6 +178,19 @@ public class Library extends BackgroundPanel  implements LibraryObserver {
         this.add(bottomPanel, BorderLayout.SOUTH);
 
 
+    }
+
+    /**
+     * Méthode pour vider tous les panels avant de les remplir à nouveau.
+     */
+    private void removeAllPanels() {
+        if (getComponentCount() > 0) {
+            for (Component comp : getComponents()) {
+                if (comp instanceof JPanel) {
+                    ((JPanel) comp).removeAll();
+                }
+            }
+        }
     }
 
 }
