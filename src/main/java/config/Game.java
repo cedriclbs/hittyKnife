@@ -521,7 +521,7 @@ public class Game {
                 this.argent += 10;
                 break;
             case 4:
-                inventaire.add(new ShopItem("music.png", 30, "src/main/ressources/music/Battle_Theme.wav"));
+                inventaire.add(new ShopItem("src/main/ressources/music/Battle_Theme.wav", 30, "src/main/ressources/button/music.png"));
                 updateLibrary(inventaire);
                 break;
             case 5:
@@ -535,14 +535,15 @@ public class Game {
                 this.argent += 10;
                 break;
             case 8:
-                inventaire.add(new ShopItem("music.png", 0,"src/main/ressources/music/Battle_Theme.wav"));
+                inventaire.add(new ShopItem("src/main/ressources/music/Main_Theme.wav", 0,"src/main/ressources/button/music.png"));
                 updateLibrary(inventaire);
                 break;
             case 9:
                 this.argent += 10;
                 break;
             case 10:
-                this.argent += 10;
+                inventaire.add(new ShopItem("src/main/ressources/music/Battle_Theme_2.wav", 0,"src/main/ressources/button/music.png"));
+                updateLibrary(inventaire);
                 break;
             case 11:
                 this.argent += 10;

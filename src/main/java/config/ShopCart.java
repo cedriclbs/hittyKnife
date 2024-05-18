@@ -1,7 +1,6 @@
 package config;
 
 import gui.ShopMenu;
-import gui.ShopTab;
 
 import javax.swing.*;
 import java.awt.*;
