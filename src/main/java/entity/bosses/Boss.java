@@ -40,10 +40,6 @@ public class Boss extends Cible {
         return bosstype;
     }
 
-    public void takeDamage(int damage) {
-        health -= damage;
-    }
-
     /**
      * Méthode pour gérer une attaque contre le boss avec un couteau.
      */
