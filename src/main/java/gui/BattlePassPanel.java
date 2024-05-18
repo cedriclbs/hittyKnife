@@ -14,14 +14,13 @@ public class BattlePassPanel extends JPanel implements GameObserver {
     private Game game;
     private Image backgroundImage;
 
-    public Image getBackgroundImage() {
-        return backgroundImage;
-    }
 
-    public void setBackgroundImage(Image backgroundImage) {
-        this.backgroundImage = backgroundImage;
-    }
-
+    /**
+     * Constructeur de la classe BattlePassPanel.
+     * Initialise le panneau du passe de combat avec les paramètres du jeu et crée la carte des récompenses atteintes.
+     *
+     * @param game L'instance du jeu associée à ce panneau.
+     */
     public BattlePassPanel(Game game) {
         this.game = game;
         this.currentLevel = game.getLevel();
@@ -41,7 +40,22 @@ public class BattlePassPanel extends JPanel implements GameObserver {
         }
     }
 
-    // Méthode pour mettre à jour les paliers en fonction du niveau/XP du jeu
+    public Image getBackgroundImage() {
+        return backgroundImage;
+    }
+
+    public void setBackgroundImage(Image backgroundImage) {
+        this.backgroundImage = backgroundImage;
+    }
+
+     private Image getRewardIcon(int palier) {
+        return new ImageIcon("path/to/your/reward/icon.png").getImage();
+    }
+
+    /**
+     * Met à jour l'affichage des paliers en fonction du niveau du joueur.
+     * Elle marque les récompenses atteintes et ajoute des cases pour chaque palier avec des couleurs différentes.
+     */
     private void updatePaliers() {
         int currentLevel = game.getLevel();
 
@@ -76,45 +90,6 @@ public class BattlePassPanel extends JPanel implements GameObserver {
         repaint();
     }
 
-    /*
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        int x = 50; // Position horizontale de départ pour les cases
-        int y = getHeight() / 2; // Position verticale au centre du panneau
-        int width = 50; // Largeur des cases
-        int height = 50; // Hauteur des cases
-
-        // Dessine chaque palier du battlepass
-        for (int palier = 1; palier <= MAX_PALIER; palier++) {
-            // Dessine la case
-            g.setColor(rewardsReached.get(palier) ? Color.WHITE : Color.GRAY);
-            g.fillRect(x, y, width, height);
-            g.setColor(Color.BLACK);
-            g.drawRect(x, y, width, height);
-            // Dessine le numéro du palier au centre de la case
-            g.drawString(String.valueOf(palier), x + width / 2 - 5, y + height / 2 + 5);
-            // Dessine l'icône de récompense si le palier est atteint
-            if (rewardsReached.get(palier)) {
-                // Dessine une icône factice, vous pouvez remplacer par vos propres images
-                //g.drawImage(getRewardIcon(palier), x + 5, y + 5, width - 10, height - 10, null);
-                g.setColor(Color.red);
-            }
-            x += width + 10; // Décale la position horizontale pour la prochaine case
-        }
-
-        // Dessine le niveau de l'utilisateur
-        g.drawString("Niveau : " + game.getLevel(), getWidth() / 2 - 30, getHeight() - 20);
-    }
-    */
-
-    // Méthode factice pour obtenir l'icône de récompense en fonction du palier
-    private Image getRewardIcon(int palier) {
-        // Ici vous devriez charger vos propres images d'icônes de récompense
-        // Cette méthode retourne une image factice à des fins de démonstration
-        // Remplacez cette méthode par une qui charge réellement vos images d'icônes
-        return new ImageIcon("path/to/your/reward/icon.png").getImage();
-    }
     @Override
     public void onLevelChange() {
         updatePaliers();
