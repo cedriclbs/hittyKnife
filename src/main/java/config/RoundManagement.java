@@ -290,16 +290,6 @@ public class RoundManagement {
             Collections.shuffle((LinkedList<TypeCible>) bossQueue);
         }
     }
-
-    /**
-     * Vérifie si tous les rounds sont complétés.
-     *
-     * @return true si tous les rounds sont complétés, sinon false.
-     */
-    private int getRndIntTargetRounds() {
-        return 4 + random.nextInt(4);
-        //return 1;
-    }
     // méthode pour vérifier si tous les rounds sont complétés
     public boolean isAllRoundsCompleted() {
         return currentRoundIndex == rounds.size();
