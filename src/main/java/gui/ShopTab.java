@@ -69,7 +69,7 @@ public class ShopTab {
         switch (category) {
 
             case "couteaux":
-                addItemToPanel(mainMenuPanel, path + "knife.png", 15, "Sword 1");
+                addItemToPanel(mainMenuPanel, path + "knife#1.png", 15, "Sword 1");
                 addItemToPanel(mainMenuPanel, path + "knife#2.png", 20,"Sword 2");
                 addItemToPanel(mainMenuPanel, path + "knife#3.png", 25,"Sword 3");
                 break;
