@@ -14,7 +14,6 @@ import entity.bosses.*;
 import gui.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gui.Library;
 
 /**
  * Classe principale du jeu gérant l'état du jeu, y compris le couteau, les cibles et les vies.
@@ -63,7 +62,7 @@ public class Game {
     @JsonProperty("argent")
     private int argent;
     @JsonProperty("inventaire")
-    private List<ShopItem> inventaire = new ArrayList<>();
+    private List<ShopItem> inventaire;
 
     @JsonProperty("level")
     private int level;
@@ -94,13 +93,14 @@ public class Game {
         System.out.println("creation game");
         this.knife1 = new Knife();
         this.knife2 = new Knife();
+        initInventaire();
         this.roundManagement = new RoundManagement();
         this.gameView = new GameView(isSolo,this);
         this.currentLevel = 1;
         this.xpThreshold = 100;
         this.xp = 0;
         this.level = 1;
-        this.currentBackgroundPath = null;
+        this.currentBackgroundPath = "";
         loadGameState();
         initGame();
 
@@ -175,11 +175,18 @@ public class Game {
     }
 
 
+    public void initInventaire () {
+        this.inventaire = new ArrayList<>();
+        //Articles par défaut :
+        this.inventaire.add(new ShopItem("Sword 1", 15, RessourcesPaths.knifePath + "knife.png"));
+        this.inventaire.add(new ShopItem("Music 1", 30, RessourcesPaths.buttonPath + "music.png"));
+    }
+
+
     /**
     * Charge l'état du jeu à partir du fichier de sauvegarde spécifié dans cheminSauvegarde.
     * Cette méthode lit les données sauvegardées comme le niveau actuel, les points d'expérience,
     * le niveau, et l'argent, puis les affecte aux attributs correspondants de l'instance en cours.
-    *
     * Le chemin du fichier de sauvegarde est déterminé par l'attribut cheminSauvegarde de l'instance.
     * Si une erreur se produit lors du chargement, l'erreur est enregistrée dans la console.
     */
@@ -489,6 +496,9 @@ public class Game {
 
     public Game chargerEtat(String cheminFichier) throws IOException {
         try {
+            if (cheminFichier == null || cheminFichier.isEmpty()) {
+                throw new IllegalArgumentException("Chemin de fichier invalide");
+            }
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(new File(cheminFichier), Game.class);
         } catch (IOException e) {
@@ -573,7 +583,11 @@ public class Game {
 
     @JsonProperty("currentBackgroundPath")
     public void setCurrentBackgroundPath(String currentBackgroundPath) {
+        if (currentBackgroundPath == null) {
+            return; // Avoid setting null
+        }
         this.currentBackgroundPath = currentBackgroundPath;
+
         // Extrait l'indice du chemin de l'image de fond
         String indexStr = currentBackgroundPath.replaceAll("[^0-9]", ""); // Enlève tout sauf les chiffres
         if (!indexStr.isEmpty()) {

@@ -1,97 +1,211 @@
 package gui;
 
+import config.Game;
+import config.RessourcesPaths;
+import config.ShopItem;
+
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
+
+import static gui.ShopTab.adapteImage;
 
 /**
- * La classe {@code HomeMenu} étend {@code Menu} pour représenter le menu principal du jeu.
- * Elle gère l'affichage des différentes options du menu telles que jouer, accéder aux paramètres, au magasin (shop), ou quitter le jeu.
- * <p>
- * Cette classe configure l'interface utilisateur du menu principal, y compris la musique de fond et le placement des boutons.
- * </p>
+ * Cette classe représente la page d'accueil du jeu dans l'interface graphique.
+ * Elle utilise un panneau avec une image de fond pour personnaliser son apparence.
+ * De plus, elle affiche l'inventaire du jeu.
  */
-public class HomeMenu extends Menu {
+public class HomeMenu extends BackgroundPanel  implements LibraryObserver {
+    private Game game;
+    private List<ShopItem> inventaire;
 
-    private ShopMenu shopMenu;
 
-
-    //TODO: quand on appuie sur échap, enlève le plein écran
     /**
-     * Crée l'interface du menu principal avec le titre spécifié, le chemin vers l'image de fond et le chemin vers la musique de fond.
+     * Constructeur de la classe HomeMenu.
      *
-     * @param backgroundPath Le chemin d'accès au fichier d'image de fond du menu.
-     * @param musicPath Le chemin d'accès au fichier audio de la musique de fond.
+     * @param game Le jeu associé à la bibliothèque.
      */
-    public HomeMenu(String backgroundPath, String musicPath) {
-        super(backgroundPath, musicPath);
+    public HomeMenu(Game game) {
+        super(RessourcesPaths.backgroundPath + "bgHome.gif");
+        this.game = game;
+        this.inventaire = game.getInventaire();
+        afficherInventaire();
     }
 
+
+
+
     /**
-     * Crée et retourne un {@link JPanel} configuré avec l'image de fond spécifiée et les boutons du menu.
-     * <p>
-     * Ce panel inclut les boutons pour les actions "Solo", "1v1", "Shop", et "Quitter", chacun configuré avec ses propres actions.
-     * </p>
-     *
-     * @param backgroundPath Le chemin d'accès au fichier d'image de fond pour le panel.
-     * @return Le {@link JPanel} configuré pour le menu principal.
+     * Met à jour l'inventaire du jeu en récupérant l'inventaire de la classe Game
+     * puis ensuite affiche l'inventaire mis à jour dans la page d'accueil.
      */
     @Override
-    JPanel createMenuPanel(String backgroundPath) {
-        String ButtonAd = "src/main/ressources/button";
-
-        BackgroundPanel panel = new BackgroundPanel(backgroundPath);
-        panel.setLayout(new GridLayout(4, 1, 0, 20)); //Espacement vertical entre les boutons
-        panel.setBorder(BorderFactory.createEmptyBorder(40, 20, 40, 20)); // Ajoute des marges
-
-        // Bouton "Solo"
-        JPanel campaignButtonPanel = new JPanel();
-        campaignButtonPanel.setOpaque(false); // Rend le panel transparent
-        JButton campaignButton = new JButton(new ImageIcon(ButtonAd + "/PlayButton.png"));
-        campaignButton.setFocusPainted(false);
-        campaignButton.setBorderPainted(false);
-        campaignButton.setContentAreaFilled(false);
-        //campaignButton.addActionListener(e -> showGame());
-        campaignButtonPanel.add(campaignButton);
-        panel.add(campaignButtonPanel);
-
-        // Bouton "1v1"
-        JPanel versusButtonPanel = new JPanel();
-        versusButtonPanel.setOpaque(false); // Rend le panel transparent
-        JButton versusButton = new JButton(new ImageIcon(ButtonAd + "/VersusButton.png"));
-        versusButton.setFocusPainted(false);
-        versusButton.setBorderPainted(false);
-        versusButton.setContentAreaFilled(false);
-        //versusButton.addActionListener(e -> show1v1Menu());
-        versusButtonPanel.add(versusButton);
-        panel.add(versusButtonPanel);
-
-        // Bouton "Shop"
-        JPanel shopButtonPanel = new JPanel();
-        shopButtonPanel.setOpaque(false); // Rend le panel transparent
-        JButton shopButton = new JButton(new ImageIcon(ButtonAd + "/ShopButton.png"));
-        shopButton.setFocusPainted(false);
-        shopButton.setBorderPainted(false);
-        shopButton.setContentAreaFilled(false);
-        //shopButton.addActionListener(e -> showShop());
-        shopButtonPanel.add(shopButton);
-        panel.add(shopButtonPanel);
-
-        // Bouton "Quitter"
-        JPanel quitterButtonPanel = new JPanel();
-        quitterButtonPanel.setOpaque(false); // Rend le panel transparent
-        JButton quitterButton = new JButton(new ImageIcon(ButtonAd + "/QuitButton.png"));
-        quitterButton.setFocusPainted(false);
-        quitterButton.setBorderPainted(false);
-        quitterButton.setContentAreaFilled(false);
-        quitterButton.addActionListener(e -> quitterEtSauvegarder());
-        quitterButtonPanel.add(quitterButton);
-        panel.add(quitterButtonPanel);
-
-        // Définition de la taille préférée pour centrer dans le GridBagLayout
-        panel.setPreferredSize(new Dimension(500, 800)); // Taille du panel de menu
-
-        return panel;
+    public void updateInventaire() {
+        this.inventaire = game.getInventaire();
+        afficherInventaire();
     }
 
 
+
+
+    /**
+     * Détermine le nombre de lignes ou de colonnes nécessaires en fonction du contenu de l'inventaire
+     * pour le positionnement des articles dans un panneau spécifique.
+     * Par exemple, le panneau des couteaux nécessite un nombre de colonnes correspondant au nombre de couteaux
+     * disponibles dans l'inventaire.
+     *
+     * @param pos La position spécifiée ("left", "right", ou "bottom").
+     * @return Le nombre de lignes ou de colonnes correspondant au nombre de contenu.
+     */
+    public int getRowOrCol (String pos) {
+        int res = 0;
+        for (ShopItem item : inventaire) {
+            if (pos.equals("left") && item.getArticleImagePath().contains("knife")){
+                res++;
+            } else if (pos.equals("right") && item.getArticleImagePath().contains("music")){
+                res++;
+            } else if (pos.equals("bottom") && item.getArticleImagePath().contains("background")){
+                res++;
+            }
+        }
+        return res;
+    }
+
+
+
+
+    /**
+     * Affiche les éléments de la bibliothèque dans des panneaux distincts.
+     * Chaque panneau contient des boutons représentant les articles de l'inventaire correspondants.
+     * Les boutons sont configurés : quand on clique sur un objet, celui-ci apparait dans le jeu.
+     * Un message de bienvenue est également affiché.
+     */
+    private void afficherInventaire() {
+        setLayout(new BorderLayout());
+
+        removeAllPanels();
+
+        RoundedPanel leftPanel = new RoundedPanel(20, 20, false, true);
+        leftPanel.setLayout(new GridLayout(getRowOrCol("left"), 1, 0, 10));
+        JPanel middlePanel = new JPanel(new GridBagLayout());
+        RoundedPanel rightPanel = new RoundedPanel(20, 20, false, true);
+        rightPanel.setLayout(new GridLayout(getRowOrCol("right"), 1, 0, 10));
+        RoundedPanel bottomPanel = new RoundedPanel(20, 20, false, true);
+        bottomPanel.setLayout(new GridLayout(1, getRowOrCol("bottom"), 10, 0));
+
+
+        leftPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        middlePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        rightPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        bottomPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+
+        for (ShopItem item : inventaire) {
+
+            ImageIcon icon = adapteImage(item.getArticleImagePath(), item.getArticleName());
+
+            JButton itemButton = new JButton(icon);
+            itemButton.setOpaque(false); // Rend le bouton transparent
+            itemButton.setContentAreaFilled(false); // Supprime le remplissage du bouton
+            itemButton.setBorderPainted(false); // Supprime le cadre du bouton
+
+            if (item.getArticleImagePath().contains("knife")) {
+                leftPanel.add(itemButton);
+            } else if (item.getArticleImagePath().contains("music")) {
+                rightPanel.add(itemButton);
+            } else if (item.getArticleImagePath().contains("background")) {
+                bottomPanel.add(itemButton);
+            }
+
+
+            itemButton.addActionListener(e -> {
+                if (item.getArticleImagePath().contains("music")) {
+                    // TODO : Changer de musique
+                } else {
+                    MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
+                    if (item.getArticleImagePath().contains("background")){
+                        mainFrame.getGameView().updateBackgroundImage(item.getArticleImagePath());
+                    } else {
+                        mainFrame.getGameView().updateKnifeImage(item.getArticleImagePath());
+                    }
+                }
+
+            });
+
+
+            itemButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    itemButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    itemButton.setCursor(Cursor.getDefaultCursor());
+                }
+            });
+
+        }
+
+        JLabel welcomeLabel = new JLabel(" へようこそ Hitty Knife - Redux");
+        JLabel usernameLabel = new JLabel("先生 " + game.getNomUtilisateur());
+
+        welcomeLabel.setFont(new Font("Old English Text MT", Font.BOLD, 24));
+        welcomeLabel.setForeground(new Color(245,13,13));
+
+        usernameLabel.setFont(new Font("Old English Text MT", Font.BOLD, 24));
+        usernameLabel.setForeground(new Color(245,13,13));
+
+        JPanel labelPanel = new JPanel();
+        labelPanel.add(welcomeLabel);
+        labelPanel.add(usernameLabel);
+        labelPanel.setOpaque(false);
+
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        middlePanel.add(welcomeLabel, gbc);
+
+        gbc.gridy = 1;
+        middlePanel.add(usernameLabel, gbc);
+
+
+        leftPanel.setOpaque(false);
+        middlePanel.setOpaque(false);
+        rightPanel.setOpaque(false);
+        bottomPanel.setOpaque(false);
+
+
+        this.add(leftPanel, BorderLayout.WEST);
+        this.add(middlePanel, BorderLayout.CENTER);
+        this.add(rightPanel, BorderLayout.EAST);
+        this.add(bottomPanel, BorderLayout.SOUTH);
+
+
+    }
+
+
+
+    /**
+     * Méthode pour vider tous les panels avant de les remplir à nouveau.
+     */
+    private void removeAllPanels() {
+        if (getComponentCount() > 0) {
+            for (Component comp : getComponents()) {
+                if (comp instanceof JPanel) {
+                    ((JPanel) comp).removeAll();
+                }
+            }
+        }
+    }
+
 }
+
+
+

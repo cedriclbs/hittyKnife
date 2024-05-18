@@ -21,6 +21,7 @@ public class ShopMenu extends JPanel {
     private Game game;
     ShopCart cart;
     public JTabbedPane tabbedPane;
+    private ShopTab cartTab;
 
 
     /**
@@ -46,10 +47,11 @@ public class ShopMenu extends JPanel {
 
         tabbedPane.setOpaque(false);
 
-        ShopTab couteaux = new ShopTab(tabbedPane, "Couteaux", RessourcesPaths.knifePath, "knifeTab.png", "couteaux", this);
-        ShopTab background = new ShopTab(tabbedPane, "Background", RessourcesPaths.backgroundPath, "bgTab.png", "background", this);
-        ShopTab music = new ShopTab(tabbedPane, "Music", RessourcesPaths.buttonPath, "musicTab.png", "music", this);
-        ShopTab cart = new ShopTab(tabbedPane, "Panier", null, "cartTab.png", "cart", this);
+        ShopTab couteauxTab = new ShopTab(tabbedPane, "Couteaux", RessourcesPaths.knifePath, "knifeTab.png", "couteaux", this);
+        ShopTab backgroundTab = new ShopTab(tabbedPane, "Background", RessourcesPaths.backgroundPath, "bgTab.png", "background", this);
+        ShopTab musicTab = new ShopTab(tabbedPane, "Music", RessourcesPaths.buttonPath, "musicTab.png", "music", this);
+        cartTab = new ShopTab(tabbedPane, "Panier", null, "cartTab.png", "cart", this);
+
 
         add(tabbedPane, BorderLayout.CENTER);
 
@@ -68,9 +70,11 @@ public class ShopMenu extends JPanel {
             if (argentUser - totalPanier >= 0){
                 game.addArgent(-totalPanier);
                 game.updateLibrary(cart.getCart());
-                cart.getCart().clear();
-                repaint();
                 JOptionPane.showMessageDialog(null, "Le panier a été sauvegardé avec succès.");
+
+                cart.setCartTotal(0);
+                cart.getCart().clear();
+                refreshCartTab();
             } else {
                 JOptionPane.showMessageDialog(null, "Pas assez de ressources.");
             }
@@ -80,7 +84,16 @@ public class ShopMenu extends JPanel {
     }
 
 
-
+    /**
+     * Actualise l'onglet du panier du magasin.
+     */
+    void refreshCartTab() {
+        int cartTabIndex = tabbedPane.indexOfTab("Panier");
+        if (cartTabIndex != -1) {
+            JPanel cartPanel = cartTab.createPanel(null, "cart"); // Utilisez la référence existante pour actualiser le panneau
+            tabbedPane.setComponentAt(cartTabIndex, cartPanel);
+        }
+    }
 
 
     /**
