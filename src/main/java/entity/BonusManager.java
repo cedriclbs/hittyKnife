@@ -26,8 +26,8 @@ public class BonusManager {
         switch(typeBonus){
             case BONUS_GEL : if (player<1) game.gel[0]=true; else game.gel[1]=true;activateGel(player);break;
             case BONUS_POWER : game.powered[player]=true;activatePower(player);break;
-            case BONUS_GOLD : game.addArgent(40);break;
-            case BONUS_XP : game.addXP(20);break;
+            case BONUS_GOLD : game.addArgent(10);break;
+            case BONUS_XP : game.addXP(5);break;
             //bonus TNT géré dans entityDisplay
         }
     }
