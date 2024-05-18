@@ -62,7 +62,7 @@ public class Game {
     @JsonProperty("argent")
     private int argent;
     @JsonProperty("inventaire")
-    private List<ShopItem> inventaire;
+    private List<ShopItem> inventaire = new ArrayList<>();
 
     @JsonProperty("level")
     private int level;
@@ -176,7 +176,6 @@ public class Game {
 
 
     public void initInventaire () {
-        this.inventaire = new ArrayList<>();
         //Articles par défaut :
         this.inventaire.add(new ShopItem("Sword 1", 15, RessourcesPaths.knifePath + "knife.png"));
         this.inventaire.add(new ShopItem("Music 1", 30, RessourcesPaths.buttonPath + "music.png"));
