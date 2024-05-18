@@ -14,7 +14,7 @@ public class BossType3 extends Boss{
      * Initialise un boss de type 3.
      */
     public BossType3(double x, double y) {
-        super(TypeCible.CIBLE_BOSS3, 3, x, y);
+        super(TypeCible.CIBLE_BOSS3, x, y);
         this.hitCount = 0;
     }
     @Override
@@ -23,8 +23,8 @@ public class BossType3 extends Boss{
     }
 
     public boolean isDead() {
-        int maxHits = 3;
-        return hitCount >= maxHits;
+        int health = 3;
+        return hitCount >= health;
     }
 
     public int getHitCount() {

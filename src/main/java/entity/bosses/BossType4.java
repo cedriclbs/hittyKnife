@@ -13,7 +13,7 @@ public class BossType4 extends Boss{
      * Initialise un boss de type 4.
      */
     public BossType4(double x, double y) {
-        super(TypeCible.CIBLE_BOSS4, 3, x, y);
+        super(TypeCible.CIBLE_BOSS4, x, y);
         this.hitCount = 0;
     }
     @Override
@@ -22,8 +22,8 @@ public class BossType4 extends Boss{
     }
 
     public boolean isDead() {
-        int maxHits = 3;
-        return hitCount >= maxHits;
+        int health = 3;
+        return hitCount >= health;
     }
 
     public int getHitCount() {
@@ -79,9 +79,9 @@ public class BossType4 extends Boss{
                 break;
         }
         // Vérifier si le mouvement dépasse la limite
-        if (newY  <= -50) {
+        if (newX <= -57 || newY  <= -50) {
             newX = -56;
-            newY = 5;
+            newY = 25;
         }
 
         setX(newX);

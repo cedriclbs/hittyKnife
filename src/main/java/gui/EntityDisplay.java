@@ -44,13 +44,13 @@ public class EntityDisplay extends JPanel {
     private Image bossT2;
     private Image bossT3;
     private Image bossT4;
-    private List<Cible> listeCible;
+    private final List<Cible> listeCible;
     private static double bgImgWidth;
     private static double bgImgHeight;
-    private double RATIO_X;
-    private double RATIO_Y;
+    private final double RATIO_X;
+    private final double RATIO_Y;
     private final int RATIO = 18;
-    private int RATIO1v1;
+    private final int RATIO1v1;
 
     private int collisionX;
     private int collisionY;
@@ -63,7 +63,7 @@ public class EntityDisplay extends JPanel {
     final float baseOpacity = 1f;
     float opacity;
     Dimension screenSize;
-    private Game game;
+    private final Game game;
 
     //private ArrayList<Cible> deleteCible;
     
@@ -85,10 +85,10 @@ public class EntityDisplay extends JPanel {
         RATIO1v1 = (isSolo)?1:2;
 
 
-        if (isSolo) RATIO_X = screenSize.width/2;
-        else RATIO_X = screenSize.width/4;//getBgImgWidth()/2;
+        if (isSolo) RATIO_X = (double) screenSize.width /2;
+        else RATIO_X = (double) screenSize.width /4;//getBgImgWidth()/2;
 
-        RATIO_Y = screenSize.height*3/4;//getBgImgHeight()*3/4;
+        RATIO_Y = (double) (screenSize.height * 3) /4;//getBgImgHeight()*3/4;
 
         this.game = game;
     }
@@ -288,8 +288,8 @@ public class EntityDisplay extends JPanel {
 
             g2d.setComposite(alphaComposite);
             if (!game.powered) {
-                AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - (double) knifeImgWidth / 2, collisionY - (double) knifeImgHeight / 2);
-                transformColli.rotate(Math.toRadians(collisionAngle), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
+                AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - knifeImgWidth / 2, collisionY - knifeImgHeight / 2);
+                transformColli.rotate(Math.toRadians(collisionAngle), knifeImgWidth / 2, knifeImgHeight / 2);
                 g2d.drawImage(knifeImage, transformColli, this);
             }
             AffineTransform transformCibleColli;
@@ -297,10 +297,10 @@ public class EntityDisplay extends JPanel {
             if (explose){
                 double exploseWidth = explosionIcon.getWidth(this);
                 double exploseHeight = explosionIcon.getHeight(this);
-                transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - (double) exploseWidth / 2, cibleColliY - (double) exploseHeight / 2);
+                transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - exploseWidth / 2, cibleColliY - exploseHeight / 2);
                 g2d.drawImage(explosionIcon, transformCibleColli, this);}
             else {
-                transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - (double) cibleImWidth / 2, cibleColliY - (double) cibleImHeight / 2);
+                transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - cibleImWidth / 2, cibleColliY - cibleImHeight / 2);
                 if (isCollisionMovingTarget) g2d.drawImage(ciblesMouventeImage, transformCibleColli, this);
                 else {
                     if (currentAnimBonusType!=null){
@@ -474,8 +474,7 @@ public class EntityDisplay extends JPanel {
             AffineTransform transformCible;
             AffineTransform transformBoss;
 
-            if (cible instanceof Boss) {
-                Boss boss = (Boss) cible;
+            if (cible instanceof Boss boss) {
                 int health = 0;
                 transformBoss = AffineTransform.getTranslateInstance(cibleX - (double) bossImgWidth / 2, cibleY - (double) bossImgHeight / 2);
                 if(cible instanceof BossType1){

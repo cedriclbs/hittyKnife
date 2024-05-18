@@ -21,10 +21,9 @@ import static entity.Bonus.TypeBonus.*;
  * Gère les rounds dans le jeu, y compris les cibles pour chaque round.
  */
 public class RoundManagement {
-    private List<Round> rounds; // Liste des rounds contenant des cibles pour chaque round
+    private final List<Round> rounds; // Liste des rounds contenant des cibles pour chaque round
     private int currentRoundIndex; // Indice du round actuel
-    private Random random; // Pour générer des valeurs aléatoires
-    private TypeCible lastBossType = null; 
+    private final Random random; // Pour générer des valeurs aléatoires
     private Queue<TypeCible> bossQueue;    // File principale pour les bosses
     private Queue<TypeCible> tempQueue;    // File temporaire pour stocker les bosses récemment utilisés
     
@@ -92,7 +91,7 @@ public class RoundManagement {
                 }
 
                 // Sélection du type de cible pour les rounds autres que le dernier
-                typeCible = TypeCible.CIBLE_NORMALE ;//getRandomTypeCible();
+                typeCible = TypeCible.CIBLE_NORMALE ;
                 do {
                     x = getRandomPositionX();
                     y = getRandomPositionY();
@@ -129,15 +128,13 @@ public class RoundManagement {
                 return new MovingTarget(x, y);
             case CIBLE_BONUS:
                 int randomNum = random.nextInt(5);
-                Bonus.TypeBonus typeBonus;
-                switch (randomNum){
-                    case 0: typeBonus = BONUS_XP;break;
-                    case 1: typeBonus = BONUS_GOLD;break;
-                    case 2 : typeBonus = BONUS_GEL;break;
-                    case 3 : typeBonus = BONUS_POWER;break;
-                    case 4 : typeBonus = BONUS_TNT;break;
-                    default: typeBonus = BONUS_TNT;break;
-                }
+                Bonus.TypeBonus typeBonus = switch (randomNum) {
+                    case 0 -> BONUS_XP;
+                    case 1 -> BONUS_GOLD;
+                    case 2 -> BONUS_GEL;
+                    case 3 -> BONUS_POWER;
+                    default -> BONUS_TNT;
+                };
                 return new Bonus(x, y,typeBonus);
     
             case CIBLE_BOSS1:
@@ -235,8 +232,8 @@ public class RoundManagement {
      * @return Un nombre aléatoire de cibles, entre 4 et 10.
      */
     private int getRndIntTargetRounds() {
-        //return 4 + random.nextInt(4);
-        return 1;
+        return 4 + random.nextInt(4);
+        //return 1;
     }
     // méthode pour vérifier si tous les rounds sont complétés
     public boolean isAllRoundsCompleted() {
