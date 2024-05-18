@@ -1,6 +1,7 @@
 package entity.bosses;
 
 import entity.*;
+import geometry.Geometry;
 
 /**
  * Classe représentant un type spécifique de boss.
@@ -43,43 +44,13 @@ public class BossType3 extends Boss{
 
         // Calculer le déplacement en fonction de la vitesse et du temps écoulé depuis la dernière mise à jour
         double speed = 0.6; // Vitesse du mouvement en pixels par seconde
-        double movement = speed * delta; // Déplacement en pixels
 
-        double newX = getX();
-        double newY = getY();
+        // Utiliser la méthode centralisée pour obtenir la nouvelle position et la direction
+        double[] newPosition = Geometry.horizontalMovementWithVerticalAdjustment(getX(), getY(), delta, speed, directionPositive, limitLeft, limitRight, limitTop, limitBottom);
 
-        // Vérifier la direction du mouvement actuel
-        if (directionPositive) {
-            // Si la direction est positive, le boss se déplace vers la droite sur l'axe horizontal
-            newX += movement;
-            // Vérifier si le mouvement dépasse la limite droite
-            if (newX >= limitRight) {
-                // Une fois arrivé à la limite droite, le boss se déplace vers le bas sur l'axe vertical
-                newY -= 2;
-                // Inverser la direction du mouvement horizontal pour que le boss se déplace vers la gauche
-                directionPositive = false;
-            }
-        } else {
-            // Si la direction est négative, le boss se déplace vers la gauche sur l'axe horizontal
-            newX -= movement;
-            // Vérifier si le mouvement dépasse la limite gauche
-            if (newX <= limitLeft) {
-                // Une fois arrivé à la limite gauche, le boss se déplace vers le bas sur l'axe vertical
-                newY -= 2;
-                // Inverser la direction du mouvement horizontal pour que le boss se déplace vers la droite
-                directionPositive = true;
-            }
-        }
-
-        // Vérifier si le mouvement dépasse la limite inférieure
-        if (newY <= limitBottom) {
-            // Si le boss atteint la limite basse, le ramener à la position initiale en haut
-            newX = -56; // Position horizontale centrale
-            newY = limitTop; // Position verticale la plus haute
-        }
-
-        setX(newX);
-        setY(newY);
+        setX(newPosition[0]);
+        setY(newPosition[1]);
+        directionPositive = newPosition[2] == 1;
     }
 
 }

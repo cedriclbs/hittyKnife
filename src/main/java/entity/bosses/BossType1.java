@@ -1,6 +1,7 @@
 package entity.bosses;
 
 import entity.*;
+import geometry.Geometry;
 
 /**
  * Classe représentant un type spécifique de boss.
@@ -40,31 +41,13 @@ public class BossType1 extends Boss {
 
         // Calculer le déplacement en fonction de la vitesse et du temps écoulé depuis la dernière mise à jour
         double speed = 0.6; // Vitesse du mouvement en pixels par seconde
-        double movement = speed * delta; // Déplacement en pixels
-        double newY = getY() + (directionPositive ? movement : -movement);
 
-        // Vérifier si le mouvement dépasse la limite supérieure
-        if (newY >= limitTop) {
-            // Inverser la direction du mouvement vertical
-            directionPositive = false;
-            // Corriger la position verticale pour rester dans les limites
-            newY = limitTop;
-            // Changer la position horizontale
-            setX(30); // Changer la valeur selon les besoins
-        }
-        // Vérifier si le mouvement dépasse la limite inférieure
-        else if (newY <= limitBottom) {
-            // Inverser la direction du mouvement vertical
-            directionPositive = true;
-            // Corriger la position verticale pour rester dans les limites
-            newY = limitBottom;
-            // Changer la position horizontale
-            setX(-30); // Changer la valeur selon les besoins
-        }
+        // Utiliser la méthode centralisée pour obtenir la nouvelle position et la direction
+        double[] newPosition = Geometry.verticalMovementWithHorizontalAdjustment(getX(), getY(), delta, speed, directionPositive, limitTop, limitBottom, 30, -30);
 
-        double newX = getX(); // Garder la position horizontale inchangée si le mouvement est vertical
-        setY(newY);
-        setX(newX);
+        setX(newPosition[0]);
+        setY(newPosition[1]);
+        directionPositive = newPosition[2] == 1;
     }
 
 }

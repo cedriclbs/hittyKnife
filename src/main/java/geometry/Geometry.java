@@ -1,7 +1,6 @@
 package geometry;
 import App.Loop;
 import entity.Knife;
-import entity.bosses.Boss;
 
 public class Geometry{
 
@@ -110,8 +109,121 @@ public class Geometry{
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
+    public static double[] verticalMovementWithHorizontalAdjustment(double x, double y, double delta, double speed, boolean directionPositive, double limitTop, double limitBottom, double xChangePositive, double xChangeNegative) {
+        double movement = speed * delta; // Déplacement en pixels
+        double newY = y + (directionPositive ? movement : -movement);
 
-    public static double[] leftAndRightMovement(double x, int width, double velocityX, double accelerationX, int ratio, Boss boss) {
-        return new double[]{5.5, 3.3};
+        // Vérifier si le mouvement dépasse la limite supérieure
+        if (newY >= limitTop) {
+            directionPositive = false;
+            newY = limitTop;
+            x = xChangePositive; // Changer la position horizontale
+        }
+        // Vérifier si le mouvement dépasse la limite inférieure
+        else if (newY <= limitBottom) {
+            directionPositive = true;
+            newY = limitBottom;
+            x = xChangeNegative; // Changer la position horizontale
+        }
+
+        return new double[]{x, newY, directionPositive ? 1 : 0}; // Retourner la nouvelle position et la direction
+    }
+
+    public static double[] horizontalMovementWithVerticalAdjustment(double x, double y, double delta, double speed, boolean directionPositive, double limitLeft, double limitRight, double limitTop, double limitBottom) {
+        double movement = speed * delta; // Déplacement en pixels
+
+        double newX = x;
+        double newY = y;
+
+        // Vérifier la direction du mouvement actuel
+        if (directionPositive) {
+            // Si la direction est positive, le boss se déplace vers la droite sur l'axe horizontal
+            newX += movement;
+            // Vérifier si le mouvement dépasse la limite droite
+            if (newX >= limitRight) {
+                // Une fois arrivé à la limite droite, le boss se déplace vers le bas sur l'axe vertical
+                newY -= 2;
+                // Inverser la direction du mouvement horizontal pour que le boss se déplace vers la gauche
+                directionPositive = false;
+            }
+        } else {
+            // Si la direction est négative, le boss se déplace vers la gauche sur l'axe horizontal
+            newX -= movement;
+            // Vérifier si le mouvement dépasse la limite gauche
+            if (newX <= limitLeft) {
+                // Une fois arrivé à la limite gauche, le boss se déplace vers le bas sur l'axe vertical
+                newY -= 2;
+                // Inverser la direction du mouvement horizontal pour que le boss se déplace vers la droite
+                directionPositive = true;
+            }
+        }
+
+        // Vérifier si le mouvement dépasse la limite inférieure
+        if (newY <= limitBottom) {
+            // Si le boss atteint la limite basse, le ramener à la position initiale en haut
+            newX = limitLeft; // Position horizontale centrale
+            newY = limitTop; // Position verticale la plus haute
+        }
+
+        return new double[]{newX, newY, directionPositive ? 1 : 0}; // Retourner la nouvelle position et la direction
+    }
+
+    public static double[] moveInCircle(double centerX, double centerY, double radius, double angularSpeed, double currentAngle, double delta) {
+        double movement = angularSpeed * delta;
+        double newAngle = currentAngle + movement;
+        double newX = centerX + radius * Math.cos(newAngle);
+        double newY = centerY + radius * Math.sin(newAngle);
+        return new double[]{newX, newY, newAngle};
+    }
+
+    public static double[] moveInPattern(double x, double y, double speed, double delta, int phase) {
+        double deplacement = speed * delta;
+        double newX = x;
+        double newY = y;
+        switch (phase) {
+            case 1:
+                newX += deplacement;
+                if (newX >= -25) {
+                    phase = 2;
+                }
+                break;
+            case 2:
+                newY -= deplacement;
+                if (newY <= 5) {
+                    phase = 3;
+                }
+                break;
+            case 3:
+                newX -= deplacement;
+                if (newX <= -56) {
+                    newX = 56;
+                    phase = 4;
+                }
+                break;
+            case 4:
+                newX -= deplacement;
+                if (newX <= 25) {
+                    phase = 5;
+                }
+                break;
+            case 5:
+                newY += deplacement;
+                if (newY >= 25) {
+                    phase = 6;
+                }
+                break;
+            case 6:
+                newX += deplacement;
+                if (newX >= 56) {
+                    newX = -56;
+                    phase = 1;
+                }
+                break;
+        }
+        if (newX <= -57 || newY <= -50) {
+            newX = -56;
+            newY = 25;
+        }
+        return new double[]{newX, newY, phase};
     }
 }
