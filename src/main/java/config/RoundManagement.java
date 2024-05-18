@@ -306,10 +306,8 @@ public class RoundManagement {
      * Efface tous les rounds existants et réinitialise l'indice du round actuel à 0.
      */
     public void resetRounds() {
-        System.out.println("Réinitialisation des rounds. Index actuel avant réinitialisation: " + currentRoundIndex);
         rounds.clear();
         currentRoundIndex = 0;
         initRounds();
-        System.out.println("Index après réinitialisation: " + currentRoundIndex);
     }
 }

@@ -174,7 +174,6 @@ public class Knife {
     public void resetKnife() {
         setX(DEFAULT_COORDINATE.getX());
         setY(DEFAULT_COORDINATE.getY());
-        System.out.println(DEFAULT_COORDINATE.getX()+"  |  "+DEFAULT_COORDINATE.getY());
         isInTheAir = false;
         redescend = false;
         throwing = false;
