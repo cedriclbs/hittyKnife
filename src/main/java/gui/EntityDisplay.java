@@ -79,6 +79,7 @@ public class EntityDisplay extends JPanel {
         //System.out.println("bg x : "+RATIO_X+" bg y : "+RATIO_Y);
         this.listeCible = listeCible;
         this.knife = knife;
+
         this.knife2 = game.knife3;
         initImage();
         initBg(backgroundPath);
@@ -412,14 +413,17 @@ public class EntityDisplay extends JPanel {
         int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
         int knifeY = (int) (RATIO_Y-(knife.getY()*RATIO));
 
+
         int knife2X = (int) (RATIO_X-(knife2.getX()*RATIO));
         int knife2Y = (int) (RATIO_Y-(knife2.getY()*RATIO));
 
         if (knifeX>screenSize.width || knifeX<0 || knifeY > screenSize.height || knifeY<0){
             knife.resetKnife();
         }
-        if (knife2X>screenSize.width || knife2X<0 || knife2Y > screenSize.height || knife2Y<0){
-            knife2.resetKnife();
+        if (!isSolo) {
+            if (knife2X > screenSize.width || knife2X < 0 || knife2Y > screenSize.height || knife2Y < 0) {
+                knife2.resetKnife();
+            }
         }
 
 
@@ -483,7 +487,7 @@ public class EntityDisplay extends JPanel {
         Shape knifeMask = createCollisionMask(knifeImage);
         Shape transformedKnifeMask = transform.createTransformedShape(knifeMask);
         Shape knifeMask2 = createCollisionMask(knifeImage);
-        Shape transformedKnifeMask2 = transform.createTransformedShape(knifeMask2);
+        Shape transformedKnifeMask2 = transform2.createTransformedShape(knifeMask2);
         for (Cible cible : listeCible){
             boolean collision = false;
             double cibleX = (RATIO_X-cible.getX()*RATIO);
@@ -541,9 +545,23 @@ public class EntityDisplay extends JPanel {
                 //g2d.draw(transformedBossMask);
                 if (transformedBossMask.intersects(transformedKnifeMask.getBounds2D())) {
                     collision = true;
+                    if (!game.powered) {
+                        collisionAngle = knife.getAngle();
+                        collisionX = knifeX;
+                        collisionY = knifeY;
+                        knife.resetKnife();
+
+                    }
                 }
                 if (transformedBossMask.intersects(transformedKnifeMask2.getBounds2D())) {
                     collision = true;
+                    if (!game.powered) {
+                        collisionAngle = knife2.getAngle();
+                        collisionX = knife2X;
+                        collisionY = knife2Y;
+                        knife2.resetKnife();
+
+                    }
                 }
 
 
@@ -572,9 +590,23 @@ public class EntityDisplay extends JPanel {
                 //g2d.draw(transformedCibleMask);
                 if (transformedCibleMask.intersects(transformedKnifeMask.getBounds2D())) {
                     collision = true;
+                    if (!game.powered) {
+                        collisionAngle = knife.getAngle();
+                        collisionX = knifeX;
+                        collisionY = knifeY;
+                        knife.resetKnife();
+
+                    }
                 }
                 if (transformedCibleMask.intersects(transformedKnifeMask2.getBounds2D())) {
                     collision = true;
+                    if (!game.powered) {
+                        collisionAngle = knife2.getAngle();
+                        collisionX = knife2X;
+                        collisionY = knife2Y;
+                        knife2.resetKnife();
+
+                    }
                 }
             }
 
@@ -594,14 +626,11 @@ public class EntityDisplay extends JPanel {
             //int cw=55;int ch=55;
             //if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
             if (collision) {
-                collisionX = knifeX;
-                collisionY = knifeY;
                 if (!explose) {
                     cibleColliX = cibleX;
                     cibleColliY = cibleY;
                     opacity = baseOpacity;
                 }
-                collisionAngle = knife.getAngle();
                 if (!(cible instanceof Boss)){animCollision = true;currentAnimBonusType=null;}
                 if (isSolo) {
                     game.addXP(10);
@@ -634,9 +663,6 @@ public class EntityDisplay extends JPanel {
                 }
                 else {
                     deleteCible.add(cible);
-                }
-                if (!game.powered) {
-                    knife.resetKnife();
                 }
                 isCollisionMovingTarget=cible instanceof MovingTarget;
                 if (cible instanceof Bonus){

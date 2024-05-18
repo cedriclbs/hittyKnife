@@ -236,7 +236,7 @@ public class RoundManagement {
      */
     private int getRndIntTargetRounds() {
         //return 4 + random.nextInt(4);
-        return 1;
+        return 3;
     }
     // méthode pour vérifier si tous les rounds sont complétés
     public boolean isAllRoundsCompleted() {
