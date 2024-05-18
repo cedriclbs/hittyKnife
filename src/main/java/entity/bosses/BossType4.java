@@ -13,18 +13,17 @@ public class BossType4 extends Boss{
      * Initialise un boss de type 4.
      */
     public BossType4(double x, double y) {
-        super(TypeCible.CIBLE_BOSS4, 3, x, y);
+        super(TypeCible.CIBLE_BOSS4, x, y);
         this.hitCount = 0;
     }
 
     @Override
     public void updateMovement(double delta) {
         double speed = 0.5;
-        double deplacement = speed * delta; // Déplacement en pixels
+        double deplacement = speed * delta;
 
         double newX = getX();
         double newY = getY();
-        // Mettre à jour la position du boss en fonction de la phase actuelle
         switch (phase) {
             case 1: // Gauche à droite jusqu'à une certaine X
                 newX += deplacement;
@@ -66,11 +65,10 @@ public class BossType4 extends Boss{
                 break;
         }
         // Vérifier si le mouvement dépasse la limite
-        if (newY  <= -50) {
+        if (newY <= -50) {
             newX = -56;
             newY = 5;
         }
-
         setX(newX);
         setY(newY);
     }

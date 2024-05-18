@@ -23,12 +23,12 @@ public abstract class Boss extends Cible {
      * Constructeur de la classe Boss prenant le type de boss, sa santé, ses coordonnées x et y, et sa vitesse.
      *
      * @param bosstype Type de boss.
-     * @param health   Santé du boss.
      * @param x        Coordonnée x du boss.
      * @param y        Coordonnée y du boss.
      */
-    public Boss(TypeCible bosstype, int health, double x, double y) {
-        super(bosstype, health, x, y);
+    public Boss(TypeCible bosstype, double x, double y) {
+        super(x, y);
+        this.bosstype = bosstype;
     }
 
     /**
@@ -54,7 +54,6 @@ public abstract class Boss extends Cible {
      *
      * @return true si le boss est mort (a atteint 0 de santé), sinon false.
      */
-
     public boolean isDead() {
         int maxHits = 3;
         return hitCount >= maxHits;
@@ -77,7 +76,4 @@ public abstract class Boss extends Cible {
      */
     public void updateMovement(double delta) {
     }
-
-
-
 }
