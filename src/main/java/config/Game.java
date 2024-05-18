@@ -43,7 +43,7 @@ public class Game {
     public BonusManager bonusManager = new BonusManager(this);
 
 
-    transient private static final int xpThreshold = 10;
+    private static final int xpThreshold = 10;
     private RoundManagement roundManagement;
     private List<GameObserver> observers = new ArrayList<>();
     private List<LibraryObserver> libraryObservers = new ArrayList<>();
@@ -51,9 +51,6 @@ public class Game {
     private int lastBackgroundIndex = -1; // Dernier indice utilisé
     private Queue<Integer> recentBackgrounds = new LinkedList<>(); // Indices récents pour éviter la répétition
     private Random rand = new Random();
-
-
-
 
     //Attribut du User pour JSON
     @JsonProperty("nomUtilisateur")
@@ -76,15 +73,10 @@ public class Game {
     @JsonProperty("currentBackgroundPath")
     private String currentBackgroundPath;
 
-
-
-
-
     @JsonCreator
     public Game() {
         // Constructeur sans arguments pour la désérialisation JSON
     }
-
 
     /**
      * Constructeur qui initialise le jeu avec un couteau, une liste de cibles vide, et un nombre initial de vies.
@@ -526,28 +518,60 @@ public class Game {
                 updateLibrary(inventaire);
                 break;
             case 3:
-                inventaire.add(new ShopItem("Sword 5", 0, "src/main/ressources/knifes/knife#5.png"));
-                updateLibrary(inventaire);
+                this.argent += 10;
                 break;
             case 4:
-                this.argent += 10;
+                inventaire.add(new ShopItem("music.png", 30, "src/main/ressources/music/Battle_Theme.wav"));
+                updateLibrary(inventaire);
                 break;
             case 5:
                 this.argent += 10;
                 break;
             case 6:
-                this.argent += 10;
+                inventaire.add(new ShopItem("Sword 5", 0, "src/main/ressources/knifes/knife#5.png"));
+                updateLibrary(inventaire);
                 break;
             case 7:
                 this.argent += 10;
                 break;
             case 8:
-                this.argent += 10;
+                inventaire.add(new ShopItem("music.png", 0,"src/main/ressources/music/Battle_Theme.wav"));
+                updateLibrary(inventaire);
                 break;
             case 9:
                 this.argent += 10;
                 break;
             case 10:
+                this.argent += 10;
+                break;
+            case 11:
+                this.argent += 10;
+                break;
+            case 12:
+                this.argent += 10;
+                break;
+            case 13:
+                this.argent += 10;
+                break;
+            case 14:
+                this.argent += 10;
+                break;
+            case 15:
+                this.argent += 10;
+                break;
+            case 16:
+                this.argent += 10;
+                break;
+            case 17:
+                this.argent += 10;
+                break;
+            case 18:
+                this.argent += 10;
+                break;
+            case 19:
+                this.argent += 10;
+                break;
+            case 20:
                 this.argent += 10;
                 break;
             default:

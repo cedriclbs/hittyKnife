@@ -83,9 +83,7 @@ public class ShopTab {
 
 
             case "music":
-                addItemToPanel(mainMenuPanel, path + "music.png", 30,"Music 1");
-                addItemToPanel(mainMenuPanel, path + "music.png", 30, "Music 2");
-                addItemToPanel(mainMenuPanel, path + "music.png", 30,"Music 2");
+                addItemToPanel(mainMenuPanel, path + "music.png", 30,"src/main/ressources/music/Battle_Theme.wav");
                 break;
 
 
