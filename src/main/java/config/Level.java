@@ -16,7 +16,7 @@ public class Level {
     public Level() {
         this.level = 1;
         this.argent = 0; 
-        this.round = new RoundManagement();
+        this.round = new RoundManagement(true);
         //this.gameSave = new GameSave(new Knife(), new ArrayList<Cible>(), argent, level);
     }
 

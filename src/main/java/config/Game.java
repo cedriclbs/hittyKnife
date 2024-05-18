@@ -43,10 +43,14 @@ public class Game {
     public BonusManager bonusManager = new BonusManager(this);
     @JsonIgnore 
     private int vies = 4;
+    @JsonIgnore
+    private RoundManagement roundManagementVERSUS;
 
 
     private static final int xpThreshold = 10;
+
     private RoundManagement roundManagement;
+
     private List<GameObserver> observers = new ArrayList<>();
     private List<LibraryObserver> libraryObservers = new ArrayList<>();
 
@@ -92,7 +96,8 @@ public class Game {
         this.knife2 = new Knife(new Coordinate(15,0));
         this.knife3 = new Knife(new Coordinate(-15,0));
         initInventaire();
-        this.roundManagement = new RoundManagement();
+        this.roundManagement = new RoundManagement(true);
+        this.roundManagementVERSUS = new RoundManagement(false);
         this.gameView = new GameView(isSolo,this);
         this.currentLevel = 1;
         this.xp = 0;
@@ -197,6 +202,7 @@ public class Game {
             this.inventaire = loadedGame.getInventaire();
             this.currentBackgroundPath = loadedGame.getCurrentBackgroundPath();
             roundManagement.setCurrentRoundIndex(0);
+            roundManagementVERSUS.setCurrentRoundIndex(0);
             updateBackground();
 
         } catch (IOException e) {
@@ -216,20 +222,31 @@ public class Game {
     }
 
     private synchronized void initGame() {
-        ChargerRound(roundManagement.getCurrentRoundIndex());
+        ChargerRound(roundManagement.getCurrentRoundIndex(),true);
+        ChargerRound(roundManagementVERSUS.getCurrentRoundIndex(),false);
     }
 
-    private synchronized void ChargerRound(int roundIndex) {
-        Round currentRound = roundManagement.getListeRounds().get(roundIndex);
-        listeCible1.clear();
-        listeCible1.addAll(currentRound.getListeCibles());
-        roundManagement.setCurrentRoundIndex(roundIndex);
-
-        if (!isSolo) {
+    private synchronized void ChargerRound(int roundIndex,boolean isSolo) {
+        if (isSolo) {
+            Round currentRound = roundManagement.getListeRounds().get(roundIndex);
+            listeCible1.clear();
+            listeCible1.addAll(currentRound.getListeCibles());
+            roundManagement.setCurrentRoundIndex(roundIndex);
+        }
+        else{
+            Round currentRound = roundManagementVERSUS.getListeRounds().get(roundIndex);
             listeCible2.clear();
             listeCible2.addAll(currentRound.getListeCibles());
+            roundManagementVERSUS.setCurrentRoundIndex(roundIndex);
         }
     }
+    /*private synchronized void ChargerRoundVERSUS(int roundIndex) {
+        Round currentRound = roundManagementVERSUS.getListeRounds().get(roundIndex);
+        listeCible2.clear();
+        listeCible2.addAll(currentRound.getListeCibles());
+        roundManagementVERSUS.setCurrentRoundIndex(roundIndex);
+    }*/
+
 
     public synchronized void addObserver(GameObserver observer) {
         observers.add(observer);
@@ -350,7 +367,7 @@ public class Game {
         if (listeCible1.isEmpty()) {
             roundManagement.setCurrentRoundIndex(roundManagement.getCurrentRoundIndex() + 1);
             if (roundManagement.getCurrentRoundIndex() < roundManagement.getListeRounds().size()) {
-                ChargerRound(roundManagement.getCurrentRoundIndex()); // Chargement du round suivant
+                ChargerRound(roundManagement.getCurrentRoundIndex(),true); // Chargement du round suivant
                 //System.out.println(roundManagement.getCurrentRoundIndex());
 
             }
@@ -360,9 +377,22 @@ public class Game {
                 System.out.println("Level : " + currentLevel);
                 roundManagement.resetRounds(); // Réinitialisation des rounds pour le nouveau niveau
                 resetLives();
-                ChargerRound(roundManagement.getCurrentRoundIndex()); // Recharge le premier round du nouveau niveau
+                ChargerRound(roundManagement.getCurrentRoundIndex(),true); // Recharge le premier round du nouveau niveau
             }
+        }
 
+        if (listeCible2.isEmpty()) {
+            roundManagementVERSUS.setCurrentRoundIndex(roundManagementVERSUS.getCurrentRoundIndex() + 1);
+            if (roundManagementVERSUS.getCurrentRoundIndex() < roundManagementVERSUS.getListeRounds().size()) {
+                ChargerRound(roundManagementVERSUS.getCurrentRoundIndex(),false); // Chargement du round suivant
+                //System.out.println(roundManagement.getCurrentRoundIndex());
+
+            }
+            else {
+                //notifyBackgroundChange();
+                roundManagementVERSUS.resetRounds(); // Réinitialisation des rounds pour le nouveau niveau
+                ChargerRound(roundManagementVERSUS.getCurrentRoundIndex(),false); // Recharge le premier round du nouveau niveau
+            }
         }
     }
 
