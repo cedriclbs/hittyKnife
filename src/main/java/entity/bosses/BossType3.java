@@ -27,6 +27,10 @@ public class BossType3 extends Boss{
         return hitCount >= maxHits;
     }
 
+    public int getHitCount() {
+        return hitCount;
+    }
+
     @Override
     public void updateMovement(double delta) {
         // Définir les limites de déplacement sur l'axe horizontal

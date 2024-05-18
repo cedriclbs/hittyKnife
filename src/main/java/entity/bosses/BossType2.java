@@ -25,6 +25,10 @@ public class BossType2 extends Boss{
         int maxHits = 3;
         return hitCount >= maxHits;
     }
+    
+    public int getHitCount() {
+        return hitCount;
+    }
 
     @Override
     public void updateMovement(double delta) {
