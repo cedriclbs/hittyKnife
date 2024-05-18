@@ -36,9 +36,9 @@ public class Game {
     @JsonIgnore
     private GameView gameView;
     @JsonIgnore
-    public boolean gel = false;
+    public boolean[] gel = {false,false}; //[0] = solo et [1] = versus
     @JsonIgnore
-    public boolean powered = false;
+    public boolean powered[] = {false,false,false}; //joueur solo et les deux versus
     @JsonIgnore
     public BonusManager bonusManager = new BonusManager(this);
 
@@ -294,7 +294,7 @@ public class Game {
 
         synchronized (listeCible1) {
             for (Cible c : new ArrayList<>(listeCible1)) {
-                updateCible(c, adjustedDelta);
+                updateCible(c, adjustedDelta,true);
             }
         }
         if (!isSolo) {
@@ -302,7 +302,7 @@ public class Game {
             knife3.updateMovement();
             synchronized (listeCible2) {
                 for (Cible c : new ArrayList<>(listeCible2)) {
-                    updateCible(c, adjustedDelta);
+                    updateCible(c, adjustedDelta,false);
                 }
             }
         }
@@ -319,11 +319,18 @@ public class Game {
      * @param c La cible à mettre à jour.
      * @param adjustedDelta Le temps écoulé depuis la dernière mise à jour, ajusté en fonction de la vitesse du jeu.
      */
-    private void updateCible(Cible c, double adjustedDelta) {
+    private void updateCible(Cible c, double adjustedDelta,boolean isSolo) {
 
         if (c instanceof MovingTarget) {
-            if (!gel) {
-                ((MovingTarget) c).updateMovement();
+            if (isSolo) {
+                if (!gel[0]) {
+                    ((MovingTarget) c).updateMovement();
+                }
+            }
+            else{
+                if (!gel[1]) {
+                    ((MovingTarget) c).updateMovement();
+                }
             }
 
         } else if (c instanceof BossType1) {
