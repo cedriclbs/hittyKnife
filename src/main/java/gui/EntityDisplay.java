@@ -741,7 +741,7 @@ public class EntityDisplay extends JPanel {
                             collision(deleteCible, cible, cibleX, cibleY, 2);
                             knife2.resetKnife();
                         }
-                        collision(deleteCible, cible, cibleX, cibleY, 2);
+                        else collision(deleteCible, cible, cibleX, cibleY, 2);
                     }
                 }
             }
