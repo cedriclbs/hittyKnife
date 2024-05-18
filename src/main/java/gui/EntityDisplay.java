@@ -45,6 +45,7 @@ public class EntityDisplay extends JPanel {
     private Image bossT2;
     private Image bossT3;
     private Image bossT4;
+    private Image sign;
     private List<Cible> listeCible;
     private static double bgImgWidth;
     private static double bgImgHeight;
@@ -140,6 +141,7 @@ public class EntityDisplay extends JPanel {
         this.bossT2 = new ImageIcon(RessourcesPaths.targetPath + "BossType2.png").getImage();
         this.bossT3 = new ImageIcon(RessourcesPaths.targetPath + "BossType3.png").getImage();
         this.bossT4 = new ImageIcon(RessourcesPaths.targetPath + "BossType4.png").getImage();
+        this.sign = new ImageIcon("src/main/ressources/button/sign.png").getImage();
         int w = this.knifeImage.getWidth(null)/3;
         int h = this.knifeImage.getHeight(null)/3;
         this.knifeImage = this.knifeImage.getScaledInstance(w,h,Image.SCALE_SMOOTH);
@@ -156,6 +158,7 @@ public class EntityDisplay extends JPanel {
         this.bossT2 = this.bossT2.getScaledInstance(this.bossT2.getWidth(null)/2, this.bossT2.getHeight(null)/2, Image.SCALE_SMOOTH);
         this.bossT3 = this.bossT3.getScaledInstance(this.bossT3.getWidth(null)/2, this.bossT3.getHeight(null)/2, Image.SCALE_SMOOTH);
         this.bossT4 = this.bossT4.getScaledInstance(this.bossT4.getWidth(null)/2, this.bossT4.getHeight(null)/2, Image.SCALE_SMOOTH);
+        this.sign = this.sign.getScaledInstance(this.sign.getWidth(null)/2, this.sign.getHeight(null)/2, Image.SCALE_SMOOTH);
     }
 
     /**
@@ -495,6 +498,8 @@ public class EntityDisplay extends JPanel {
         else{
             g2d.setFont(new Font("SansSerif", Font.BOLD, 50));
 
+
+
             // Texte principal pour le niveau
             String scoreTexte1 = "SCORE  "+game.scoreJoueur1+"/50";
             String scoreTexte2 = "SCORE  "+game.scoreJoueur2+"/50";
@@ -505,7 +510,12 @@ public class EntityDisplay extends JPanel {
             int xPosition1 = (getWidth() - niveauTexteWidth1) / 5;
             int xPosition2 = (4*(getWidth() - niveauTexteWidth2)) / 5;
             int yPosi = 100;
+            //AffineTransform transformSign = AffineTransform.getTranslateInstance(xPosition1 - (double) sign.getWidth(this) / 2, yPosi - (double) sign.getHeight(this) / 2);
+            AffineTransform transformSign = AffineTransform.getTranslateInstance(xPosition1 -28 , yPosi - (double) sign.getHeight(this) /2-12);
+            g2d.drawImage(sign,transformSign,this);
 
+            AffineTransform transformSign2 = AffineTransform.getTranslateInstance(xPosition2 -28 , yPosi - (double) sign.getHeight(this) /2-12);
+            g2d.drawImage(sign,transformSign2,this);
             // Dessine l'ombre
             g2d.setColor(new Color(0, 0, 0, 64));
             int shadowOffset = 2;
