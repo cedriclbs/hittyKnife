@@ -13,7 +13,7 @@ public class ShopItem {
 
     private String articleName;
     private int articlePrice;
-    private String articleImagePath;
+    private String articlePath;
 
     @JsonCreator
     public ShopItem(){
@@ -32,7 +32,7 @@ public class ShopItem {
     public ShopItem(@JsonProperty("articleName") String articleName,
                     @JsonProperty("articlePrice") int articlePrice,
                     @JsonProperty("articleImagePath") String articleImagePath) {
-        this.articleImagePath = articleImagePath;
+        this.articlePath = articleImagePath;
         this.articleName = articleName;
         this.articlePrice = articlePrice;
     }
@@ -46,8 +46,8 @@ public class ShopItem {
         return articlePrice;
     }
 
-    public String getArticleImagePath() {
-        return articleImagePath;
+    public String getArticlePath() {
+        return articlePath;
     }
 
     @Override
@@ -59,12 +59,12 @@ public class ShopItem {
             return false;
         }
         ShopItem other = (ShopItem) obj;
-        return Objects.equals(articleName, other.articleName) && articlePrice == other.articlePrice && Objects.equals(articleImagePath, other.articleImagePath);
+        return Objects.equals(articleName, other.articleName) && articlePrice == other.articlePrice && Objects.equals(articlePath, other.articlePath);
     }
 
 
     @Override
     public String toString() {
-        return this.articleName + "|" + this.articlePrice + "|" + this.articleImagePath;
+        return this.articleName + "|" + this.articlePrice + "|" + this.articlePath;
     }
 }

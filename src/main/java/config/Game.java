@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import entity.*;
 import entity.bosses.*;
+import geometry.Coordinate;
 import gui.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +26,8 @@ public class Game {
     @JsonIgnore
     transient public Knife knife2;
     @JsonIgnore
+    transient public Knife knife3;
+    @JsonIgnore
     transient boolean isSolo = false;
     @JsonIgnore
     transient private List<Cible> listeCible1 = new ArrayList<>();
@@ -33,16 +36,16 @@ public class Game {
     @JsonIgnore
     private GameView gameView;
     @JsonIgnore
-    public boolean gel = false;
+    public boolean[] gel = {false,false}; //[0] = solo et [1] = versus
     @JsonIgnore
-    public boolean powered = false;
+    public boolean powered[] = {false,false,false}; //joueur solo et les deux versus
     @JsonIgnore
     public BonusManager bonusManager = new BonusManager(this);
     @JsonIgnore 
     private int vies = 4;
 
 
-    transient private int xpThreshold;
+    private static final int xpThreshold = 10;
     private RoundManagement roundManagement;
     private List<GameObserver> observers = new ArrayList<>();
     private List<LibraryObserver> libraryObservers = new ArrayList<>();
@@ -50,9 +53,6 @@ public class Game {
     private int lastBackgroundIndex = -1; // Dernier indice utilisé
     private Queue<Integer> recentBackgrounds = new LinkedList<>(); // Indices récents pour éviter la répétition
     private Random rand = new Random();
-
-
-
 
     //Attribut du User pour JSON
     @JsonProperty("nomUtilisateur")
@@ -75,15 +75,10 @@ public class Game {
     @JsonProperty("currentBackgroundPath")
     private String currentBackgroundPath;
 
-
-
-
-
     @JsonCreator
     public Game() {
         // Constructeur sans arguments pour la désérialisation JSON
     }
-
 
     /**
      * Constructeur qui initialise le jeu avec un couteau, une liste de cibles vide, et un nombre initial de vies.
@@ -93,15 +88,15 @@ public class Game {
         this.isSolo = false;
         this.cheminSauvegarde = cheminSauvegarde;
         System.out.println("creation game");
-        this.knife1 = new Knife();
-        this.knife2 = new Knife();
+        this.knife1 = new Knife(new Coordinate(0,0));
+        this.knife2 = new Knife(new Coordinate(15,0));
+        this.knife3 = new Knife(new Coordinate(-15,0));
         initInventaire();
         this.roundManagement = new RoundManagement();
         this.gameView = new GameView(isSolo,this);
         this.currentLevel = 1;
-        this.xpThreshold = 100;
         this.xp = 0;
-        this.level = 1;
+        this.level = 0;
         this.currentBackgroundPath = "";
         loadGameState();
         initGame();
@@ -292,14 +287,15 @@ public class Game {
 
         synchronized (listeCible1) {
             for (Cible c : new ArrayList<>(listeCible1)) {
-                updateCible(c, adjustedDelta);
+                updateCible(c, adjustedDelta,true);
             }
         }
         if (!isSolo) {
             knife2.updateMovement();
+            knife3.updateMovement();
             synchronized (listeCible2) {
                 for (Cible c : new ArrayList<>(listeCible2)) {
-                    updateCible(c, adjustedDelta);
+                    updateCible(c, adjustedDelta,false);
                 }
             }
         }
@@ -316,11 +312,18 @@ public class Game {
      * @param c La cible à mettre à jour.
      * @param adjustedDelta Le temps écoulé depuis la dernière mise à jour, ajusté en fonction de la vitesse du jeu.
      */
-    private void updateCible(Cible c, double adjustedDelta) {
+    private void updateCible(Cible c, double adjustedDelta,boolean isSolo) {
 
         if (c instanceof MovingTarget) {
-            if (!gel) {
-                ((MovingTarget) c).updateMovement();
+            if (isSolo) {
+                if (!gel[0]) {
+                    ((MovingTarget) c).updateMovement();
+                }
+            }
+            else{
+                if (!gel[1]) {
+                    ((MovingTarget) c).updateMovement();
+                }
             }
 
         } else if (c instanceof BossType1) {
@@ -413,10 +416,12 @@ public class Game {
 
     // Méthode pour vérifier si un niveau a été atteint et attribuer les récompenses
     private void checkLevelUp() {
-        this.addLevel(1);
-        notifyLevelObservers();
-        giveRewards(); // Appel à une méthode pour attribuer les récompenses du niveau
-        System.out.println("+1 Niveau");
+        if(this.xp %xpThreshold==0){
+            this.addLevel(1);
+            notifyLevelObservers();
+            giveRewards(); // Appel à une méthode pour attribuer les récompenses du niveau
+            System.out.println("+1 Niveau");
+        }
     }
 
     /**
@@ -515,44 +520,70 @@ public class Game {
     // Méthode pour attribuer les récompenses en fonction du niveau
     private void giveRewards() {
         switch (level) {
-            case 2:
+            case 1:
                 this.argent += 10;
                 break;
+            case 2:
+                inventaire.add(new ShopItem("Sword 4", 0, "src/main/ressources/knifes/knife#4.png"));
+                updateLibrary(inventaire);
+                break;
             case 3:
+                this.argent += 10;
                 break;
             case 4:
+                inventaire.add(new ShopItem("src/main/ressources/music/Battle_Theme.wav", 30, "src/main/ressources/button/music.png"));
+                updateLibrary(inventaire);
                 break;
             case 5:
+                this.argent += 10;
                 break;
             case 6:
+                inventaire.add(new ShopItem("Sword 5", 0, "src/main/ressources/knifes/knife#5.png"));
+                updateLibrary(inventaire);
                 break;
             case 7:
+                this.argent += 10;
                 break;
             case 8:
+                inventaire.add(new ShopItem("src/main/ressources/music/Main_Theme_2.wav", 0,"src/main/ressources/button/music.png"));
+                updateLibrary(inventaire);
                 break;
             case 9:
+                this.argent += 10;
                 break;
             case 10:
+                inventaire.add(new ShopItem("src/main/ressources/music/Battle_Theme_2.wav", 0,"src/main/ressources/button/music.png"));
+                updateLibrary(inventaire);
                 break;
             case 11:
+                this.argent += 10;
                 break;
             case 12:
+                this.argent += 10;
                 break;
             case 13:
+                this.argent += 10;
                 break;
             case 14:
+                this.argent += 10;
                 break;
             case 15:
+                this.argent += 10;
                 break;
             case 16:
+                this.argent += 10;
                 break;
             case 17:
+                this.argent += 10;
                 break;
             case 18:
+                this.argent += 10;
                 break;
             case 19:
+                this.argent += 10;
                 break;
             case 20:
+                this.argent += 10;
                 break;
             default:
                 break;

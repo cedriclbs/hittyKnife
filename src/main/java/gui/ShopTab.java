@@ -68,13 +68,10 @@ public class ShopTab {
 
         switch (category) {
 
-
             case "couteaux":
-                addItemToPanel(mainMenuPanel, path + "knife.png", 15, "Sword 1");
+                addItemToPanel(mainMenuPanel, path + "knife#1.png", 15, "Sword 1");
                 addItemToPanel(mainMenuPanel, path + "knife#2.png", 20,"Sword 2");
                 addItemToPanel(mainMenuPanel, path + "knife#3.png", 25,"Sword 3");
-                addItemToPanel(mainMenuPanel, path + "knife#4.png", 50,"Sword 4");
-                addItemToPanel(mainMenuPanel, path + "knife#5.png", 75,"Sword 5");
                 break;
 
             case "background":
@@ -82,14 +79,6 @@ public class ShopTab {
                 addItemToPanel(mainMenuPanel, path + "bgClassiqueLake.png", 25, "Background 2");
                 addItemToPanel(mainMenuPanel, path + "bgClassiqueForet.png", 30, "Background 3");
                 break;
-
-
-            case "music":
-                addItemToPanel(mainMenuPanel, path + "music.png", 30,"Music 1");
-                addItemToPanel(mainMenuPanel, path + "music.png", 30, "Music 2");
-                addItemToPanel(mainMenuPanel, path + "music.png", 30,"Music 2");
-                break;
-
 
             case "cart":
                 JPanel cartPanel = shopMenu.cart.displayCart(this.shopMenu, shopMenu.cart.getCart(), mainMenuPanel, "Panier");
@@ -180,11 +169,12 @@ public class ShopTab {
         int screenHeight = (int) screenSize.getHeight();
 
         ImageIcon icon = new ImageIcon(imagePath);
-        if (itemName.contains("Sword") || itemName.contains("Music")){
-            Image resizedImage = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-            icon = new ImageIcon(resizedImage);
-        } else if (itemName.contains("Background")){
+        if (itemName.contains("Background")){
             Image resizedImage = icon.getImage().getScaledInstance(screenWidth/5, screenHeight /5, Image.SCALE_SMOOTH);
+            icon = new ImageIcon(resizedImage);
+        }
+        else{
+            Image resizedImage = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
             icon = new ImageIcon(resizedImage);
         }
         return icon;
