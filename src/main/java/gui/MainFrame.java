@@ -71,7 +71,7 @@ public class MainFrame extends JFrame {
 
 
         // Création du panneau de menu principal
-        JPanel homePanel = createLibraryPanel();
+        JPanel homePanel = createHomeMenuPanel();
         JPanel soloPanel = createSoloPanel();
         JPanel shopPanel = createShopPanel();
         JPanel versusPanel = createVersusPanel();
@@ -169,10 +169,10 @@ public class MainFrame extends JFrame {
         return new GameView(false, game);
     }
 
-    private JPanel createLibraryPanel(){
-        Library library = new Library(game);
-        game.addLibraryObserver(library);
-        return library;
+    private JPanel createHomeMenuPanel(){
+        HomeMenu homeMenu = new HomeMenu(game);
+        game.addLibraryObserver(homeMenu);
+        return homeMenu;
     }
 
     private JPanel createBattlepassPanel() {
