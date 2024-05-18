@@ -317,7 +317,6 @@ public class EntityDisplay extends JPanel {
             else {animCollision=false;explose = false;}
         }
     }
-    
 
 
     /**
@@ -330,8 +329,11 @@ public class EntityDisplay extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
+
         g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         //System.out.println(game.getIsSolo());
+
+        //-------------------------- DESSINE LES NIVEAUX ET LES ROUNDS ----------------------------------------
 
         if(game.getIsSolo()){
             // Affichage des niveaux et des rounds avec effet d'ombre sur le texte
@@ -381,14 +383,27 @@ public class EntityDisplay extends JPanel {
                 // Dessine le cercle
                 g2d.fillOval(startX + i * (circleDiameter + spacing), yPosition, circleDiameter, circleDiameter);
             }
-        
+
+            // Configuration et dessin des croix des vies
+            int lineThickness = 5;
+            int totalLives = 4;  
+            int livesSpacing = 40; 
+            int livesXPosition = startX + ((totalRounds * (circleDiameter + spacing) - (totalLives * livesSpacing + (totalLives - 1) * 10)) / 2) + 42;
+            int livesYPosition = yPosition + circleDiameter + 30; 
+
+            for (int i = 0; i < totalLives - 1; i++) {
+                g2d.setColor(i < totalLives - game.getVies() ? Color.RED : Color.BLACK);
+                g2d.setStroke(new BasicStroke(lineThickness));
+                g2d.drawLine(livesXPosition + i * livesSpacing - 10, livesYPosition - 10, livesXPosition + i * livesSpacing + 10, livesYPosition + 10);
+                g2d.drawLine(livesXPosition + i * livesSpacing + 10, livesYPosition - 10, livesXPosition + i * livesSpacing - 10, livesYPosition + 10);
+            }
 
 
             // Si c'est le dernier round, affiche "Boss Fight!"
             if (currentRoundIndex == totalRounds - 1) {
                 String bossFightText = "Boss Fight!";
                 int textWidth = g2d.getFontMetrics().stringWidth(bossFightText);
-                int textYPosition = yPosition + circleDiameter + 30;
+                int textYPosition = livesYPosition + 40; 
 
                 // Dessine l'ombre pour "Boss Fight!" en noir
                 g2d.setColor(Color.BLACK);
@@ -399,13 +414,17 @@ public class EntityDisplay extends JPanel {
                 g2d.drawString(bossFightText, (getWidth() - textWidth) / 2, textYPosition);
             }
         }
-
+         
+        //--------------------------------------------------------------------------------------------------------------------------
 
         int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
         int knifeY = (int) (RATIO_Y-(knife.getY()*RATIO));
 
-        if (knifeX>screenSize.width/RATIO1v1 || knifeX<0 || knifeY > screenSize.height || knifeY<0){
-            knife.resetKnife();
+        if (knifeX>screenSize.width/RATIO1v1 || knifeX<0 || knifeY > screenSize.height || knifeY<0){ 
+            knife.resetKnife(); 
+            if(!game.powered){
+                game.perdreVie();
+            }
         }
 
         int knifeImgWidth = knifeImage.getWidth(this);
@@ -516,7 +535,7 @@ public class EntityDisplay extends JPanel {
                 Shape transformedBossMask = transformBoss.createTransformedShape(bossMask);
                 //g2d.setColor(Color.RED);
                 //g2d.draw(transformedBossMask);
-                if (transformedBossMask.intersects(transformedKnifeMask.getBounds2D())) {
+                if (transformedBossMask.intersects(transformedKnifeMask.getBounds2D())) { 
                     collision = true;
                 }
             }

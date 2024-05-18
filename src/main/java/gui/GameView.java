@@ -179,9 +179,17 @@ public class GameView extends JPanel{
         repaint();
     }
 
+    // public void refreshCiblesDisplay() {
+    //     // Assure d'effacer les cibles avant de les redessiner
+    //     entityDisplay.clearCibles();
+    //     revalidate();
+    //     repaint();
+    // }
 
-
-
+    public EntityDisplay getEntityDisplay() {
+        return entityDisplay;
+    }
+    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
