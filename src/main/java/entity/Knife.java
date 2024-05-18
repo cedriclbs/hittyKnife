@@ -8,6 +8,7 @@ import geometry.Geometry;
 public class Knife {
     private final Coordinate coordinate;
     private final double DEFAULT_ANGLE = 90;
+    private Coordinate DEFAULT_COORDINATE;
     private double angle = DEFAULT_ANGLE;
     private double velocite=0;
     public boolean isInTheAir = false;
@@ -18,8 +19,9 @@ public class Knife {
      * Constructeur de la classe Knife.
      * Initialise un couteau avec des coordonnées par défaut.
      */
-    public Knife(){
-        this.coordinate = new Coordinate(0,0);
+    public Knife(Coordinate pos){
+        this.coordinate = pos;
+        this.DEFAULT_COORDINATE = new Coordinate(pos.getX(), pos.getY());
     }
 
     /**
@@ -167,7 +169,10 @@ public class Knife {
     public void resetKnife() {
         //setX((double) KnifeDisplay.getBgImgWidth() / 2);
         //setY((double) KnifeDisplay.getBgImgHeight() / 2);
-        setX(0);setY(0);
+
+        setX(this.DEFAULT_COORDINATE.getX());setY(this.DEFAULT_COORDINATE.getY());
+        System.out.println(DEFAULT_COORDINATE.getX()+"  |  "+DEFAULT_COORDINATE.getY());
+        //setX(0);setY(0);
 
         isInTheAir = false;
         redescend = false;

@@ -131,10 +131,10 @@ public class GameView extends JPanel{
             playersPanel.getActionMap().put("jumpOrThrow", new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (!game.knife1.throwing && !game.knife1.isInTheAir) {
-                        game.knife1.jump();
-                    } else if (!game.knife1.throwing && game.knife1.isInTheAir) {
-                        game.knife1.throwKnife();
+                    if (!game.knife3.throwing && !game.knife3.isInTheAir) {
+                        game.knife3.jump();
+                    } else if (!game.knife3.throwing && game.knife3.isInTheAir) {
+                        game.knife3.throwKnife();
                     }
                 }
             });

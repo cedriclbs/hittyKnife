@@ -63,6 +63,8 @@ public class EntityDisplay extends JPanel {
     Dimension screenSize;
     private Game game;
 
+    private boolean isSolo;
+
     //private ArrayList<Cible> deleteCible;
     
 
@@ -91,6 +93,7 @@ public class EntityDisplay extends JPanel {
         RATIO_Y = screenSize.height*3/4;//getBgImgHeight()*3/4;
 
         this.game = game;
+        this.isSolo = isSolo;
     }
 
     /**
@@ -176,8 +179,10 @@ public class EntityDisplay extends JPanel {
             int cw=200;int ch=200;
             if (x > cibleX-cw && x<cibleX+cw && y > cibleY-ch && y<cibleY+ch){
                 deleteCible.add(cible);
-                game.addXP(10);
-                game.addArgent(10);
+                if (isSolo) {
+                    game.addXP(10);
+                    game.addArgent(10);
+                }
             }
         }
     }
@@ -413,6 +418,10 @@ public class EntityDisplay extends JPanel {
         if (knifeX>screenSize.width || knifeX<0 || knifeY > screenSize.height || knifeY<0){
             knife.resetKnife();
         }
+        if (knife2X>screenSize.width || knife2X<0 || knife2Y > screenSize.height || knife2Y<0){
+            knife2.resetKnife();
+        }
+
 
         int knifeImgWidth = knifeImage.getWidth(this);
         int knifeImgHeight = knifeImage.getHeight(this);
@@ -424,11 +433,17 @@ public class EntityDisplay extends JPanel {
 
         AffineTransform transform = AffineTransform.getTranslateInstance(knifeX - (double) knifeImgWidth / 2, knifeY - (double) knifeImgHeight / 2);
         transform.rotate(Math.toRadians(knife.getAngle()), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
+
+        AffineTransform transform2 = AffineTransform.getTranslateInstance(knife2X - (double) knifeImgWidth / 2, knife2Y - (double) knifeImgHeight / 2);
+        transform2.rotate(Math.toRadians(knife2.getAngle()), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
+
         if(!game.powered) {
             g2d.drawImage(knifeImage, transform, this);
+            if (!isSolo) g2d.drawImage(knifeImage, transform2, this);
         }
         else{
             g2d.drawImage(knifeImagePowered, transform, this);
+            if (!isSolo) g2d.drawImage(knifeImagePowered, transform2, this);
         }
 
         //--------------------------TRAJECTOIRE SOUS FORME DE ROND DU COUTEAU ----------------------------------------
@@ -467,6 +482,8 @@ public class EntityDisplay extends JPanel {
         ArrayList<Cible> deleteCible= new ArrayList<>();
         Shape knifeMask = createCollisionMask(knifeImage);
         Shape transformedKnifeMask = transform.createTransformedShape(knifeMask);
+        Shape knifeMask2 = createCollisionMask(knifeImage);
+        Shape transformedKnifeMask2 = transform.createTransformedShape(knifeMask2);
         for (Cible cible : listeCible){
             boolean collision = false;
             double cibleX = (RATIO_X-cible.getX()*RATIO);
@@ -525,6 +542,11 @@ public class EntityDisplay extends JPanel {
                 if (transformedBossMask.intersects(transformedKnifeMask.getBounds2D())) {
                     collision = true;
                 }
+                if (transformedBossMask.intersects(transformedKnifeMask2.getBounds2D())) {
+                    collision = true;
+                }
+
+
             }
             else {
                 transformCible = AffineTransform.getTranslateInstance(cibleX - (double) cibleImWidth / 2, cibleY - (double) cibleImHeight / 2);
@@ -549,6 +571,9 @@ public class EntityDisplay extends JPanel {
                 //g2d.setColor(Color.RED);
                 //g2d.draw(transformedCibleMask);
                 if (transformedCibleMask.intersects(transformedKnifeMask.getBounds2D())) {
+                    collision = true;
+                }
+                if (transformedCibleMask.intersects(transformedKnifeMask2.getBounds2D())) {
                     collision = true;
                 }
             }
@@ -578,8 +603,10 @@ public class EntityDisplay extends JPanel {
                 }
                 collisionAngle = knife.getAngle();
                 if (!(cible instanceof Boss)){animCollision = true;currentAnimBonusType=null;}
-                game.addXP(10);
-                game.addArgent(10);
+                if (isSolo) {
+                    game.addXP(10);
+                    game.addArgent(10);
+                }
                 System.out.println("XP+10 ");
                 if (cible instanceof BossType1) {
                     ((BossType1) cible).attacked();

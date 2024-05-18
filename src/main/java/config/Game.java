@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import entity.*;
 import entity.bosses.*;
+import geometry.Coordinate;
 import gui.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -93,11 +94,9 @@ public class Game {
         this.isSolo = false;
         this.cheminSauvegarde = cheminSauvegarde;
         System.out.println("creation game");
-        this.knife1 = new Knife();
-        this.knife2 = new Knife();
-        this.knife3 = new Knife();
-        knife2.setX(20);
-        knife3.setX(-20);
+        this.knife1 = new Knife(new Coordinate(0,0));
+        this.knife2 = new Knife(new Coordinate(15,0));
+        this.knife3 = new Knife(new Coordinate(-15,0));
         initInventaire();
         this.roundManagement = new RoundManagement();
         this.gameView = new GameView(isSolo,this);
