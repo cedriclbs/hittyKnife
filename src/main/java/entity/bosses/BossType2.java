@@ -16,19 +16,6 @@ public class BossType2 extends Boss{
         super(TypeCible.CIBLE_BOSS2, 3, x, y);
         this.hitCount = 0;
     }
-    @Override
-    public void attacked() {
-        this.hitCount++;
-    }
-
-    public boolean isDead() {
-        int maxHits = 3;
-        return hitCount >= maxHits;
-    }
-    
-    public int getHitCount() {
-        return hitCount;
-    }
 
     @Override
     public void updateMovement(double delta) {

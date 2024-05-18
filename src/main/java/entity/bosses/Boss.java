@@ -5,8 +5,8 @@ import entity.*;
 /**
  * Classe abstraite représentant un boss du jeu.
  */
-public class Boss extends Cible {
-    private int health;
+public abstract class Boss extends Cible {
+    int hitCount;
     private TypeCible bosstype;
 
     /**
@@ -32,6 +32,15 @@ public class Boss extends Cible {
     }
 
     /**
+     * Obtient le nombre de coups reçus par le boss.
+     *
+     * @return Le nombre de coups reçus.
+     */
+    public int getHitCount() {
+        return hitCount;
+    }
+
+    /**
      * Méthode pour obtenir le type de boss.
      *
      * @return Le type de boss.
@@ -41,20 +50,34 @@ public class Boss extends Cible {
     }
 
     /**
+     * Vérifie si le boss est mort.
+     *
+     * @return true si le boss est mort (a atteint 0 de santé), sinon false.
+     */
+
+    public boolean isDead() {
+        int maxHits = 3;
+        return hitCount >= maxHits;
+    }
+
+
+    /**
      * Méthode pour gérer une attaque contre le boss avec un couteau.
+     * Cette méthode doit être implémentée dans les classes concrètes.
      */
     public void attacked() {
-
+        this.hitCount++;
     }
 
     /**
      * Méthode pour mettre à jour le mouvement du boss.
+     * Cette méthode doit être implémentée dans les classes concrètes.
+     *
+     * @param delta Le temps écoulé depuis la dernière mise à jour en secondes.
      */
     public void updateMovement(double delta) {
     }
 
-    public boolean isDead() {
-        return health <= 0;
-    }
-    
+
+
 }
