@@ -33,9 +33,7 @@ public class GameView extends JPanel{
     // Chemin vers le dossier contenant les fichiers audio
     public static String audioFolderPath = "src/main/ressources/music/";
     // Clip audio pour la musique de combat
-    private static Clip combatClip;
-    // Clip audio pour la musique de boss
-    private static Clip bossClip;
+    private static Clip musicClip;
 
 
 
@@ -49,43 +47,46 @@ public class GameView extends JPanel{
         this.game = game;
         Main.loop = new Loop(game);
         Main.loop.startTickFunction();
+<<<<<<< src/main/java/gui/GameView.java
+
+        if (isSolo) {
+=======
         //this.knife = game.knife1;
         //this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);
 
+>>>>>>> src/main/java/gui/GameView.java
             this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgJap10.gif", (ArrayList<Cible>)game.getListeCible(),isSolo, game);
 
             this.entityDisplay2 = new EntityDisplay(game.knife2, "src/main/ressources/background/fond1v1.jpg",  (ArrayList<Cible>)game.getListeCible2(),isSolo, game);
 
         initialize();
-        //playCombatMusic();
+        playMusic("src/main/ressources/music/Main_Theme.wav");
     }
 
     // Méthode générique pour jouer de la musique
-    private static void playMusic(String filePath, Clip clip) {
+    private static void playMusic(String filePath) {
         try {
+            if (musicClip != null && musicClip.isRunning()) {
+                musicClip.stop();
+                musicClip.close();
+            }
             File musicFile = new File(filePath);
             if (musicFile.exists()) {
                 AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicFile);
-                clip = AudioSystem.getClip();
-                clip.open(audioInput);
-                clip.start();
-                clip.loop(Clip.LOOP_CONTINUOUSLY);
+                musicClip = AudioSystem.getClip();
+                musicClip.open(audioInput);
+                musicClip.start();
+                musicClip.loop(Clip.LOOP_CONTINUOUSLY);
             } else {
-                System.out.println("Audio file not found.");
+                System.out.println("Audio file not found: " + filePath);
             }
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
     }
 
-    // Méthode pour jouer la musique de combat
-    public static void playCombatMusic() {
-        playMusic(audioFolderPath + "Boss_Theme.wav", combatClip);
-    }
-
-    // Méthode pour jouer la musique de boss
-    public static void playBossMusic() {
-        playMusic(audioFolderPath + "Boss_Theme.wav", bossClip);
+    public static void changeMusic(String newMusicPath) {
+        playMusic(newMusicPath);
     }
 
 

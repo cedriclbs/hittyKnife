@@ -63,11 +63,11 @@ public class HomeMenu extends BackgroundPanel  implements LibraryObserver {
     public int getRowOrCol (String pos) {
         int res = 0;
         for (ShopItem item : inventaire) {
-            if (pos.equals("left") && item.getArticleImagePath().contains("knife")){
+            if (pos.equals("left") && item.getArticlePath().contains("knife")){
                 res++;
-            } else if (pos.equals("right") && item.getArticleImagePath().contains("music")){
+            } else if (pos.equals("right") && item.getArticlePath().contains("music")){
                 res++;
-            } else if (pos.equals("bottom") && item.getArticleImagePath().contains("background")){
+            } else if (pos.equals("bottom") && item.getArticlePath().contains("background")){
                 res++;
             }
         }
@@ -104,35 +104,34 @@ public class HomeMenu extends BackgroundPanel  implements LibraryObserver {
 
 
         for (ShopItem item : inventaire) {
-
-            ImageIcon icon = adapteImage(item.getArticleImagePath(), item.getArticleName());
+            ImageIcon icon = adapteImage(item.getArticlePath(), item.getArticleName());
 
             JButton itemButton = new JButton(icon);
             itemButton.setOpaque(false); // Rend le bouton transparent
             itemButton.setContentAreaFilled(false); // Supprime le remplissage du bouton
             itemButton.setBorderPainted(false); // Supprime le cadre du bouton
 
-            if (item.getArticleImagePath().contains("knife")) {
+            if (item.getArticlePath().contains("knife")) {
                 leftPanel.add(itemButton);
-            } else if (item.getArticleImagePath().contains("music")) {
+            } else if (item.getArticlePath().contains("music")) {
                 rightPanel.add(itemButton);
-            } else if (item.getArticleImagePath().contains("background")) {
+            } else if (item.getArticlePath().contains("background")) {
                 bottomPanel.add(itemButton);
             }
 
 
             itemButton.addActionListener(e -> {
-                if (item.getArticleImagePath().contains("music")) {
-                    // TODO : Changer de musique
+                if (item.getArticlePath().contains("music")) {
+                    String musicPath = item.getArticleName();
+                    GameView.changeMusic(musicPath);
                 } else {
                     MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
-                    if (item.getArticleImagePath().contains("background")){
-                        mainFrame.getGameView().updateBackgroundImage(item.getArticleImagePath());
+                    if (item.getArticlePath().contains("background")){
+                        mainFrame.getGameView().updateBackgroundImage(item.getArticlePath());
                     } else {
-                        mainFrame.getGameView().updateKnifeImage(item.getArticleImagePath());
+                        mainFrame.getGameView().updateKnifeImage(item.getArticlePath());
                     }
                 }
-
             });
 
 
