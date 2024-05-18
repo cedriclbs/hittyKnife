@@ -24,6 +24,7 @@ import java.util.List;
  */
 public class EntityDisplay extends JPanel {
     private final Knife knife;
+    private final Knife knife2;
     private Image knifeImage;
     private Image knifeImagePowered;
     private Image cibleImage;
@@ -76,14 +77,16 @@ public class EntityDisplay extends JPanel {
         //System.out.println("bg x : "+RATIO_X+" bg y : "+RATIO_Y);
         this.listeCible = listeCible;
         this.knife = knife;
+        this.knife2 = game.knife3;
         initImage();
         initBg(backgroundPath);
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        //RATIO1v1 = (isSolo)?1:2;
         RATIO1v1 = (isSolo)?1:2;
 
-
-        if (isSolo) RATIO_X = screenSize.width/2;
-        else RATIO_X = screenSize.width/4;//getBgImgWidth()/2;
+        RATIO_X = screenSize.width/2;
+        //if (isSolo) RATIO_X = screenSize.width/2;
+        //else RATIO_X = screenSize.width/4;//getBgImgWidth()/2;
 
         RATIO_Y = screenSize.height*3/4;//getBgImgHeight()*3/4;
 
@@ -404,7 +407,10 @@ public class EntityDisplay extends JPanel {
         int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
         int knifeY = (int) (RATIO_Y-(knife.getY()*RATIO));
 
-        if (knifeX>screenSize.width/RATIO1v1 || knifeX<0 || knifeY > screenSize.height || knifeY<0){
+        int knife2X = (int) (RATIO_X-(knife2.getX()*RATIO));
+        int knife2Y = (int) (RATIO_Y-(knife2.getY()*RATIO));
+
+        if (knifeX>screenSize.width || knifeX<0 || knifeY > screenSize.height || knifeY<0){
             knife.resetKnife();
         }
 

@@ -25,6 +25,8 @@ public class Game {
     @JsonIgnore
     transient public Knife knife2;
     @JsonIgnore
+    transient public Knife knife3;
+    @JsonIgnore
     transient boolean isSolo = false;
     @JsonIgnore
     transient private List<Cible> listeCible1 = new ArrayList<>();
@@ -93,6 +95,9 @@ public class Game {
         System.out.println("creation game");
         this.knife1 = new Knife();
         this.knife2 = new Knife();
+        this.knife3 = new Knife();
+        knife2.setX(20);
+        knife3.setX(-20);
         initInventaire();
         this.roundManagement = new RoundManagement();
         this.gameView = new GameView(isSolo,this);
@@ -295,6 +300,7 @@ public class Game {
         }
         if (!isSolo) {
             knife2.updateMovement();
+            knife3.updateMovement();
             synchronized (listeCible2) {
                 for (Cible c : new ArrayList<>(listeCible2)) {
                     updateCible(c, adjustedDelta);

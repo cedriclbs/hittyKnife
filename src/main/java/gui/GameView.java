@@ -111,8 +111,9 @@ public class GameView extends JPanel{
             requestFocusInWindow();
         } else {
             game.setIsSOlo(false);
-            JPanel playersPanel = new JPanel(new GridLayout(1, 2));
-            playersPanel.add(entityDisplay);
+            //JPanel playersPanel = new JPanel(new GridLayout(1, 2));
+            //playersPanel.add(entityDisplay);
+            JPanel playersPanel = new JPanel(new GridLayout(1, 1));
             playersPanel.add(entityDisplay2);
             playersPanel.setFocusable(true);
             playersPanel.addMouseListener(new MouseAdapter() {
