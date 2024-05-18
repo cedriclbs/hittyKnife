@@ -47,20 +47,14 @@ public class GameView extends JPanel{
         this.game = game;
         Main.loop = new Loop(game);
         Main.loop.startTickFunction();
-        //this.knife = game.knife1;
-        //this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);
 
-<<<<<<< src/main/java/gui/GameView.java
-            this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgJap10.gif", (ArrayList<Cible>)game.getListeCible(),isSolo, game);
-=======
         this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgJap10.gif", (ArrayList<Cible>)game.getListeCible(),isSolo, game);
->>>>>>> src/main/java/gui/GameView.java
 
         this.entityDisplay2 = new EntityDisplay(game.knife2, "src/main/ressources/background/fond1v1.jpg",  (ArrayList<Cible>)game.getListeCible2(),isSolo, game);
 
         initialize();
-        //playCombatMusic();
     }
+
 
 
     // Méthode générique pour jouer de la musique
