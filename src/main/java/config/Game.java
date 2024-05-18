@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import entity.*;
 import entity.bosses.*;
+import geometry.Coordinate;
 import gui.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +26,8 @@ public class Game {
     @JsonIgnore
     transient public Knife knife2;
     @JsonIgnore
+    transient public Knife knife3;
+    @JsonIgnore
     transient boolean isSolo = false;
     @JsonIgnore
     transient private List<Cible> listeCible1 = new ArrayList<>();
@@ -33,9 +36,9 @@ public class Game {
     @JsonIgnore
     private GameView gameView;
     @JsonIgnore
-    public boolean gel = false;
+    public boolean[] gel = {false,false}; //[0] = solo et [1] = versus
     @JsonIgnore
-    public boolean powered = false;
+    public boolean powered[] = {false,false,false}; //joueur solo et les deux versus
     @JsonIgnore
     public BonusManager bonusManager = new BonusManager(this);
 
@@ -91,8 +94,9 @@ public class Game {
         this.isSolo = false;
         this.cheminSauvegarde = cheminSauvegarde;
         System.out.println("creation game");
-        this.knife1 = new Knife();
-        this.knife2 = new Knife();
+        this.knife1 = new Knife(new Coordinate(0,0));
+        this.knife2 = new Knife(new Coordinate(15,0));
+        this.knife3 = new Knife(new Coordinate(-15,0));
         initInventaire();
         this.roundManagement = new RoundManagement();
         this.gameView = new GameView(isSolo,this);
@@ -290,14 +294,15 @@ public class Game {
 
         synchronized (listeCible1) {
             for (Cible c : new ArrayList<>(listeCible1)) {
-                updateCible(c, adjustedDelta);
+                updateCible(c, adjustedDelta,true);
             }
         }
         if (!isSolo) {
             knife2.updateMovement();
+            knife3.updateMovement();
             synchronized (listeCible2) {
                 for (Cible c : new ArrayList<>(listeCible2)) {
-                    updateCible(c, adjustedDelta);
+                    updateCible(c, adjustedDelta,false);
                 }
             }
         }
@@ -314,11 +319,18 @@ public class Game {
      * @param c La cible à mettre à jour.
      * @param adjustedDelta Le temps écoulé depuis la dernière mise à jour, ajusté en fonction de la vitesse du jeu.
      */
-    private void updateCible(Cible c, double adjustedDelta) {
+    private void updateCible(Cible c, double adjustedDelta,boolean isSolo) {
 
         if (c instanceof MovingTarget) {
-            if (!gel) {
-                ((MovingTarget) c).updateMovement();
+            if (isSolo) {
+                if (!gel[0]) {
+                    ((MovingTarget) c).updateMovement();
+                }
+            }
+            else{
+                if (!gel[1]) {
+                    ((MovingTarget) c).updateMovement();
+                }
             }
 
         } else if (c instanceof BossType1) {

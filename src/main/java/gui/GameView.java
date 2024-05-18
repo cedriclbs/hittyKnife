@@ -51,13 +51,11 @@ public class GameView extends JPanel{
         Main.loop.startTickFunction();
         //this.knife = game.knife1;
         //this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);
-        if (isSolo) {
+
             this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgJap10.gif", (ArrayList<Cible>)game.getListeCible(),isSolo, game);
-        }
-        else{
-            this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/fond1v1.jpg",  (ArrayList<Cible>)game.getListeCible(),isSolo, game);
+
             this.entityDisplay2 = new EntityDisplay(game.knife2, "src/main/ressources/background/fond1v1.jpg",  (ArrayList<Cible>)game.getListeCible2(),isSolo, game);
-        }
+
         initialize();
         //playCombatMusic();
     }
@@ -111,8 +109,9 @@ public class GameView extends JPanel{
             requestFocusInWindow();
         } else {
             game.setIsSOlo(false);
-            JPanel playersPanel = new JPanel(new GridLayout(1, 2));
-            playersPanel.add(entityDisplay);
+            //JPanel playersPanel = new JPanel(new GridLayout(1, 2));
+            //playersPanel.add(entityDisplay);
+            JPanel playersPanel = new JPanel(new GridLayout(1, 1));
             playersPanel.add(entityDisplay2);
             playersPanel.setFocusable(true);
             playersPanel.addMouseListener(new MouseAdapter() {
@@ -130,10 +129,10 @@ public class GameView extends JPanel{
             playersPanel.getActionMap().put("jumpOrThrow", new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (!game.knife1.throwing && !game.knife1.isInTheAir) {
-                        game.knife1.jump();
-                    } else if (!game.knife1.throwing && game.knife1.isInTheAir) {
-                        game.knife1.throwKnife();
+                    if (!game.knife3.throwing && !game.knife3.isInTheAir) {
+                        game.knife3.jump();
+                    } else if (!game.knife3.throwing && game.knife3.isInTheAir) {
+                        game.knife3.throwKnife();
                     }
                 }
             });
