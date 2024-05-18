@@ -2,7 +2,6 @@ package config;
 
 import gui.ShopMenu;
 import gui.ShopTab;
-import User.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +21,7 @@ public class ShopCart {
     private int cartTotal;
     private JLabel userMoneyLabel;
 
-    private JLabel cartTotalLabel;
+    public JLabel cartTotalLabel;
 
 
 
@@ -36,7 +35,7 @@ public class ShopCart {
         this.game = game;
         this.cart = new ArrayList<>();
         this.cartTotal = 0;
-        this.cartTotalLabel = new JLabel("Total du panier : " + String.valueOf(cartTotal));
+        this.cartTotalLabel = new JLabel("Total du panier : " + cartTotal);
     }
 
 
@@ -64,7 +63,7 @@ public class ShopCart {
      */
     public void removeArticle (ShopItem article){
         if (cart.contains(article)) {
-            cartTotal -= article.getArticlePrice(); // Soustraire le prix de l'article supprimé du total du panier
+            cartTotal -= article.getArticlePrice();
             cart.remove(article);
             updateCartTotal();
         } else {
@@ -79,14 +78,13 @@ public class ShopCart {
      *
      * @param shopMenu       Le menu du magasin associé.
      * @param list           La liste des articles à afficher dans le panier.
-     * @param shopTab        L'onglet du magasin associé.
      * @param mainMenuPanel  Le JPanel principal où afficher le panier.
      * @param labelName      Le nom du label du panier.
      * @return Le JPanel contenant le panier d'achats.
      */
 
 
-    public JPanel displayCart(ShopMenu shopMenu, List<ShopItem> list, ShopTab shopTab, JPanel mainMenuPanel, String labelName) {
+    public JPanel displayCart(ShopMenu shopMenu, List<ShopItem> list, JPanel mainMenuPanel, String labelName) {
         JPanel temp2 = new JPanel();
         temp2.setOpaque(false);
         mainMenuPanel.add(temp2);
@@ -106,7 +104,7 @@ public class ShopCart {
             for (ShopItem article : list) {
                 JPanel itemPanel = new JPanel();
                 itemPanel.setLayout(new BoxLayout(itemPanel, BoxLayout.X_AXIS)); // Disposition horizontale
-
+                System.out.println(article.getArticleImagePath());
                 ImageIcon iconTemp = new ImageIcon(article.getArticleImagePath());
                 ImageIcon icon = new ImageIcon(iconTemp.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
 
@@ -165,6 +163,7 @@ public class ShopCart {
      */
     private void updateCartTotal() {
         this.cartTotalLabel.setText("Total du panier : " + getCartTotal());
+        this.cartTotalLabel.repaint();
     }
 
     public List<ShopItem> getCart() {
@@ -176,7 +175,8 @@ public class ShopCart {
     }
 
 
-
-
-
+    public void setCartTotal(int total) {
+        this.cartTotal = total;
+        updateCartTotal();
+    }
 }

@@ -49,7 +49,7 @@ public class ShopTab {
      * @param category La catégorie de l'onglet.
      * @return Le JPanel contenant le contenu principal de l'onglet.
      */
-    private JPanel createPanel(String path, String category) {
+    JPanel createPanel(String path, String category) {
         // Création du panel pour chaque onglet avec une image de fond personnalisée
 
         BackgroundPanel tabPanel = new BackgroundPanel(RessourcesPaths.backgroundPath + "bgShop.gif");
@@ -92,7 +92,7 @@ public class ShopTab {
 
 
             case "cart":
-                JPanel cartPanel = shopMenu.cart.displayCart(this.shopMenu, shopMenu.cart.getCart(), this, mainMenuPanel, "Panier");
+                JPanel cartPanel = shopMenu.cart.displayCart(this.shopMenu, shopMenu.cart.getCart(), mainMenuPanel, "Panier");
                 break;
 
         }
