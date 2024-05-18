@@ -6,11 +6,13 @@ import entity.bosses.*;
 
 import java.awt.*;
 import config.Game;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
@@ -68,6 +70,7 @@ public class EntityDisplay extends JPanel {
     private Game game;
 
     private boolean isSolo;
+    private boolean isWin=false;
 
     //private ArrayList<Cible> deleteCible;
     
@@ -526,6 +529,41 @@ public class EntityDisplay extends JPanel {
             g2d.setColor(Color.BLACK); // Couleur du texte
             g2d.drawString(scoreTexte1, xPosition1, yPosi);
             g2d.drawString(scoreTexte2, xPosition2, yPosi);
+
+            if ((game.scoreJoueur1>=5 || game.scoreJoueur2>=5 ) && !this.isWin){
+                this.isWin = true;
+
+                JDialog dialog = new JDialog((Frame) null, "VICTOIRE", true);
+                dialog.setSize(200, 100);
+                dialog.setLayout(new BorderLayout());
+
+                JPanel centerPanel = new JPanel();
+                centerPanel.setLayout(new GridBagLayout());
+
+                // Ajout de composants au JDialog
+                JLabel messageLabel = new JLabel("Vous avez gagné");
+                centerPanel.add(messageLabel, new GridBagConstraints());
+                dialog.add(centerPanel, BorderLayout.CENTER);
+
+                JPanel bottomPanel = new JPanel();
+                JButton closeButton = new JButton("Rejouer");
+                bottomPanel.add(closeButton);
+                dialog.add(bottomPanel, BorderLayout.SOUTH);
+
+                // Ajout d'un ActionListener au bouton de fermeture
+                closeButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        game.resetScore();isWin=false;dialog.dispose();
+                    }
+                });
+
+                // Rendre le JDialog visible
+                dialog.setVisible(true);
+
+
+
+            }
 
 
         }

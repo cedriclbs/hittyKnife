@@ -185,6 +185,11 @@ public class Game {
         this.inventaire.add(new ShopItem("Music 1", 30, RessourcesPaths.buttonPath + "music.png"));
     }
 
+    public void resetScore(){
+        this.scoreJoueur2=0;
+        this.scoreJoueur1=0;
+    }
+
 
     /**
     * Charge l'état du jeu à partir du fichier de sauvegarde spécifié dans cheminSauvegarde.
