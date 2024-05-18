@@ -353,7 +353,6 @@ public class EntityDisplay extends JPanel {
             game.addXP(10);
             game.addArgent(10);
         }
-        System.out.println("XP+10 ");
         if (cible instanceof BossType1) {
             ((BossType1) cible).attacked();
             if (((BossType1) cible).isDead()) {

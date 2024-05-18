@@ -51,17 +51,6 @@ public class Geometry{
         return result;
     }
 
-    /*public static void forwardMovementSoloMode(Coordinate coordinate, double angle, double velocite) {
-        double angleRad = Math.toRadians(angle);
-
-        double deltaX = Math.cos(angleRad);
-        double deltaY = Math.sin(angleRad);
-
-
-        coordinate.setX(coordinate.getX() + deltaX * 2);
-        coordinate.setY(coordinate.getY() + deltaY * 2);
-    }*/
-
     /**
      * Vérifie si un point défini par ses coordonnées (x2, y2) est situé dans un vecteur défini par sa longueur et son angle.
      * Utilise les coordonnées du point de départ (this.x, this.y), la longueur du vecteur et l'angle du vecteur.
@@ -110,7 +99,18 @@ public class Geometry{
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
-
+    /**
+     * Modifie la position horizontale d'un objet en simulant un mouvement de gauche à droite.
+     * La fonction prend en compte la vélocité horizontale actuelle, l'accélération horizontale et une largeur maximale.
+     *
+     * @param x La position horizontale actuelle de l'objet.
+     * @param width La largeur maximale à laquelle l'objet peut se déplacer.
+     * @param velocityX La vélocité horizontale actuelle de l'objet.
+     * @param accelerationX L'accélération horizontale appliquée à l'objet.
+     * @param ratio Le ratio utilisé pour ajuster la vélocité du mouvement.
+     * @param boss Le boss associé à l'objet, ou null s'il n'y en a pas.
+     * @return Un tableau contenant la nouvelle position horizontale et la nouvelle vélocité horizontale de l'objet après le mouvement.
+     */
     public static double[] leftAndRightMovement(double x, int width, double velocityX, double accelerationX, int ratio, Boss boss) {
         return new double[]{5.5, 3.3};
     }

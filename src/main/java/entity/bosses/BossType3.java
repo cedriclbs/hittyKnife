@@ -6,7 +6,6 @@ import entity.*;
  * Classe représentant un type spécifique de boss.
  */
 public class BossType3 extends Boss{
-    private int hitCount;
     private boolean directionPositive = true; // Indique si le boss se déplace vers la droite (+x) ou vers la gauche (-x)
 
     /**
@@ -14,45 +13,28 @@ public class BossType3 extends Boss{
      * Initialise un boss de type 3.
      */
     public BossType3(double x, double y) {
-        super(TypeCible.CIBLE_BOSS3, 3, x, y);
+        super(TypeCible.CIBLE_BOSS3, x, y);
         this.hitCount = 0;
-    }
-    @Override
-    public void attacked() {
-        this.hitCount++;
-    }
-
-    public boolean isDead() {
-        int maxHits = 3;
-        return hitCount >= maxHits;
-    }
-
-    public int getHitCount() {
-        return hitCount;
     }
 
     @Override
     public void updateMovement(double delta) {
-        // Définir les limites de déplacement sur l'axe horizontal
         double limitLeft = -56;
         double limitRight = 56;
 
-        // Définir les limites de déplacement sur l'axe vertical
-        double limitTop = 40; // Position Y la plus haute
-        double limitBottom = 25; // Position Y la plus basse
+        double limitTop = 40;
+        double limitBottom = 25;
 
-        // Calculer le déplacement en fonction de la vitesse et du temps écoulé depuis la dernière mise à jour
-        double speed = 0.6; // Vitesse du mouvement en pixels par seconde
-        double movement = speed * delta; // Déplacement en pixels
+        // Calculer le déplacement en fonction de la vitesse et du temps écoulé depuis la dernière mise à jour, en pixels par seconde
+        double speed = 0.6;
+        double movement = speed * delta;
 
         double newX = getX();
         double newY = getY();
 
-        // Vérifier la direction du mouvement actuel
         if (directionPositive) {
             // Si la direction est positive, le boss se déplace vers la droite sur l'axe horizontal
             newX += movement;
-            // Vérifier si le mouvement dépasse la limite droite
             if (newX >= limitRight) {
                 // Une fois arrivé à la limite droite, le boss se déplace vers le bas sur l'axe vertical
                 newY -= 2;
@@ -62,7 +44,6 @@ public class BossType3 extends Boss{
         } else {
             // Si la direction est négative, le boss se déplace vers la gauche sur l'axe horizontal
             newX -= movement;
-            // Vérifier si le mouvement dépasse la limite gauche
             if (newX <= limitLeft) {
                 // Une fois arrivé à la limite gauche, le boss se déplace vers le bas sur l'axe vertical
                 newY -= 2;

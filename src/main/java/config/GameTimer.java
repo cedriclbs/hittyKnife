@@ -11,6 +11,7 @@ public class GameTimer {
 
     /**
      * Constructeur de la classe GameTimer.
+     *
      * @param minutes Le nombre de minutes pour initialiser le compte à rebours.
      */
     public GameTimer(int minutes) {
@@ -19,6 +20,8 @@ public class GameTimer {
 
     /**
      * Démarre le compte à rebours.
+     * Cette méthode crée un Timer et un TimerTask pour décrémenter le nombre de secondes
+     * toutes les secondes, et affiche le temps restant au format MM:SS.
      */
     public void start() {
         Timer timer = new Timer();
@@ -45,5 +48,6 @@ public class GameTimer {
     public int getSeconds() {
         return this.seconds;
     }
+
 
 }

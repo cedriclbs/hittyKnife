@@ -13,21 +13,8 @@ public class BossType2 extends Boss{
      * Initialise un boss de type 2.
      */
     public BossType2(double x, double y) {
-        super(TypeCible.CIBLE_BOSS2, 3, x, y);
+        super(TypeCible.CIBLE_BOSS2, x, y);
         this.hitCount = 0;
-    }
-    @Override
-    public void attacked() {
-        this.hitCount++;
-    }
-
-    public boolean isDead() {
-        int maxHits = 3;
-        return hitCount >= maxHits;
-    }
-    
-    public int getHitCount() {
-        return hitCount;
     }
 
     @Override

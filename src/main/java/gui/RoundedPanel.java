@@ -14,8 +14,6 @@ public class RoundedPanel extends JPanel {
     private boolean forAccueil;
     private Color backgroundColor;
 
-
-
     /**
      * Constructeur de la classe RoundedPanel.
      *
@@ -40,7 +38,6 @@ public class RoundedPanel extends JPanel {
         setOpaque(false);
     }
 
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -62,9 +59,6 @@ public class RoundedPanel extends JPanel {
             graphics.setColor(backgroundColor);
             graphics.fillRoundRect(0, 0, width - 1, height - 1, arcs.width, arcs.height);
         }
-
         graphics.dispose();
-
     }
-
 }

@@ -7,23 +7,15 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 /**
  * Représente le panier d'achats dans le magasin.
  */
-
 public class ShopCart {
 
-    private Game game;
-    private List<ShopItem> cart;
-    private int cartTotal;
-    private JLabel userMoneyLabel;
-
-    public JLabel cartTotalLabel;
-
-
-
+    private Game game;                 // Le jeu associé au panier d'achats
+    private List<ShopItem> cart;      // Liste des articles dans le panier
+    private int cartTotal;             // Montant total du panier
+    public JLabel cartTotalLabel;     // Label pour afficher le montant total du panier
 
     /**
      * Initialise un nouveau panier d'achats vide.
@@ -36,7 +28,6 @@ public class ShopCart {
         this.cartTotal = 0;
         this.cartTotalLabel = new JLabel("Total du panier : " + cartTotal);
     }
-
 
     /**
      * Ajoute un article au panier d'achats.
@@ -81,8 +72,6 @@ public class ShopCart {
      * @param labelName      Le nom du label du panier.
      * @return Le JPanel contenant le panier d'achats.
      */
-
-
     public JPanel displayCart(ShopMenu shopMenu, List<ShopItem> list, JPanel mainMenuPanel, String labelName) {
         JPanel temp2 = new JPanel();
         temp2.setOpaque(false);
@@ -165,15 +154,29 @@ public class ShopCart {
         this.cartTotalLabel.repaint();
     }
 
+    /**
+     * Récupère la liste des articles dans le panier.
+     *
+     * @return La liste des articles dans le panier.
+     */
     public List<ShopItem> getCart() {
         return cart;
     }
 
+    /**
+     * Récupère le montant total du panier.
+     *
+     * @return Le montant total du panier.
+     */
     public int getCartTotal () {
         return this.cartTotal;
     }
 
-
+    /**
+     * Définit le montant total du panier.
+     *
+     * @param total Le montant total à définir pour le panier.
+     */
     public void setCartTotal(int total) {
         this.cartTotal = total;
         updateCartTotal();
