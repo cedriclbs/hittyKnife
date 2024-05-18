@@ -1,12 +1,7 @@
 package debug;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import config.Game;
 import entity.Knife;
 import geometry.Geometry;
-
-import java.io.File;
-import java.io.IOException;
 
 import static java.lang.Math.round;
 
@@ -53,29 +48,5 @@ public class Debug {
         lastPos = (int) round(knife.getY()/RATIO_AFFICHE);
 
     }
-
-
-    /**
-     * Méthode de test pour la sérialisation des objets.
-     * Cette méthode sérialise et désérialise un objet Game pour tester la fonctionnalité.
-     */
-    /*
-    public static void testSerialization() {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            Game gameTest = new Game(true);
-            gameTest.setNomUtilisateur("testUser"); // Définir un nomUtilisateur valide
-
-            // Sérialisation
-            mapper.writeValue(new File("testGame.json"), gameTest);
-
-            // Désérialisation pour tester
-            Game loadedGame = mapper.readValue(new File("testGame.json"), Game.class);
-            System.out.println("Test chargé: " + loadedGame.getNomUtilisateur()); // Afficher le nomUtilisateur pour vérifier.
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-     */
 
 }
