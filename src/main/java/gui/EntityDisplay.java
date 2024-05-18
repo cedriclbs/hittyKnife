@@ -16,6 +16,9 @@ import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 
 /**
@@ -203,17 +206,20 @@ public class EntityDisplay extends JPanel {
      * @return Le chemin d'accès mis à jour à l'image du couteau.
      */
     private String verifImage(String knifePathClicked) {
-        String res = knifePathClicked;
         String abr = RessourcesPaths.knifePath;
-        if (knifePathClicked.equals(abr +"knife.png")){
-            res = abr + "knifeRotate1.png";
-        } else if (knifePathClicked.equals(abr +"knife#2.png")){
-            res = abr + "knifeRotated2.png";
-        } else if (knifePathClicked.equals(abr +"knife#3.png")){
-            res = abr+ "knifeRotate3.png";
-        }
-        return res;
+
+        // Create the map with the possible transformations
+        Map<String, String> pathMap = new HashMap<>();
+        pathMap.put(abr + "knife#1.png", abr + "knifeRotate1.png");
+        pathMap.put(abr + "knife#2.png", abr + "knifeRotate2.png");
+        pathMap.put(abr + "knife#3.png", abr + "knifeRotate3.png");
+        pathMap.put(abr + "knife#4.png", abr + "knifeRotate4.png");
+        pathMap.put(abr + "knife#5.png", abr + "knifeRotate5.png");
+
+        // Return the transformed path if it exists, otherwise return the original path
+        return pathMap.getOrDefault(knifePathClicked, knifePathClicked);
     }
+
 
 
     /**
