@@ -50,17 +50,6 @@ public class Geometry{
         return result;
     }
 
-    /*public static void forwardMovementSoloMode(Coordinate coordinate, double angle, double velocite) {
-        double angleRad = Math.toRadians(angle);
-
-        double deltaX = Math.cos(angleRad);
-        double deltaY = Math.sin(angleRad);
-
-
-        coordinate.setX(coordinate.getX() + deltaX * 2);
-        coordinate.setY(coordinate.getY() + deltaY * 2);
-    }*/
-
     /**
      * Vérifie si un point défini par ses coordonnées (x2, y2) est situé dans un vecteur défini par sa longueur et son angle.
      * Utilise les coordonnées du point de départ (this.x, this.y), la longueur du vecteur et l'angle du vecteur.

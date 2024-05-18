@@ -5,7 +5,6 @@ import config.Game;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 public class Loop {
 
     private final Game g;

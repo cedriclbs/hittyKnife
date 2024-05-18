@@ -22,11 +22,12 @@ public class Cible {
     /**
      * Constructeur de la classe Cible.
      *
-     * @param x Coordonnée x de la cible.
-     * @param y Coordonnée y de la cible.
+     * @param typeCible Type de la cible.
+     * @param x         Coordonnée x de la cible.
+     * @param y         Coordonnée y de la cible.
      */
-    public Cible(TypeCible type, double x, double y) {
-        this.typeCible = type;
+    public Cible(TypeCible typeCible, double x, double y) {
+        this.typeCible = typeCible;
         coordinate = new Coordinate(x, y);
     }
 
@@ -67,14 +68,10 @@ public class Cible {
     }
 
     /**
-     * Méthode pour obtenir le type de la cible.
+     * Méthode pour obtenir les coordonnées de la cible.
      *
-     * @return Le type de la cible.
+     * @return Les coordonnées de la cible
      */
-    public TypeCible getTypeCible() {
-        return typeCible;
-    }
-
     public Coordinate getCoord(){return coordinate;}
 
 }

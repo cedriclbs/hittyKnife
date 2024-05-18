@@ -32,6 +32,7 @@ public class Boss extends Cible {
 
     /**
      * Méthode pour gérer une attaque contre le boss avec un couteau.
+     * Cette méthode doit être implémentée dans les classes concrètes.
      */
     public void attacked() {
         health--;
@@ -39,10 +40,18 @@ public class Boss extends Cible {
 
     /**
      * Méthode pour mettre à jour le mouvement du boss.
+     * Cette méthode doit être implémentée dans les classes concrètes.
+     *
+     * @param delta Le temps écoulé depuis la dernière mise à jour en secondes.
      */
     public void updateMovement(double delta) {
     }
 
+    /**
+     * Vérifie si le boss est mort.
+     *
+     * @return true si le boss est mort (a atteint 0 de santé), sinon false.
+     */
     public boolean isDead() {
         return health <= 0;
     }

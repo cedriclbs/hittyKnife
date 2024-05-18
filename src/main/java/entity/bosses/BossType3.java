@@ -34,18 +34,16 @@ public class BossType3 extends Boss{
 
     @Override
     public void updateMovement(double delta) {
-        // Définir les limites de déplacement sur l'axe horizontal
         double limitLeft = -56;
         double limitRight = 56;
 
-        // Définir les limites de déplacement sur l'axe vertical
-        double limitTop = 35; // Position Y la plus haute
-        double limitBottom = 25; // Position Y la plus basse
+        double limitTop = 35;
+        double limitBottom = 25;
 
-        // Calculer le déplacement en fonction de la vitesse et du temps écoulé depuis la dernière mise à jour
-        double speed = 0.6; // Vitesse du mouvement en pixels par seconde
 
-        // Utiliser la méthode centralisée pour obtenir la nouvelle position et la direction
+        double speed = 0.6;
+
+
         double[] newPosition = Geometry.horizontalMovementWithVerticalAdjustment(getX(), getY(), delta, speed, directionPositive, limitLeft, limitRight, limitTop, limitBottom);
 
         setX(newPosition[0]);

@@ -22,7 +22,6 @@ public class HomeMenu extends BackgroundPanel  implements LibraryObserver {
     private Game game;
     private List<ShopItem> inventaire;
 
-
     /**
      * Constructeur de la classe HomeMenu.
      *
@@ -35,9 +34,6 @@ public class HomeMenu extends BackgroundPanel  implements LibraryObserver {
         afficherInventaire();
     }
 
-
-
-
     /**
      * Met à jour l'inventaire du jeu en récupérant l'inventaire de la classe Game
      * puis ensuite affiche l'inventaire mis à jour dans la page d'accueil.
@@ -47,9 +43,6 @@ public class HomeMenu extends BackgroundPanel  implements LibraryObserver {
         this.inventaire = game.getInventaire();
         afficherInventaire();
     }
-
-
-
 
     /**
      * Détermine le nombre de lignes ou de colonnes nécessaires en fonction du contenu de l'inventaire
@@ -63,19 +56,16 @@ public class HomeMenu extends BackgroundPanel  implements LibraryObserver {
     public int getRowOrCol (String pos) {
         int res = 0;
         for (ShopItem item : inventaire) {
-            if (pos.equals("left") && item.getArticleImagePath().contains("knife")){
+            if (pos.equals("left") && item.getArticlePath().contains("knife")){
                 res++;
-            } else if (pos.equals("right") && item.getArticleImagePath().contains("music")){
+            } else if (pos.equals("right") && item.getArticlePath().contains("music")){
                 res++;
-            } else if (pos.equals("bottom") && item.getArticleImagePath().contains("background")){
+            } else if (pos.equals("bottom") && item.getArticlePath().contains("background")){
                 res++;
             }
         }
         return res;
     }
-
-
-
 
     /**
      * Affiche les éléments de la bibliothèque dans des panneaux distincts.
@@ -96,58 +86,51 @@ public class HomeMenu extends BackgroundPanel  implements LibraryObserver {
         RoundedPanel bottomPanel = new RoundedPanel(20, 20, false, true);
         bottomPanel.setLayout(new GridLayout(1, getRowOrCol("bottom"), 10, 0));
 
-
         leftPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         middlePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         rightPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         bottomPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-
         for (ShopItem item : inventaire) {
-
-            ImageIcon icon = adapteImage(item.getArticleImagePath(), item.getArticleName());
+            ImageIcon icon = adapteImage(item.getArticlePath(), item.getArticleName());
 
             JButton itemButton = new JButton(icon);
             itemButton.setOpaque(false); // Rend le bouton transparent
             itemButton.setContentAreaFilled(false); // Supprime le remplissage du bouton
             itemButton.setBorderPainted(false); // Supprime le cadre du bouton
 
-            if (item.getArticleImagePath().contains("knife")) {
+            if (item.getArticlePath().contains("knife")) {
                 leftPanel.add(itemButton);
-            } else if (item.getArticleImagePath().contains("music")) {
+            } else if (item.getArticlePath().contains("music")) {
                 rightPanel.add(itemButton);
-            } else if (item.getArticleImagePath().contains("background")) {
+            } else if (item.getArticlePath().contains("background")) {
                 bottomPanel.add(itemButton);
             }
 
-
             itemButton.addActionListener(e -> {
-                if (item.getArticleImagePath().contains("music")) {
-                    // TODO : Changer de musique
+                if (item.getArticlePath().contains("music")) {
+                    String musicPath = item.getArticleName();
+                    GameView.changeMusic(musicPath);
                 } else {
                     MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
-                    if (item.getArticleImagePath().contains("background")){
-                        mainFrame.getGameView().updateBackgroundImage(item.getArticleImagePath());
+                    if (item.getArticlePath().contains("background")){
+                        mainFrame.getGameView().updateBackgroundImage(item.getArticlePath());
                     } else {
-                        mainFrame.getGameView().updateKnifeImage(item.getArticleImagePath());
+                        mainFrame.getGameView().updateKnifeImage(item.getArticlePath());
                     }
                 }
-
             });
-
 
             itemButton.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     itemButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 }
-
                 @Override
                 public void mouseExited(MouseEvent e) {
                     itemButton.setCursor(Cursor.getDefaultCursor());
                 }
             });
-
         }
 
         JLabel welcomeLabel = new JLabel(" へようこそ Hitty Knife - Redux");
@@ -164,7 +147,6 @@ public class HomeMenu extends BackgroundPanel  implements LibraryObserver {
         labelPanel.add(usernameLabel);
         labelPanel.setOpaque(false);
 
-
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -175,22 +157,16 @@ public class HomeMenu extends BackgroundPanel  implements LibraryObserver {
         gbc.gridy = 1;
         middlePanel.add(usernameLabel, gbc);
 
-
         leftPanel.setOpaque(false);
         middlePanel.setOpaque(false);
         rightPanel.setOpaque(false);
         bottomPanel.setOpaque(false);
 
-
         this.add(leftPanel, BorderLayout.WEST);
         this.add(middlePanel, BorderLayout.CENTER);
         this.add(rightPanel, BorderLayout.EAST);
         this.add(bottomPanel, BorderLayout.SOUTH);
-
-
     }
-
-
 
     /**
      * Méthode pour vider tous les panels avant de les remplir à nouveau.

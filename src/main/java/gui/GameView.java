@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import javax.sound.sampled.*;
 import javax.swing.*;
 
-
-
 /**
  * La classe SoloMode représente le mode de jeu solo du jeu et gère l'initialisation et le démarrage d'une partie solo du jeu.
  */
@@ -23,25 +21,16 @@ public class GameView extends JPanel{
     private Game game;
     private EntityDisplay entityDisplay;
     private EntityDisplay entityDisplay2;
-    //private Knife knife[];
     private boolean isSolo;
 
     private Image backgroundImage;
-    private static double bgImgWidth;
-    private static double bgImgHeight;
-
-    // Chemin vers le dossier contenant les fichiers audio
-    public static String audioFolderPath = "src/main/ressources/music/";
-    // Clip audio pour la musique de combat
-    private static Clip combatClip;
-    // Clip audio pour la musique de boss
-    private static Clip bossClip;
-
-
+    private static Clip musicClip;
 
     /**
      * Constructeur de la classe SoloMode.
      *
+     * @param isSolo Indique si le mode de jeu est solo ou non.
+     * @param game   Le jeu associé à cette vue.
      */
     public GameView(boolean isSolo, Game game)  {
         this.isSolo = isSolo;
@@ -49,47 +38,46 @@ public class GameView extends JPanel{
         this.game = game;
         Main.loop = new Loop(game);
         Main.loop.startTickFunction();
-        //this.knife = game.knife1;
-        //this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);
-        if (isSolo) {
-            this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgJap10.gif", (ArrayList<Cible>)game.getListeCible(),isSolo, game);
-        }
-        else{
-            this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/fond1v1.jpg",  (ArrayList<Cible>)game.getListeCible(),isSolo, game);
-            this.entityDisplay2 = new EntityDisplay(game.knife2, "src/main/ressources/background/fond1v1.jpg",  (ArrayList<Cible>)game.getListeCible2(),isSolo, game);
-        }
+        this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgJap10.gif", (ArrayList<Cible>)game.getListeCible(),isSolo, game);
+        this.entityDisplay2 = new EntityDisplay(game.knife2, "src/main/ressources/background/fond1v1.jpg",  (ArrayList<Cible>)game.getListeCible2(),isSolo, game);
         initialize();
-        //playCombatMusic();
     }
 
-    // Méthode générique pour jouer de la musique
-    private static void playMusic(String filePath, Clip clip) {
+
+    /**
+     * Méthode générique pour jouer de la musique
+     *
+     * @param filePath: lien de la musique à jouer
+     */
+    private static void playMusic(String filePath) {
         try {
+            if (musicClip != null && musicClip.isRunning()) {
+                musicClip.stop();
+                musicClip.close();
+            }
             File musicFile = new File(filePath);
             if (musicFile.exists()) {
                 AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicFile);
-                clip = AudioSystem.getClip();
-                clip.open(audioInput);
-                clip.start();
-                clip.loop(Clip.LOOP_CONTINUOUSLY);
+                musicClip = AudioSystem.getClip();
+                musicClip.open(audioInput);
+                musicClip.start();
+                musicClip.loop(Clip.LOOP_CONTINUOUSLY);
             } else {
-                System.out.println("Audio file not found.");
+                System.out.println("Audio file not found: " + filePath);
             }
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
     }
 
-    // Méthode pour jouer la musique de combat
-    public static void playCombatMusic() {
-        playMusic(audioFolderPath + "Boss_Theme.wav", combatClip);
+    /**
+     * Change la musique de fond du jeu.
+     *
+     * @param newMusicPath Le chemin vers le nouveau fichier audio à jouer.
+     */
+    public static void changeMusic(String newMusicPath) {
+        playMusic(newMusicPath);
     }
-
-    // Méthode pour jouer la musique de boss
-    public static void playBossMusic() {
-        playMusic(audioFolderPath + "Boss_Theme.wav", bossClip);
-    }
-
 
     /**
      * Initialise l'interface utilisateur et démarre le jeu.
@@ -111,8 +99,7 @@ public class GameView extends JPanel{
             requestFocusInWindow();
         } else {
             game.setIsSOlo(false);
-            JPanel playersPanel = new JPanel(new GridLayout(1, 2));
-            playersPanel.add(entityDisplay);
+            JPanel playersPanel = new JPanel(new GridLayout(1, 1));
             playersPanel.add(entityDisplay2);
             playersPanel.setFocusable(true);
             playersPanel.addMouseListener(new MouseAdapter() {
@@ -124,25 +111,24 @@ public class GameView extends JPanel{
                     }
                 }
             });
-    
+
             // Key Bindings pour la touche espace
             playersPanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("SPACE"), "jumpOrThrow");
             playersPanel.getActionMap().put("jumpOrThrow", new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (!game.knife1.throwing && !game.knife1.isInTheAir) {
-                        game.knife1.jump();
-                    } else if (!game.knife1.throwing && game.knife1.isInTheAir) {
-                        game.knife1.throwKnife();
+                    if (!game.knife3.throwing && !game.knife3.isInTheAir) {
+                        game.knife3.jump();
+                    } else if (!game.knife3.throwing && game.knife3.isInTheAir) {
+                        game.knife3.throwKnife();
                     }
                 }
             });
-    
+
             add(playersPanel, BorderLayout.CENTER);
             playersPanel.requestFocusInWindow();
         }
     }
-    
 
     /**
      * Initialise l'image de fond du jeu.
@@ -151,10 +137,7 @@ public class GameView extends JPanel{
      */
     private void initBg(String backgroundPath) {
         this.backgroundImage = new ImageIcon(backgroundPath).getImage();
-        bgImgHeight = this.backgroundImage.getHeight(null);
-        bgImgWidth = this.backgroundImage.getWidth(null);
     }
-
 
     /**
      * Met à jour l'image du couteau suite au choix du joueur dans l'inventaire.
@@ -178,17 +161,11 @@ public class GameView extends JPanel{
         revalidate();
         repaint();
     }
-
-
-
-
+    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g.create();
-        //g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         g2d.dispose();
     }
-
-
 }
