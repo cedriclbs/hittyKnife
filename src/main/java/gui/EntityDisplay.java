@@ -88,7 +88,7 @@ public class EntityDisplay extends JPanel {
         initBg(backgroundPath);
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //RATIO1v1 = (isSolo)?1:2;
-        RATIO1v1 = (isSolo)?1:2;
+        RATIO1v1 = 1;
 
         RATIO_X = screenSize.width/2;
         //if (isSolo) RATIO_X = screenSize.width/2;
@@ -495,21 +495,18 @@ public class EntityDisplay extends JPanel {
         int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
         int knifeY = (int) (RATIO_Y-(knife.getY()*RATIO));
 
-<<<<<<< HEAD
         if (knifeX>screenSize.width/RATIO1v1 || knifeX<0 || knifeY > screenSize.height || knifeY<0){ 
             knife.resetKnife(); 
-            if(!game.powered){
-                game.perdreVie();
+            if(isSolo){
+                if(!game.powered[0]){
+                    game.perdreVie();
+                }
             }
-=======
+        }
 
         int knife2X = (int) (RATIO_X-(knife2.getX()*RATIO));
         int knife2Y = (int) (RATIO_Y-(knife2.getY()*RATIO));
 
-        if (knifeX>screenSize.width || knifeX<0 || knifeY > screenSize.height || knifeY<0){
-            knife.resetKnife();
->>>>>>> develop
-        }
         if (!isSolo) {
             if (knife2X > screenSize.width || knife2X < 0 || knife2Y > screenSize.height || knife2Y < 0) {
                 knife2.resetKnife();
@@ -645,10 +642,6 @@ public class EntityDisplay extends JPanel {
                 Shape transformedBossMask = transformBoss.createTransformedShape(bossMask);
                 //g2d.setColor(Color.RED);
                 //g2d.draw(transformedBossMask);
-<<<<<<< HEAD
-                if (transformedBossMask.intersects(transformedKnifeMask.getBounds2D())) { 
-                    collision = true;
-=======
                 if (isSolo){
                     if (transformedBossMask.intersects(transformedKnifeMask.getBounds2D())) {
                         collision = true;
@@ -661,7 +654,6 @@ public class EntityDisplay extends JPanel {
                         }
                         else collision(deleteCible, cible, cibleX, cibleY, 0);
                     }
->>>>>>> develop
                 }
                 else {
                     if (transformedBossMask.intersects(transformedKnifeMask.getBounds2D())) {
@@ -753,71 +745,7 @@ public class EntityDisplay extends JPanel {
                     }
                 }
             }
-
-
-
-            //--------------------COLLISIONS------------------------
-
-
-
-
-            //AFFICHAGE COLLISIONS
-
-
-            //g2d.setColor(Color.BLUE);
-            //g2d.draw(transformedKnifeMask);
-
-            //int cw=55;int ch=55;
-            //if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
-            /*if (collision) {
-                if (!explose) {
-                    cibleColliX = cibleX;
-                    cibleColliY = cibleY;
-                    opacity = baseOpacity;
-                }
-                if (!(cible instanceof Boss)){animCollision = true;currentAnimBonusType=null;}
-                if (isSolo) {
-                    game.addXP(1);
-                    game.addArgent(2);
-                }
-                if (cible instanceof BossType1) {
-                    ((BossType1) cible).attacked();
-                    if (((BossType1) cible).isDead()) {
-                        deleteCible.add(cible);
-                    }
-                }
-                else if (cible instanceof BossType2) {
-                    ((BossType2) cible).attacked();
-                    if (((BossType2) cible).isDead()) {
-                        deleteCible.add(cible);
-                    }
-                }
-                else if (cible instanceof BossType3) {
-                    ((BossType3) cible).attacked();
-                    if (((BossType3) cible).isDead()) {
-                        deleteCible.add(cible);
-                    }
-                }
-                else if (cible instanceof BossType4) {
-                    ((BossType4) cible).attacked();
-                    if (((BossType4) cible).isDead()) {
-                        deleteCible.add(cible);
-                    }
-                }
-                else {
-                    deleteCible.add(cible);
-                }
-                isCollisionMovingTarget=cible instanceof MovingTarget;
-                if (cible instanceof Bonus){
-                    currentAnimBonusType = ((Bonus) cible).getTypeBonus();
-                    game.bonusManager.appliquerBonus(((Bonus) cible).getTypeBonus(),);
-                    if (((Bonus) cible).getTypeBonus()== Bonus.TypeBonus.BONUS_TNT){
-                        explose = true;
-                        explosion(cibleX,cibleY,deleteCible);
-                    }
-                }
-
-            }*/
+            
         }
         for (Cible c : deleteCible){
             listeCible.remove(c);
