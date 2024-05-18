@@ -45,6 +45,8 @@ public class Game {
     private int vies = 4;
     @JsonIgnore
     private RoundManagement roundManagementVERSUS;
+    public int scoreJoueur1 = 0;
+    public int scoreJoueur2 = 0;
 
 
     private static final int xpThreshold = 10;

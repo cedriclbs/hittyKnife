@@ -489,6 +489,36 @@ public class EntityDisplay extends JPanel {
                 g2d.drawString(bossFightText, (getWidth() - textWidth) / 2, textYPosition);
             }
         }
+
+        //-------------------------- DESSINE LE SCORE EN VERSUS ----------------------------------------
+
+        else{
+            g2d.setFont(new Font("SansSerif", Font.BOLD, 50));
+
+            // Texte principal pour le niveau
+            String scoreTexte1 = "SCORE  "+game.scoreJoueur1+"/50";
+            String scoreTexte2 = "SCORE  "+game.scoreJoueur2+"/50";
+
+            int niveauTexteWidth1 = g2d.getFontMetrics().stringWidth(scoreTexte1);
+            int niveauTexteWidth2 = g2d.getFontMetrics().stringWidth(scoreTexte1);
+
+            int xPosition1 = (getWidth() - niveauTexteWidth1) / 5;
+            int xPosition2 = (4*(getWidth() - niveauTexteWidth2)) / 5;
+            int yPosi = 100;
+
+            // Dessine l'ombre
+            g2d.setColor(new Color(0, 0, 0, 64));
+            int shadowOffset = 2;
+            g2d.drawString(scoreTexte1, xPosition1 + shadowOffset, yPosi + shadowOffset);
+            g2d.drawString(scoreTexte2, xPosition2 + shadowOffset, yPosi + shadowOffset);
+
+            // Dessine le texte principal
+            g2d.setColor(Color.WHITE); // Couleur du texte
+            g2d.drawString(scoreTexte1, xPosition1, yPosi);
+            g2d.drawString(scoreTexte2, xPosition2, yPosi);
+
+
+        }
          
         //--------------------------------------------------------------------------------------------------------------------------
 
@@ -658,6 +688,7 @@ public class EntityDisplay extends JPanel {
                 else {
                     if (transformedBossMask.intersects(transformedKnifeMask.getBounds2D())) {
                         collision = true;
+                        game.scoreJoueur1++;
                         if (!game.powered[1]) {
                             collisionAngle = knife.getAngle();
                             collisionX = knifeX;
@@ -669,6 +700,7 @@ public class EntityDisplay extends JPanel {
                     }
                     if (transformedBossMask.intersects(transformedKnifeMask2.getBounds2D())) {
                         collision = true;
+                        game.scoreJoueur2++;
                         if (!game.powered[2]) {
                             collisionAngle = knife2.getAngle();
                             collisionX = knife2X;
@@ -723,6 +755,7 @@ public class EntityDisplay extends JPanel {
                 else {
                     if (transformedCibleMask.intersects(transformedKnifeMask.getBounds2D())) {
                         collision = true;
+                        game.scoreJoueur1++;
                         if (!game.powered[1]) {
                             collisionAngle = knife.getAngle();
                             collisionX = knifeX;
@@ -734,6 +767,7 @@ public class EntityDisplay extends JPanel {
                     }
                     if (transformedCibleMask.intersects(transformedKnifeMask2.getBounds2D())) {
                         collision = true;
+                        game.scoreJoueur2++;
                         if (!game.powered[2]) {
                             collisionAngle = knife2.getAngle();
                             collisionX = knife2X;
