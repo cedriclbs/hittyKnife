@@ -131,7 +131,7 @@ public class EntityDisplay extends JPanel {
         this.knifeImagePowered = new ImageIcon(RessourcesPaths.knifePath + "knifePowered.png").getImage();
         this.cibleImage = new ImageIcon(RessourcesPaths.targetPath + "target#1.png").getImage();
         this.ciblesMouventeImage =  new ImageIcon(RessourcesPaths.targetPath + "target#2.png").getImage();
-        this.bonusPower = new ImageIcon(RessourcesPaths.targetPath + "target#2Power.png").getImage();
+        this.bonusPower = new ImageIcon(RessourcesPaths.targetPath + "target#1Power.png").getImage();
         this.bonusGold = new ImageIcon(RessourcesPaths.targetPath + "targetCoin.png").getImage();
         this.bonusXP = new ImageIcon(RessourcesPaths.targetPath + "targetXP.png").getImage();
         this.bonusGel = new ImageIcon(RessourcesPaths.targetPath + "targetGel.png").getImage();
