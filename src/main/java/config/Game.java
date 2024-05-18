@@ -102,7 +102,7 @@ public class Game {
         this.gameView = new GameView(isSolo,this);
         this.currentLevel = 1;
         this.xp = 0;
-        this.level = 1;
+        this.level = 0;
         this.currentBackgroundPath = "";
         loadGameState();
         initGame();
@@ -518,24 +518,37 @@ public class Game {
     // Méthode pour attribuer les récompenses en fonction du niveau
     private void giveRewards() {
         switch (level) {
-            case 2:
+            case 1:
                 this.argent += 10;
                 break;
+            case 2:
+                inventaire.add(new ShopItem("Sword 4", 0, "src/main/ressources/knifes/knife#4.png"));
+                updateLibrary(inventaire);
+                break;
             case 3:
+                inventaire.add(new ShopItem("Sword 5", 0, "src/main/ressources/knifes/knife#5.png"));
+                updateLibrary(inventaire);
                 break;
             case 4:
+                this.argent += 10;
                 break;
             case 5:
+                this.argent += 10;
                 break;
             case 6:
+                this.argent += 10;
                 break;
             case 7:
+                this.argent += 10;
                 break;
             case 8:
+                this.argent += 10;
                 break;
             case 9:
+                this.argent += 10;
                 break;
             case 10:
+                this.argent += 10;
                 break;
             default:
                 break;
