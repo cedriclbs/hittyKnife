@@ -47,6 +47,7 @@ public class Game {
     private RoundManagement roundManagementVERSUS;
     public int scoreJoueur1 = 0;
     public int scoreJoueur2 = 0;
+    public final int MAX_SCORE = 5;
 
 
     private static final int xpThreshold = 10;

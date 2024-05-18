@@ -504,8 +504,8 @@ public class EntityDisplay extends JPanel {
 
 
             // Texte principal pour le niveau
-            String scoreTexte1 = "SCORE  "+game.scoreJoueur1+"/50";
-            String scoreTexte2 = "SCORE  "+game.scoreJoueur2+"/50";
+            String scoreTexte1 = "SCORE  "+game.scoreJoueur1+"/"+game.MAX_SCORE;
+            String scoreTexte2 = "SCORE  "+game.scoreJoueur2+"/"+game.MAX_SCORE;
 
             int niveauTexteWidth1 = g2d.getFontMetrics().stringWidth(scoreTexte1);
             int niveauTexteWidth2 = g2d.getFontMetrics().stringWidth(scoreTexte1);
@@ -530,38 +530,55 @@ public class EntityDisplay extends JPanel {
             g2d.drawString(scoreTexte1, xPosition1, yPosi);
             g2d.drawString(scoreTexte2, xPosition2, yPosi);
 
-            if ((game.scoreJoueur1>=5 || game.scoreJoueur2>=5 ) && !this.isWin){
+            if ((game.scoreJoueur1>=game.MAX_SCORE || game.scoreJoueur2>=game.MAX_SCORE ) && !this.isWin){
                 this.isWin = true;
 
-                JDialog dialog = new JDialog((Frame) null, "VICTOIRE", true);
-                dialog.setSize(200, 100);
+                String backgroundImagePath = "src/main/ressources/button/signB.png";
+
+                // Création d'un JDialog indépendant
+                JDialog dialog = new JDialog((Frame) null, "VICTORY", true);
+                dialog.setSize(300, 150);
                 dialog.setLayout(new BorderLayout());
 
+                // Création du BackgroundPanel avec l'image de fond
+                BackgroundPanel backgroundPanel = new BackgroundPanel(backgroundImagePath);
+                backgroundPanel.setLayout(new BorderLayout());
+                dialog.add(backgroundPanel);
+
+                // Création d'un JPanel pour le centre avec un message
                 JPanel centerPanel = new JPanel();
-                centerPanel.setLayout(new GridBagLayout());
+                centerPanel.setOpaque(false);  // Rendre transparent pour voir l'image de fond
+                centerPanel.setLayout(new GridBagLayout());  // Utilisation de GridBagLayout pour centrer le label
 
-                // Ajout de composants au JDialog
-                JLabel messageLabel = new JLabel("Vous avez gagné");
+                String joueur = (game.scoreJoueur1>=game.MAX_SCORE)?"player 1":"player 2";
+                JLabel messageLabel = new JLabel(joueur+" have win");
+                messageLabel.setFont(new Font("Arial", Font.BOLD, 20));
                 centerPanel.add(messageLabel, new GridBagConstraints());
-                dialog.add(centerPanel, BorderLayout.CENTER);
+                backgroundPanel.add(centerPanel, BorderLayout.CENTER);
 
+                // Création d'un JPanel pour le bas avec un bouton
                 JPanel bottomPanel = new JPanel();
-                JButton closeButton = new JButton("Rejouer");
+                bottomPanel.setOpaque(false);  // Rendre transparent pour voir l'image de fond
+                JButton closeButton = new JButton("Restart");
+                closeButton.setFont(new Font("Arial", Font.BOLD, 20));
                 bottomPanel.add(closeButton);
-                dialog.add(bottomPanel, BorderLayout.SOUTH);
+                backgroundPanel.add(bottomPanel, BorderLayout.SOUTH);
 
                 // Ajout d'un ActionListener au bouton de fermeture
                 closeButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        game.resetScore();isWin=false;dialog.dispose();
+                        game.resetScore();  // Remplacez `game.resetScore()` par l'appel de méthode approprié
+                        isWin = false;
+                        dialog.dispose();
                     }
                 });
 
+                // Centrage du JDialog à l'écran
+                dialog.setLocationRelativeTo(null);
+
                 // Rendre le JDialog visible
                 dialog.setVisible(true);
-
-
 
             }
 
