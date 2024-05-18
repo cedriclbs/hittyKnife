@@ -24,10 +24,10 @@ public class BonusManager {
      */
     public void appliquerBonus(Bonus.TypeBonus typeBonus){
         switch(typeBonus){
-            case BONUS_GEL : game.gel=true;activateGel();break;
-            case BONUS_POWER : game.powered=true;activatePower();break;
+            case BONUS_GEL : game.gel=true; activateGel(); break;
+            case BONUS_POWER : game.powered=true; activatePower(); break;
             case BONUS_GOLD : game.addArgent(10);break;
-            case BONUS_XP : game.addXP(20);break;
+            case BONUS_XP : game.addXP(5);break;
             //bonus TNT géré dans entityDisplay
         }
     }

@@ -43,7 +43,7 @@ public class Game {
     public BonusManager bonusManager = new BonusManager(this);
 
 
-    transient private int xpThreshold;
+    transient private static final int xpThreshold = 10;
     private RoundManagement roundManagement;
     private List<GameObserver> observers = new ArrayList<>();
     private List<LibraryObserver> libraryObservers = new ArrayList<>();
@@ -101,7 +101,6 @@ public class Game {
         this.roundManagement = new RoundManagement();
         this.gameView = new GameView(isSolo,this);
         this.currentLevel = 1;
-        this.xpThreshold = 100;
         this.xp = 0;
         this.level = 1;
         this.currentBackgroundPath = "";
@@ -415,10 +414,12 @@ public class Game {
 
     // Méthode pour vérifier si un niveau a été atteint et attribuer les récompenses
     private void checkLevelUp() {
-        this.addLevel(1);
-        notifyLevelObservers();
-        giveRewards(); // Appel à une méthode pour attribuer les récompenses du niveau
-        System.out.println("+1 Niveau");
+        if(this.xp %xpThreshold==0){
+            this.addLevel(1);
+            notifyLevelObservers();
+            giveRewards(); // Appel à une méthode pour attribuer les récompenses du niveau
+            System.out.println("+1 Niveau");
+        }
     }
 
     /**
