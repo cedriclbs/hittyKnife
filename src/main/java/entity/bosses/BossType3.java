@@ -39,7 +39,7 @@ public class BossType3 extends Boss{
         double limitRight = 56;
 
         // Définir les limites de déplacement sur l'axe vertical
-        double limitTop = 40; // Position Y la plus haute
+        double limitTop = 35; // Position Y la plus haute
         double limitBottom = 25; // Position Y la plus basse
 
         // Calculer le déplacement en fonction de la vitesse et du temps écoulé depuis la dernière mise à jour

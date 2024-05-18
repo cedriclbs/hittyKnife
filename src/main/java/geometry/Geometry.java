@@ -109,65 +109,48 @@ public class Geometry{
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
+    /**
+     * Calcule le mouvement vertical avec ajustement horizontal en fonction des limites données.
+     *
+     * @param x                La position horizontale actuelle.
+     * @param y                La position verticale actuelle.
+     * @param delta            Le delta de temps.
+     * @param speed            La vitesse du mouvement en pixels par unité de temps.
+     * @param directionPositive Si la direction verticale est positive (vers le haut).
+     * @param limitTop         La limite supérieure du mouvement vertical.
+     * @param limitBottom      La limite inférieure du mouvement vertical.
+     * @param xChangePositive  La nouvelle position horizontale si la limite supérieure est atteinte.
+     * @param xChangeNegative  La nouvelle position horizontale si la limite inférieure est atteinte.
+     * @return Un tableau de doubles contenant la nouvelle position horizontale, la nouvelle position verticale et la direction verticale sous forme de 1 (positive) ou 0 (négative).
+     */
     public static double[] verticalMovementWithHorizontalAdjustment(double x, double y, double delta, double speed, boolean directionPositive, double limitTop, double limitBottom, double xChangePositive, double xChangeNegative) {
         double movement = speed * delta; // Déplacement en pixels
         double newY = y + (directionPositive ? movement : -movement);
 
-        // Vérifier si le mouvement dépasse la limite supérieure
         if (newY >= limitTop) {
             directionPositive = false;
             newY = limitTop;
-            x = xChangePositive; // Changer la position horizontale
-        }
-        // Vérifier si le mouvement dépasse la limite inférieure
-        else if (newY <= limitBottom) {
+            x = xChangePositive;
+        } else if (newY <= limitBottom) {
             directionPositive = true;
             newY = limitBottom;
-            x = xChangeNegative; // Changer la position horizontale
+            x = xChangeNegative;
         }
 
-        return new double[]{x, newY, directionPositive ? 1 : 0}; // Retourner la nouvelle position et la direction
+        return new double[]{x, newY, directionPositive ? 1 : 0};
     }
 
-    public static double[] horizontalMovementWithVerticalAdjustment(double x, double y, double delta, double speed, boolean directionPositive, double limitLeft, double limitRight, double limitTop, double limitBottom) {
-        double movement = speed * delta; // Déplacement en pixels
-
-        double newX = x;
-        double newY = y;
-
-        // Vérifier la direction du mouvement actuel
-        if (directionPositive) {
-            // Si la direction est positive, le boss se déplace vers la droite sur l'axe horizontal
-            newX += movement;
-            // Vérifier si le mouvement dépasse la limite droite
-            if (newX >= limitRight) {
-                // Une fois arrivé à la limite droite, le boss se déplace vers le bas sur l'axe vertical
-                newY -= 2;
-                // Inverser la direction du mouvement horizontal pour que le boss se déplace vers la gauche
-                directionPositive = false;
-            }
-        } else {
-            // Si la direction est négative, le boss se déplace vers la gauche sur l'axe horizontal
-            newX -= movement;
-            // Vérifier si le mouvement dépasse la limite gauche
-            if (newX <= limitLeft) {
-                // Une fois arrivé à la limite gauche, le boss se déplace vers le bas sur l'axe vertical
-                newY -= 2;
-                // Inverser la direction du mouvement horizontal pour que le boss se déplace vers la droite
-                directionPositive = true;
-            }
-        }
-
-        // Vérifier si le mouvement dépasse la limite inférieure
-        if (newY <= limitBottom) {
-            // Si le boss atteint la limite basse, le ramener à la position initiale en haut
-            newX = limitLeft; // Position horizontale centrale
-            newY = limitTop; // Position verticale la plus haute
-        }
-
-        return new double[]{newX, newY, directionPositive ? 1 : 0}; // Retourner la nouvelle position et la direction
-    }
-
+    /**
+     * Calcule le mouvement circulaire en fonction du centre, du rayon et de la vitesse angulaire.
+     *
+     * @param centerX      La position horizontale du centre du cercle.
+     * @param centerY      La position verticale du centre du cercle.
+     * @param radius       Le rayon du cercle.
+     * @param angularSpeed La vitesse angulaire en radians par unité de temps.
+     * @param currentAngle L'angle actuel en radians.
+     * @param delta        Le delta de temps.
+     * @return Un tableau de doubles contenant la nouvelle position horizontale, la nouvelle position verticale et le nouvel angle en radians.
+     */
     public static double[] moveInCircle(double centerX, double centerY, double radius, double angularSpeed, double currentAngle, double delta) {
         double movement = angularSpeed * delta;
         double newAngle = currentAngle + movement;
@@ -176,6 +159,58 @@ public class Geometry{
         return new double[]{newX, newY, newAngle};
     }
 
+    /**
+     * Calcule le mouvement horizontal avec ajustement vertical en fonction des limites données.
+     *
+     * @param x                La position horizontale actuelle.
+     * @param y                La position verticale actuelle.
+     * @param delta            Le delta de temps.
+     * @param speed            La vitesse du mouvement en pixels par unité de temps.
+     * @param directionPositive Si la direction horizontale est positive (vers la droite).
+     * @param limitLeft        La limite gauche du mouvement horizontal.
+     * @param limitRight       La limite droite du mouvement horizontal.
+     * @param limitTop         La limite supérieure de réinitialisation verticale.
+     * @param limitBottom      La limite inférieure de réinitialisation verticale.
+     * @return Un tableau de doubles contenant la nouvelle position horizontale, la nouvelle position verticale et la direction horizontale sous forme de 1 (positive) ou 0 (négative).
+     */
+    public static double[] horizontalMovementWithVerticalAdjustment(double x, double y, double delta, double speed, boolean directionPositive, double limitLeft, double limitRight, double limitTop, double limitBottom) {
+        double movement = speed * delta;
+
+        double newX = x;
+        double newY = y;
+
+        if (directionPositive) {
+            newX += movement;
+            if (newX >= limitRight) {
+                newY -= 2;
+                directionPositive = false;
+            }
+        } else {
+            newX -= movement;
+            if (newX <= limitLeft) {
+                newY -= 2;
+                directionPositive = true;
+            }
+        }
+
+        if (newY <= limitBottom) {
+            newX = limitLeft;
+            newY = limitTop;
+        }
+
+        return new double[]{newX, newY, directionPositive ? 1 : 0};
+    }
+
+    /**
+     * Calcule le mouvement selon un modèle prédéfini en fonction de la phase actuelle.
+     *
+     * @param x      La position horizontale actuelle.
+     * @param y      La position verticale actuelle.
+     * @param speed  La vitesse du mouvement en pixels par unité de temps.
+     * @param delta  Le delta de temps.
+     * @param phase  La phase actuelle du modèle de mouvement.
+     * @return Un tableau de doubles contenant la nouvelle position horizontale, la nouvelle position verticale et la nouvelle phase.
+     */
     public static double[] moveInPattern(double x, double y, double speed, double delta, int phase) {
         double deplacement = speed * delta;
         double newX = x;
@@ -226,4 +261,5 @@ public class Geometry{
         }
         return new double[]{newX, newY, phase};
     }
+
 }
