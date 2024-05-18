@@ -102,7 +102,7 @@ public class MainFrame extends JFrame {
         setLayout(new BorderLayout());
 
         // Ajout du navPanel en haut et du cardPanel au centre
-        add(navPanel, BorderLayout.NORTH);
+        add(navPanel, BorderLayout.SOUTH);
         add(cardPanel, BorderLayout.CENTER);
 
         pack();

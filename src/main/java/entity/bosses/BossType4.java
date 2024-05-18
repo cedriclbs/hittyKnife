@@ -26,6 +26,10 @@ public class BossType4 extends Boss{
         return hitCount >= maxHits;
     }
 
+    public int getHitCount() {
+        return hitCount;
+    }
+
     @Override
     public void updateMovement(double delta) {
         double speed = 0.3;

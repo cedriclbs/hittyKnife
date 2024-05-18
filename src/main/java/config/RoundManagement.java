@@ -92,7 +92,7 @@ public class RoundManagement {
                 }
 
                 // Sélection du type de cible pour les rounds autres que le dernier
-                typeCible = TypeCible.CIBLE_NORMALE;//getRandomTypeCible();
+                typeCible = TypeCible.CIBLE_BOSS4  ;//getRandomTypeCible();
                 do {
                     x = getRandomPositionX();
                     y = getRandomPositionY();
@@ -236,7 +236,7 @@ public class RoundManagement {
      */
     private int getRndIntTargetRounds() {
         //return 4 + random.nextInt(4);
-        return 6;
+        return 1;
     }
     // méthode pour vérifier si tous les rounds sont complétés
     public boolean isAllRoundsCompleted() {
