@@ -511,10 +511,10 @@ public class EntityDisplay extends JPanel {
             int xPosition2 = (4*(getWidth() - niveauTexteWidth2)) / 5;
             int yPosi = 100;
             //AffineTransform transformSign = AffineTransform.getTranslateInstance(xPosition1 - (double) sign.getWidth(this) / 2, yPosi - (double) sign.getHeight(this) / 2);
-            AffineTransform transformSign = AffineTransform.getTranslateInstance(xPosition1 -28 , yPosi - (double) sign.getHeight(this) /2-12);
+            AffineTransform transformSign = AffineTransform.getTranslateInstance(xPosition1 -55 , yPosi - (double) sign.getHeight(this) /2-12);
             g2d.drawImage(sign,transformSign,this);
 
-            AffineTransform transformSign2 = AffineTransform.getTranslateInstance(xPosition2 -28 , yPosi - (double) sign.getHeight(this) /2-12);
+            AffineTransform transformSign2 = AffineTransform.getTranslateInstance(xPosition2 -55 , yPosi - (double) sign.getHeight(this) /2-12);
             g2d.drawImage(sign,transformSign2,this);
             // Dessine l'ombre
             g2d.setColor(new Color(0, 0, 0, 64));
@@ -523,7 +523,7 @@ public class EntityDisplay extends JPanel {
             g2d.drawString(scoreTexte2, xPosition2 + shadowOffset, yPosi + shadowOffset);
 
             // Dessine le texte principal
-            g2d.setColor(Color.WHITE); // Couleur du texte
+            g2d.setColor(Color.BLACK); // Couleur du texte
             g2d.drawString(scoreTexte1, xPosition1, yPosi);
             g2d.drawString(scoreTexte2, xPosition2, yPosi);
 
