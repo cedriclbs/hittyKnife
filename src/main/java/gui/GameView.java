@@ -90,12 +90,6 @@ public class GameView extends JPanel{
         playMusic(audioFolderPath + "Boss_Theme.wav", bossClip);
     }
 
-    /**
-     * @return Le couteau utilisé dans la partie solo.
-     */
-    /*public Knife getKnife() {
-        return knife;
-    }*/
 
     /**
      * Initialise l'interface utilisateur et démarre le jeu.
@@ -181,7 +175,7 @@ public class GameView extends JPanel{
      */
     public void updateBackgroundImage(String backgroundPath) {
         this.entityDisplay.initBg(backgroundPath);
-
+        revalidate();
         repaint();
     }
 
@@ -197,11 +191,4 @@ public class GameView extends JPanel{
     }
 
 
-    /**
-     * Démarre la partie solo.
-     */
-    public void startSoloGame() {
-        initialize();
-    }
-    
 }

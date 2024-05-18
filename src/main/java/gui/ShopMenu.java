@@ -21,8 +21,7 @@ public class ShopMenu extends JPanel {
     private Game game;
     ShopCart cart;
     public JTabbedPane tabbedPane;
-    boolean saveB;
-    boolean assezArgent;
+    private ShopTab cartTab;
 
 
     /**
@@ -30,16 +29,13 @@ public class ShopMenu extends JPanel {
      *
      */
     public ShopMenu(Game game) {
+        setStates(SHOPMENU);
         this.cart = new ShopCart(game);
         this.tabbedPane = new JTabbedPane();
-        this.saveB = true;
         this.game = game;
         initialize();
     }
 
-    public void startShopMenu() {
-        setStates(SHOPMENU);
-    }
 
 
 
@@ -51,13 +47,14 @@ public class ShopMenu extends JPanel {
 
         tabbedPane.setOpaque(false);
 
-        ShopTab accueil = new ShopTab(tabbedPane, "Accueil", null, "shopWelcomeTab.png", "welcome", this);
-        ShopTab couteaux = new ShopTab(tabbedPane, "Couteaux", RessourcesPaths.knifePath, "knifeTab.png", "couteaux", this);
-        ShopTab background = new ShopTab(tabbedPane, "Background", RessourcesPaths.backgroundPath, "bgTab.png", "background", this);
-        ShopTab music = new ShopTab(tabbedPane, "Music", RessourcesPaths.buttonPath, "musicTab.png", "music", this);
-        ShopTab cart = new ShopTab(tabbedPane, "Panier", null, "cartTab.png", "cart", this);
+        ShopTab couteauxTab = new ShopTab(tabbedPane, "Couteaux", RessourcesPaths.knifePath, "knifeTab.png", "couteaux", this);
+        ShopTab backgroundTab = new ShopTab(tabbedPane, "Background", RessourcesPaths.backgroundPath, "bgTab.png", "background", this);
+        ShopTab musicTab = new ShopTab(tabbedPane, "Music", RessourcesPaths.buttonPath, "musicTab.png", "music", this);
+        cartTab = new ShopTab(tabbedPane, "Panier", null, "cartTab.png", "cart", this);
+
 
         add(tabbedPane, BorderLayout.CENTER);
+
 
     }
 
@@ -65,29 +62,38 @@ public class ShopMenu extends JPanel {
     /**
      * Sauvegarde le panier d'achats actuel.
      */
-    public void saveCart() {
+    public void saveCart(Game game) {
         if (cart != null) {
-            //TODO : Argent disponible pour acheter ? Faire la vérif
-            //if (User.getArgent() - cart.getCartTotal() >= 0){
-                saveB = true;
-                //updateMoney();
-                game.updateLibrary(cart);
-                cart.getCart().clear();
-                //refreshCartTab(); TODO : actualiser la liste une fois le panier sauvegarder
+            int argentUser = game.getArgent();
+            int totalPanier = cart.getCartTotal();
+
+            if (argentUser - totalPanier >= 0){
+                game.addArgent(-totalPanier);
+                game.updateLibrary(cart.getCart());
                 JOptionPane.showMessageDialog(null, "Le panier a été sauvegardé avec succès.");
-            //} else {
-                //JOptionPane.showMessageDialog(null, "Pas assez de ressources.");
-            //
+
+                cart.setCartTotal(0);
+                cart.getCart().clear();
+                refreshCartTab();
+            } else {
+                JOptionPane.showMessageDialog(null, "Pas assez de ressources.");
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Le panier est vide.");
         }
     }
 
 
-    //private void updateMoney () {
-    //    User.setArgent(User.getArgent() - cart.getCartTotal());
-    //}
-
+    /**
+     * Actualise l'onglet du panier du magasin.
+     */
+    void refreshCartTab() {
+        int cartTabIndex = tabbedPane.indexOfTab("Panier");
+        if (cartTabIndex != -1) {
+            JPanel cartPanel = cartTab.createPanel(null, "cart"); // Utilisez la référence existante pour actualiser le panneau
+            tabbedPane.setComponentAt(cartTabIndex, cartPanel);
+        }
+    }
 
 
     /**
@@ -99,57 +105,17 @@ public class ShopMenu extends JPanel {
     void configureButton(JButton button, ActionListener actionListener) {
         button.setPreferredSize(new Dimension(50, 50));
         button.setFocusPainted(false);
-        button.setBorderPainted(true);
-        button.setContentAreaFilled(true);
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
         button.addActionListener(actionListener);
     }
 
 
 
-    /**
-     * Redirige vers le menu principal.
-     * Cette méthode est appelée lorsque le bouton "Menu" est cliqué.
-     */
-    void showMenu() {
-        if (!saveB) {
-            JPanel saveToQuit = new JPanel(new GridLayout(1, 2));
-            JButton sauvButton = new JButton("Sauvegarder");
-            JButton quitterButton = new JButton("Quitter");
-
-            configureButton(sauvButton, e -> {
-                saveCart();
-                SwingUtilities.getWindowAncestor(saveToQuit).dispose();
-                //showMenuOnceVerif();
-            });
-            configureButton(quitterButton, e -> {
-                this.cart.getCart().clear();
-                //updateTotal();
-                revalidate();
-                repaint();
-                SwingUtilities.getWindowAncestor(saveToQuit).dispose();
-                //showMenuOnceVerif();
-            });
-
-            saveToQuit.add(sauvButton);
-            saveToQuit.add(quitterButton);
-            JOptionPane.showMessageDialog(null, saveToQuit, "Panier non sauvegardé", JOptionPane.PLAIN_MESSAGE);
-        } else {
-            //showMenuOnceVerif();
-        }
-
-    }
-
     public ShopCart getCart() {
         return this.cart;
     }
 
-    /*
-    private void showMenuOnceVerif () {
-        setStates(HOMEMENU);
-        //homeMenu.showHomeMenu();
-    }
-
-    */
 
 
 }

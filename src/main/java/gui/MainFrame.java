@@ -18,7 +18,6 @@ public class MainFrame extends JFrame {
     private JButton shopButton;
     private JButton versusButton;
     private JButton battlePassButton;
-    private JButton libraryButton;
 
     public static String knifePathClicked;
 
@@ -48,8 +47,6 @@ public class MainFrame extends JFrame {
         versusButton = new JButton("Versus");
         battlePassButton = new JButton("BattlePass");
 
-        libraryButton = new JButton("Inventaire");
-
 
         // Supprimer le rectangle de sélection lorsqu'un bouton est enfoncé
         homeButton.setFocusPainted(false);
@@ -71,16 +68,14 @@ public class MainFrame extends JFrame {
         shopButton.addActionListener(e -> switchToPanel("Shop"));
         versusButton.addActionListener(e -> switchToPanel("Versus"));
         battlePassButton.addActionListener(e -> switchToPanel("BattlePass"));
-        libraryButton.addActionListener(e -> switchToPanel("Inventaire"));
 
 
         // Création du panneau de menu principal
-        JPanel homePanel = createTitleScreen();
+        JPanel homePanel = createHomeMenuPanel();
         JPanel soloPanel = createSoloPanel();
         JPanel shopPanel = createShopPanel();
         JPanel versusPanel = createVersusPanel();
         JPanel battlepassPanel = createBattlepassPanel();
-        JPanel libraryPanel = createLibraryPanel();
 
 
         // Création du conteneur de panneaux avec CardLayout
@@ -92,7 +87,6 @@ public class MainFrame extends JFrame {
         cardPanel.add(shopPanel, "Shop");
         cardPanel.add(versusPanel, "Versus");
         cardPanel.add(battlepassPanel, "BattlePass");
-        cardPanel.add(libraryPanel, "Inventaire");
 
 
         // Ajout des boutons de navigation en haut de la fenêtre
@@ -102,14 +96,13 @@ public class MainFrame extends JFrame {
         navPanel.add(shopButton);
         navPanel.add(versusButton);
         navPanel.add(battlePassButton);
-        navPanel.add(libraryButton);
 
 
         // Utilisation d'un BorderLayout pour la JFrame
         setLayout(new BorderLayout());
 
         // Ajout du navPanel en haut et du cardPanel au centre
-        add(navPanel, BorderLayout.NORTH);
+        add(navPanel, BorderLayout.SOUTH);
         add(cardPanel, BorderLayout.CENTER);
 
         pack();
@@ -133,9 +126,6 @@ public class MainFrame extends JFrame {
         return null;
     }
 
-    private JPanel createHomePanel() {
-        return new HomeMenu("src/main/ressources/background/Background_MainMenu.png", "");
-    }
 
 
     private void switchToPanel(String name) {
@@ -166,9 +156,6 @@ public class MainFrame extends JFrame {
 
     }
 
-    private JPanel createTitleScreen() {
-        return new HomeMenu("src/main/ressources/background/Background_MainMenu.png",Menu.linkClip+"Main_theme.wav");
-    }
 
     private JPanel createShopPanel() {
         return new ShopMenu(game);
@@ -182,8 +169,10 @@ public class MainFrame extends JFrame {
         return new GameView(false, game);
     }
 
-    private JPanel createLibraryPanel(){
-        return new Library(game.getCheminSauvegarde());
+    private JPanel createHomeMenuPanel(){
+        HomeMenu homeMenu = new HomeMenu(game);
+        game.addLibraryObserver(homeMenu);
+        return homeMenu;
     }
 
     private JPanel createBattlepassPanel() {

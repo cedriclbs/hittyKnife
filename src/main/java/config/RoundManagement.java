@@ -92,7 +92,7 @@ public class RoundManagement {
                 }
 
                 // Sélection du type de cible pour les rounds autres que le dernier
-                typeCible = TypeCible.CIBLE_NORMALE;//getRandomTypeCible();
+                typeCible = TypeCible.CIBLE_NORMALE ;//getRandomTypeCible();
                 do {
                     x = getRandomPositionX();
                     y = getRandomPositionY();
@@ -131,7 +131,7 @@ public class RoundManagement {
                 int randomNum = random.nextInt(5);
                 Bonus.TypeBonus typeBonus;
                 switch (randomNum){
-                    case 0: typeBonus = BONUS_XP;System.out.println("dqzsqzdqzszqd");break;
+                    case 0: typeBonus = BONUS_XP;break;
                     case 1: typeBonus = BONUS_GOLD;break;
                     case 2 : typeBonus = BONUS_GEL;break;
                     case 3 : typeBonus = BONUS_POWER;break;
@@ -204,7 +204,7 @@ public class RoundManagement {
      * @return Un type de boss aléatoire.
      */
     private TypeCible getRandomTypeBoss() {
-        // Assurez-vous que la queue principale a des éléments à offrir
+        // S'assure que la queue principale a des éléments à offrir
         if (bossQueue.isEmpty()) {
             refillBossQueue();
         }
@@ -236,7 +236,7 @@ public class RoundManagement {
      */
     private int getRndIntTargetRounds() {
         //return 4 + random.nextInt(4);
-        return 6;
+        return 1;
     }
     // méthode pour vérifier si tous les rounds sont complétés
     public boolean isAllRoundsCompleted() {

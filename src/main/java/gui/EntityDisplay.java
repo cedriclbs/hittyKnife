@@ -208,7 +208,7 @@ public class EntityDisplay extends JPanel {
         if (knifePathClicked.equals(abr +"knife.png")){
             res = abr + "knifeRotate1.png";
         } else if (knifePathClicked.equals(abr +"knife#2.png")){
-            res = abr + "knifeRotate2.png";
+            res = abr + "knifeRotated2.png";
         } else if (knifePathClicked.equals(abr +"knife#3.png")){
             res = abr+ "knifeRotate3.png";
         }
@@ -319,6 +319,7 @@ public class EntityDisplay extends JPanel {
     }
     
 
+
     /**
      * Redessine le composant en dessinant l'image de fond, les couteaux et les cibles.
      * Effectue également la gestion des collisions entre les couteaux et les cibles.
@@ -424,11 +425,38 @@ public class EntityDisplay extends JPanel {
             g2d.drawImage(knifeImagePowered, transform, this);
         }
 
+        //--------------------------TRAJECTOIRE SOUS FORME DE ROND DU COUTEAU ----------------------------------------
+       
+        //Vérife si le couteau est en l'air
+        if(knife.isInTheAir){
+            // Calcul de la pointe du couteau
+            double angleInRadians = Math.toRadians(knife.getAngle() + 180);
+            int tipX = knifeX + (int) (knifeImgHeight / 2 * Math.cos(angleInRadians));
+            int tipY = knifeY + (int) (knifeImgHeight / 2 * Math.sin(angleInRadians));
+
+            // Longueur de la ligne de trajectoire
+            double lineLength = 280; // 2,8 cm en pixels 
+
+            // Nombre de cercles
+            int numCircles = 11;
+            double stepSize = (lineLength / numCircles) * 0.7; //taille des espacements
+            double radius = 4.5; // Rayon initial des cercles
+
+            for (int i = 0; i < numCircles; i++) {
+                int circleX = tipX + (int) (i * stepSize * Math.cos(angleInRadians));
+                int circleY = tipY + (int) (i * stepSize * Math.sin(angleInRadians));
+                double currentRadius = radius * Math.pow(0.90, i); // Formule exponentielle pour diminuer le rayon
+                int opacity = (int) (255 * (1 - (double) i / numCircles)); // Opacité qui diminue
+                g2d.setColor(new Color(255, 255, 255, opacity)); 
+                g2d.fillOval(circleX - (int) currentRadius, circleY - (int) currentRadius, (int) (2 * currentRadius), (int) (2 * currentRadius));
+            }
+        }
+
         //--------------------------AFFICHAGE ANIMATION COLLISION -------------------------------
 
         animationCollision(g2d,knifeImgWidth,knifeImgHeight,cibleImWidth,cibleImHeight);
         
-        //-------------------------------AFFICHAGE NORMAL DES CIBLES -------------------------------
+        //-------------------------------AFFICHAGE NORMAL DES CIBLES + BARRE DE VIE DES BOSS -------------------------------
 
         ArrayList<Cible> deleteCible= new ArrayList<>();
         Shape knifeMask = createCollisionMask(knifeImage);
@@ -440,20 +468,50 @@ public class EntityDisplay extends JPanel {
             AffineTransform transformCible;
             AffineTransform transformBoss;
 
-            if (cible instanceof Boss){
+            if (cible instanceof Boss) {
+                Boss boss = (Boss) cible;
+                int health = 0;
                 transformBoss = AffineTransform.getTranslateInstance(cibleX - (double) bossImgWidth / 2, cibleY - (double) bossImgHeight / 2);
-                if (cible instanceof BossType1) {
-                    g2d.drawImage(bossT1, transformBoss , this);
+                if(cible instanceof BossType1){
+                    g2d.drawImage(bossT1, transformBoss, this);
+                    health = ((BossType1) boss).getHitCount();
                 }
                 else if (cible instanceof BossType2) {
-                    g2d.drawImage(bossT2, transformBoss , this);
+                    g2d.drawImage(bossT2, transformBoss, this);
+                    health = ((BossType2) boss).getHitCount();
                 }
                 else if (cible instanceof BossType3) {
                     g2d.drawImage(bossT3, transformBoss, this);
+                    health = ((BossType3) boss).getHitCount();
                 }
                 else if (cible instanceof BossType4) {
-                    g2d.drawImage(bossT4, transformBoss,this);
+                    g2d.drawImage(bossT4, transformBoss, this);
+                    health = ((BossType4) boss).getHitCount();
                 }
+            
+            
+                // Configuration de la barre de vie divisée en trois compartiments
+                int totalHealthSections = 3; // Nombre total de sections 
+                int hitsReceived = health; // Le nombre de coups reçus
+                int healthBarWidth = bossT1.getWidth(this);
+                int healthBarHeight = 10; // Hauteur de la barre de santé
+                int sectionWidth = healthBarWidth / totalHealthSections; // Largeur de chaque section de la barre de santé
+
+                // Positionnement de la barre de santé au-dessus de l'image du boss
+                int healthBarX = (int) (cibleX - (double) healthBarWidth / 2);
+                int healthBarY = (int) (cibleY - bossT1.getHeight(this) / 2 - healthBarHeight - 5); // 5 pixels au-dessus de l'image du boss
+
+                // Dessine chaque section de la barre de santé
+                for (int i = 0; i < totalHealthSections; i++) {
+                    int indexFromRight = totalHealthSections - 1 - i;
+                    if (indexFromRight < hitsReceived) { // Colorie en rouge les sections en commençant par la droite
+                        g2d.setColor(Color.RED);
+                    } else {
+                        g2d.setColor(Color.GREEN);
+                    }
+                    g2d.fillRect(healthBarX + i * sectionWidth, healthBarY, sectionWidth, healthBarHeight);
+                }
+            
                 Shape bossMask = createCollisionMask(bossT1);
                 Shape transformedBossMask = transformBoss.createTransformedShape(bossMask);
                 //g2d.setColor(Color.RED);
@@ -461,7 +519,6 @@ public class EntityDisplay extends JPanel {
                 if (transformedBossMask.intersects(transformedKnifeMask.getBounds2D())) {
                     collision = true;
                 }
-
             }
             else {
                 transformCible = AffineTransform.getTranslateInstance(cibleX - (double) cibleImWidth / 2, cibleY - (double) cibleImHeight / 2);

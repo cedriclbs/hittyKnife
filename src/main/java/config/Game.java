@@ -14,7 +14,6 @@ import entity.bosses.*;
 import gui.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gui.Library;
 
 /**
  * Classe principale du jeu gérant l'état du jeu, y compris le couteau, les cibles et les vies.
@@ -44,9 +43,13 @@ public class Game {
     transient private int xpThreshold;
     private RoundManagement roundManagement;
     private List<GameObserver> observers = new ArrayList<>();
+    private List<LibraryObserver> libraryObservers = new ArrayList<>();
+
     private int lastBackgroundIndex = -1; // Dernier indice utilisé
     private Queue<Integer> recentBackgrounds = new LinkedList<>(); // Indices récents pour éviter la répétition
     private Random rand = new Random();
+
+
 
 
     //Attribut du User pour JSON
@@ -58,15 +61,17 @@ public class Game {
     private String cheminSauvegarde;
     @JsonProperty("argent")
     private int argent;
-    @JsonIgnore()
-    Library library;
+    @JsonProperty("inventaire")
+    private List<ShopItem> inventaire;
+
     @JsonProperty("level")
     private int level;
     @JsonProperty("xp")
     private int xp;
-    private int currentLevel;
+    @JsonProperty("currentlevel")
+    private int currentLevel = 1;
     @JsonProperty("currentBackgroundPath")
-    private String currentBackgroundPath; 
+    private String currentBackgroundPath;
 
 
 
@@ -88,16 +93,17 @@ public class Game {
         System.out.println("creation game");
         this.knife1 = new Knife();
         this.knife2 = new Knife();
+        initInventaire();
         this.roundManagement = new RoundManagement();
         this.gameView = new GameView(isSolo,this);
         this.currentLevel = 1;
         this.xpThreshold = 100;
         this.xp = 0;
         this.level = 1;
-        this.currentBackgroundPath = null;
+        this.currentBackgroundPath = "";
         loadGameState();
         initGame();
-        
+
     }
 
 
@@ -142,7 +148,9 @@ public class Game {
         return argent;
     }
 
-
+    public List<ShopItem> getInventaire() {
+        return this.inventaire;
+    }
 
     public void setXp(int xp) {
         this.xp = xp;
@@ -166,25 +174,31 @@ public class Game {
         return this.nomUtilisateur;
     }
 
-    public Library getLibrary () {
-        return library;
+
+    public void initInventaire () {
+        this.inventaire = new ArrayList<>();
+        //Articles par défaut :
+        this.inventaire.add(new ShopItem("Sword 1", 15, RessourcesPaths.knifePath + "knife.png"));
+        this.inventaire.add(new ShopItem("Music 1", 30, RessourcesPaths.buttonPath + "music.png"));
     }
+
 
     /**
     * Charge l'état du jeu à partir du fichier de sauvegarde spécifié dans cheminSauvegarde.
     * Cette méthode lit les données sauvegardées comme le niveau actuel, les points d'expérience,
     * le niveau, et l'argent, puis les affecte aux attributs correspondants de l'instance en cours.
-    * 
     * Le chemin du fichier de sauvegarde est déterminé par l'attribut cheminSauvegarde de l'instance.
     * Si une erreur se produit lors du chargement, l'erreur est enregistrée dans la console.
     */
     private void loadGameState() {
         try {
             Game loadedGame = chargerEtat(this.cheminSauvegarde);
-            this.currentLevel = loadedGame.getCurrentLevel();  
+            this.currentLevel = loadedGame.getCurrentLevel();
+            this.nomUtilisateur = loadedGame.getNomUtilisateur();
             this.xp = loadedGame.getXp();
             this.level = loadedGame.getLevel();
             this.argent = loadedGame.getArgent();
+            this.inventaire = loadedGame.getInventaire();
             this.currentBackgroundPath = loadedGame.getCurrentBackgroundPath();
             roundManagement.setCurrentRoundIndex(0);
             updateBackground();
@@ -192,7 +206,7 @@ public class Game {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }   
+    }
     /**
      * Met à jour l'arrière-plan de l'interface graphique du jeu si les conditions sont remplies.
      * Cette méthode vérifie que l'objet gameView et le chemin de l'arrière-plan (currentBackgroundPath) ne sont pas null.
@@ -201,25 +215,24 @@ public class Game {
      */
     private void updateBackground() {
         if (gameView != null && currentBackgroundPath != null) {
-            gameView.updateBackgroundImage(currentBackgroundPath); 
+            gameView.updateBackgroundImage(currentBackgroundPath);
         }
     }
-    
+
     private synchronized void initGame() {
         ChargerRound(roundManagement.getCurrentRoundIndex());
     }
 
     private synchronized void ChargerRound(int roundIndex) {
-            Round currentRound = roundManagement.getListeRounds().get(roundIndex);
-            listeCible1.clear();
-            listeCible1.addAll(currentRound.getListeCibles());
-            roundManagement.setCurrentRoundIndex(roundIndex);
+        Round currentRound = roundManagement.getListeRounds().get(roundIndex);
+        listeCible1.clear();
+        listeCible1.addAll(currentRound.getListeCibles());
+        roundManagement.setCurrentRoundIndex(roundIndex);
 
-            if (!isSolo) {
-                listeCible2.clear();
-                listeCible2.addAll(currentRound.getListeCibles());
-            }
-        
+        if (!isSolo) {
+            listeCible2.clear();
+            listeCible2.addAll(currentRound.getListeCibles());
+        }
     }
 
     public synchronized void addObserver(GameObserver observer) {
@@ -233,12 +246,45 @@ public class Game {
         this.isSolo =b;
     }
 
-    private synchronized void notifyObservers() {
+    public synchronized void notifyLevelObservers() {
         for (GameObserver observer : observers) {
             observer.onLevelChange();
         }
     }
 
+    /**
+     * Ajoute un observateur de bibliothèque à la liste des observateurs dans le but de l'affichage en temps réel de l'inventaire.
+     *
+     * @param observer L'observateur de bibliothèque à ajouter.
+     */
+    public synchronized void addLibraryObserver(LibraryObserver observer) {
+        libraryObservers.add(observer);
+    }
+
+    public synchronized void removeLibraryObserver(LibraryObserver observer) {
+        libraryObservers.remove(observer);
+    }
+
+    /**
+     * Notifie tous les observateurs de bibliothèque enregistrés lorsqu'un changement dans l'inventaire est détecté.
+     * Cette méthode est appelée pour informer les observateurs que l'inventaire a été mis à jour et qu'ils doivent
+     * rafraîchir leur affichage en conséquence pour l'affichage en temps réel.
+     */
+    public synchronized void notifyLibraryObservers() {
+        for (LibraryObserver observer : libraryObservers) {
+            observer.updateInventaire();
+        }
+    }
+
+
+
+    /**
+     * Met à jour l'état du jeu en fonction du temps écoulé depuis la dernière mise à jour.
+     * Cette méthode gère le mouvement des couteaux et des cibles, vérifie la complétion des rounds,
+     * et met à jour les effets des bonus en cours.
+     *
+     * @param delta Le temps écoulé depuis la dernière mise à jour, en millisecondes.
+     */
     public synchronized void update(double delta) {
         double adjustedDelta = delta / 3;
         knife1.updateMovement();
@@ -261,24 +307,35 @@ public class Game {
         bonusManager.updateBonusEffect();
     }
 
+
+
+    /**
+     * Met à jour le mouvement de la cible spécifiée en fonction du temps écoulé depuis la dernière mise à jour.
+     *
+     * @param c La cible à mettre à jour.
+     * @param adjustedDelta Le temps écoulé depuis la dernière mise à jour, ajusté en fonction de la vitesse du jeu.
+     */
     private void updateCible(Cible c, double adjustedDelta) {
 
-            if (c instanceof MovingTarget) {
-                if (!gel) {
-                    ((MovingTarget) c).updateMovement();
-                }
+        if (c instanceof MovingTarget) {
+            if (!gel) {
+                ((MovingTarget) c).updateMovement();
+            }
 
-            } else if (c instanceof BossType1) {
-                ((BossType1) c).updateMovement(adjustedDelta);
-            } else if (c instanceof BossType2) {
-                ((BossType2) c).updateMovement(adjustedDelta);
-            } else if (c instanceof BossType3) {
-                ((BossType3) c).updateMovement(adjustedDelta);
-            } else if (c instanceof BossType4) {
-                ((BossType4) c).updateMovement(adjustedDelta);
-            } 
+        } else if (c instanceof BossType1) {
+            ((BossType1) c).updateMovement(adjustedDelta);
+        } else if (c instanceof BossType2) {
+            ((BossType2) c).updateMovement(adjustedDelta);
+        } else if (c instanceof BossType3) {
+            ((BossType3) c).updateMovement(adjustedDelta);
+        } else if (c instanceof BossType4) {
+            ((BossType4) c).updateMovement(adjustedDelta);
+        }
 
     }
+
+
+
     /**
      * Vérifie si le round actuel est terminé en examinant si la liste des cibles du premier joueur est vide.
      * Si toutes les cibles sont éliminées, la méthode avance le jeu au round suivant ou, si tous les rounds sont terminés,
@@ -292,7 +349,7 @@ public class Game {
                 ChargerRound(roundManagement.getCurrentRoundIndex()); // Chargement du round suivant
                 //System.out.println(roundManagement.getCurrentRoundIndex());
 
-            }  
+            }
             else {
                 currentLevel++; // Incrémentation du niveau
                 notifyBackgroundChange();
@@ -300,7 +357,7 @@ public class Game {
                 roundManagement.resetRounds(); // Réinitialisation des rounds pour le nouveau niveau
                 ChargerRound(roundManagement.getCurrentRoundIndex()); // Recharge le premier round du nouveau niveau
             }
-    
+
         }
     }
 
@@ -316,8 +373,8 @@ public class Game {
             gameView.updateBackgroundImage(currentBackgroundPath);
         }
     }
-    
-    
+
+
     /**
      * Sélectionne un chemin d'image de fond aléatoire à partir d'un ensemble prédéfini de ressources.
      * Utilise un système pour éviter de répéter les arrière-plans récemment utilisés,
@@ -334,7 +391,7 @@ public class Game {
         updateRecentBackgrounds(bgIndex);
         return "src/main/ressources/background/bgJap" + bgIndex + ".gif";
     }
-    
+
     /**
      * Met à jour la file d'indices des arrière-plans utilisés récemment pour assurer
      * que les arrière-plans ne se répètent pas trop fréquemment.
@@ -355,7 +412,7 @@ public class Game {
     // Méthode pour vérifier si un niveau a été atteint et attribuer les récompenses
     private void checkLevelUp() {
         this.addLevel(1);
-        notifyObservers();
+        notifyLevelObservers();
         giveRewards(); // Appel à une méthode pour attribuer les récompenses du niveau
         System.out.println("+1 Niveau");
     }
@@ -372,7 +429,7 @@ public class Game {
             savedGame.setArgent(this.argent);
             savedGame.setXp(this.xp);
             savedGame.setLevel(this.level);
-            savedGame.setLibrary(this.library);
+            savedGame.setInventaire(this.inventaire);
             savedGame.setCurrentLevel(this.currentLevel);
             savedGame.setCurrentBackgroundPath(currentBackgroundPath);
 
@@ -384,13 +441,49 @@ public class Game {
         }
     }
 
+
+
+
+    /**
+     * Met à jour l'inventaire du jeu avec la liste spécifiée d'articles de boutique.
+     * Cette méthode ajoute les nouveaux articles à l'inventaire existant, en s'assurant
+     * qu'il n'y a pas de doublons.
+     *
+     * @param list La liste d'articles de boutique à ajouter à l'inventaire.
+     */
+    private void setInventaire(List<ShopItem> list) {
+        if (this.inventaire == null){
+            this.inventaire = new ArrayList<>();
+        }
+        if (list != null){
+            for (ShopItem item : list) {
+                if (!inventaire.contains(item)) {
+                    inventaire.add(item);
+                }
+            }
+        }
+
+    }
+
+    /**
+     * Met à jour l'inventaire du jeu avec la fonction setInventaire, appelant les observateurs de Library pour ainsi
+     * mettre à jour l'inventaire, le but étant de sauvegarder l'inventaire dans le fichier JSON.
+     *
+     * @param list La liste d'articles de boutique à ajouter à l'inventaire.
+     */
+    public void updateLibrary(List<ShopItem> list) {
+        setInventaire(list);
+        notifyLibraryObservers();
+        sauvegarderEtat();
+    }
+
+
+
+
     private void setCurrentLevel(int currentLevel) {
         this.currentLevel = currentLevel;
     }
 
-    private void setLibrary(Library library) {
-        this.library = library;
-    }
 
 
     /**
@@ -399,27 +492,23 @@ public class Game {
      * @return L'état du jeu chargé.
      * @throws IOException En cas d'erreur de lecture du fichier.
      */
+
+
     public Game chargerEtat(String cheminFichier) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(new File(cheminFichier), Game.class);
-    }
-
-
-    public void updateLibrary(ShopCart cart) {
-        if (cart != null) {
-            if (library == null) {
-                library = new Library(cheminSauvegarde);
+        try {
+            if (cheminFichier == null || cheminFichier.isEmpty()) {
+                throw new IllegalArgumentException("Chemin de fichier invalide");
             }
-            for (ShopItem item : cart.getCart()) {
-                if (!library.getLibraryItems().contains(item)) {
-                    library.getLibraryItems().add(item);
-                }
-            }
-            //library.charger();
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(new File(cheminFichier), Game.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
-
-        sauvegarderEtat();
     }
+
+
+
 
     // Méthode pour attribuer les récompenses en fonction du niveau
     private void giveRewards() {
@@ -468,6 +557,7 @@ public class Game {
         }
     }
 
+    @JsonProperty("currentlevel")
     public int getCurrentLevel() {
         return currentLevel;
     }
@@ -493,8 +583,18 @@ public class Game {
 
     @JsonProperty("currentBackgroundPath")
     public void setCurrentBackgroundPath(String currentBackgroundPath) {
+        if (currentBackgroundPath == null) {
+            return; // Avoid setting null
+        }
         this.currentBackgroundPath = currentBackgroundPath;
+
+        // Extrait l'indice du chemin de l'image de fond
+        String indexStr = currentBackgroundPath.replaceAll("[^0-9]", ""); // Enlève tout sauf les chiffres
+        if (!indexStr.isEmpty()) {
+            lastBackgroundIndex = Integer.parseInt(indexStr);
+        }
     }
 
-    
+
+
 }
