@@ -535,7 +535,7 @@ public class Game {
                 this.argent += 10;
                 break;
             case 8:
-                inventaire.add(new ShopItem("src/main/ressources/music/Main_Theme.wav", 0,"src/main/ressources/button/music.png"));
+                inventaire.add(new ShopItem("src/main/ressources/music/Main_Theme_2.wav", 0,"src/main/ressources/button/music.png"));
                 updateLibrary(inventaire);
                 break;
             case 9:

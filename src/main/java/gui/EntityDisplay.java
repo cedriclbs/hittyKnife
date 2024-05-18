@@ -604,10 +604,9 @@ public class EntityDisplay extends JPanel {
                 collisionAngle = knife.getAngle();
                 if (!(cible instanceof Boss)){animCollision = true;currentAnimBonusType=null;}
                 if (isSolo) {
-                    game.addXP(200);
+                    game.addXP(1);
                     game.addArgent(2);
                 }
-                System.out.println("XP+10 ");
                 if (cible instanceof BossType1) {
                     ((BossType1) cible).attacked();
                     if (((BossType1) cible).isDead()) {

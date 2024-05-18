@@ -104,7 +104,6 @@ public class HomeMenu extends BackgroundPanel  implements LibraryObserver {
 
 
         for (ShopItem item : inventaire) {
-
             ImageIcon icon = adapteImage(item.getArticlePath(), item.getArticleName());
 
             JButton itemButton = new JButton(icon);
