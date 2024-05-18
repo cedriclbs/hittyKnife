@@ -126,10 +126,10 @@ public class EntityDisplay extends JPanel {
         this.bonusXP = new ImageIcon(RessourcesPaths.targetPath + "targetXP.png").getImage();
         this.bonusGel = new ImageIcon(RessourcesPaths.targetPath + "targetGel.png").getImage();
         this.targetTNT = new ImageIcon(RessourcesPaths.targetPath + "targetTNT.png").getImage();
-        this.bossT1 = new ImageIcon(RessourcesPaths.targetPath + "Boss2 (1).png").getImage();
-        this.bossT2 = new ImageIcon(RessourcesPaths.targetPath + "Boss2 (1).png").getImage();
-        this.bossT3 = new ImageIcon(RessourcesPaths.targetPath + "Boss2 (1).png").getImage();
-        this.bossT4 = new ImageIcon(RessourcesPaths.targetPath + "Boss2 (1).png").getImage();
+        this.bossT1 = new ImageIcon(RessourcesPaths.targetPath + "BossType1.png").getImage();
+        this.bossT2 = new ImageIcon(RessourcesPaths.targetPath + "BossType2.png").getImage();
+        this.bossT3 = new ImageIcon(RessourcesPaths.targetPath + "BossType3.png").getImage();
+        this.bossT4 = new ImageIcon(RessourcesPaths.targetPath + "BossType4.png").getImage();
         int w = this.knifeImage.getWidth(null)/3;
         int h = this.knifeImage.getHeight(null)/3;
         this.knifeImage = this.knifeImage.getScaledInstance(w,h,Image.SCALE_SMOOTH);
