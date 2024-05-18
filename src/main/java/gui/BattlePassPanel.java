@@ -15,14 +15,13 @@ public class BattlePassPanel extends JPanel implements GameObserver {
     private Image backgroundImage;
     private Map<Integer, Image> rewardIcons;
 
-    public Image getBackgroundImage() {
-        return backgroundImage;
-    }
 
-    public void setBackgroundImage(Image backgroundImage) {
-        this.backgroundImage = backgroundImage;
-    }
-
+    /**
+     * Constructeur de la classe BattlePassPanel.
+     * Initialise le panneau du passe de combat avec les paramètres du jeu et crée la carte des récompenses atteintes.
+     *
+     * @param game L'instance du jeu associée à ce panneau.
+     */
     public BattlePassPanel(Game game) {
         this.game = game;
         this.currentLevel = game.getLevel();
@@ -74,7 +73,18 @@ public class BattlePassPanel extends JPanel implements GameObserver {
         return rewardIcons.get(palier);
     }
 
-    // Méthode pour mettre à jour les paliers en fonction du niveau/XP du jeu
+    public Image getBackgroundImage() {
+        return backgroundImage;
+    }
+
+    public void setBackgroundImage(Image backgroundImage) {
+        this.backgroundImage = backgroundImage;
+    }
+
+    /**
+     * Met à jour l'affichage des paliers en fonction du niveau du joueur.
+     * Elle marque les récompenses atteintes et ajoute des cases pour chaque palier avec des couleurs différentes.
+     */
     private void updatePaliers() {
         int currentLevel = game.getLevel();
 

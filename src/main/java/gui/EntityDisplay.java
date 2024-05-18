@@ -489,6 +489,25 @@ public class EntityDisplay extends JPanel {
             }
         }
 
+        //--------------------------------------DESSINE YOU LOSE QUAND ON PERD------------------------------------------------------
+
+        if (game.gameOver) {
+            g2d.setFont(new Font("Arial", Font.BOLD, 100));
+            g2d.setColor(new Color(255, 0, 0, (int) (255 * game.gameOverOpacity)));  
+            String gameOverText = "YOU LOSE";
+            int textWidth = g2d.getFontMetrics().stringWidth(gameOverText);
+            int x = (getWidth() - textWidth) / 2;
+            int y = getHeight() / 2;
+            g2d.drawString(gameOverText, x, y);
+        
+            g2d.setFont(new Font("Arial", Font.BOLD, 50)); 
+            String japaneseText = "ヨウ lオセ";
+            textWidth = g2d.getFontMetrics().stringWidth(japaneseText);
+            x = (getWidth() - textWidth) / 2;
+            y += g2d.getFontMetrics().getHeight();
+            g2d.drawString(japaneseText, x, y);
+        }
+        
         //--------------------------------------------------------------------------------------------------------------------------
 
         int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));

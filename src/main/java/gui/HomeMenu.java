@@ -134,7 +134,7 @@ public class HomeMenu extends BackgroundPanel  implements LibraryObserver {
         }
 
         JLabel welcomeLabel = new JLabel(" へようこそ Hitty Knife - Redux");
-        JLabel usernameLabel = new JLabel("先生 " + game.getNomUtilisateur());
+        JLabel usernameLabel = new JLabel(game.getNomUtilisateur()+ " 先生");
 
         welcomeLabel.setFont(new Font("Old English Text MT", Font.BOLD, 24));
         welcomeLabel.setForeground(new Color(245,13,13));
