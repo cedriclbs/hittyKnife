@@ -41,6 +41,8 @@ public class Game {
     public boolean powered[] = {false,false,false}; //joueur solo et les deux versus
     @JsonIgnore
     public BonusManager bonusManager = new BonusManager(this);
+    @JsonIgnore 
+    private int vies = 4;
 
 
     private static final int xpThreshold = 10;
@@ -357,6 +359,7 @@ public class Game {
                 notifyBackgroundChange();
                 System.out.println("Level : " + currentLevel);
                 roundManagement.resetRounds(); // Réinitialisation des rounds pour le nouveau niveau
+                resetLives();
                 ChargerRound(roundManagement.getCurrentRoundIndex()); // Recharge le premier round du nouveau niveau
             }
 
@@ -625,6 +628,39 @@ public class Game {
         }
     }
 
+    @JsonIgnore
+    public int getVies() {
+        return vies;
+    }
+    @JsonIgnore
+    public void setVies(int vies) {
+        this.vies = vies;
+    }
 
+    public void perdreVie() {
+        vies--;
+        if (vies <= 0) {
+            resetRoundAndRestoreLives();  
+        }
+    }
+
+    /**
+    * Réinitialise le round actuel et restaure les vies à 4.
+    */
+    private void resetRoundAndRestoreLives() {
+        vies = 4;  // Restaure les vies à 4
+        if (roundManagement != null) {
+            roundManagement.resetRounds();  // Réinitialise le round actuel
+            listeCible1.clear();
+            listeCible1.addAll(roundManagement.getListeRounds().get(roundManagement.getCurrentRoundIndex()).getListeCibles());
+        }
+    }
+
+    /**
+    * Réinitialise les points de vie à 4.
+    */
+    private void resetLives() {
+        vies = 4;
+    }
 
 }

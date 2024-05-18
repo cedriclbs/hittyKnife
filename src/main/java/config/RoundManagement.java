@@ -245,10 +245,13 @@ public class RoundManagement {
 
     //méthode pour réinitialiser les rounds
     public void resetRounds() {
-        this.rounds.clear();
+        System.out.println("Réinitialisation des rounds. Index actuel avant réinitialisation: " + currentRoundIndex);
+        rounds.clear();
         currentRoundIndex = 0;
         initRounds();
+        System.out.println("Index après réinitialisation: " + currentRoundIndex);
     }
+    
     
     // getter et setter
     public List<Round> getListeRounds() { 

@@ -50,7 +50,11 @@ public class GameView extends JPanel{
         //this.knife = game.knife1;
         //this.cible = new Cible("Cible", 100, KnifeDisplay.getBgImgWidth() / 2, KnifeDisplay.getBgImgHeight() / 2, 0);
 
+<<<<<<< src/main/java/gui/GameView.java
+            this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgJap10.gif", (ArrayList<Cible>)game.getListeCible(),isSolo, game);
+=======
         this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgJap10.gif", (ArrayList<Cible>)game.getListeCible(),isSolo, game);
+>>>>>>> src/main/java/gui/GameView.java
 
         this.entityDisplay2 = new EntityDisplay(game.knife2, "src/main/ressources/background/fond1v1.jpg",  (ArrayList<Cible>)game.getListeCible2(),isSolo, game);
 
@@ -175,9 +179,17 @@ public class GameView extends JPanel{
         repaint();
     }
 
+    // public void refreshCiblesDisplay() {
+    //     // Assure d'effacer les cibles avant de les redessiner
+    //     entityDisplay.clearCibles();
+    //     revalidate();
+    //     repaint();
+    // }
 
-
-
+    public EntityDisplay getEntityDisplay() {
+        return entityDisplay;
+    }
+    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

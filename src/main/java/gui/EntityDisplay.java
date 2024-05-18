@@ -88,7 +88,7 @@ public class EntityDisplay extends JPanel {
         initBg(backgroundPath);
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //RATIO1v1 = (isSolo)?1:2;
-        RATIO1v1 = (isSolo)?1:2;
+        RATIO1v1 = 1;
 
         RATIO_X = screenSize.width/2;
         //if (isSolo) RATIO_X = screenSize.width/2;
@@ -341,7 +341,6 @@ public class EntityDisplay extends JPanel {
             else {animCollision=false;explose = false;}
         }
     }
-    
 
     public void collision(ArrayList<Cible> deleteCible,Cible cible,double cibleX,double cibleY,int player){
         if (!explose) {
@@ -405,8 +404,11 @@ public class EntityDisplay extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
+
         g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         //System.out.println(game.getIsSolo());
+
+        //-------------------------- DESSINE LES NIVEAUX ET LES ROUNDS ----------------------------------------
 
         if(game.getIsSolo()){
             // Affichage des niveaux et des rounds avec effet d'ombre sur le texte
@@ -456,14 +458,27 @@ public class EntityDisplay extends JPanel {
                 // Dessine le cercle
                 g2d.fillOval(startX + i * (circleDiameter + spacing), yPosition, circleDiameter, circleDiameter);
             }
-        
+
+            // Configuration et dessin des croix des vies
+            int lineThickness = 5;
+            int totalLives = 4;  
+            int livesSpacing = 40; 
+            int livesXPosition = startX + ((totalRounds * (circleDiameter + spacing) - (totalLives * livesSpacing + (totalLives - 1) * 10)) / 2) + 42;
+            int livesYPosition = yPosition + circleDiameter + 30; 
+
+            for (int i = 0; i < totalLives - 1; i++) {
+                g2d.setColor(i < totalLives - game.getVies() ? Color.RED : Color.BLACK);
+                g2d.setStroke(new BasicStroke(lineThickness));
+                g2d.drawLine(livesXPosition + i * livesSpacing - 10, livesYPosition - 10, livesXPosition + i * livesSpacing + 10, livesYPosition + 10);
+                g2d.drawLine(livesXPosition + i * livesSpacing + 10, livesYPosition - 10, livesXPosition + i * livesSpacing - 10, livesYPosition + 10);
+            }
 
 
             // Si c'est le dernier round, affiche "Boss Fight!"
             if (currentRoundIndex == totalRounds - 1) {
                 String bossFightText = "Boss Fight!";
                 int textWidth = g2d.getFontMetrics().stringWidth(bossFightText);
-                int textYPosition = yPosition + circleDiameter + 30;
+                int textYPosition = livesYPosition + 40; 
 
                 // Dessine l'ombre pour "Boss Fight!" en noir
                 g2d.setColor(Color.BLACK);
@@ -474,18 +489,24 @@ public class EntityDisplay extends JPanel {
                 g2d.drawString(bossFightText, (getWidth() - textWidth) / 2, textYPosition);
             }
         }
-
+         
+        //--------------------------------------------------------------------------------------------------------------------------
 
         int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
         int knifeY = (int) (RATIO_Y-(knife.getY()*RATIO));
 
+        if (knifeX>screenSize.width/RATIO1v1 || knifeX<0 || knifeY > screenSize.height || knifeY<0){ 
+            knife.resetKnife(); 
+            if(isSolo){
+                if(!game.powered[0]){
+                    game.perdreVie();
+                }
+            }
+        }
 
         int knife2X = (int) (RATIO_X-(knife2.getX()*RATIO));
         int knife2Y = (int) (RATIO_Y-(knife2.getY()*RATIO));
 
-        if (knifeX>screenSize.width || knifeX<0 || knifeY > screenSize.height || knifeY<0){
-            knife.resetKnife();
-        }
         if (!isSolo) {
             if (knife2X > screenSize.width || knife2X < 0 || knife2Y > screenSize.height || knife2Y < 0) {
                 knife2.resetKnife();
@@ -724,71 +745,7 @@ public class EntityDisplay extends JPanel {
                     }
                 }
             }
-
-
-
-            //--------------------COLLISIONS------------------------
-
-
-
-
-            //AFFICHAGE COLLISIONS
-
-
-            //g2d.setColor(Color.BLUE);
-            //g2d.draw(transformedKnifeMask);
-
-            //int cw=55;int ch=55;
-            //if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
-            /*if (collision) {
-                if (!explose) {
-                    cibleColliX = cibleX;
-                    cibleColliY = cibleY;
-                    opacity = baseOpacity;
-                }
-                if (!(cible instanceof Boss)){animCollision = true;currentAnimBonusType=null;}
-                if (isSolo) {
-                    game.addXP(1);
-                    game.addArgent(2);
-                }
-                if (cible instanceof BossType1) {
-                    ((BossType1) cible).attacked();
-                    if (((BossType1) cible).isDead()) {
-                        deleteCible.add(cible);
-                    }
-                }
-                else if (cible instanceof BossType2) {
-                    ((BossType2) cible).attacked();
-                    if (((BossType2) cible).isDead()) {
-                        deleteCible.add(cible);
-                    }
-                }
-                else if (cible instanceof BossType3) {
-                    ((BossType3) cible).attacked();
-                    if (((BossType3) cible).isDead()) {
-                        deleteCible.add(cible);
-                    }
-                }
-                else if (cible instanceof BossType4) {
-                    ((BossType4) cible).attacked();
-                    if (((BossType4) cible).isDead()) {
-                        deleteCible.add(cible);
-                    }
-                }
-                else {
-                    deleteCible.add(cible);
-                }
-                isCollisionMovingTarget=cible instanceof MovingTarget;
-                if (cible instanceof Bonus){
-                    currentAnimBonusType = ((Bonus) cible).getTypeBonus();
-                    game.bonusManager.appliquerBonus(((Bonus) cible).getTypeBonus(),);
-                    if (((Bonus) cible).getTypeBonus()== Bonus.TypeBonus.BONUS_TNT){
-                        explose = true;
-                        explosion(cibleX,cibleY,deleteCible);
-                    }
-                }
-
-            }*/
+            
         }
         for (Cible c : deleteCible){
             listeCible.remove(c);
