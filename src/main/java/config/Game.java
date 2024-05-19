@@ -417,7 +417,7 @@ public class Game {
      * @param c La cible à mettre à jour.
      * @param adjustedDelta Le temps écoulé depuis la dernière mise à jour, ajusté en fonction de la vitesse du jeu.
      */
-    private synchronized void updateCible(Cible c, double adjustedDelta,boolean isSolo) {
+    private void updateCible(Cible c, double adjustedDelta,boolean isSolo) {
         if(c instanceof MovingTarget) {
             if (isSolo) {
                 if (!gel[0]) {
