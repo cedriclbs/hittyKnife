@@ -52,11 +52,11 @@ public class MainFrame extends JFrame {
         battlePassButton = new JButton("BattlePass");
 
         // Définir la couleur de fond pour chaque bouton
-        homeButton.setBackground(new Color(199, 29, 158));
-        soloButton.setBackground(new Color(199, 29, 158));
-        shopButton.setBackground(new Color(199, 29, 158));
-        versusButton.setBackground(new Color(199, 29, 158));
-        battlePassButton.setBackground(new Color(199, 29, 158));
+        homeButton.setBackground(new Color(124, 143, 184));
+        soloButton.setBackground(new Color(124, 143, 184));
+        shopButton.setBackground(new Color(124, 143, 184));
+        versusButton.setBackground(new Color(124, 143, 184));
+        battlePassButton.setBackground(new Color(124, 143, 184));
 
 
         // Supprimer le rectangle de sélection lorsqu'un bouton est enfoncé
