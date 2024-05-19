@@ -239,6 +239,9 @@ public class EntityDisplay extends JPanel {
     public Shape createCollisionMask(Image image) {
         int width = image.getWidth(null);
         int height = image.getHeight(null);
+        if (width <= 0 || height <= 0) {
+            return null;
+        }
         BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = bufferedImage.createGraphics();
         g2d.drawImage(image, 0, 0, null);
@@ -719,6 +722,9 @@ public class EntityDisplay extends JPanel {
                 }
                 Shape cibleMask = createCollisionMask(cibleImage);
                 Shape transformedCibleMask = transformCible.createTransformedShape(cibleMask);
+                if (transformedCibleMask == null) {
+                    return;
+                }
                 //g2d.setColor(Color.RED);
                 //g2d.draw(transformedCibleMask);
                 if (isSolo){
