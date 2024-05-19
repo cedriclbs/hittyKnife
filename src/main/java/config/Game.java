@@ -112,7 +112,6 @@ public class Game {
     public Game(boolean isSolo, String cheminSauvegarde){
         this.isSolo = false;
         this.cheminSauvegarde = cheminSauvegarde;
-        System.out.println("creation game");
         this.knife1 = new Knife(new Coordinate(0,0));
         this.knife2 = new Knife(new Coordinate(15,0));
         this.knife3 = new Knife(new Coordinate(-15,0));
@@ -544,8 +543,7 @@ public class Game {
         if(this.xp %xpThreshold==0){
             this.addLevel(1);
             notifyLevelObservers();
-            giveRewards(); // Appel à une méthode pour attribuer les récompenses du niveau
-            System.out.println("+1 Niveau");
+            giveRewards();
         }
     }
 

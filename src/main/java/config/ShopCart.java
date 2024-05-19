@@ -90,7 +90,6 @@ public class ShopCart {
             for (ShopItem article : list) {
                 JPanel itemPanel = new JPanel();
                 itemPanel.setLayout(new BoxLayout(itemPanel, BoxLayout.X_AXIS)); // Disposition horizontale
-                System.out.println(article.getArticlePath());
                 ImageIcon iconTemp = new ImageIcon(article.getArticlePath());
                 ImageIcon icon = new ImageIcon(iconTemp.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH));
 
