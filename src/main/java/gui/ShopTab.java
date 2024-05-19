@@ -243,7 +243,7 @@ public class ShopTab {
     }
 
     void updateMoneyLabel(){
-        this.argentLabel.setText("Money: " + shopMenu.getGame().getArgent());
+        this.argentLabel.setText(String.valueOf(shopMenu.getGame().getArgent()));
         this.argentLabel.repaint();
     }
 
