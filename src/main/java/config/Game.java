@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
+import javax.swing.Timer;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -45,6 +47,13 @@ public class Game {
     public BonusManager bonusManager = new BonusManager(this);
     @JsonIgnore 
     private int vies = 4;
+    @JsonIgnore
+    public boolean gameOver = false;
+    @JsonIgnore
+    private Timer gameOverTimer;
+    @JsonIgnore
+    public float gameOverOpacity = 1.0f;  
+
 
     private static final int xpThreshold = 10;
     private RoundManagement roundManagement;
@@ -573,6 +582,36 @@ public class Game {
     }
 
     /**
+     * Déclenche l'animation de fin de jeu lorsque le joueur perd toutes ses vies.
+     * Cette méthode configure la visibilité de l'écran de fin de jeu en réinitialisant
+     * l'opacité à pleine, puis lance un Timer qui réduit progressivement cette opacité.
+     * Lorsque l'opacité atteint zéro, le Timer s'arrête et l'état de fin de jeu est désactivé,
+     * permettant potentiellement une réinitialisation pour une nouvelle partie.
+     *
+     * La méthode s'assure également que si un Timer de fin de jeu est déjà en cours, il est arrêté
+     * avant d'en commencer un nouveau, évitant ainsi les conflits ou les multiples instances du Timer.
+     */
+    public void triggerGameOverAnimation() {
+        gameOver = true;
+        gameOverOpacity = 1.0f;
+    
+        if (gameOverTimer != null) {
+            gameOverTimer.stop();
+        }
+    
+        gameOverTimer = new Timer(30, e -> {
+            gameOverOpacity -= 0.01f; 
+            if (gameOverOpacity <= 0) {
+                gameOverTimer.stop();
+                gameOver = false; 
+                gameOverOpacity = 0; 
+            }
+            gameView.repaint();  
+        });
+        gameOverTimer.start();
+    }
+    
+    /**
     * Réinitialise le round actuel et restaure les vies à 4.
     */
     private void resetRoundAndRestoreLives() {
@@ -581,6 +620,7 @@ public class Game {
             roundManagement.resetRounds();  // Réinitialise le round actuel
             listeCible1.clear();
             listeCible1.addAll(roundManagement.getListeRounds().get(roundManagement.getCurrentRoundIndex()).getListeCibles());
+            triggerGameOverAnimation();
         }
     }
 
