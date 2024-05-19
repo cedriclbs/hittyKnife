@@ -51,7 +51,6 @@ public class ShopMenu extends JPanel {
 
         ShopTab couteauxTab = new ShopTab(tabbedPane, "Couteaux", RessourcesPaths.knifePath, "knifeTab.png", "couteaux", this);
         ShopTab backgroundTab = new ShopTab(tabbedPane, "Background", RessourcesPaths.backgroundPath, "bgTab.png", "background", this);
-        ShopTab musicTab = new ShopTab(tabbedPane, "Music", RessourcesPaths.buttonPath, "musicTab.png", "music", this);
         cartTab = new ShopTab(tabbedPane, "Panier", null, "cartTab.png", "cart", this);
 
         add(tabbedPane, BorderLayout.CENTER);
