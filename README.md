@@ -40,6 +40,9 @@ Pour installer et exécuter "Hitty Knife Redux", assurez-vous d'avoir [Maven](ht
    java -jar target/hitty-knife-redux.jar
    ```
 
+4. (Bonus) Compte Admin :
+    Un compte admin (mot de passe: admin) a été crée pour vous, vous permettant directement de profiter du jeu avec une save complétée à 100%!
+
 Assurez-vous d'avoir une connexion Internet active lors de la première exécution pour télécharger les dépendances Maven nécessaires.
 
 Voilà, votre jeu devrait maintenant être prêt à être joué !
