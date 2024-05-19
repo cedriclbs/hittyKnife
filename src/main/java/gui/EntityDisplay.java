@@ -570,7 +570,7 @@ public class EntityDisplay extends JPanel {
                 centerPanel.setLayout(new GridBagLayout());  // Utilisation de GridBagLayout pour centrer le label
 
                 String joueur = (game.scoreJoueur1>=game.MAX_SCORE)?"player 1":"player 2";
-                JLabel messageLabel = new JLabel(joueur+" have win");
+                JLabel messageLabel = new JLabel(joueur+" has won");
                 messageLabel.setFont(new Font("Arial", Font.BOLD, 20));
                 centerPanel.add(messageLabel, new GridBagConstraints());
                 backgroundPanel.add(centerPanel, BorderLayout.CENTER);
