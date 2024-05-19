@@ -165,6 +165,10 @@ public class Knife {
                 addAngle(0.3);
             }
         }
+        else{
+            if (coordinate.getX()!=DEFAULT_COORDINATE.getX()) coordinate.setX(DEFAULT_COORDINATE.getX());
+            if (coordinate.getY()!=DEFAULT_COORDINATE.getY()) coordinate.setY(DEFAULT_COORDINATE.getY());
+        }
     }
 
     /**

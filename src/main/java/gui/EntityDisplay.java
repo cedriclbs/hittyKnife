@@ -873,8 +873,8 @@ public class EntityDisplay extends JPanel {
                             collisionAngle = knife.getAngle();
                             collisionX = knifeX;
                             collisionY = knifeY;
-                            collision(deleteCible, cible, cibleX, cibleY, 0);
                             knife.resetKnife();
+                            collision(deleteCible, cible, cibleX, cibleY, 0);
                         }
                         else{
                             collision(deleteCible, cible, cibleX, cibleY, 0);
@@ -890,8 +890,8 @@ public class EntityDisplay extends JPanel {
                             collisionAngle = knife.getAngle();
                             collisionX = knifeX;
                             collisionY = knifeY;
-                            collision(deleteCible, cible, cibleX, cibleY, 1);
                             knife.resetKnife();
+                            collision(deleteCible, cible, cibleX, cibleY, 1);
                         }
                         else collision(deleteCible, cible, cibleX, cibleY, 1);
                     }
@@ -902,8 +902,8 @@ public class EntityDisplay extends JPanel {
                             collisionAngle = knife2.getAngle();
                             collisionX = knife2X;
                             collisionY = knife2Y;
-                            collision(deleteCible, cible, cibleX, cibleY, 2);
                             knife2.resetKnife();
+                            collision(deleteCible, cible, cibleX, cibleY, 2);
                         }
                         else collision(deleteCible, cible, cibleX, cibleY, 2);
                     }
