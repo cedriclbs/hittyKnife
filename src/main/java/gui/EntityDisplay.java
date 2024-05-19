@@ -592,7 +592,7 @@ public class EntityDisplay extends JPanel {
         if (game.gameOver) {
             g2d.setFont(new Font("Arial", Font.BOLD, 100));
             g2d.setColor(new Color(255, 0, 0, (int) (255 * game.gameOverOpacity)));  
-            String gameOverText = "YOU LOSE";
+            String gameOverText = "YOU LOSE!";
             int textWidth = g2d.getFontMetrics().stringWidth(gameOverText);
             int x = (getWidth() - textWidth) / 2;
             int y = getHeight() / 2;
