@@ -69,6 +69,8 @@ public class Game {
 
     private List<GameObserver> observers = new ArrayList<>();
     private List<LibraryObserver> libraryObservers = new ArrayList<>();
+    private List<MoneyObserver> moneyObservers = new ArrayList<>();
+
 
     private int lastBackgroundIndex = -1; // Dernier indice utilisé
     private Queue<Integer> recentBackgrounds = new LinkedList<>(); // Indices récents pour éviter la répétition
@@ -146,6 +148,7 @@ public class Game {
 
     public void addArgent(int i) {
         this.setArgent(this.argent + i);
+        notifyMoneyListener();
     }
 
     public int getArgent() {
@@ -284,7 +287,7 @@ public class Game {
     * Le chemin du fichier de sauvegarde est déterminé par l'attribut cheminSauvegarde de l'instance.
     * Si une erreur se produit lors du chargement, l'erreur est enregistrée dans la console.
     */
-    private void loadGameState() {
+    public void loadGameState() {
         try {
             Game loadedGame = chargerEtat(this.cheminSauvegarde);
             this.currentLevel = loadedGame.getCurrentLevel();
@@ -377,6 +380,26 @@ public class Game {
             observer.updateInventaire();
         }
     }
+
+
+    /**
+     * Ajoute un observateur d'argent pour être notifié des changements de montant d'argent.
+     *
+     * @param listener L'objet MoneyObserver à ajouter comme observateur.
+     */
+    public void addMoneyListener(MoneyObserver listener) {
+        moneyObservers.add(listener);
+    }
+
+    /**
+     * Notifie tous les observateurs d'argent en appelant leur méthode updateMoneyLabel().
+     */
+    private void notifyMoneyListener() {
+        for (MoneyObserver listener : moneyObservers) {
+            listener.updateMoneyLabel();
+        }
+    }
+
 
 
 

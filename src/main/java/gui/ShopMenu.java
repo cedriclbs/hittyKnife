@@ -16,6 +16,8 @@ import static config.States.*;
  * Fenêtre du magasin où les joueurs peuvent acheter des objets ou des améliorations.
  */
 public class ShopMenu extends JPanel {
+    private Game game;
+
     ShopCart cart;
     public JTabbedPane tabbedPane;
     private ShopTab cartTab;
@@ -28,6 +30,7 @@ public class ShopMenu extends JPanel {
      */
     public ShopMenu(Game game) {
         setStates(SHOPMENU);
+        this.game = game;
         this.cart = new ShopCart(game);
         this.tabbedPane = new JTabbedPane();
         initialize();
@@ -83,6 +86,15 @@ public class ShopMenu extends JPanel {
     }
 
     /**
+     * Retourne l'instance du jeu
+     */
+    public Game getGame () {
+        return this.game;
+    }
+
+
+
+    /**
      * Actualise l'onglet du panier du magasin.
      */
     void refreshCartTab() {
@@ -106,5 +118,11 @@ public class ShopMenu extends JPanel {
         button.setContentAreaFilled(false);
         button.addActionListener(actionListener);
     }
+
+
+
+
+
+
 
 }

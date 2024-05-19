@@ -195,6 +195,7 @@ public class EntityDisplay extends JPanel {
                     if (isSolo) {
                         game.addXP(2);
                         game.addArgent(5);
+                        game.sauvegarderEtat();
                     } else {
                         if (currentKnife) {
                             game.scoreJoueur2++;
@@ -435,7 +436,7 @@ public class EntityDisplay extends JPanel {
 
         //-------------------------- DESSINE LES NIVEAUX ET LES ROUNDS ----------------------------------------
 
-        if(isSolo){
+        if(game.getIsSolo()){
             // Affichage des niveaux et des rounds avec effet d'ombre sur le texte
             g2d.setFont(new Font("SansSerif", Font.BOLD, 24)); 
 
@@ -554,7 +555,7 @@ public class EntityDisplay extends JPanel {
             if ((game.scoreJoueur1>=game.MAX_SCORE || game.scoreJoueur2>=game.MAX_SCORE ) && !this.isWin){
                 this.isWin = true;
 
-                String backgroundImagePath = "src/main/ressources/button/signB.png";
+                String backgroundImagePath = RessourcesPaths.buttonPath + "signB.png";
 
                 // Création d'un JDialog indépendant
                 JDialog dialog = new JDialog((Frame) null, "VICTORY", true);

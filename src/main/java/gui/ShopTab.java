@@ -16,6 +16,9 @@ import java.awt.event.MouseEvent;
 public class ShopTab {
 
     private ShopMenu shopMenu;
+    private JLabel argentLabel;
+
+
 
     /**
      * Constructeur de la classe ShopTab.
@@ -35,6 +38,7 @@ public class ShopTab {
             ImageIcon icon = new ImageIcon(RessourcesPaths.tabPath + iconPath);
             tabbedPane.setIconAt(tabbedPane.indexOfComponent(panel), icon);
         }
+        shopMenu.getGame().addMoneyListener(this::updateMoneyLabel);
     }
 
     /**
@@ -48,6 +52,8 @@ public class ShopTab {
         BackgroundPanel tabPanel = new BackgroundPanel(RessourcesPaths.backgroundPath + "bgShop.gif");
         tabPanel.setLayout(new BorderLayout());
 
+        addMoneyLabel(tabPanel);
+
         JPanel mainMenuPanel = new JPanel(new GridLayout(0, 3, 20, 20));
         if (category.equals("background")){
             mainMenuPanel.setBorder(new EmptyBorder(300, 75, 300, 75));
@@ -60,14 +66,14 @@ public class ShopTab {
 
         switch (category) {
             case "couteaux" -> {
-                addItemToPanel(mainMenuPanel, path + "knife#1.png", 15, "Sword 1");
-                addItemToPanel(mainMenuPanel, path + "knife#2.png", 20, "Sword 2");
-                addItemToPanel(mainMenuPanel, path + "knife#3.png", 25, "Sword 3");
+                addItemToPanel(mainMenuPanel, path + "knife#1.png", 0, "Sword 1");
+                addItemToPanel(mainMenuPanel, path + "knife#2.png", 100, "Sword 2");
+                addItemToPanel(mainMenuPanel, path + "knife#3.png", 200, "Sword 3");
             }
             case "background" -> {
-                addItemToPanel(mainMenuPanel, path + "bgClassiqueCave.png", 20, "Background 1");
-                addItemToPanel(mainMenuPanel, path + "bgClassiqueLake.png", 25, "Background 2");
-                addItemToPanel(mainMenuPanel, path + "bgClassiqueForet.png", 30, "Background 3");
+                addItemToPanel(mainMenuPanel, path + "bgClassiqueCave.png", 100, "Background 1");
+                addItemToPanel(mainMenuPanel, path + "bgClassiqueLake.png", 200, "Background 2");
+                addItemToPanel(mainMenuPanel, path + "bgClassiqueForet.png", 300, "Background 3");
             }
             case "cart" -> {
                 JPanel cartPanel = shopMenu.cart.displayCart(this.shopMenu, shopMenu.cart.getCart(), mainMenuPanel, "Panier");
@@ -76,6 +82,33 @@ public class ShopTab {
         tabPanel.add(mainMenuPanel, BorderLayout.CENTER);
         return tabPanel;
     }
+
+
+    /**
+     * Ajoute un composant pour afficher le montant d'argent disponible dans le panneau de l'onglet ainsi que l'icône.
+     *
+     * @param tabPanel Le panneau d'arrière-plan de l'onglet.
+     */
+    private void addMoneyLabel(BackgroundPanel tabPanel) {
+        JPanel argentPanel = new JPanel(new FlowLayout(FlowLayout.TRAILING, 0, 0));
+        argentPanel.setOpaque(false);
+
+        argentLabel = new JLabel(String.valueOf(shopMenu.getGame().getArgent()));
+        argentLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        argentLabel.setBorder(new EmptyBorder(10, 10, 10, 5));
+        argentLabel.setForeground(Color.WHITE);
+        argentLabel.setFont(new Font("Arial", Font.BOLD, 16));
+
+        ImageIcon coinIcon = adapteImage(RessourcesPaths.iconPath + "coin.png", "Coin");
+
+        JLabel coinLabel = new JLabel(coinIcon);
+
+        argentPanel.add(argentLabel);
+        argentPanel.add(coinLabel);
+        tabPanel.add(argentPanel, BorderLayout.NORTH);
+    }
+
+
 
     /**
      * Ajoute un article à un JPanel en tant qu'élément de liste avec un bouton associé pour l'ajouter au panier.
@@ -144,6 +177,13 @@ public class ShopTab {
         if (itemName.contains("Background")){
             Image resizedImage = icon.getImage().getScaledInstance(screenWidth/5, screenHeight /5, Image.SCALE_SMOOTH);
             icon = new ImageIcon(resizedImage);
+        } else if (itemName.contains("Coin")){
+            Image resizedImage = icon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+            icon = new ImageIcon(resizedImage);
+        }
+        else if (itemName.contains("Caption")){
+            Image resizedImage = icon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+            icon = new ImageIcon(resizedImage);
         }
         else{
             Image resizedImage = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
@@ -151,6 +191,9 @@ public class ShopTab {
         }
         return icon;
     }
+
+
+
 
     /**
      * Crée le composant de légende pour un article avec son nom, son prix, et l'image de la pièce.
@@ -169,7 +212,7 @@ public class ShopTab {
         JLabel itemPriceLabel = new JLabel(String.valueOf(articlePrice));
         itemPriceLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        ImageIcon coinIcon = new ImageIcon(RessourcesPaths.iconPath + "coin.png");
+        ImageIcon coinIcon = adapteImage(RessourcesPaths.iconPath + "coin.png", "Caption");
         JLabel coinLabel = new JLabel(coinIcon);
         coinLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         coinLabel.setOpaque(false);
@@ -198,4 +241,11 @@ public class ShopTab {
             shopMenu.tabbedPane.setComponentAt(cartTabIndex, cartPanel);
         }
     }
+
+    void updateMoneyLabel(){
+        this.argentLabel.setText("Money: " + shopMenu.getGame().getArgent());
+        this.argentLabel.repaint();
+    }
+
+
 }
