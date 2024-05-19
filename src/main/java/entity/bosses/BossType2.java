@@ -37,7 +37,7 @@ public class BossType2 extends Boss{
         double centerX = 0;
         double centerY = 13;
         double radius = 30;
-        double angularSpeed = 0.03;
+        double angularSpeed = 0.031;
 
         double[] newPosition = Geometry.moveInCircle(centerX, centerY, radius, angularSpeed, currentAngle, delta);
         setX(newPosition[0]);
