@@ -319,12 +319,12 @@ public class Game {
     /**
      *  Méthode pour initialiser le jeu
      */
-    private void initGame() {
+    private synchronized void initGame() {
         chargerRound(roundManagement.getCurrentRoundIndex(),true);
         chargerRound(roundManagementVERSUS.getCurrentRoundIndex(),false);
     }
 
-    private void chargerRound(int roundIndex,boolean isSolo) {
+    private synchronized void chargerRound(int roundIndex,boolean isSolo) {
         if (isSolo) {
             Round currentRound = roundManagement.getListeRounds().get(roundIndex);
             listeCible1.clear();
