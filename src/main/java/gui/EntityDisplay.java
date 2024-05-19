@@ -71,8 +71,6 @@ public class EntityDisplay extends JPanel {
 
     private boolean isSolo;
     private boolean isWin=false;
-
-    //private ArrayList<Cible> deleteCible;
     
 
 
