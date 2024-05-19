@@ -865,7 +865,7 @@ public class EntityDisplay extends JPanel {
                 }
                 Shape cibleMask = createCollisionMask(cibleImage);
                 Shape transformedCibleMask = transformCible.createTransformedShape(cibleMask);
-                if (transformedCibleMask == null) {
+                if (transformedCibleMask == null || transformedKnifeMask == null) {
                     return;
                 }
                 //g2d.setColor(Color.RED);
