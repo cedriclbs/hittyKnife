@@ -11,14 +11,15 @@ import java.util.Objects;
  */
 public class ShopItem {
 
-    private String articleName;
-    private int articlePrice;
-    private String articleImagePath;
+    private String articleName;      // Le nom de l'article
+    private int articlePrice;        // Le prix de l'article
+    private String articlePath;      // Le chemin de l'image de l'article
 
+    /**
+     * Constructeur par défaut pour la désérialisation JSON.
+     */
     @JsonCreator
     public ShopItem(){
-        // Constructeur sans arguments pour la désérialisation JSON
-
     }
 
     /**
@@ -32,24 +33,44 @@ public class ShopItem {
     public ShopItem(@JsonProperty("articleName") String articleName,
                     @JsonProperty("articlePrice") int articlePrice,
                     @JsonProperty("articleImagePath") String articleImagePath) {
-        this.articleImagePath = articleImagePath;
+        this.articlePath = articleImagePath;
         this.articleName = articleName;
         this.articlePrice = articlePrice;
     }
 
-
+    /**
+     * Récupère le nom de l'article.
+     *
+     * @return Le nom de l'article.
+     */
     public String getArticleName() {
         return articleName;
     }
 
+    /**
+     * Récupère le prix de l'article.
+     *
+     * @return Le prix de l'article.
+     */
     public int getArticlePrice() {
         return articlePrice;
     }
 
-    public String getArticleImagePath() {
-        return articleImagePath;
+    /**
+     * Récupère le chemin de l'image de l'article.
+     *
+     * @return Le chemin de l'image de l'article.
+     */
+    public String getArticlePath() {
+        return articlePath;
     }
 
+    /**
+     * Compare cet article avec un autre objet pour l'égalité.
+     *
+     * @param obj L'objet à comparer.
+     * @return true si les objets sont égaux, false sinon.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -59,12 +80,16 @@ public class ShopItem {
             return false;
         }
         ShopItem other = (ShopItem) obj;
-        return Objects.equals(articleName, other.articleName) && articlePrice == other.articlePrice && Objects.equals(articleImagePath, other.articleImagePath);
+        return Objects.equals(articleName, other.articleName) && articlePrice == other.articlePrice && Objects.equals(articlePath, other.articlePath);
     }
 
-
+    /**
+     * Renvoie une représentation sous forme de chaîne de cet article.
+     *
+     * @return Une chaîne représentant l'article.
+     */
     @Override
     public String toString() {
-        return this.articleName + "|" + this.articlePrice + "|" + this.articleImagePath;
+        return this.articleName + "|" + this.articlePrice + "|" + this.articlePath;
     }
 }

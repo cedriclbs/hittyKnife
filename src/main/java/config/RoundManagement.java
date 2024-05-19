@@ -21,10 +21,9 @@ import static entity.Bonus.TypeBonus.*;
  * Gère les rounds dans le jeu, y compris les cibles pour chaque round.
  */
 public class RoundManagement {
-    private List<Round> rounds; // Liste des rounds contenant des cibles pour chaque round
+    private final List<Round> rounds; // Liste des rounds contenant des cibles pour chaque round
     private int currentRoundIndex; // Indice du round actuel
-    private Random random; // Pour générer des valeurs aléatoires
-    private TypeCible lastBossType = null; 
+    private final Random random; // Pour générer des valeurs aléatoires
     private Queue<TypeCible> bossQueue;    // File principale pour les bosses
     private Queue<TypeCible> tempQueue;    // File temporaire pour stocker les bosses récemment utilisés
     
@@ -40,22 +39,117 @@ public class RoundManagement {
         initRounds();
     }
 
-   
+    /**
+     * Génère une position X aléatoire.
+     *
+     * @return Une position X aléatoire en dehors de la zone interdite.
+     */
+    private double getRandomPositionX() {
+        double x;
+        do {
+            x = (random.nextDouble() * 60) - 30; //à regler selon la taille du jeu, cible en position x de -30 à 30
+        } while (x > -7 && x < 7); // Évite la zone autour de x = 0
+        return x;
+    }
+
+    /**
+     * Génère une position Y aléatoire.
+     *
+     * @return Une position Y aléatoire en dehors de la zone interdite.
+     */
+    private double getRandomPositionY() {
+        double y;
+        do {
+            y = random.nextDouble() * 30; // génère un y entre 0 et 30
+        } while (y >= 0 && y <= 15 && Math.abs(getRandomPositionX()) <= 7); // Évite la combinaison de y entre 0 et 15 avec x entre -7 et 7
+        return y;
+    }
+
+
+    /**
+     * Sélectionne un type de cible aléatoire pour les rounds normaux.
+     *
+     * @return Un type de cible aléatoire, à l'exception des boss.
+     */
+    private TypeCible getRandomTypeCible() {
+        int randomNum = random.nextInt(3);
+        return TypeCible.values()[randomNum];
+    }
+
+    /**
+     * Sélectionne un type de boss aléatoire pour le round final, en évitant de répéter le dernier boss utilisé.
+     *
+     * @return Un type de boss aléatoire.
+     */
+    private TypeCible getRandomTypeBoss() {
+        // S'assure que la queue principale a des éléments à offrir
+        if (bossQueue.isEmpty()) {
+            refillBossQueue();
+        }
+
+        TypeCible boss = bossQueue.poll();  // Retire le prochain boss de la file principale
+        tempQueue.offer(boss);  // Ajoute ce boss à la file temporaire
+
+        // Si la file temporaire atteint 3 éléments, réintégre le premier élément retiré à la file principale
+        if (tempQueue.size() > 2) {
+            bossQueue.offer(tempQueue.poll());
+        }
+
+        return boss;
+    }
+
+    /**
+     * Génère un nombre aléatoire de cibles pour les rounds.
+     *
+     * @return Un nombre aléatoire de cibles, entre 4 et 10.
+     */
+    private int getRndIntTargetRounds() {
+        //return 4 + random.nextInt(4);
+        return 3;
+    }
+
+    /**
+     * Retourne la liste des rounds.
+     *
+     * @return La liste des rounds.
+     */
+    public List<Round> getListeRounds() {
+        return rounds;
+    }
+
+    /**
+     * Retourne l'indice du round actuel.
+     *
+     * @return L'indice du round actuel.
+     */
+    public int getCurrentRoundIndex() {
+        return currentRoundIndex;
+    }
+
+    /**
+     * Définit l'indice du round actuel.
+     *
+     * @param a L'indice du round actuel à définir.
+     */
+    public void setCurrentRoundIndex(int a) {
+        this.currentRoundIndex = a;
+    }
+
+
     /**
      * Prépare les rounds en créant une liste de cibles pour chacun.
      */
     private void initRounds() {
-        this.rounds.clear(); // Assurez-vous de vider la liste avant de l'initialiser
-        //System.out.println("Initialisation des rounds...");
+        this.rounds.clear();
         for (int i = 0; i < 4; i++) {
             this.rounds.add(new Round());
-            //System.out.println("Round " + i + " ajouté.");
         }
-        //System.out.println("Population des rounds...");
         populateRounds();
-    
     }
 
+    /**
+     * Initialise les files de bosses avec des types mélangés.
+     */
     private void initBossQueues() {
         List<TypeCible> bosses = Arrays.asList(
             TypeCible.CIBLE_BOSS1, 
@@ -92,7 +186,7 @@ public class RoundManagement {
                 }
 
                 // Sélection du type de cible pour les rounds autres que le dernier
-                typeCible = TypeCible.CIBLE_NORMALE;//getRandomTypeCible();
+                typeCible = TypeCible.CIBLE_NORMALE ;
                 do {
                     x = getRandomPositionX();
                     y = getRandomPositionY();
@@ -111,14 +205,19 @@ public class RoundManagement {
                 } else {
                     cible = createCibleWithType(typeCible, x, y);
                 }
-
                 round.addCible(cible);
             }
         }
     }
 
-    
-
+    /**
+     * Crée une cible avec le type spécifié et les coordonnées données.
+     *
+     * @param typeCible Le type de la cible à créer.
+     * @param x La position X de la cible.
+     * @param y La position Y de la cible.
+     * @return La cible créée.
+     */
     private Cible createCibleWithType(TypeCible typeCible, double x, double y) {
         switch (typeCible) {
             case CIBLE_NORMALE:
@@ -129,15 +228,13 @@ public class RoundManagement {
                 return new MovingTarget(x, y);
             case CIBLE_BONUS:
                 int randomNum = random.nextInt(5);
-                Bonus.TypeBonus typeBonus;
-                switch (randomNum){
-                    case 0: typeBonus = BONUS_XP;System.out.println("dqzsqzdqzszqd");break;
-                    case 1: typeBonus = BONUS_GOLD;break;
-                    case 2 : typeBonus = BONUS_GEL;break;
-                    case 3 : typeBonus = BONUS_POWER;break;
-                    case 4 : typeBonus = BONUS_TNT;break;
-                    default: typeBonus = BONUS_TNT;break;
-                }
+                Bonus.TypeBonus typeBonus = switch (randomNum) {
+                    case 0 -> BONUS_XP;
+                    case 1 -> BONUS_GOLD;
+                    case 2 -> BONUS_GEL;
+                    case 3 -> BONUS_POWER;
+                    default -> BONUS_TNT;
+                };
                 return new Bonus(x, y,typeBonus);
     
             case CIBLE_BOSS1:
@@ -161,6 +258,14 @@ public class RoundManagement {
         }
     }
 
+    /**
+     * Vérifie si une nouvelle cible est trop proche d'une cible existante.
+     *
+     * @param x La position X de la nouvelle cible.
+     * @param y La position Y de la nouvelle cible.
+     * @param cibles La liste des cibles existantes
+     *
+     **/
     private boolean EstTropProche(double x, double y, List<Cible> cibles) {
         double minDistance = 8; 
         for (Cible cible : cibles) {
@@ -173,53 +278,10 @@ public class RoundManagement {
         return false;
     }
 
-    private double getRandomPositionX() {
-        double x;
-        do {
-            x = (random.nextDouble() * 60) - 30; //à regler selon la taille du jeu, cible en position x de -30 à 30
-        } while (x > -7 && x < 7); // Évite la zone autour de x = 0
-        return x;
-    }
-    
-    private double getRandomPositionY() {
-        double y;
-        do {
-            y = random.nextDouble() * 30; // génère un y entre 0 et 30
-        } while (y >= 0 && y <= 15 && Math.abs(getRandomPositionX()) <= 7); // Évite la combinaison de y entre 0 et 15 avec x entre -7 et 7
-        return y;
-    }
-    
-    
     /**
-     * Sélectionne un type de cible aléatoire pour les rounds normaux.
-     * @return Un type de cible aléatoire, à l'exception des boss.
+     * Re-remplit la file des bosses si elle est vide.
+     * Transfère les éléments de la file temporaire à la file principale et les mélange si nécessaire.
      */
-    private TypeCible getRandomTypeCible() {
-        int randomNum = random.nextInt(3);
-        return TypeCible.values()[randomNum];
-    }
-
-    /**
-     * Sélectionne un type de boss aléatoire pour le round final, en évitant de répéter le dernier boss utilisé.
-     * @return Un type de boss aléatoire.
-     */
-    private TypeCible getRandomTypeBoss() {
-        // S'assure que la queue principale a des éléments à offrir
-        if (bossQueue.isEmpty()) {
-            refillBossQueue();
-        }
-
-        TypeCible boss = bossQueue.poll();  // Retire le prochain boss de la file principale
-        tempQueue.offer(boss);  // Ajoute ce boss à la file temporaire
-
-        // Si la file temporaire atteint 3 éléments, réintégre le premier élément retiré à la file principale
-        if (tempQueue.size() > 2) {
-            bossQueue.offer(tempQueue.poll());
-        }
-
-        return boss;
-    }
-
     private void refillBossQueue() {
         if (bossQueue.isEmpty() && tempQueue.size() <= 2) {
             while (!tempQueue.isEmpty()) {
@@ -228,40 +290,18 @@ public class RoundManagement {
             Collections.shuffle((LinkedList<TypeCible>) bossQueue);
         }
     }
-    
-
-    /**
-     * Génère un nombre aléatoire de cibles pour les rounds.
-     * @return Un nombre aléatoire de cibles, entre 4 et 10.
-     */
-    private int getRndIntTargetRounds() {
-        //return 4 + random.nextInt(4);
-        return 6;
-    }
     // méthode pour vérifier si tous les rounds sont complétés
     public boolean isAllRoundsCompleted() {
         return currentRoundIndex == rounds.size();
     }
 
-    //méthode pour réinitialiser les rounds
+    /**
+     * Réinitialise les rounds à leur état initial.
+     * Efface tous les rounds existants et réinitialise l'indice du round actuel à 0.
+     */
     public void resetRounds() {
-        this.rounds.clear();
+        rounds.clear();
         currentRoundIndex = 0;
         initRounds();
     }
-    
-    // getter et setter
-    public List<Round> getListeRounds() { 
-        return rounds; 
-    }
-
-    public int getCurrentRoundIndex() {
-        return currentRoundIndex;
-    }
-
-
-    public void setCurrentRoundIndex(int a) {
-        this.currentRoundIndex = a;
-    }
-
 }

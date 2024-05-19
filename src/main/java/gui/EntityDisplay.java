@@ -16,6 +16,9 @@ import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 
 /**
@@ -24,6 +27,7 @@ import java.util.List;
  */
 public class EntityDisplay extends JPanel {
     private final Knife knife;
+    private final Knife knife2;
     private Image knifeImage;
     private Image knifeImagePowered;
     private Image cibleImage;
@@ -41,13 +45,13 @@ public class EntityDisplay extends JPanel {
     private Image bossT2;
     private Image bossT3;
     private Image bossT4;
-    private List<Cible> listeCible;
+    private final List<Cible> listeCible;
     private static double bgImgWidth;
     private static double bgImgHeight;
-    private double RATIO_X;
-    private double RATIO_Y;
+    private final double RATIO_X;
+    private final double RATIO_Y;
     private final int RATIO = 18;
-    private int RATIO1v1;
+    private final int RATIO1v1;
 
     private int collisionX;
     private int collisionY;
@@ -60,7 +64,9 @@ public class EntityDisplay extends JPanel {
     final float baseOpacity = 1f;
     float opacity;
     Dimension screenSize;
-    private Game game;
+    private final Game game;
+
+    private boolean isSolo;
 
     //private ArrayList<Cible> deleteCible;
     
@@ -76,18 +82,22 @@ public class EntityDisplay extends JPanel {
         //System.out.println("bg x : "+RATIO_X+" bg y : "+RATIO_Y);
         this.listeCible = listeCible;
         this.knife = knife;
+
+        this.knife2 = game.knife3;
         initImage();
         initBg(backgroundPath);
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        RATIO1v1 = (isSolo)?1:2;
+        //RATIO1v1 = (isSolo)?1:2;
+        RATIO1v1 = 1;
 
+        RATIO_X = screenSize.width/2;
+        //if (isSolo) RATIO_X = screenSize.width/2;
+        //else RATIO_X = screenSize.width/4;//getBgImgWidth()/2;
 
-        if (isSolo) RATIO_X = screenSize.width/2;
-        else RATIO_X = screenSize.width/4;//getBgImgWidth()/2;
-
-        RATIO_Y = screenSize.height*3/4;//getBgImgHeight()*3/4;
+        RATIO_Y = (double) (screenSize.height * 3) /4;//getBgImgHeight()*3/4;
 
         this.game = game;
+        this.isSolo = isSolo;
     }
 
     /**
@@ -121,15 +131,15 @@ public class EntityDisplay extends JPanel {
         this.knifeImagePowered = new ImageIcon(RessourcesPaths.knifePath + "knifePowered.png").getImage();
         this.cibleImage = new ImageIcon(RessourcesPaths.targetPath + "target#1.png").getImage();
         this.ciblesMouventeImage =  new ImageIcon(RessourcesPaths.targetPath + "target#2.png").getImage();
-        this.bonusPower = new ImageIcon(RessourcesPaths.targetPath + "target#2Power.png").getImage();
+        this.bonusPower = new ImageIcon(RessourcesPaths.targetPath + "target#1Power.png").getImage();
         this.bonusGold = new ImageIcon(RessourcesPaths.targetPath + "targetCoin.png").getImage();
         this.bonusXP = new ImageIcon(RessourcesPaths.targetPath + "targetXP.png").getImage();
         this.bonusGel = new ImageIcon(RessourcesPaths.targetPath + "targetGel.png").getImage();
         this.targetTNT = new ImageIcon(RessourcesPaths.targetPath + "targetTNT.png").getImage();
-        this.bossT1 = new ImageIcon(RessourcesPaths.targetPath + "Boss2 (1).png").getImage();
-        this.bossT2 = new ImageIcon(RessourcesPaths.targetPath + "Boss2 (1).png").getImage();
-        this.bossT3 = new ImageIcon(RessourcesPaths.targetPath + "Boss2 (1).png").getImage();
-        this.bossT4 = new ImageIcon(RessourcesPaths.targetPath + "Boss2 (1).png").getImage();
+        this.bossT1 = new ImageIcon(RessourcesPaths.targetPath + "BossType1.png").getImage();
+        this.bossT2 = new ImageIcon(RessourcesPaths.targetPath + "BossType2.png").getImage();
+        this.bossT3 = new ImageIcon(RessourcesPaths.targetPath + "BossType3.png").getImage();
+        this.bossT4 = new ImageIcon(RessourcesPaths.targetPath + "BossType4.png").getImage();
         int w = this.knifeImage.getWidth(null)/3;
         int h = this.knifeImage.getHeight(null)/3;
         this.knifeImage = this.knifeImage.getScaledInstance(w,h,Image.SCALE_SMOOTH);
@@ -173,8 +183,10 @@ public class EntityDisplay extends JPanel {
             int cw=200;int ch=200;
             if (x > cibleX-cw && x<cibleX+cw && y > cibleY-ch && y<cibleY+ch){
                 deleteCible.add(cible);
-                game.addXP(10);
-                game.addArgent(10);
+                if (isSolo) {
+                    game.addXP(10);
+                    game.addArgent(10);
+                }
             }
         }
     }
@@ -203,17 +215,20 @@ public class EntityDisplay extends JPanel {
      * @return Le chemin d'accès mis à jour à l'image du couteau.
      */
     private String verifImage(String knifePathClicked) {
-        String res = knifePathClicked;
         String abr = RessourcesPaths.knifePath;
-        if (knifePathClicked.equals(abr +"knife.png")){
-            res = abr + "knifeRotate1.png";
-        } else if (knifePathClicked.equals(abr +"knife#2.png")){
-            res = abr + "knifeRotated2.png";
-        } else if (knifePathClicked.equals(abr +"knife#3.png")){
-            res = abr+ "knifeRotate3.png";
-        }
-        return res;
+
+        // Create the map with the possible transformations
+        Map<String, String> pathMap = new HashMap<>();
+        pathMap.put(abr + "knife#1.png", abr + "knifeRotate1.png");
+        pathMap.put(abr + "knife#2.png", abr + "knifeRotate2.png");
+        pathMap.put(abr + "knife#3.png", abr + "knifeRotate3.png");
+        pathMap.put(abr + "knife#4.png", abr + "knifeRotate4.png");
+        pathMap.put(abr + "knife#5.png", abr + "knifeRotate5.png");
+
+        // Return the transformed path if it exists, otherwise return the original path
+        return pathMap.getOrDefault(knifePathClicked, knifePathClicked);
     }
+
 
 
     /**
@@ -281,20 +296,29 @@ public class EntityDisplay extends JPanel {
             AlphaComposite alphaComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
 
             g2d.setComposite(alphaComposite);
-            if (!game.powered) {
-                AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - (double) knifeImgWidth / 2, collisionY - (double) knifeImgHeight / 2);
-                transformColli.rotate(Math.toRadians(collisionAngle), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
-                g2d.drawImage(knifeImage, transformColli, this);
+            if (isSolo){
+                if (!game.powered[0]) {
+                    AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - (double) knifeImgWidth / 2, collisionY - (double) knifeImgHeight / 2);
+                    transformColli.rotate(Math.toRadians(collisionAngle), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
+                    g2d.drawImage(knifeImage, transformColli, this);
+                }
+            }
+            else {
+                if (!game.powered[1]) {
+                    AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - (double) knifeImgWidth / 2, collisionY - (double) knifeImgHeight / 2);
+                    transformColli.rotate(Math.toRadians(collisionAngle), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
+                    g2d.drawImage(knifeImage, transformColli, this);
+                }
             }
             AffineTransform transformCibleColli;
             //AffineTransform transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - (double) cibleImWidth / 2, cibleColliY - (double) cibleImHeight / 2);
             if (explose){
                 double exploseWidth = explosionIcon.getWidth(this);
                 double exploseHeight = explosionIcon.getHeight(this);
-                transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - (double) exploseWidth / 2, cibleColliY - (double) exploseHeight / 2);
+                transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - exploseWidth / 2, cibleColliY - exploseHeight / 2);
                 g2d.drawImage(explosionIcon, transformCibleColli, this);}
             else {
-                transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - (double) cibleImWidth / 2, cibleColliY - (double) cibleImHeight / 2);
+                transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - cibleImWidth / 2, cibleColliY - cibleImHeight / 2);
                 if (isCollisionMovingTarget) g2d.drawImage(ciblesMouventeImage, transformCibleColli, this);
                 else {
                     if (currentAnimBonusType!=null){
@@ -317,7 +341,57 @@ public class EntityDisplay extends JPanel {
             else {animCollision=false;explose = false;}
         }
     }
-    
+
+    public void collision(ArrayList<Cible> deleteCible,Cible cible,double cibleX,double cibleY,int player){
+        if (!explose) {
+            cibleColliX = cibleX;
+            cibleColliY = cibleY;
+            opacity = baseOpacity;
+        }
+        if (!(cible instanceof Boss)){animCollision = true;currentAnimBonusType=null;}
+        if (isSolo) {
+            game.addXP(10);
+            game.addArgent(10);
+        }
+        if (cible instanceof BossType1) {
+            ((BossType1) cible).attacked();
+            if (((BossType1) cible).isDead()) {
+                deleteCible.add(cible);
+            }
+        }
+        else if (cible instanceof BossType2) {
+            ((BossType2) cible).attacked();
+            if (((BossType2) cible).isDead()) {
+                deleteCible.add(cible);
+            }
+        }
+        else if (cible instanceof BossType3) {
+            ((BossType3) cible).attacked();
+            if (((BossType3) cible).isDead()) {
+                deleteCible.add(cible);
+            }
+        }
+        else if (cible instanceof BossType4) {
+            ((BossType4) cible).attacked();
+            if (((BossType4) cible).isDead()) {
+                deleteCible.add(cible);
+            }
+        }
+        else {
+            deleteCible.add(cible);
+        }
+        isCollisionMovingTarget=cible instanceof MovingTarget;
+        if (cible instanceof Bonus){
+            currentAnimBonusType = ((Bonus) cible).getTypeBonus();
+            game.bonusManager.appliquerBonus(((Bonus) cible).getTypeBonus(),player);
+            if (((Bonus) cible).getTypeBonus()== Bonus.TypeBonus.BONUS_TNT){
+                explose = true;
+                explosion(cibleX,cibleY,deleteCible);
+            }
+        }
+
+    }
+
 
     /**
      * Redessine le composant en dessinant l'image de fond, les couteaux et les cibles.
@@ -329,8 +403,11 @@ public class EntityDisplay extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
+
         g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         //System.out.println(game.getIsSolo());
+
+        //-------------------------- DESSINE LES NIVEAUX ET LES ROUNDS ----------------------------------------
 
         if(game.getIsSolo()){
             // Affichage des niveaux et des rounds avec effet d'ombre sur le texte
@@ -380,14 +457,27 @@ public class EntityDisplay extends JPanel {
                 // Dessine le cercle
                 g2d.fillOval(startX + i * (circleDiameter + spacing), yPosition, circleDiameter, circleDiameter);
             }
-        
+
+            // Configuration et dessin des croix des vies
+            int lineThickness = 5;
+            int totalLives = 4;
+            int livesSpacing = 40;
+            int livesXPosition = startX + ((totalRounds * (circleDiameter + spacing) - (totalLives * livesSpacing + (totalLives - 1) * 10)) / 2) + 42;
+            int livesYPosition = yPosition + circleDiameter + 30;
+
+            for (int i = 0; i < totalLives - 1; i++) {
+                g2d.setColor(i < totalLives - game.getVies() ? Color.RED : Color.BLACK);
+                g2d.setStroke(new BasicStroke(lineThickness));
+                g2d.drawLine(livesXPosition + i * livesSpacing - 10, livesYPosition - 10, livesXPosition + i * livesSpacing + 10, livesYPosition + 10);
+                g2d.drawLine(livesXPosition + i * livesSpacing + 10, livesYPosition - 10, livesXPosition + i * livesSpacing - 10, livesYPosition + 10);
+            }
 
 
             // Si c'est le dernier round, affiche "Boss Fight!"
             if (currentRoundIndex == totalRounds - 1) {
                 String bossFightText = "Boss Fight!";
                 int textWidth = g2d.getFontMetrics().stringWidth(bossFightText);
-                int textYPosition = yPosition + circleDiameter + 30;
+                int textYPosition = livesYPosition + 40;
 
                 // Dessine l'ombre pour "Boss Fight!" en noir
                 g2d.setColor(Color.BLACK);
@@ -399,13 +489,48 @@ public class EntityDisplay extends JPanel {
             }
         }
 
+        //--------------------------------------DESSINE YOU LOSE QUAND ON PERD------------------------------------------------------
+
+        if (game.gameOver) {
+            g2d.setFont(new Font("Arial", Font.BOLD, 100));
+            g2d.setColor(new Color(255, 0, 0, (int) (255 * game.gameOverOpacity)));  
+            String gameOverText = "YOU LOSE";
+            int textWidth = g2d.getFontMetrics().stringWidth(gameOverText);
+            int x = (getWidth() - textWidth) / 2;
+            int y = getHeight() / 2;
+            g2d.drawString(gameOverText, x, y);
+        
+            g2d.setFont(new Font("Arial", Font.BOLD, 50)); 
+            String japaneseText = "ヨウ lオセ";
+            textWidth = g2d.getFontMetrics().stringWidth(japaneseText);
+            x = (getWidth() - textWidth) / 2;
+            y += g2d.getFontMetrics().getHeight();
+            g2d.drawString(japaneseText, x, y);
+        }
+        
+        //--------------------------------------------------------------------------------------------------------------------------
 
         int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
         int knifeY = (int) (RATIO_Y-(knife.getY()*RATIO));
 
         if (knifeX>screenSize.width/RATIO1v1 || knifeX<0 || knifeY > screenSize.height || knifeY<0){
             knife.resetKnife();
+            if(isSolo){
+                if(!game.powered[0]){
+                    game.perdreVie();
+                }
+            }
         }
+
+        int knife2X = (int) (RATIO_X-(knife2.getX()*RATIO));
+        int knife2Y = (int) (RATIO_Y-(knife2.getY()*RATIO));
+
+        if (!isSolo) {
+            if (knife2X > screenSize.width || knife2X < 0 || knife2Y > screenSize.height || knife2Y < 0) {
+                knife2.resetKnife();
+            }
+        }
+
 
         int knifeImgWidth = knifeImage.getWidth(this);
         int knifeImgHeight = knifeImage.getHeight(this);
@@ -417,11 +542,29 @@ public class EntityDisplay extends JPanel {
 
         AffineTransform transform = AffineTransform.getTranslateInstance(knifeX - (double) knifeImgWidth / 2, knifeY - (double) knifeImgHeight / 2);
         transform.rotate(Math.toRadians(knife.getAngle()), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
-        if(!game.powered) {
-            g2d.drawImage(knifeImage, transform, this);
+
+        AffineTransform transform2 = AffineTransform.getTranslateInstance(knife2X - (double) knifeImgWidth / 2, knife2Y - (double) knifeImgHeight / 2);
+        transform2.rotate(Math.toRadians(knife2.getAngle()), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
+        if (isSolo){
+            if (!game.powered[0]) {
+                g2d.drawImage(knifeImage, transform, this);
+            }
+            else{
+                g2d.drawImage(knifeImagePowered, transform, this);
+            }
         }
-        else{
-            g2d.drawImage(knifeImagePowered, transform, this);
+        else {
+            if (!game.powered[1]) {
+                g2d.drawImage(knifeImage, transform, this);
+            } else {
+                g2d.drawImage(knifeImagePowered, transform, this);
+            }
+            if (!game.powered[2]) {
+                g2d.drawImage(knifeImage, transform2, this);
+            }
+            else{
+                g2d.drawImage(knifeImagePowered, transform2, this);
+            }
         }
 
         //--------------------------TRAJECTOIRE SOUS FORME DE ROND DU COUTEAU ----------------------------------------
@@ -455,11 +598,13 @@ public class EntityDisplay extends JPanel {
 
         animationCollision(g2d,knifeImgWidth,knifeImgHeight,cibleImWidth,cibleImHeight);
         
-        //-------------------------------AFFICHAGE NORMAL DES CIBLES -------------------------------
+        //-------------------------------AFFICHAGE NORMAL DES CIBLES + BARRE DE VIE DES BOSS -------------------------------
 
         ArrayList<Cible> deleteCible= new ArrayList<>();
         Shape knifeMask = createCollisionMask(knifeImage);
         Shape transformedKnifeMask = transform.createTransformedShape(knifeMask);
+        Shape knifeMask2 = createCollisionMask(knifeImage);
+        Shape transformedKnifeMask2 = transform2.createTransformedShape(knifeMask2);
         for (Cible cible : listeCible){
             boolean collision = false;
             double cibleX = (RATIO_X-cible.getX()*RATIO);
@@ -467,27 +612,91 @@ public class EntityDisplay extends JPanel {
             AffineTransform transformCible;
             AffineTransform transformBoss;
 
-            if (cible instanceof Boss){
+            if (cible instanceof Boss boss) {
+                int health = 0;
                 transformBoss = AffineTransform.getTranslateInstance(cibleX - (double) bossImgWidth / 2, cibleY - (double) bossImgHeight / 2);
-                if (cible instanceof BossType1) {
-                    g2d.drawImage(bossT1, transformBoss , this);
+                if(cible instanceof BossType1){
+                    g2d.drawImage(bossT1, transformBoss, this);
+                    health = ((BossType1) boss).getHitCount();
                 }
                 else if (cible instanceof BossType2) {
-                    g2d.drawImage(bossT2, transformBoss , this);
+                    g2d.drawImage(bossT2, transformBoss, this);
+                    health = ((BossType2) boss).getHitCount();
                 }
                 else if (cible instanceof BossType3) {
                     g2d.drawImage(bossT3, transformBoss, this);
+                    health = ((BossType3) boss).getHitCount();
                 }
                 else if (cible instanceof BossType4) {
-                    g2d.drawImage(bossT4, transformBoss,this);
+                    g2d.drawImage(bossT4, transformBoss, this);
+                    health = ((BossType4) boss).getHitCount();
                 }
+            
+            
+                // Configuration de la barre de vie divisée en trois compartiments
+                int totalHealthSections = 3; // Nombre total de sections 
+                int hitsReceived = health; // Le nombre de coups reçus
+                int healthBarWidth = bossT1.getWidth(this);
+                int healthBarHeight = 10; // Hauteur de la barre de santé
+                int sectionWidth = healthBarWidth / totalHealthSections; // Largeur de chaque section de la barre de santé
+
+                // Positionnement de la barre de santé au-dessus de l'image du boss
+                int healthBarX = (int) (cibleX - (double) healthBarWidth / 2);
+                int healthBarY = (int) (cibleY - bossT1.getHeight(this) / 2 - healthBarHeight - 5); // 5 pixels au-dessus de l'image du boss
+
+                // Dessine chaque section de la barre de santé
+                for (int i = 0; i < totalHealthSections; i++) {
+                    int indexFromRight = totalHealthSections - 1 - i;
+                    if (indexFromRight < hitsReceived) { // Colorie en rouge les sections en commençant par la droite
+                        g2d.setColor(Color.RED);
+                    } else {
+                        g2d.setColor(Color.GREEN);
+                    }
+                    g2d.fillRect(healthBarX + i * sectionWidth, healthBarY, sectionWidth, healthBarHeight);
+                }
+            
                 Shape bossMask = createCollisionMask(bossT1);
                 Shape transformedBossMask = transformBoss.createTransformedShape(bossMask);
                 //g2d.setColor(Color.RED);
                 //g2d.draw(transformedBossMask);
-                if (transformedBossMask.intersects(transformedKnifeMask.getBounds2D())) {
-                    collision = true;
+                if (isSolo){
+                    if (transformedBossMask.intersects(transformedKnifeMask.getBounds2D())) {
+                        collision = true;
+                        if (!game.powered[0]) {
+                            collisionAngle = knife.getAngle();
+                            collisionX = knifeX;
+                            collisionY = knifeY;
+                            collision(deleteCible, cible, cibleX, cibleY, 0);
+                            knife.resetKnife();
+                        }
+                        else collision(deleteCible, cible, cibleX, cibleY, 0);
+                    }
                 }
+                else {
+                    if (transformedBossMask.intersects(transformedKnifeMask.getBounds2D())) {
+                        collision = true;
+                        if (!game.powered[1]) {
+                            collisionAngle = knife.getAngle();
+                            collisionX = knifeX;
+                            collisionY = knifeY;
+                            collision(deleteCible, cible, cibleX, cibleY, 1);
+                            knife.resetKnife();
+                        }
+                        else collision(deleteCible, cible, cibleX, cibleY, 1);
+                    }
+                    if (transformedBossMask.intersects(transformedKnifeMask2.getBounds2D())) {
+                        collision = true;
+                        if (!game.powered[2]) {
+                            collisionAngle = knife2.getAngle();
+                            collisionX = knife2X;
+                            collisionY = knife2Y;
+                            collision(deleteCible, cible, cibleX, cibleY, 2);
+                            knife2.resetKnife();
+                        }
+                        else collision(deleteCible, cible, cibleX, cibleY, 2);
+                    }
+                }
+
 
             }
             else {
@@ -512,80 +721,48 @@ public class EntityDisplay extends JPanel {
                 Shape transformedCibleMask = transformCible.createTransformedShape(cibleMask);
                 //g2d.setColor(Color.RED);
                 //g2d.draw(transformedCibleMask);
-                if (transformedCibleMask.intersects(transformedKnifeMask.getBounds2D())) {
-                    collision = true;
-                }
-            }
-
-
-
-            //--------------------COLLISIONS------------------------
-
-
-
-
-            //AFFICHAGE COLLISIONS
-
-
-            //g2d.setColor(Color.BLUE);
-            //g2d.draw(transformedKnifeMask);
-
-            //int cw=55;int ch=55;
-            //if (knifeX > cibleX-cw && knifeX<cibleX+cw && knifeY > cibleY-ch && knifeY<cibleY+ch){
-            if (collision) {
-                collisionX = knifeX;
-                collisionY = knifeY;
-                if (!explose) {
-                    cibleColliX = cibleX;
-                    cibleColliY = cibleY;
-                    opacity = baseOpacity;
-                }
-                collisionAngle = knife.getAngle();
-                if (!(cible instanceof Boss)){animCollision = true;currentAnimBonusType=null;}
-                game.addXP(10);
-                game.addArgent(10);
-                System.out.println("XP+10 ");
-                if (cible instanceof BossType1) {
-                    ((BossType1) cible).attacked();
-                    if (((BossType1) cible).isDead()) {
-                        deleteCible.add(cible);
+                if (isSolo){
+                    if (transformedCibleMask.intersects(transformedKnifeMask.getBounds2D())) {
+                        collision = true;
+                        if (!game.powered[0]) {
+                            collisionAngle = knife.getAngle();
+                            collisionX = knifeX;
+                            collisionY = knifeY;
+                            collision(deleteCible, cible, cibleX, cibleY, 0);
+                            knife.resetKnife();
+                        }
+                        else{
+                            collision(deleteCible, cible, cibleX, cibleY, 0);
+                        }
                     }
                 }
-                else if (cible instanceof BossType2) {
-                    ((BossType2) cible).attacked();
-                    if (((BossType2) cible).isDead()) {
-                        deleteCible.add(cible);
-                    }
-                }
-                else if (cible instanceof BossType3) {
-                    ((BossType3) cible).attacked();
-                    if (((BossType3) cible).isDead()) {
-                        deleteCible.add(cible);
-                    }
-                }
-                else if (cible instanceof BossType4) {
-                    ((BossType4) cible).attacked();
-                    if (((BossType4) cible).isDead()) {
-                        deleteCible.add(cible);
-                    }
-                }
+
                 else {
-                    deleteCible.add(cible);
-                }
-                if (!game.powered) {
-                    knife.resetKnife();
-                }
-                isCollisionMovingTarget=cible instanceof MovingTarget;
-                if (cible instanceof Bonus){
-                    currentAnimBonusType = ((Bonus) cible).getTypeBonus();
-                    game.bonusManager.appliquerBonus(((Bonus) cible).getTypeBonus());
-                    if (((Bonus) cible).getTypeBonus()== Bonus.TypeBonus.BONUS_TNT){
-                        explose = true;
-                        explosion(cibleX,cibleY,deleteCible);
+                    if (transformedCibleMask.intersects(transformedKnifeMask.getBounds2D())) {
+                        collision = true;
+                        if (!game.powered[1]) {
+                            collisionAngle = knife.getAngle();
+                            collisionX = knifeX;
+                            collisionY = knifeY;
+                            collision(deleteCible, cible, cibleX, cibleY, 1);
+                            knife.resetKnife();
+                        }
+                        else collision(deleteCible, cible, cibleX, cibleY, 1);
+                    }
+                    if (transformedCibleMask.intersects(transformedKnifeMask2.getBounds2D())) {
+                        collision = true;
+                        if (!game.powered[2]) {
+                            collisionAngle = knife2.getAngle();
+                            collisionX = knife2X;
+                            collisionY = knife2Y;
+                            collision(deleteCible, cible, cibleX, cibleY, 2);
+                            knife2.resetKnife();
+                        }
+                        collision(deleteCible, cible, cibleX, cibleY, 2);
                     }
                 }
-
             }
+
         }
         for (Cible c : deleteCible){
             listeCible.remove(c);

@@ -1,7 +1,6 @@
 package geometry;
 import App.Loop;
 import entity.Knife;
-import entity.bosses.Boss;
 
 public class Geometry{
 
@@ -51,17 +50,6 @@ public class Geometry{
         return result;
     }
 
-    /*public static void forwardMovementSoloMode(Coordinate coordinate, double angle, double velocite) {
-        double angleRad = Math.toRadians(angle);
-
-        double deltaX = Math.cos(angleRad);
-        double deltaY = Math.sin(angleRad);
-
-
-        coordinate.setX(coordinate.getX() + deltaX * 2);
-        coordinate.setY(coordinate.getY() + deltaY * 2);
-    }*/
-
     /**
      * Vérifie si un point défini par ses coordonnées (x2, y2) est situé dans un vecteur défini par sa longueur et son angle.
      * Utilise les coordonnées du point de départ (this.x, this.y), la longueur du vecteur et l'angle du vecteur.
@@ -110,8 +98,157 @@ public class Geometry{
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
+    /**
+     * Calcule le mouvement vertical avec ajustement horizontal en fonction des limites données.
+     *
+     * @param x                La position horizontale actuelle.
+     * @param y                La position verticale actuelle.
+     * @param delta            Le delta de temps.
+     * @param speed            La vitesse du mouvement en pixels par unité de temps.
+     * @param directionPositive Si la direction verticale est positive (vers le haut).
+     * @param limitTop         La limite supérieure du mouvement vertical.
+     * @param limitBottom      La limite inférieure du mouvement vertical.
+     * @param xChangePositive  La nouvelle position horizontale si la limite supérieure est atteinte.
+     * @param xChangeNegative  La nouvelle position horizontale si la limite inférieure est atteinte.
+     * @return Un tableau de doubles contenant la nouvelle position horizontale, la nouvelle position verticale et la direction verticale sous forme de 1 (positive) ou 0 (négative).
+     */
+    public static double[] verticalMovementWithHorizontalAdjustment(double x, double y, double delta, double speed, boolean directionPositive, double limitTop, double limitBottom, double xChangePositive, double xChangeNegative) {
+        double movement = speed * delta; // Déplacement en pixels
+        double newY = y + (directionPositive ? movement : -movement);
 
-    public static double[] leftAndRightMovement(double x, int width, double velocityX, double accelerationX, int ratio, Boss boss) {
-        return new double[]{5.5, 3.3};
+        if (newY >= limitTop) {
+            directionPositive = false;
+            newY = limitTop;
+            x = xChangePositive;
+        } else if (newY <= limitBottom) {
+            directionPositive = true;
+            newY = limitBottom;
+            x = xChangeNegative;
+        }
+
+        return new double[]{x, newY, directionPositive ? 1 : 0};
     }
+
+    /**
+     * Calcule le mouvement circulaire en fonction du centre, du rayon et de la vitesse angulaire.
+     *
+     * @param centerX      La position horizontale du centre du cercle.
+     * @param centerY      La position verticale du centre du cercle.
+     * @param radius       Le rayon du cercle.
+     * @param angularSpeed La vitesse angulaire en radians par unité de temps.
+     * @param currentAngle L'angle actuel en radians.
+     * @param delta        Le delta de temps.
+     * @return Un tableau de doubles contenant la nouvelle position horizontale, la nouvelle position verticale et le nouvel angle en radians.
+     */
+    public static double[] moveInCircle(double centerX, double centerY, double radius, double angularSpeed, double currentAngle, double delta) {
+        double movement = angularSpeed * delta;
+        double newAngle = currentAngle + movement;
+        double newX = centerX + radius * Math.cos(newAngle);
+        double newY = centerY + radius * Math.sin(newAngle);
+        return new double[]{newX, newY, newAngle};
+    }
+
+    /**
+     * Calcule le mouvement horizontal avec ajustement vertical en fonction des limites données.
+     *
+     * @param x                La position horizontale actuelle.
+     * @param y                La position verticale actuelle.
+     * @param delta            Le delta de temps.
+     * @param speed            La vitesse du mouvement en pixels par unité de temps.
+     * @param directionPositive Si la direction horizontale est positive (vers la droite).
+     * @param limitLeft        La limite gauche du mouvement horizontal.
+     * @param limitRight       La limite droite du mouvement horizontal.
+     * @param limitTop         La limite supérieure de réinitialisation verticale.
+     * @param limitBottom      La limite inférieure de réinitialisation verticale.
+     * @return Un tableau de doubles contenant la nouvelle position horizontale, la nouvelle position verticale et la direction horizontale sous forme de 1 (positive) ou 0 (négative).
+     */
+    public static double[] horizontalMovementWithVerticalAdjustment(double x, double y, double delta, double speed, boolean directionPositive, double limitLeft, double limitRight, double limitTop, double limitBottom) {
+        double movement = speed * delta;
+
+        double newX = x;
+        double newY = y;
+
+        if (directionPositive) {
+            newX += movement;
+            if (newX >= limitRight) {
+                newY -= 2;
+                directionPositive = false;
+            }
+        } else {
+            newX -= movement;
+            if (newX <= limitLeft) {
+                newY -= 2;
+                directionPositive = true;
+            }
+        }
+
+        if (newY <= limitBottom) {
+            newX = limitLeft;
+            newY = limitTop;
+        }
+
+        return new double[]{newX, newY, directionPositive ? 1 : 0};
+    }
+
+    /**
+     * Calcule le mouvement selon un modèle prédéfini en fonction de la phase actuelle.
+     *
+     * @param x      La position horizontale actuelle.
+     * @param y      La position verticale actuelle.
+     * @param speed  La vitesse du mouvement en pixels par unité de temps.
+     * @param delta  Le delta de temps.
+     * @param phase  La phase actuelle du modèle de mouvement.
+     * @return Un tableau de doubles contenant la nouvelle position horizontale, la nouvelle position verticale et la nouvelle phase.
+     */
+    public static double[] moveInPattern(double x, double y, double speed, double delta, int phase) {
+        double deplacement = speed * delta;
+        double newX = x;
+        double newY = y;
+        switch (phase) {
+            case 1:
+                newX += deplacement;
+                if (newX >= -25) {
+                    phase = 2;
+                }
+                break;
+            case 2:
+                newY -= deplacement;
+                if (newY <= 5) {
+                    phase = 3;
+                }
+                break;
+            case 3:
+                newX -= deplacement;
+                if (newX <= -56) {
+                    newX = 56;
+                    phase = 4;
+                }
+                break;
+            case 4:
+                newX -= deplacement;
+                if (newX <= 25) {
+                    phase = 5;
+                }
+                break;
+            case 5:
+                newY += deplacement;
+                if (newY >= 25) {
+                    phase = 6;
+                }
+                break;
+            case 6:
+                newX += deplacement;
+                if (newX >= 56) {
+                    newX = -56;
+                    phase = 1;
+                }
+                break;
+        }
+        if (newX <= -57 || newY <= -50) {
+            newX = -56;
+            newY = 25;
+        }
+        return new double[]{newX, newY, phase};
+    }
+
 }

@@ -17,6 +17,7 @@ public class GameOverMenu extends Menu {
      */
     public GameOverMenu(String backgroundPath, String musicPath) {
         super(backgroundPath, musicPath);
+        setVisible(true); 
         JPanel GameOverPanel = createMenuPanel(backgroundPath);
         add(GameOverPanel);
     }
@@ -53,16 +54,6 @@ public class GameOverMenu extends Menu {
         restartButtonPanel.add(RestartButton);
         panel.add(restartButtonPanel);
     
-        // Bouton "Menu"
-        JPanel menuButtonPanel = new JPanel();
-        menuButtonPanel.setOpaque(false); // Rend le panel transparent
-        JButton MenuButton = new JButton(new ImageIcon("src/main/ressources/button/Button.png"));//mettre le bon chemin
-        MenuButton.setFocusPainted(false);
-        MenuButton.setBorderPainted(false);
-        MenuButton.setContentAreaFilled(false);
-        MenuButton.addActionListener(e -> showMenu());
-        menuButtonPanel.add(MenuButton);
-        panel.add(menuButtonPanel);
     
         // Bouton "Quitter"
         JPanel quitButtonPanel = new JPanel();

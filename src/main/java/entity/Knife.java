@@ -8,6 +8,7 @@ import geometry.Geometry;
 public class Knife {
     private final Coordinate coordinate;
     private final double DEFAULT_ANGLE = 90;
+    private Coordinate DEFAULT_COORDINATE;
     private double angle = DEFAULT_ANGLE;
     private double velocite=0;
     public boolean isInTheAir = false;
@@ -18,8 +19,9 @@ public class Knife {
      * Constructeur de la classe Knife.
      * Initialise un couteau avec des coordonnées par défaut.
      */
-    public Knife(){
-        this.coordinate = new Coordinate(0,0);
+    public Knife(Coordinate pos){
+        this.coordinate = pos;
+        this.DEFAULT_COORDINATE = new Coordinate(pos.getX(), pos.getY());
     }
 
     /**
@@ -76,19 +78,6 @@ public class Knife {
         return angle;
     }
 
-    /**
-     * Méthode pour démarrer le lancer du couteau.
-     */
-    public void startThrowing() {
-        throwing = true;
-    }
-
-    /**
-     * Méthode pour réinitialiser l'état de lancer du couteau.
-     */
-    public void resetThrowing() {
-        this.throwing = false;
-    }
 
     /**
      * Méthode pour définir l'angle du couteau.
@@ -115,6 +104,21 @@ public class Knife {
      */
     public void setVelocite(double velocite) {
         this.velocite = velocite;
+    }
+
+
+    /**
+     * Méthode pour démarrer le lancer du couteau.
+     */
+    public void startThrowing() {
+        throwing = true;
+    }
+
+    /**
+     * Méthode pour réinitialiser l'état de lancer du couteau.
+     */
+    public void resetThrowing() {
+        this.throwing = false;
     }
 
     /**
@@ -163,12 +167,13 @@ public class Knife {
         }
     }
 
-    // Ajoutez cette méthode pour réinitialiser le couteau au milieu de l'écran
+    /**
+     * Réinitialise l'état du couteau en le remettant à sa position initiale au milieu de l'écran.
+     * Réinitialise également les paramètres de mouvement et d'angle du couteau.
+     */
     public void resetKnife() {
-        //setX((double) KnifeDisplay.getBgImgWidth() / 2);
-        //setY((double) KnifeDisplay.getBgImgHeight() / 2);
-        setX(0);setY(0);
-
+        setX(DEFAULT_COORDINATE.getX());
+        setY(DEFAULT_COORDINATE.getY());
         isInTheAir = false;
         redescend = false;
         throwing = false;

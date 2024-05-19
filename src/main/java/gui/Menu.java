@@ -14,8 +14,6 @@ import java.io.IOException;
  * La classe gère également la musique de fond et le rendu de l'image de fond du menu.
  */
 abstract class Menu extends JPanel {
-
-    public static String linkClip = "src/main/ressources/music/";
     Game game;
 
     /**

@@ -13,6 +13,4 @@ public class RessourcesPaths {
     public static final String iconPath = "src/main/ressources/icon/";
     public static final String targetPath = "src/main/ressources/targets/";
 
-
-
 }
