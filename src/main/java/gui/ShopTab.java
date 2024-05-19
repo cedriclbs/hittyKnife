@@ -235,7 +235,7 @@ public class ShopTab {
      * Met à jour le texte de l'étiquette d'argent (argentLabel) avec la valeur actuelle de l'argent du jeu.
      */
     void updateMoneyLabel(){
-        this.argentLabel.setText("Money: " + shopMenu.getGame().getArgent());
+        this.argentLabel.setText(String.valueOf(shopMenu.getGame().getArgent()));
         this.argentLabel.repaint();
     }
 }
