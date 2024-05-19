@@ -310,7 +310,7 @@ public class Game {
      * Si les deux conditions sont remplies, l'arrière-plan de l'interface graphique est mis à jour avec la nouvelle image spécifiée.
      * Ceci est utilisé pour refléter les changements visuels dans l'arrière-plan au cours du jeu.
      */
-    private synchronized void updateBackground() {
+    private void updateBackground() {
         if (gameView != null && currentBackgroundPath != null) {
             gameView.updateBackgroundImage(currentBackgroundPath);
         }
@@ -417,7 +417,7 @@ public class Game {
      * @param c La cible à mettre à jour.
      * @param adjustedDelta Le temps écoulé depuis la dernière mise à jour, ajusté en fonction de la vitesse du jeu.
      */
-    private synchronized void updateCible(Cible c, double adjustedDelta,boolean isSolo) {
+    private void updateCible(Cible c, double adjustedDelta,boolean isSolo) {
         if(c instanceof MovingTarget) {
             if (isSolo) {
                 if (!gel[0]) {
