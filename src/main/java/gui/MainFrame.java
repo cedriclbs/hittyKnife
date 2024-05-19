@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Objects;
 
 public class MainFrame extends JFrame {
 
@@ -18,10 +19,13 @@ public class MainFrame extends JFrame {
     private JButton shopButton;
     private JButton versusButton;
     private JButton battlePassButton;
-
     public static String knifePathClicked;
 
-
+    /**
+     * Constructeur de la classe MainFrame.
+     *
+     * @param game Le jeu associé à la fenêtre principale.
+     */
     public MainFrame(Game game) {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Hitty Knife - Redux");
@@ -69,14 +73,12 @@ public class MainFrame extends JFrame {
         versusButton.addActionListener(e -> switchToPanel("Versus"));
         battlePassButton.addActionListener(e -> switchToPanel("BattlePass"));
 
-
         // Création du panneau de menu principal
         JPanel homePanel = createHomeMenuPanel();
         JPanel soloPanel = createSoloPanel();
         JPanel shopPanel = createShopPanel();
         JPanel versusPanel = createVersusPanel();
         JPanel battlepassPanel = createBattlepassPanel();
-
 
         // Création du conteneur de panneaux avec CardLayout
         cardPanel = new JPanel();
@@ -96,7 +98,6 @@ public class MainFrame extends JFrame {
         navPanel.add(shopButton);
         navPanel.add(versusButton);
         navPanel.add(battlePassButton);
-
 
         // Utilisation d'un BorderLayout pour la JFrame
         setLayout(new BorderLayout());
@@ -126,8 +127,11 @@ public class MainFrame extends JFrame {
         return null;
     }
 
-
-
+    /**
+     * Change le panneau affiché dans la fenêtre principale.
+     *
+     * @param name Le nom du panneau à afficher.
+     */
     private void switchToPanel(String name) {
         cardLayout.show(cardPanel, name);
         SwingUtilities.invokeLater(() -> {
@@ -146,17 +150,10 @@ public class MainFrame extends JFrame {
         if (visibleComp != null) {
             visibleComp.requestFocusInWindow();
         }
-        if(name == "Solo"){
-            game.setIsSOlo(true);
-        }
-        else {
-            game.setIsSOlo(false);
-        }
-
-
+        game.setIsSOlo(Objects.equals(name, "Solo"));
     }
 
-
+    // Méthodes de création des panneaux pour chaque onglet
     private JPanel createShopPanel() {
         return new ShopMenu(game);
     }
@@ -176,7 +173,6 @@ public class MainFrame extends JFrame {
     }
 
     private JPanel createBattlepassPanel() {
-
         BattlePassPanel battlePassPanel = new BattlePassPanel(game);
         JPanel mainPanel = new JPanel(new GridBagLayout()){
             @Override

@@ -15,10 +15,7 @@ import static config.States.*;
 /**
  * Fenêtre du magasin où les joueurs peuvent acheter des objets ou des améliorations.
  */
-
-
 public class ShopMenu extends JPanel {
-    private Game game;
     ShopCart cart;
     public JTabbedPane tabbedPane;
     private ShopTab cartTab;
@@ -27,24 +24,29 @@ public class ShopMenu extends JPanel {
     /**
      * Constructeur de la fenêtre du magasin.
      *
+     * @param game Le jeu auquel le magasin est lié.
      */
     public ShopMenu(Game game) {
         setStates(SHOPMENU);
         this.cart = new ShopCart(game);
         this.tabbedPane = new JTabbedPane();
-        this.game = game;
         initialize();
     }
 
-
-
+    /**
+     * Obtient le panier d'achats du magasin.
+     *
+     * @return Le panier d'achats du magasin.
+     */
+    public ShopCart getCart() {
+        return this.cart;
+    }
 
     /**
      * Initialise le ShopMenu avec sa disposition et les onglets du magasin.
      */
     private void initialize() {
         setLayout(new BorderLayout());
-
         tabbedPane.setOpaque(false);
 
         ShopTab couteauxTab = new ShopTab(tabbedPane, "Couteaux", RessourcesPaths.knifePath, "knifeTab.png", "couteaux", this);
@@ -52,15 +54,13 @@ public class ShopMenu extends JPanel {
         ShopTab musicTab = new ShopTab(tabbedPane, "Music", RessourcesPaths.buttonPath, "musicTab.png", "music", this);
         cartTab = new ShopTab(tabbedPane, "Panier", null, "cartTab.png", "cart", this);
 
-
         add(tabbedPane, BorderLayout.CENTER);
-
-
     }
-
 
     /**
      * Sauvegarde le panier d'achats actuel.
+     *
+     * @param game Le jeu auquel le magasin est lié.
      */
     public void saveCart(Game game) {
         if (cart != null) {
@@ -83,7 +83,6 @@ public class ShopMenu extends JPanel {
         }
     }
 
-
     /**
      * Actualise l'onglet du panier du magasin.
      */
@@ -94,7 +93,6 @@ public class ShopMenu extends JPanel {
             tabbedPane.setComponentAt(cartTabIndex, cartPanel);
         }
     }
-
 
     /**
      * Configure un bouton avec des paramètres standard.
@@ -109,13 +107,5 @@ public class ShopMenu extends JPanel {
         button.setContentAreaFilled(false);
         button.addActionListener(actionListener);
     }
-
-
-
-    public ShopCart getCart() {
-        return this.cart;
-    }
-
-
 
 }

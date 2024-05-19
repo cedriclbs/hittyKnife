@@ -51,10 +51,10 @@ public class EntityDisplay extends JPanel {
     private List<Cible> listeCible;
     private static double bgImgWidth;
     private static double bgImgHeight;
-    private double RATIO_X;
-    private double RATIO_Y;
+    private final double RATIO_X;
+    private final double RATIO_Y;
     private final int RATIO = 18;
-    private int RATIO1v1;
+    private final int RATIO1v1;
 
     private int collisionX;
     private int collisionY;
@@ -67,7 +67,7 @@ public class EntityDisplay extends JPanel {
     final float baseOpacity = 1f;
     float opacity;
     Dimension screenSize;
-    private Game game;
+    private final Game game;
 
     private boolean isSolo;
     private boolean isWin=false;
@@ -98,7 +98,7 @@ public class EntityDisplay extends JPanel {
         //if (isSolo) RATIO_X = screenSize.width/2;
         //else RATIO_X = screenSize.width/4;//getBgImgWidth()/2;
 
-        RATIO_Y = screenSize.height*3/4;//getBgImgHeight()*3/4;
+        RATIO_Y = (double) (screenSize.height * 3) /4;//getBgImgHeight()*3/4;
 
         this.game = game;
         this.isSolo = isSolo;
@@ -135,7 +135,7 @@ public class EntityDisplay extends JPanel {
         this.knifeImagePowered = new ImageIcon(RessourcesPaths.knifePath + "knifePowered.png").getImage();
         this.cibleImage = new ImageIcon(RessourcesPaths.targetPath + "target#1.png").getImage();
         this.ciblesMouventeImage =  new ImageIcon(RessourcesPaths.targetPath + "target#2.png").getImage();
-        this.bonusPower = new ImageIcon(RessourcesPaths.targetPath + "target#2Power.png").getImage();
+        this.bonusPower = new ImageIcon(RessourcesPaths.targetPath + "target#1Power.png").getImage();
         this.bonusGold = new ImageIcon(RessourcesPaths.targetPath + "targetCoin.png").getImage();
         this.bonusXP = new ImageIcon(RessourcesPaths.targetPath + "targetXP.png").getImage();
         this.bonusGel = new ImageIcon(RessourcesPaths.targetPath + "targetGel.png").getImage();
@@ -321,10 +321,10 @@ public class EntityDisplay extends JPanel {
             if (explose){
                 double exploseWidth = explosionIcon.getWidth(this);
                 double exploseHeight = explosionIcon.getHeight(this);
-                transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - (double) exploseWidth / 2, cibleColliY - (double) exploseHeight / 2);
+                transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - exploseWidth / 2, cibleColliY - exploseHeight / 2);
                 g2d.drawImage(explosionIcon, transformCibleColli, this);}
             else {
-                transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - (double) cibleImWidth / 2, cibleColliY - (double) cibleImHeight / 2);
+                transformCibleColli = AffineTransform.getTranslateInstance(cibleColliX - cibleImWidth / 2, cibleColliY - cibleImHeight / 2);
                 if (isCollisionMovingTarget) g2d.drawImage(ciblesMouventeImage, transformCibleColli, this);
                 else {
                     if (currentAnimBonusType!=null){
@@ -359,7 +359,6 @@ public class EntityDisplay extends JPanel {
             game.addXP(10);
             game.addArgent(10);
         }
-        System.out.println("XP+10 ");
         if (cible instanceof BossType1) {
             ((BossType1) cible).attacked();
             if (((BossType1) cible).isDead()) {
@@ -428,7 +427,7 @@ public class EntityDisplay extends JPanel {
             int yPosi = 30;
 
             // Dessine l'ombre
-            g2d.setColor(new Color(0, 0, 0, 64)); 
+            g2d.setColor(Color.darkGray);
             int shadowOffset = 2; 
             g2d.drawString(niveauTexte, xPosition + shadowOffset, yPosi + shadowOffset);
 
@@ -449,7 +448,7 @@ public class EntityDisplay extends JPanel {
             int barHeight = 30; // Hauteur de la barre de fond
             int arcWidth = 25; // Largeur de l'arc pour les coins arrondis
             int arcHeight = 25; // Hauteur de l'arc pour les coins arrondis
-            g2d.setColor(new Color(0, 0, 0, 64)); 
+            g2d.setColor(new Color(192, 192, 192, 80));
             g2d.fillRoundRect(startX - 10, yPosition - (barHeight / 2) + (circleDiameter / 2), (totalRounds * (circleDiameter + spacing)) - spacing + 20, barHeight, arcWidth, arcHeight);
 
 
@@ -459,7 +458,7 @@ public class EntityDisplay extends JPanel {
                 } else if (i <= currentRoundIndex) {
                     g2d.setColor(Color.WHITE); 
                 } else {
-                    g2d.setColor(Color.BLACK); 
+                    g2d.setColor(Color.black); 
                 }
                 // Dessine le cercle
                 g2d.fillOval(startX + i * (circleDiameter + spacing), yPosition, circleDiameter, circleDiameter);
@@ -467,13 +466,13 @@ public class EntityDisplay extends JPanel {
 
             // Configuration et dessin des croix des vies
             int lineThickness = 5;
-            int totalLives = 4;  
-            int livesSpacing = 40; 
+            int totalLives = 4;
+            int livesSpacing = 40;
             int livesXPosition = startX + ((totalRounds * (circleDiameter + spacing) - (totalLives * livesSpacing + (totalLives - 1) * 10)) / 2) + 42;
-            int livesYPosition = yPosition + circleDiameter + 30; 
+            int livesYPosition = yPosition + circleDiameter + 30;
 
             for (int i = 0; i < totalLives - 1; i++) {
-                g2d.setColor(i < totalLives - game.getVies() ? Color.RED : Color.BLACK);
+                g2d.setColor(i < totalLives - game.getVies() ? Color.RED : Color.darkGray);
                 g2d.setStroke(new BasicStroke(lineThickness));
                 g2d.drawLine(livesXPosition + i * livesSpacing - 10, livesYPosition - 10, livesXPosition + i * livesSpacing + 10, livesYPosition + 10);
                 g2d.drawLine(livesXPosition + i * livesSpacing + 10, livesYPosition - 10, livesXPosition + i * livesSpacing - 10, livesYPosition + 10);
@@ -484,7 +483,7 @@ public class EntityDisplay extends JPanel {
             if (currentRoundIndex == totalRounds - 1) {
                 String bossFightText = "Boss Fight!";
                 int textWidth = g2d.getFontMetrics().stringWidth(bossFightText);
-                int textYPosition = livesYPosition + 40; 
+                int textYPosition = livesYPosition + 40;
 
                 // Dessine l'ombre pour "Boss Fight!" en noir
                 g2d.setColor(Color.BLACK);
@@ -585,13 +584,32 @@ public class EntityDisplay extends JPanel {
 
         }
          
+        //--------------------------------------DESSINE YOU LOSE QUAND ON PERD------------------------------------------------------
+
+        if (game.gameOver) {
+            g2d.setFont(new Font("Arial", Font.BOLD, 100));
+            g2d.setColor(new Color(255, 0, 0, (int) (255 * game.gameOverOpacity)));  
+            String gameOverText = "YOU LOSE";
+            int textWidth = g2d.getFontMetrics().stringWidth(gameOverText);
+            int x = (getWidth() - textWidth) / 2;
+            int y = getHeight() / 2;
+            g2d.drawString(gameOverText, x, y);
+        
+            g2d.setFont(new Font("Arial", Font.BOLD, 50)); 
+            String japaneseText = "ヨウ lオセ";
+            textWidth = g2d.getFontMetrics().stringWidth(japaneseText);
+            x = (getWidth() - textWidth) / 2;
+            y += g2d.getFontMetrics().getHeight();
+            g2d.drawString(japaneseText, x, y);
+        }
+        
         //--------------------------------------------------------------------------------------------------------------------------
 
         int knifeX = (int) (RATIO_X-(knife.getX()*RATIO));
         int knifeY = (int) (RATIO_Y-(knife.getY()*RATIO));
 
-        if (knifeX>screenSize.width/RATIO1v1 || knifeX<0 || knifeY > screenSize.height || knifeY<0){ 
-            knife.resetKnife(); 
+        if (knifeX>screenSize.width/RATIO1v1 || knifeX<0 || knifeY > screenSize.height || knifeY<0){
+            knife.resetKnife();
             if(isSolo){
                 if(!game.powered[0]){
                     game.perdreVie();
@@ -689,8 +707,7 @@ public class EntityDisplay extends JPanel {
             AffineTransform transformCible;
             AffineTransform transformBoss;
 
-            if (cible instanceof Boss) {
-                Boss boss = (Boss) cible;
+            if (cible instanceof Boss boss) {
                 int health = 0;
                 transformBoss = AffineTransform.getTranslateInstance(cibleX - (double) bossImgWidth / 2, cibleY - (double) bossImgHeight / 2);
                 if(cible instanceof BossType1){
@@ -844,7 +861,7 @@ public class EntityDisplay extends JPanel {
                     }
                 }
             }
-            
+
         }
         for (Cible c : deleteCible){
             listeCible.remove(c);
