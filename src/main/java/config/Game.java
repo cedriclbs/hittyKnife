@@ -345,14 +345,14 @@ public class Game {
      *
      * @param observer = l'observateur à ajouter
      */
-    public synchronized void addObserver(GameObserver observer) {
+    public  synchronized void addObserver(GameObserver observer) {
         observers.add(observer);
     }
 
     /**
      * Méthode pour notifier les observateur du jeu
      */
-    public synchronized void notifyLevelObservers() {
+    public  synchronized void notifyLevelObservers() {
         for (GameObserver observer : observers) {
             observer.onLevelChange();
         }
@@ -506,7 +506,7 @@ public class Game {
         } while (bgIndex == lastBackgroundIndex || recentBackgrounds.contains(bgIndex)); // Vérifie les conditions
 
         updateRecentBackgrounds(bgIndex);
-        return "src/main/ressources/background/bgJap" + bgIndex + ".gif";
+        return RessourcesPaths.backgroundPath+ "bgJap" + bgIndex + ".gif";
     }
 
     /**

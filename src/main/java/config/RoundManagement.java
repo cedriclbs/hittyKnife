@@ -56,6 +56,7 @@ public class RoundManagement {
         }
         else{
             double x;
+            System.out.println("charge");
             do {
                 x = (random.nextDouble() * 60) - 30; //à regler selon la taille du jeu, cible en position x de -30 à 30
             } while ((x > -25 && x<-10)||( x < 25 && x>10)); // Évite la zone autour de x = 0

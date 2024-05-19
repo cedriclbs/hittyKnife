@@ -113,15 +113,36 @@ public class MainFrame extends JFrame {
     }
 
     /**
-     * Récupère la vue de jeu actuellement affichée dans le conteneur de panneaux.
+     * Récupère la vue de jeu solo actuellement affichée dans le conteneur de panneaux.
      *
      * @return La vue de jeu actuellement affichée, ou null s'il n'y en a pas.
      */
-    public GameView getGameView() {
+    public GameView getGameViewSolo() {
         Component[] components = cardPanel.getComponents();
         for (Component component : components) {
             if (component instanceof GameView) {
-                return (GameView) component;
+                GameView view = (GameView) component;
+                if(view.isSolo){
+                    return (GameView) component;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Récupère la vue de jeu versus actuellement affichée dans le conteneur de panneaux.
+     *
+     * @return La vue de jeu actuellement affichée, ou null s'il n'y en a pas.
+     */
+    public GameView getGameViewVersus() {
+        Component[] components = cardPanel.getComponents();
+        for (Component component : components) {
+            if (component instanceof GameView) {
+                GameView view = (GameView) component;
+                if(!view.isSolo){
+                    return (GameView) component;
+                }
             }
         }
         return null;
@@ -143,7 +164,10 @@ public class MainFrame extends JFrame {
             if (comp.isVisible()) {
                 visibleComp = comp;
                 if (comp instanceof GameView) {
-                    game.setGameView((GameView) comp);  
+                    GameView view = (GameView) comp;
+                    if(view.isSolo){  
+                        game.setGameView((GameView) comp);  
+                    }
                 }
             }
         }

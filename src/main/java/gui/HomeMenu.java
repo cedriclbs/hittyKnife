@@ -114,9 +114,11 @@ public class HomeMenu extends BackgroundPanel  implements LibraryObserver {
                 } else {
                     MainFrame mainFrame = (MainFrame) SwingUtilities.getWindowAncestor(this);
                     if (item.getArticlePath().contains("background")){
-                        mainFrame.getGameView().updateBackgroundImage(item.getArticlePath());
+                        mainFrame.getGameViewVersus().updateBackgroundImage(item.getArticlePath());
                     } else {
-                        mainFrame.getGameView().updateKnifeImage(item.getArticlePath());
+                        mainFrame.getGameViewSolo().updateKnifeImage(item.getArticlePath());
+                        mainFrame.getGameViewVersus().updateKnifeImage(item.getArticlePath());
+
                     }
                 }
             });
