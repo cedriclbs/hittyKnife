@@ -319,12 +319,12 @@ public class Game {
     /**
      *  Méthode pour initialiser le jeu
      */
-    private synchronized void initGame() {
+    private void initGame() {
         chargerRound(roundManagement.getCurrentRoundIndex(),true);
         chargerRound(roundManagementVERSUS.getCurrentRoundIndex(),false);
     }
 
-    private synchronized void chargerRound(int roundIndex,boolean isSolo) {
+    private void chargerRound(int roundIndex,boolean isSolo) {
         if (isSolo) {
             Round currentRound = roundManagement.getListeRounds().get(roundIndex);
             listeCible1.clear();
@@ -345,14 +345,14 @@ public class Game {
      *
      * @param observer = l'observateur à ajouter
      */
-    public synchronized void addObserver(GameObserver observer) {
+    public void addObserver(GameObserver observer) {
         observers.add(observer);
     }
 
     /**
      * Méthode pour notifier les observateur du jeu
      */
-    public synchronized void notifyLevelObservers() {
+    public void notifyLevelObservers() {
         for (GameObserver observer : observers) {
             observer.onLevelChange();
         }
@@ -363,7 +363,7 @@ public class Game {
      *
      * @param observer L'observateur de bibliothèque à ajouter.
      */
-    public synchronized void addLibraryObserver(LibraryObserver observer) {
+    public void addLibraryObserver(LibraryObserver observer) {
         libraryObservers.add(observer);
     }
 
@@ -372,7 +372,7 @@ public class Game {
      * Cette méthode est appelée pour informer les observateurs que l'inventaire a été mis à jour et qu'ils doivent
      * rafraîchir leur affichage en conséquence pour l'affichage en temps réel.
      */
-    public synchronized void notifyLibraryObservers() {
+    public void notifyLibraryObservers() {
         for (LibraryObserver observer : libraryObservers) {
             observer.updateInventaire();
         }
@@ -387,7 +387,7 @@ public class Game {
      *
      * @param delta Le temps écoulé depuis la dernière mise à jour, en millisecondes.
      */
-    public synchronized void update(double delta) {
+    public void update(double delta) {
         double adjustedDelta = delta / 3;
         knife1.updateMovement();
 
@@ -446,7 +446,7 @@ public class Game {
      * augmente le niveau du jeu, réinitialise les rounds et charge le premier round du nouveau niveau.
      * Cette méthode synchronisée assure que le contrôle du jeu reste cohérent lors de l'actualisation des états des rounds.
      */
-    private synchronized void checkRoundCompletion() {
+    private void checkRoundCompletion() {
         if (listeCible1.isEmpty()) {
             roundManagement.setCurrentRoundIndex(roundManagement.getCurrentRoundIndex() + 1);
             if (roundManagement.getCurrentRoundIndex() < roundManagement.getListeRounds().size()) {
