@@ -43,6 +43,7 @@ public class GameView extends JPanel{
         this.entityDisplay2 = new EntityDisplay(game.knife2, "src/main/ressources/background/versus.gif",  (ArrayList<Cible>)game.getListeCible2(),isSolo, game);
 
         initialize();
+        playMusic("src/main/ressources/music/Main_Theme.wav");
     }
 
 

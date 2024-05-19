@@ -261,7 +261,7 @@ public class Game {
     public void initInventaire () {
         //Articles par défaut :
         ShopItem defaultKnife = new ShopItem("Sword 1", 15, RessourcesPaths.knifePath + "knife#1.png");
-        ShopItem defaultMusic = new ShopItem("Music 1", 30, RessourcesPaths.buttonPath + "music.png");
+        ShopItem defaultMusic = new ShopItem("src/main/ressources/music/Main_Theme.wav", 30, RessourcesPaths.buttonPath + "music.png");
 
         if (!this.inventaire.contains(defaultKnife)){
             this.inventaire.add(defaultKnife);
@@ -596,23 +596,23 @@ public class Game {
         switch (level) {
             case 1, 2, 4, 5, 7, 8, 10, 11, 13, 14-> this.argent += 10;
             case 3 -> {
-                inventaire.add(new ShopItem("Sword 4", 0, "src/main/ressources/knifes/knife#4.png"));
+                inventaire.add(new ShopItem("Sword 4", 0, RessourcesPaths.buttonPath + "knife#4.png"));
                 updateLibrary(inventaire);
             }
             case 6 -> {
-                inventaire.add(new ShopItem("src/main/ressources/music/Battle_Theme.wav", 30, "src/main/ressources/button/music.png"));
+                inventaire.add(new ShopItem(RessourcesPaths.knifePath+ "Battle_Theme.wav", 30, RessourcesPaths.buttonPath + "music.png"));
                 updateLibrary(inventaire);
             }
             case 9 -> {
-                inventaire.add(new ShopItem("Sword 5", 0, "src/main/ressources/knifes/knife#5.png"));
+                inventaire.add(new ShopItem("Sword 5", 0, RessourcesPaths.knifePath + "knife#5.png"));
                 updateLibrary(inventaire);
             }
             case 12 -> {
-                inventaire.add(new ShopItem("src/main/ressources/music/Main_Theme_2.wav", 0, "src/main/ressources/button/music.png"));
+                inventaire.add(new ShopItem(RessourcesPaths.musicPath+ "Main_Theme_2.wav", 0, RessourcesPaths.buttonPath + "music.png"));
                 updateLibrary(inventaire);
             }
             case 15 -> {
-                inventaire.add(new ShopItem("src/main/ressources/music/Battle_Theme_2.wav", 0, "src/main/ressources/button/music.png"));
+                inventaire.add(new ShopItem(RessourcesPaths.musicPath +"Battle_Theme_2.wav", 0, RessourcesPaths.buttonPath + "music.png"));
                 updateLibrary(inventaire);
             }
             default -> {}
