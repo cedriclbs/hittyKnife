@@ -177,7 +177,7 @@ public class RoundManagement {
     /**
      * Remplit chaque round avec un ensemble déterminé de cibles.
      */
-    private void populateRounds() {
+    private synchronized void populateRounds() {
         int lastIndex = rounds.size() - 1; // Index du dernier round
 
         for (int i = 0; i < rounds.size(); i++) {
