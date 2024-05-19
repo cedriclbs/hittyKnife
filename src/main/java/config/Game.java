@@ -512,7 +512,7 @@ public class Game {
         } while (bgIndex == lastBackgroundIndex || recentBackgrounds.contains(bgIndex)); // Vérifie les conditions
 
         updateRecentBackgrounds(bgIndex);
-        return "src/main/ressources/background/bgJap" + bgIndex + ".gif";
+        return RessourcesPaths.backgroundPath+ "bgJap" + bgIndex + ".gif";
     }
 
     /**
