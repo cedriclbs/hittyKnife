@@ -183,16 +183,23 @@ public class EntityDisplay extends JPanel {
      * @param y La coordonnée y de la position de l'explosion.
      * @param deleteCible La liste des cibles à supprimer suite à l'explosion.
      */
-    private void explosion( double x, double y,ArrayList<Cible> deleteCible) {
-        for (Cible cible : listeCible){
-            double cibleX = (RATIO_X-cible.getX()*RATIO);
-            double cibleY = (RATIO_Y-cible.getY()*RATIO);
-            int cw=200;int ch=200;
-            if (x > cibleX-cw && x<cibleX+cw && y > cibleY-ch && y<cibleY+ch){
-                deleteCible.add(cible);
-                if (isSolo) {
-                    game.addXP(10);
-                    game.addArgent(10);
+    private void explosion( double x, double y,ArrayList<Cible> deleteCible, Cible self) {
+        for (Cible cible : listeCible) {
+            if (cible != self) {
+                double cibleX = (RATIO_X - cible.getX() * RATIO);
+                double cibleY = (RATIO_Y - cible.getY() * RATIO);
+                int cw = 250;
+                int ch = 250;
+                if (x > cibleX - cw && x < cibleX + cw && y > cibleY - ch && y < cibleY + ch) {
+                    deleteCible.add(cible);
+                    if (isSolo) {
+                        game.addXP(10);
+                        game.addArgent(10);
+                    } else {
+                        if (currentKnife) {
+                            game.scoreJoueur2++;
+                        } else game.scoreJoueur1++;
+                    }
                 }
             }
         }
@@ -405,7 +412,7 @@ public class EntityDisplay extends JPanel {
             game.bonusManager.appliquerBonus(((Bonus) cible).getTypeBonus(),player);
             if (((Bonus) cible).getTypeBonus()== Bonus.TypeBonus.BONUS_TNT){
                 explose = true;
-                explosion(cibleX,cibleY,deleteCible);
+                explosion(cibleX,cibleY,deleteCible,cible);
             }
         }
 
