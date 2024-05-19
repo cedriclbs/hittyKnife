@@ -183,7 +183,7 @@ public class EntityDisplay extends JPanel {
      * @param y La coordonnée y de la position de l'explosion.
      * @param deleteCible La liste des cibles à supprimer suite à l'explosion.
      */
-    private void explosion( double x, double y,ArrayList<Cible> deleteCible, Cible self) {
+    private void explosion(double x, double y,ArrayList<Cible> deleteCible, Cible self) {
         for (Cible cible : listeCible) {
             if (cible != self) {
                 double cibleX = (RATIO_X - cible.getX() * RATIO);
@@ -195,6 +195,7 @@ public class EntityDisplay extends JPanel {
                     if (isSolo) {
                         game.addXP(10);
                         game.addArgent(10);
+                        game.sauvegarderEtat();
                     } else {
                         if (currentKnife) {
                             game.scoreJoueur2++;
@@ -378,6 +379,7 @@ public class EntityDisplay extends JPanel {
         if (isSolo) {
             game.addXP(10);
             game.addArgent(10);
+            game.sauvegarderEtat();
         }
         if (cible instanceof BossType1) {
             ((BossType1) cible).attacked();
@@ -552,7 +554,7 @@ public class EntityDisplay extends JPanel {
             if ((game.scoreJoueur1>=game.MAX_SCORE || game.scoreJoueur2>=game.MAX_SCORE ) && !this.isWin){
                 this.isWin = true;
 
-                String backgroundImagePath = "src/main/ressources/button/signB.png";
+                String backgroundImagePath = RessourcesPaths.buttonPath + "signB.png";
 
                 // Création d'un JDialog indépendant
                 JDialog dialog = new JDialog((Frame) null, "VICTORY", true);
