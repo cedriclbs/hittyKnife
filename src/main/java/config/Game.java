@@ -231,7 +231,7 @@ public class Game {
     public void perdreVie() {
         vies--;
         if (vies <= 0) {
-            resetRoundAndRestoreLives();
+            resetRoundAndRestoreLives(true);
         }
     }
 
@@ -652,13 +652,22 @@ public class Game {
     /**
     * Réinitialise le round actuel et restaure les vies à 4.
     */
-    private void resetRoundAndRestoreLives() {
+    public void resetRoundAndRestoreLives(boolean isSolo) {
         vies = 4;  // Restaure les vies à 4
-        if (roundManagement != null) {
-            roundManagement.resetRounds();  // Réinitialise le round actuel
-            listeCible1.clear();
-            listeCible1.addAll(roundManagement.getListeRounds().get(roundManagement.getCurrentRoundIndex()).getListeCibles());
-            triggerGameOverAnimation();
+        if (isSolo) {
+            if (roundManagement != null) {
+                roundManagement.resetRounds();  // Réinitialise le round actuel
+                listeCible1.clear();
+                listeCible1.addAll(roundManagement.getListeRounds().get(roundManagement.getCurrentRoundIndex()).getListeCibles());
+                triggerGameOverAnimation();
+            }
+        }
+        else{
+            if (roundManagementVERSUS != null) {
+                roundManagementVERSUS.resetRounds();  // Réinitialise le round actuel
+                listeCible2.clear();
+                listeCible2.addAll(roundManagementVERSUS.getListeRounds().get(roundManagementVERSUS.getCurrentRoundIndex()).getListeCibles());
+            }
         }
     }
 

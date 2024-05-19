@@ -435,7 +435,7 @@ public class EntityDisplay extends JPanel {
 
         //-------------------------- DESSINE LES NIVEAUX ET LES ROUNDS ----------------------------------------
 
-        if(game.getIsSolo()){
+        if(isSolo){
             // Affichage des niveaux et des rounds avec effet d'ombre sur le texte
             g2d.setFont(new Font("SansSerif", Font.BOLD, 24)); 
 
@@ -533,11 +533,13 @@ public class EntityDisplay extends JPanel {
             int xPosition2 = (4*(getWidth() - niveauTexteWidth2)) / 5;
             int yPosi = 100;
             //AffineTransform transformSign = AffineTransform.getTranslateInstance(xPosition1 - (double) sign.getWidth(this) / 2, yPosi - (double) sign.getHeight(this) / 2);
-            AffineTransform transformSign = AffineTransform.getTranslateInstance(xPosition1 -55 , yPosi - (double) sign.getHeight(this) /2-12);
-            g2d.drawImage(sign,transformSign,this);
+            if (sign !=null) {
+                AffineTransform transformSign = AffineTransform.getTranslateInstance(xPosition1 - 55, yPosi - (double) sign.getHeight(this) / 2 - 12);
+                g2d.drawImage(sign, transformSign, this);
 
-            AffineTransform transformSign2 = AffineTransform.getTranslateInstance(xPosition2 -55 , yPosi - (double) sign.getHeight(this) /2-12);
-            g2d.drawImage(sign,transformSign2,this);
+                AffineTransform transformSign2 = AffineTransform.getTranslateInstance(xPosition2 - 55, yPosi - (double) sign.getHeight(this) / 2 - 12);
+                g2d.drawImage(sign, transformSign2, this);
+            }
             // Dessine l'ombre
             g2d.setColor(new Color(0, 0, 0, 64));
             int shadowOffset = 2;
@@ -588,6 +590,7 @@ public class EntityDisplay extends JPanel {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         game.resetScore();  // Remplacez `game.resetScore()` par l'appel de méthode approprié
+                        game.resetRoundAndRestoreLives(false);
                         isWin = false;
                         dialog.dispose();
                     }
