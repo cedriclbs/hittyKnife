@@ -21,7 +21,7 @@ public class GameView extends JPanel{
     private Game game;
     private EntityDisplay entityDisplay;
     public boolean isSolo;
-
+    
     private Image backgroundImage;
     private static Clip musicClip;
 
