@@ -26,15 +26,17 @@ public class RoundManagement {
     private final Random random; // Pour générer des valeurs aléatoires
     private Queue<TypeCible> bossQueue;    // File principale pour les bosses
     private Queue<TypeCible> tempQueue;    // File temporaire pour stocker les bosses récemment utilisés
+    private boolean isSolo;
     
 
     /**
      * Constructeur pour initialiser les rounds et leurs cibles.
      */
-    public RoundManagement() {
+    public RoundManagement(boolean isSolo) {
         this.random = new Random();
         this.rounds = new ArrayList<>();
         this.currentRoundIndex = 0;
+        this.isSolo = isSolo;
         initBossQueues();
         initRounds();
     }
@@ -45,11 +47,20 @@ public class RoundManagement {
      * @return Une position X aléatoire en dehors de la zone interdite.
      */
     private double getRandomPositionX() {
-        double x;
-        do {
-            x = (random.nextDouble() * 60) - 30; //à regler selon la taille du jeu, cible en position x de -30 à 30
-        } while (x > -7 && x < 7); // Évite la zone autour de x = 0
-        return x;
+        if (isSolo) {
+            double x;
+            do {
+                x = (random.nextDouble() * 60) - 30; //à regler selon la taille du jeu, cible en position x de -30 à 30
+            } while (x > -7 && x < 7); // Évite la zone autour de x = 0
+            return x;
+        }
+        else{
+            double x;
+            do {
+                x = (random.nextDouble() * 60) - 30; //à regler selon la taille du jeu, cible en position x de -30 à 30
+            } while ((x > -25 && x<-10)||( x < 25 && x>10)); // Évite la zone autour de x = 0
+            return x;
+        }
     }
 
     /**
@@ -104,8 +115,8 @@ public class RoundManagement {
      * @return Un nombre aléatoire de cibles, entre 4 et 10.
      */
     private int getRndIntTargetRounds() {
-        //return 4 + random.nextInt(4);
-        return 3;
+        return 4+ random.nextInt(3);
+        //return 3;
     }
 
     /**
@@ -227,14 +238,8 @@ public class RoundManagement {
                 // Créer une cible mouvante
                 return new MovingTarget(x, y);
             case CIBLE_BONUS:
-                int randomNum = random.nextInt(5);
-                Bonus.TypeBonus typeBonus = switch (randomNum) {
-                    case 0 -> BONUS_XP;
-                    case 1 -> BONUS_GOLD;
-                    case 2 -> BONUS_GEL;
-                    case 3 -> BONUS_POWER;
-                    default -> BONUS_TNT;
-                };
+                Bonus.TypeBonus typeBonus = getRandomBonus();
+
                 return new Bonus(x, y,typeBonus);
     
             case CIBLE_BOSS1:
@@ -256,6 +261,30 @@ public class RoundManagement {
             default:
                 return new Cible(x, y);
         }
+    }
+
+
+    public Bonus.TypeBonus getRandomBonus(){
+        Bonus.TypeBonus typeBonus;
+        if (isSolo) {
+            int randomNum = random.nextInt(5);
+            typeBonus = switch (randomNum) {
+                case 0 -> BONUS_XP;
+                case 1 -> BONUS_GOLD;
+                case 2 -> BONUS_GEL;
+                case 3 -> BONUS_POWER;
+                default -> BONUS_TNT;
+            };
+        }
+        else{
+            int randomNum = random.nextInt(3);
+            typeBonus = switch (randomNum) {
+                case 0 -> BONUS_GEL;
+                case 1 -> BONUS_POWER;
+                default -> BONUS_TNT;
+            };
+        }
+        return typeBonus;
     }
 
     /**

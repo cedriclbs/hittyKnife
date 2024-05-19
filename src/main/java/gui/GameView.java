@@ -39,7 +39,9 @@ public class GameView extends JPanel{
         Main.loop = new Loop(game);
         Main.loop.startTickFunction();
         this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgJap10.gif", (ArrayList<Cible>)game.getListeCible(),isSolo, game);
-        this.entityDisplay2 = new EntityDisplay(game.knife2, "src/main/ressources/background/fond1v1.jpg",  (ArrayList<Cible>)game.getListeCible2(),isSolo, game);
+
+        this.entityDisplay2 = new EntityDisplay(game.knife2, "src/main/ressources/background/versus.gif",  (ArrayList<Cible>)game.getListeCible2(),isSolo, game);
+
         initialize();
     }
 

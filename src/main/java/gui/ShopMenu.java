@@ -51,7 +51,6 @@ public class ShopMenu extends JPanel {
 
         ShopTab couteauxTab = new ShopTab(tabbedPane, "Couteaux", RessourcesPaths.knifePath, "knifeTab.png", "couteaux", this);
         ShopTab backgroundTab = new ShopTab(tabbedPane, "Background", RessourcesPaths.backgroundPath, "bgTab.png", "background", this);
-        ShopTab musicTab = new ShopTab(tabbedPane, "Music", RessourcesPaths.buttonPath, "musicTab.png", "music", this);
         cartTab = new ShopTab(tabbedPane, "Panier", null, "cartTab.png", "cart", this);
 
         add(tabbedPane, BorderLayout.CENTER);
@@ -89,7 +88,7 @@ public class ShopMenu extends JPanel {
     void refreshCartTab() {
         int cartTabIndex = tabbedPane.indexOfTab("Panier");
         if (cartTabIndex != -1) {
-            JPanel cartPanel = cartTab.createPanel(null, "cart"); // Utilisez la référence existante pour actualiser le panneau
+            JPanel cartPanel = cartTab.createPanel(null, "cart");
             tabbedPane.setComponentAt(cartTabIndex, cartPanel);
         }
     }
