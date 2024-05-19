@@ -177,7 +177,7 @@ public class RoundManagement {
     /**
      * Remplit chaque round avec un ensemble déterminé de cibles.
      */
-    private void populateRounds() {
+    private synchronized void populateRounds() {
         int lastIndex = rounds.size() - 1; // Index du dernier round
 
         for (int i = 0; i < rounds.size(); i++) {
@@ -233,10 +233,8 @@ public class RoundManagement {
     private Cible createCibleWithType(TypeCible typeCible, double x, double y) {
         switch (typeCible) {
             case CIBLE_NORMALE:
-                // Créer une cible normale
                 return new Cible(typeCible,x, y);
             case CIBLE_MOUVANTE:
-                // Créer une cible mouvante
                 return new MovingTarget(x, y);
             case CIBLE_BONUS:
                 Bonus.TypeBonus typeBonus = getRandomBonus();
@@ -244,19 +242,15 @@ public class RoundManagement {
                 return new Bonus(x, y,typeBonus);
     
             case CIBLE_BOSS1:
-                // Créer un BossType1
                 return new BossType1(x, y);
     
             case CIBLE_BOSS2:
-                // Créer un BossType2
                 return new BossType2(x,y);
 
             case CIBLE_BOSS3:
-                // Créer un BossType3
                 return new BossType3(x, y);
 
             case CIBLE_BOSS4:
-            // Créer un BossType4
             return new BossType4(x, y);
     
             default:

@@ -67,13 +67,13 @@ public class ShopTab {
         switch (category) {
             case "couteaux" -> {
                 addItemToPanel(mainMenuPanel, path + "knife#1.png", 0, "Sword 1");
-                addItemToPanel(mainMenuPanel, path + "knife#2.png", 750, "Sword 2");
-                addItemToPanel(mainMenuPanel, path + "knife#3.png", 1500, "Sword 3");
+                addItemToPanel(mainMenuPanel, path + "knife#2.png", 100, "Sword 2");
+                addItemToPanel(mainMenuPanel, path + "knife#3.png", 200, "Sword 3");
             }
             case "background" -> {
-                addItemToPanel(mainMenuPanel, path + "bgClassiqueCave.png", 500, "Background 1");
-                addItemToPanel(mainMenuPanel, path + "bgClassiqueLake.png", 900, "Background 2");
-                addItemToPanel(mainMenuPanel, path + "bgClassiqueForet.png", 1600, "Background 3");
+                addItemToPanel(mainMenuPanel, path + "bgClassiqueCave.png", 100, "Background 1");
+                addItemToPanel(mainMenuPanel, path + "bgClassiqueLake.png", 200, "Background 2");
+                addItemToPanel(mainMenuPanel, path + "bgClassiqueForet.png", 300, "Background 3");
             }
             case "cart" -> {
                 JPanel cartPanel = shopMenu.cart.displayCart(this.shopMenu, shopMenu.cart.getCart(), mainMenuPanel, "Panier");

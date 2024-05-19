@@ -51,6 +51,13 @@ public class MainFrame extends JFrame {
         versusButton = new JButton("Versus");
         battlePassButton = new JButton("BattlePass");
 
+        // Définir la couleur de fond pour chaque bouton
+        homeButton.setBackground(new Color(199, 29, 158));
+        soloButton.setBackground(new Color(199, 29, 158));
+        shopButton.setBackground(new Color(199, 29, 158));
+        versusButton.setBackground(new Color(199, 29, 158));
+        battlePassButton.setBackground(new Color(199, 29, 158));
+
 
         // Supprimer le rectangle de sélection lorsqu'un bouton est enfoncé
         homeButton.setFocusPainted(false);
@@ -98,6 +105,8 @@ public class MainFrame extends JFrame {
         navPanel.add(shopButton);
         navPanel.add(versusButton);
         navPanel.add(battlePassButton);
+
+        navPanel.setBackground(Color.DARK_GRAY);
 
         // Utilisation d'un BorderLayout pour la JFrame
         setLayout(new BorderLayout());
