@@ -310,7 +310,7 @@ public class Game {
      * Si les deux conditions sont remplies, l'arrière-plan de l'interface graphique est mis à jour avec la nouvelle image spécifiée.
      * Ceci est utilisé pour refléter les changements visuels dans l'arrière-plan au cours du jeu.
      */
-    private synchronized void updateBackground() {
+    private void updateBackground() {
         if (gameView != null && currentBackgroundPath != null) {
             gameView.updateBackgroundImage(currentBackgroundPath);
         }
