@@ -71,6 +71,7 @@ public class EntityDisplay extends JPanel {
 
     private boolean isSolo;
     private boolean isWin=false;
+    private boolean currentKnife = false; //false : gauche , true : droite
 
     //private ArrayList<Cible> deleteCible;
     
@@ -182,16 +183,23 @@ public class EntityDisplay extends JPanel {
      * @param y La coordonnée y de la position de l'explosion.
      * @param deleteCible La liste des cibles à supprimer suite à l'explosion.
      */
-    private void explosion( double x, double y,ArrayList<Cible> deleteCible) {
-        for (Cible cible : listeCible){
-            double cibleX = (RATIO_X-cible.getX()*RATIO);
-            double cibleY = (RATIO_Y-cible.getY()*RATIO);
-            int cw=200;int ch=200;
-            if (x > cibleX-cw && x<cibleX+cw && y > cibleY-ch && y<cibleY+ch){
-                deleteCible.add(cible);
-                if (isSolo) {
-                    game.addXP(10);
-                    game.addArgent(10);
+    private void explosion( double x, double y,ArrayList<Cible> deleteCible, Cible self) {
+        for (Cible cible : listeCible) {
+            if (cible != self) {
+                double cibleX = (RATIO_X - cible.getX() * RATIO);
+                double cibleY = (RATIO_Y - cible.getY() * RATIO);
+                int cw = 250;
+                int ch = 250;
+                if (x > cibleX - cw && x < cibleX + cw && y > cibleY - ch && y < cibleY + ch) {
+                    deleteCible.add(cible);
+                    if (isSolo) {
+                        game.addXP(10);
+                        game.addArgent(10);
+                    } else {
+                        if (currentKnife) {
+                            game.scoreJoueur2++;
+                        } else game.scoreJoueur1++;
+                    }
                 }
             }
         }
@@ -313,10 +321,19 @@ public class EntityDisplay extends JPanel {
                 }
             }
             else {
-                if (!game.powered[1]) {
-                    AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - (double) knifeImgWidth / 2, collisionY - (double) knifeImgHeight / 2);
-                    transformColli.rotate(Math.toRadians(collisionAngle), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
-                    g2d.drawImage(knifeImage, transformColli, this);
+                if (!currentKnife) {
+                    if (!game.powered[1]) {
+                        AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - (double) knifeImgWidth / 2, collisionY - (double) knifeImgHeight / 2);
+                        transformColli.rotate(Math.toRadians(collisionAngle), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
+                        g2d.drawImage(knifeImage, transformColli, this);
+                    }
+                }
+                else{
+                    if (!game.powered[2]) {
+                        AffineTransform transformColli = AffineTransform.getTranslateInstance(collisionX - (double) knifeImgWidth / 2, collisionY - (double) knifeImgHeight / 2);
+                        transformColli.rotate(Math.toRadians(collisionAngle), (double) knifeImgWidth / 2, (double) knifeImgHeight / 2);
+                        g2d.drawImage(knifeImage, transformColli, this);
+                    }
                 }
             }
             AffineTransform transformCibleColli;
@@ -395,7 +412,7 @@ public class EntityDisplay extends JPanel {
             game.bonusManager.appliquerBonus(((Bonus) cible).getTypeBonus(),player);
             if (((Bonus) cible).getTypeBonus()== Bonus.TypeBonus.BONUS_TNT){
                 explose = true;
-                explosion(cibleX,cibleY,deleteCible);
+                explosion(cibleX,cibleY,deleteCible,cible);
             }
         }
 
@@ -771,6 +788,7 @@ public class EntityDisplay extends JPanel {
                 }
                 else {
                     if (transformedBossMask.intersects(transformedKnifeMask.getBounds2D())) {
+                        currentKnife = false;
                         if (!game.powered[1]) {
                             collisionAngle = knife.getAngle();
                             collisionX = knifeX;
@@ -782,6 +800,7 @@ public class EntityDisplay extends JPanel {
                         if (((Boss) cible).isDead()) game.scoreJoueur1+=2;
                     }
                     if (transformedBossMask.intersects(transformedKnifeMask2.getBounds2D())) {
+                        currentKnife = true;
                         if (!game.powered[2]) {
                             collisionAngle = knife2.getAngle();
                             collisionX = knife2X;
@@ -838,6 +857,7 @@ public class EntityDisplay extends JPanel {
 
                 else {
                     if (transformedCibleMask.intersects(transformedKnifeMask.getBounds2D())) {
+                        currentKnife = false;
                         game.scoreJoueur1++;
                         if (!game.powered[1]) {
                             collisionAngle = knife.getAngle();
@@ -849,6 +869,7 @@ public class EntityDisplay extends JPanel {
                         else collision(deleteCible, cible, cibleX, cibleY, 1);
                     }
                     if (transformedCibleMask.intersects(transformedKnifeMask2.getBounds2D())) {
+                        currentKnife = true;
                         game.scoreJoueur2++;
                         if (!game.powered[2]) {
                             collisionAngle = knife2.getAngle();
