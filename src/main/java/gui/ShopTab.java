@@ -18,8 +18,6 @@ public class ShopTab {
     private ShopMenu shopMenu;
     private JLabel argentLabel;
 
-
-
     /**
      * Constructeur de la classe ShopTab.
      *
@@ -83,7 +81,6 @@ public class ShopTab {
         return tabPanel;
     }
 
-
     /**
      * Ajoute un composant pour afficher le montant d'argent disponible dans le panneau de l'onglet ainsi que l'icône.
      *
@@ -107,8 +104,6 @@ public class ShopTab {
         argentPanel.add(coinLabel);
         tabPanel.add(argentPanel, BorderLayout.NORTH);
     }
-
-
 
     /**
      * Ajoute un article à un JPanel en tant qu'élément de liste avec un bouton associé pour l'ajouter au panier.
@@ -141,7 +136,6 @@ public class ShopTab {
 
         panel.add(itemRoundedPanel);
 
-        // MouseListener ajouté pour changer le curseur en main quand la souris survole
         itemButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -153,12 +147,10 @@ public class ShopTab {
             }
         });
 
-        // Configure le bouton pour ajouter l'article au panier lorsqu'il est cliqué
         shopMenu.configureButton(itemButton, e -> {
             shopMenu.cart.addArticle(new ShopItem(itemName, articlePrice, imagePath));
             refreshCartTab();
         });
-
     }
 
     /**
@@ -191,9 +183,6 @@ public class ShopTab {
         }
         return icon;
     }
-
-
-
 
     /**
      * Crée le composant de légende pour un article avec son nom, son prix, et l'image de la pièce.
@@ -242,10 +231,11 @@ public class ShopTab {
         }
     }
 
+    /**
+     * Met à jour le texte de l'étiquette d'argent (argentLabel) avec la valeur actuelle de l'argent du jeu.
+     */
     void updateMoneyLabel(){
         this.argentLabel.setText("Money: " + shopMenu.getGame().getArgent());
         this.argentLabel.repaint();
     }
-
-
 }

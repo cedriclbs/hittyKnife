@@ -106,7 +106,6 @@ public class Knife {
         this.velocite = velocite;
     }
 
-
     /**
      * Méthode pour démarrer le lancer du couteau.
      */
@@ -185,7 +184,6 @@ public class Knife {
         angle = DEFAULT_ANGLE;
     }
 
-
     /**
      * Met à jour la position verticale et la vélocité du saut du personnage.
      * Cette méthode utilise la classe Geometry pour effectuer le mouvement ascendant
@@ -211,5 +209,4 @@ public class Knife {
             angle = DEFAULT_ANGLE;
         }
     }
-
 }

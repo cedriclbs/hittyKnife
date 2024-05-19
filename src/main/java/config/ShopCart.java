@@ -12,9 +12,9 @@ import java.util.List;
  */
 public class ShopCart {
 
-    private Game game;                 // Le jeu associé au panier d'achats
+    private Game game;                // Le jeu associé au panier d'achats
     private List<ShopItem> cart;      // Liste des articles dans le panier
-    private int cartTotal;             // Montant total du panier
+    private int cartTotal;            // Montant total du panier
     public JLabel cartTotalLabel;     // Label pour afficher le montant total du panier
 
     /**
@@ -61,8 +61,6 @@ public class ShopCart {
         }
     }
 
-
-
     /**
      * Affiche le panier d'achats dans un JPanel.
      *
@@ -105,8 +103,6 @@ public class ShopCart {
                 JLabel priceLabel = new JLabel("Prix: " + article.getArticlePrice());
                 priceLabel.setMaximumSize(new Dimension(100, 50));
 
-
-
                 JButton deleteButton = new JButton(new ImageIcon(RessourcesPaths.buttonPath + "binButton.png"));
                 deleteButton.setMaximumSize(new Dimension(50, 50));
                 deleteButton.addActionListener(e -> {
@@ -125,26 +121,19 @@ public class ShopCart {
             }
         }
 
-        cartPanel.add(Box.createVerticalGlue()); //crée un composant pour "coller" les composants ensemble dans un layout vertical
-
-
-        // userMoneyLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //cartPanel.add(userMoneyLabel);
+        cartPanel.add(Box.createVerticalGlue()); //Crée un composant pour "coller" les composants dans un layout vertical
 
         cartTotalLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         cartPanel.add(cartTotalLabel);
-
 
         JButton saveButton = new JButton("Sauvegarder");
         saveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         saveButton.addActionListener(e -> shopMenu.saveCart(game));
         cartPanel.add(saveButton);
 
-
         mainMenuPanel.add(scrollPane);
         return cartPanel;
     }
-
 
     /**
      * Met à jour le montant total du panier et met à jour l'affichage.

@@ -29,5 +29,4 @@ public class BossType2 extends Boss{
         setY(newPosition[1]);
         currentAngle = newPosition[2];
     }
-
 }

@@ -3,14 +3,12 @@ package gui;
 import java.awt.*;
 import javax.swing.*;
 
-
 /**
  * Un JPanel personnalisé avec des coins arrondis.
  */
 public class RoundedPanel extends JPanel {
     private int arcWidth;
     private int arcHeight;
-    private boolean forButton;
     private boolean forAccueil;
     private Color backgroundColor;
 
@@ -25,7 +23,6 @@ public class RoundedPanel extends JPanel {
     public RoundedPanel(int arcWidth, int arcHeight, boolean forButton, boolean forAccueil) {
         this.arcWidth = arcWidth;
         this.arcHeight = arcHeight;
-        this.forButton = forButton;
         this.forAccueil = forAccueil;
 
         if (forButton){

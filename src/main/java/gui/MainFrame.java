@@ -12,13 +12,8 @@ import java.util.Objects;
 public class MainFrame extends JFrame {
 
     private Game game;
-    private JPanel cardPanel;
-    private CardLayout cardLayout;
-    private JButton homeButton;
-    private JButton soloButton;
-    private JButton shopButton;
-    private JButton versusButton;
-    private JButton battlePassButton;
+    private final JPanel cardPanel;
+    private final CardLayout cardLayout;
     public static String knifePathClicked;
 
     /**
@@ -32,7 +27,7 @@ public class MainFrame extends JFrame {
         setIconImage(new ImageIcon(RessourcesPaths.iconPath + "icon.png").getImage());
 
         this.game = game;
-        this.knifePathClicked = RessourcesPaths.knifePath + "knife#3.png";
+        knifePathClicked = RessourcesPaths.knifePath + "knife#3.png";
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -44,20 +39,17 @@ public class MainFrame extends JFrame {
             }
         });
 
-        // Création des boutons de navigation
-        homeButton = new JButton("Home");
-        soloButton = new JButton("Solo");
-        shopButton = new JButton("Shop");
-        versusButton = new JButton("Versus");
-        battlePassButton = new JButton("BattlePass");
+        JButton homeButton = new JButton("Home");
+        JButton soloButton = new JButton("Solo");
+        JButton shopButton = new JButton("Shop");
+        JButton versusButton = new JButton("Versus");
+        JButton battlePassButton = new JButton("BattlePass");
 
-        // Définir la couleur de fond pour chaque bouton
         homeButton.setBackground(new Color(124, 143, 184));
         soloButton.setBackground(new Color(124, 143, 184));
         shopButton.setBackground(new Color(124, 143, 184));
         versusButton.setBackground(new Color(124, 143, 184));
         battlePassButton.setBackground(new Color(124, 143, 184));
-
 
         // Supprimer le rectangle de sélection lorsqu'un bouton est enfoncé
         homeButton.setFocusPainted(false);
@@ -98,7 +90,6 @@ public class MainFrame extends JFrame {
         cardPanel.add(battlepassPanel, "BattlePass");
 
 
-        // Ajout des boutons de navigation en haut de la fenêtre
         JPanel navPanel = new JPanel(new FlowLayout());
         navPanel.add(homeButton);
         navPanel.add(soloButton);
@@ -111,7 +102,7 @@ public class MainFrame extends JFrame {
         // Utilisation d'un BorderLayout pour la JFrame
         setLayout(new BorderLayout());
 
-        // Ajout du navPanel en haut et du cardPanel au centre
+        // Ajout du navPanel en bas et du cardPanel au centre
         add(navPanel, BorderLayout.SOUTH);
         add(cardPanel, BorderLayout.CENTER);
 
@@ -186,15 +177,29 @@ public class MainFrame extends JFrame {
         game.setIsSOlo(Objects.equals(name, "Solo"));
     }
 
-    // Méthodes de création des panneaux pour chaque onglet
+    /**
+     * Crée et retourne un panneau de la boutique.
+     *
+     * @return un {@link JPanel} représentant le menu de la boutique.
+     */
     private JPanel createShopPanel() {
         return new ShopMenu(game);
     }
 
+    /**
+     * Crée et retourne un panneau pour le mode solo du jeu.
+     *
+     * @return un {@link JPanel} représentant la vue de jeu en mode solo.
+     */
     private JPanel createSoloPanel() {
         return new GameView(true, game);
     }
 
+    /**
+     * Crée et retourne un panneau pour le mode versus du jeu.
+     *
+     * @return un {@link JPanel} représentant la vue de jeu en mode versus.
+     */
     private JPanel createVersusPanel() {
         return new GameView(false, game);
     }
@@ -205,6 +210,12 @@ public class MainFrame extends JFrame {
         return homeMenu;
     }
 
+    /**
+     * Crée et retourne un panneau pour le menu principal.
+     * La méthode initialise également le menu principal en tant qu'observateur de l'objet jeu.
+     *
+     * @return un {@link JPanel} représentant le menu principal.
+     */
     private JPanel createBattlepassPanel() {
         BattlePassPanel battlePassPanel = new BattlePassPanel(game);
         JPanel mainPanel = new JPanel(new GridBagLayout()){

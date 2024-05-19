@@ -21,7 +21,7 @@ public class GameView extends JPanel{
     private Game game;
     private EntityDisplay entityDisplay;
     public boolean isSolo;
-    
+
     private Image backgroundImage;
     private static Clip musicClip;
 
@@ -33,10 +33,12 @@ public class GameView extends JPanel{
      */
     public GameView(boolean isSolo, Game game)  {
         this.isSolo = isSolo;
-        initBg("src/main/ressources/background/bgForet.png");
         this.game = game;
         Main.loop = new Loop(game);
         Main.loop.startTickFunction();
+
+        initBg("src/main/ressources/background/bgForet.png");
+
         if(isSolo){
             this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgJap10.gif", (ArrayList<Cible>)game.getListeCible(),isSolo, game);
         }else {

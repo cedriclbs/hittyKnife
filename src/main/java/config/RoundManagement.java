@@ -21,13 +21,12 @@ import static entity.Bonus.TypeBonus.*;
  * Gère les rounds dans le jeu, y compris les cibles pour chaque round.
  */
 public class RoundManagement {
-    private final List<Round> rounds; // Liste des rounds contenant des cibles pour chaque round
-    private int currentRoundIndex; // Indice du round actuel
-    private final Random random; // Pour générer des valeurs aléatoires
+    private final List<Round> rounds;      // Liste des rounds contenant des cibles pour chaque round
+    private int currentRoundIndex;         // Indice du round actuel
+    private final Random random;           // Pour générer des valeurs aléatoires
     private Queue<TypeCible> bossQueue;    // File principale pour les bosses
     private Queue<TypeCible> tempQueue;    // File temporaire pour stocker les bosses récemment utilisés
     private boolean isSolo;
-    
 
     /**
      * Constructeur pour initialiser les rounds et leurs cibles.
@@ -56,7 +55,6 @@ public class RoundManagement {
         }
         else{
             double x;
-            System.out.println("charge");
             do {
                 x = (random.nextDouble() * 60) - 30; //à regler selon la taille du jeu, cible en position x de -30 à 30
             } while ((x > -25 && x<-10)||( x < 25 && x>10)); // Évite la zone autour de x = 0
@@ -77,7 +75,6 @@ public class RoundManagement {
         return y;
     }
 
-
     /**
      * Sélectionne un type de cible aléatoire pour les rounds normaux.
      *
@@ -94,7 +91,6 @@ public class RoundManagement {
      * @return Un type de boss aléatoire.
      */
     private TypeCible getRandomTypeBoss() {
-        // S'assure que la queue principale a des éléments à offrir
         if (bossQueue.isEmpty()) {
             refillBossQueue();
         }
@@ -117,7 +113,6 @@ public class RoundManagement {
      */
     private int getRndIntTargetRounds() {
         return 4+ random.nextInt(3);
-        //return 3;
     }
 
     /**
@@ -146,7 +141,6 @@ public class RoundManagement {
     public void setCurrentRoundIndex(int a) {
         this.currentRoundIndex = a;
     }
-
 
     /**
      * Prépare les rounds en créant une liste de cibles pour chacun.
@@ -178,7 +172,7 @@ public class RoundManagement {
      * Remplit chaque round avec un ensemble déterminé de cibles.
      */
     private synchronized void populateRounds() {
-        int lastIndex = rounds.size() - 1; // Index du dernier round
+        int lastIndex = rounds.size() - 1;
 
         for (int i = 0; i < rounds.size(); i++) {
             Round round = rounds.get(i);
@@ -188,7 +182,7 @@ public class RoundManagement {
                 TypeCible typeCible;
                 double x, y;
 
-                if (i == lastIndex) {  // S'assure que c'est le dernier round
+                if (i == lastIndex) {
                     typeCible = getRandomTypeBoss();
                     x = -60;
                     y = -60;
@@ -231,34 +225,25 @@ public class RoundManagement {
      * @return La cible créée.
      */
     private Cible createCibleWithType(TypeCible typeCible, double x, double y) {
-        switch (typeCible) {
-            case CIBLE_NORMALE:
-                return new Cible(typeCible,x, y);
-            case CIBLE_MOUVANTE:
-                return new MovingTarget(x, y);
-            case CIBLE_BONUS:
+        return switch (typeCible) {
+            case CIBLE_NORMALE -> new Cible(typeCible, x, y);
+            case CIBLE_MOUVANTE -> new MovingTarget(x, y);
+            case CIBLE_BONUS -> {
                 Bonus.TypeBonus typeBonus = getRandomBonus();
-
-                return new Bonus(x, y,typeBonus);
-    
-            case CIBLE_BOSS1:
-                return new BossType1(x, y);
-    
-            case CIBLE_BOSS2:
-                return new BossType2(x,y);
-
-            case CIBLE_BOSS3:
-                return new BossType3(x, y);
-
-            case CIBLE_BOSS4:
-            return new BossType4(x, y);
-    
-            default:
-                return new Cible(x, y);
-        }
+                yield new Bonus(x, y, typeBonus);
+            }
+            case CIBLE_BOSS1 -> new BossType1(x, y);
+            case CIBLE_BOSS2 -> new BossType2(x, y);
+            case CIBLE_BOSS3 -> new BossType3(x, y);
+            case CIBLE_BOSS4 -> new BossType4(x, y);
+        };
     }
 
-
+    /**
+     * Renvoie un bonus aléatoire en fonction du mode de jeu (solo ou multi).
+     *
+     * @return un objet de type {@link Bonus.TypeBonus} représentant le bonus aléatoire sélectionné.
+     */
     public Bonus.TypeBonus getRandomBonus(){
         Bonus.TypeBonus typeBonus;
         if (isSolo) {
@@ -313,10 +298,6 @@ public class RoundManagement {
             }
             Collections.shuffle((LinkedList<TypeCible>) bossQueue);
         }
-    }
-    // méthode pour vérifier si tous les rounds sont complétés
-    public boolean isAllRoundsCompleted() {
-        return currentRoundIndex == rounds.size();
     }
 
     /**

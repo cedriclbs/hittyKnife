@@ -16,6 +16,7 @@ public class BossType1 extends Boss {
     public BossType1(double  x, double y) {
         super(TypeCible.CIBLE_BOSS1, x, y);
     }
+
     @Override
     public void updateMovement(double delta) {
         double limitTop = 55;

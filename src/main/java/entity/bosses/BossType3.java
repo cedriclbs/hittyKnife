@@ -25,9 +25,7 @@ public class BossType3 extends Boss{
         double limitTop = 35;
         double limitBottom = 25;
 
-
         double speed = 0.6;
-
 
         double[] newPosition = Geometry.horizontalMovementWithVerticalAdjustment(getX(), getY(), delta, speed, directionPositive, limitLeft, limitRight, limitTop, limitBottom);
 
@@ -35,5 +33,4 @@ public class BossType3 extends Boss{
         setY(newPosition[1]);
         directionPositive = newPosition[2] == 1;
     }
-
 }

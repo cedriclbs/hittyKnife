@@ -205,44 +205,44 @@ public class Geometry{
         double newX = x;
         double newY = y;
         switch (phase) {
-            case 1:
+            case 1 -> {
                 newX += deplacement;
                 if (newX >= -25) {
                     phase = 2;
                 }
-                break;
-            case 2:
+            }
+            case 2 -> {
                 newY -= deplacement;
                 if (newY <= 5) {
                     phase = 3;
                 }
-                break;
-            case 3:
+            }
+            case 3 -> {
                 newX -= deplacement;
                 if (newX <= -56) {
                     newX = 56;
                     phase = 4;
                 }
-                break;
-            case 4:
+            }
+            case 4 -> {
                 newX -= deplacement;
                 if (newX <= 25) {
                     phase = 5;
                 }
-                break;
-            case 5:
+            }
+            case 5 -> {
                 newY += deplacement;
                 if (newY >= 25) {
                     phase = 6;
                 }
-                break;
-            case 6:
+            }
+            case 6 -> {
                 newX += deplacement;
                 if (newX >= 56) {
                     newX = -56;
                     phase = 1;
                 }
-                break;
+            }
         }
         if (newX <= -57 || newY <= -50) {
             newX = -56;

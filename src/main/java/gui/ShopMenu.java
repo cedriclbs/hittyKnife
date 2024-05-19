@@ -7,21 +7,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
-
 import static config.States.*;
-
-
 
 /**
  * Fenêtre du magasin où les joueurs peuvent acheter des objets ou des améliorations.
  */
 public class ShopMenu extends JPanel {
     private Game game;
-
     ShopCart cart;
     public JTabbedPane tabbedPane;
     private ShopTab cartTab;
-
 
     /**
      * Constructeur de la fenêtre du magasin.
@@ -92,8 +87,6 @@ public class ShopMenu extends JPanel {
         return this.game;
     }
 
-
-
     /**
      * Actualise l'onglet du panier du magasin.
      */
@@ -118,11 +111,4 @@ public class ShopMenu extends JPanel {
         button.setContentAreaFilled(false);
         button.addActionListener(actionListener);
     }
-
-
-
-
-
-
-
 }

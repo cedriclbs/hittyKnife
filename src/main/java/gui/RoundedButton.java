@@ -31,20 +31,20 @@ public class RoundedButton extends JButton {
         } else {
             g.setColor(getBackground());
         }
-        g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 100, 100); // Ajustez les dimensions du bouton arrondi selon vos préférences
+        g.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 100, 100);
         super.paintComponent(g);
     }
 
     @Override
     protected void paintBorder(Graphics g) {
         g.setColor(getForeground());
-        g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 100, 100); // Vous pouvez ajuster les dimensions des coins arrondis selon vos préférences
+        g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 100, 100);
     }
 
     @Override
     public boolean contains(int x, int y) {
         if (shape == null || !shape.getBounds().equals(getBounds())) {
-            shape = new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, 100, 100); // Vous pouvez ajuster les dimensions des coins arrondis selon vos préférences
+            shape = new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, 100, 100);
         }
         return shape.contains(x, y);
     }

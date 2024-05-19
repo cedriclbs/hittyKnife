@@ -1,6 +1,5 @@
 package config;
 
-
 /**
  * La classe RessourcesPaths contient les chemins d'accès vers les ressources utilisées dans l'application.
  */

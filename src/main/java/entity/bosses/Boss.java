@@ -5,7 +5,7 @@ import entity.*;
 /**
  * Classe abstraite représentant un boss du jeu.
  */
-public class Boss extends Cible {
+public abstract class Boss extends Cible {
     private int hitCount;
 
     /**
@@ -30,7 +30,6 @@ public class Boss extends Cible {
         super(bosstype, x, y);
         this.hitCount = 0;
     }
-
 
     /**
      * Méthode pour gérer une attaque contre le boss avec un couteau.
@@ -58,6 +57,9 @@ public class Boss extends Cible {
         return hitCount >=3;
     }
 
+    /**
+     * Renvoie la vie restante du boss
+     */
     public int getHitCount() {
         return hitCount;
     }

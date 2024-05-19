@@ -51,7 +51,7 @@ public class HomeMenu extends BackgroundPanel  implements LibraryObserver {
      * disponibles dans l'inventaire.
      *
      * @param pos La position spécifiée ("left", "right", ou "bottom").
-     * @return Le nombre de lignes ou de colonnes correspondant au nombre de contenu.
+     * @return Le nombre de lignes ou de colonnes correspondant à la quantité de contenu.
      */
     public int getRowOrCol (String pos) {
         int res = 0;
@@ -182,8 +182,4 @@ public class HomeMenu extends BackgroundPanel  implements LibraryObserver {
             }
         }
     }
-
 }
-
-
-
