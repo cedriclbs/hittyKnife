@@ -238,14 +238,8 @@ public class RoundManagement {
                 // Créer une cible mouvante
                 return new MovingTarget(x, y);
             case CIBLE_BONUS:
-                int randomNum = random.nextInt(5);
-                Bonus.TypeBonus typeBonus = switch (randomNum) {
-                    case 0 -> BONUS_XP;
-                    case 1 -> BONUS_GOLD;
-                    case 2 -> BONUS_GEL;
-                    case 3 -> BONUS_POWER;
-                    default -> BONUS_TNT;
-                };
+                Bonus.TypeBonus typeBonus = getRandomBonus();
+
                 return new Bonus(x, y,typeBonus);
     
             case CIBLE_BOSS1:
@@ -267,6 +261,30 @@ public class RoundManagement {
             default:
                 return new Cible(x, y);
         }
+    }
+
+
+    public Bonus.TypeBonus getRandomBonus(){
+        Bonus.TypeBonus typeBonus;
+        if (isSolo) {
+            int randomNum = random.nextInt(5);
+            typeBonus = switch (randomNum) {
+                case 0 -> BONUS_XP;
+                case 1 -> BONUS_GOLD;
+                case 2 -> BONUS_GEL;
+                case 3 -> BONUS_POWER;
+                default -> BONUS_TNT;
+            };
+        }
+        else{
+            int randomNum = random.nextInt(3);
+            typeBonus = switch (randomNum) {
+                case 0 -> BONUS_GEL;
+                case 1 -> BONUS_POWER;
+                default -> BONUS_TNT;
+            };
+        }
+        return typeBonus;
     }
 
     /**
