@@ -54,7 +54,7 @@ public class Game {
     @JsonIgnore
     public int scoreJoueur2 = 0;
     @JsonIgnore
-    public final int MAX_SCORE = 5;
+    public final int MAX_SCORE = 50;
     @JsonIgnore
     public boolean gameOver = false;
     @JsonIgnore
