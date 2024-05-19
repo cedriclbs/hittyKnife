@@ -556,24 +556,24 @@ public class Game {
     // Méthode pour attribuer les récompenses en fonction du niveau
     private void giveRewards() {
         switch (level) {
-            case 1, 3, 7, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 5 -> this.argent += 10;
-            case 2 -> {
+            case 1, 2, 4, 5, 7, 8, 10, 11, 13, 14-> this.argent += 10;
+            case 3 -> {
                 inventaire.add(new ShopItem("Sword 4", 0, "src/main/ressources/knifes/knife#4.png"));
                 updateLibrary(inventaire);
             }
-            case 4 -> {
+            case 6 -> {
                 inventaire.add(new ShopItem("src/main/ressources/music/Battle_Theme.wav", 30, "src/main/ressources/button/music.png"));
                 updateLibrary(inventaire);
             }
-            case 6 -> {
+            case 9 -> {
                 inventaire.add(new ShopItem("Sword 5", 0, "src/main/ressources/knifes/knife#5.png"));
                 updateLibrary(inventaire);
             }
-            case 8 -> {
+            case 12 -> {
                 inventaire.add(new ShopItem("src/main/ressources/music/Main_Theme_2.wav", 0, "src/main/ressources/button/music.png"));
                 updateLibrary(inventaire);
             }
-            case 10 -> {
+            case 15 -> {
                 inventaire.add(new ShopItem("src/main/ressources/music/Battle_Theme_2.wav", 0, "src/main/ressources/button/music.png"));
                 updateLibrary(inventaire);
             }
