@@ -193,8 +193,8 @@ public class EntityDisplay extends JPanel {
                 if (x > cibleX - cw && x < cibleX + cw && y > cibleY - ch && y < cibleY + ch) {
                     deleteCible.add(cible);
                     if (isSolo) {
-                        game.addXP(10);
-                        game.addArgent(10);
+                        game.addXP(2);
+                        game.addArgent(5);
                     } else {
                         if (currentKnife) {
                             game.scoreJoueur2++;
@@ -842,8 +842,6 @@ public class EntityDisplay extends JPanel {
                         if (((Boss) cible).isDead()) game.scoreJoueur2+=2;
                     }
                 }
-
-
             }
             else {
                 transformCible = AffineTransform.getTranslateInstance(cibleX - (double) cibleImWidth / 2, cibleY - (double) cibleImHeight / 2);
