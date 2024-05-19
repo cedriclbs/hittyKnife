@@ -590,6 +590,7 @@ public class EntityDisplay extends JPanel {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         game.resetScore();  // Remplacez `game.resetScore()` par l'appel de méthode approprié
+                        game.resetRoundAndRestoreLives(false);
                         isWin = false;
                         dialog.dispose();
                     }
