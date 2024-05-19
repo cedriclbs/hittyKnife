@@ -40,7 +40,7 @@ public class GameView extends JPanel{
         if(isSolo){
             this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgJap10.gif", (ArrayList<Cible>)game.getListeCible(),isSolo, game);
         }else {
-            this.entityDisplay = new EntityDisplay(game.knife2, "src/main/ressources/background/versus.gif", (ArrayList<Cible>)game.getListeCible(),isSolo, game);
+            this.entityDisplay = new EntityDisplay(game.knife2, "src/main/ressources/background/versus.gif", (ArrayList<Cible>)game.getListeCible2(),isSolo, game);
         }
 
         initialize();
