@@ -424,7 +424,7 @@ public class EntityDisplay extends JPanel {
             int yPosi = 30;
 
             // Dessine l'ombre
-            g2d.setColor(new Color(0, 0, 0, 64)); 
+            g2d.setColor(Color.darkGray);
             int shadowOffset = 2; 
             g2d.drawString(niveauTexte, xPosition + shadowOffset, yPosi + shadowOffset);
 
@@ -445,7 +445,7 @@ public class EntityDisplay extends JPanel {
             int barHeight = 30; // Hauteur de la barre de fond
             int arcWidth = 25; // Largeur de l'arc pour les coins arrondis
             int arcHeight = 25; // Hauteur de l'arc pour les coins arrondis
-            g2d.setColor(new Color(0, 0, 0, 64)); 
+            g2d.setColor(new Color(192, 192, 192, 80));
             g2d.fillRoundRect(startX - 10, yPosition - (barHeight / 2) + (circleDiameter / 2), (totalRounds * (circleDiameter + spacing)) - spacing + 20, barHeight, arcWidth, arcHeight);
 
 
@@ -455,7 +455,7 @@ public class EntityDisplay extends JPanel {
                 } else if (i <= currentRoundIndex) {
                     g2d.setColor(Color.WHITE); 
                 } else {
-                    g2d.setColor(Color.BLACK); 
+                    g2d.setColor(Color.black); 
                 }
                 // Dessine le cercle
                 g2d.fillOval(startX + i * (circleDiameter + spacing), yPosition, circleDiameter, circleDiameter);
@@ -469,7 +469,7 @@ public class EntityDisplay extends JPanel {
             int livesYPosition = yPosition + circleDiameter + 30;
 
             for (int i = 0; i < totalLives - 1; i++) {
-                g2d.setColor(i < totalLives - game.getVies() ? Color.RED : Color.BLACK);
+                g2d.setColor(i < totalLives - game.getVies() ? Color.RED : Color.darkGray);
                 g2d.setStroke(new BasicStroke(lineThickness));
                 g2d.drawLine(livesXPosition + i * livesSpacing - 10, livesYPosition - 10, livesXPosition + i * livesSpacing + 10, livesYPosition + 10);
                 g2d.drawLine(livesXPosition + i * livesSpacing + 10, livesYPosition - 10, livesXPosition + i * livesSpacing - 10, livesYPosition + 10);
