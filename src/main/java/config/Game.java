@@ -48,6 +48,14 @@ public class Game {
     @JsonIgnore 
     private int vies = 4;
     @JsonIgnore
+    private RoundManagement roundManagementVERSUS;
+    @JsonIgnore
+    public int scoreJoueur1 = 0;
+    @JsonIgnore
+    public int scoreJoueur2 = 0;
+    @JsonIgnore
+    public final int MAX_SCORE = 5;
+    @JsonIgnore
     public boolean gameOver = false;
     @JsonIgnore
     private Timer gameOverTimer;
@@ -56,7 +64,9 @@ public class Game {
 
 
     private static final int xpThreshold = 10;
+
     private RoundManagement roundManagement;
+
     private List<GameObserver> observers = new ArrayList<>();
     private List<LibraryObserver> libraryObservers = new ArrayList<>();
 
@@ -105,7 +115,8 @@ public class Game {
         this.knife2 = new Knife(new Coordinate(15,0));
         this.knife3 = new Knife(new Coordinate(-15,0));
         initInventaire();
-        this.roundManagement = new RoundManagement();
+        this.roundManagement = new RoundManagement(true);
+        this.roundManagementVERSUS = new RoundManagement(false);
         this.gameView = new GameView(isSolo,this);
         this.currentLevel = 1;
         this.xp = 0;
@@ -249,8 +260,20 @@ public class Game {
      */
     public void initInventaire () {
         //Articles par défaut :
-        this.inventaire.add(new ShopItem("Sword 1", 15, RessourcesPaths.knifePath + "knife.png"));
-        this.inventaire.add(new ShopItem("Music 1", 30, RessourcesPaths.buttonPath + "music.png"));
+        ShopItem defaultKnife = new ShopItem("Sword 1", 15, RessourcesPaths.knifePath + "knife#1.png");
+        ShopItem defaultMusic = new ShopItem("Music 1", 30, RessourcesPaths.buttonPath + "music.png");
+
+        if (!this.inventaire.contains(defaultKnife)){
+            this.inventaire.add(defaultKnife);
+        }
+        if (!this.inventaire.contains(defaultMusic)){
+            this.inventaire.add(defaultMusic);
+        }
+    }
+
+    public void resetScore(){
+        this.scoreJoueur2=0;
+        this.scoreJoueur1=0;
     }
 
 
@@ -270,8 +293,10 @@ public class Game {
             this.level = loadedGame.getLevel();
             this.argent = loadedGame.getArgent();
             this.inventaire = loadedGame.getInventaire();
+            initInventaire();
             this.currentBackgroundPath = loadedGame.getCurrentBackgroundPath();
             roundManagement.setCurrentRoundIndex(0);
+            roundManagementVERSUS.setCurrentRoundIndex(0);
             updateBackground();
 
         } catch (IOException e) {
@@ -295,25 +320,31 @@ public class Game {
      *  Méthode pour initialiser le jeu
      */
     private synchronized void initGame() {
-        ChargerRound(roundManagement.getCurrentRoundIndex());
+        ChargerRound(roundManagement.getCurrentRoundIndex(),true);
+        ChargerRound(roundManagementVERSUS.getCurrentRoundIndex(),false);
     }
 
-    /**
-     * Méthode pour charger le round spécifié
-     *
-     * @param roundIndex = index du round specifié
-     */
-    private synchronized void ChargerRound(int roundIndex) {
-        Round currentRound = roundManagement.getListeRounds().get(roundIndex);
-        listeCible1.clear();
-        listeCible1.addAll(currentRound.getListeCibles());
-        roundManagement.setCurrentRoundIndex(roundIndex);
-
-        if (!isSolo) {
+    private synchronized void ChargerRound(int roundIndex,boolean isSolo) {
+        if (isSolo) {
+            Round currentRound = roundManagement.getListeRounds().get(roundIndex);
+            listeCible1.clear();
+            listeCible1.addAll(currentRound.getListeCibles());
+            roundManagement.setCurrentRoundIndex(roundIndex);
+        }
+        else{
+            Round currentRound = roundManagementVERSUS.getListeRounds().get(roundIndex);
             listeCible2.clear();
             listeCible2.addAll(currentRound.getListeCibles());
+            roundManagementVERSUS.setCurrentRoundIndex(roundIndex);
         }
     }
+    /*private synchronized void ChargerRoundVERSUS(int roundIndex) {
+        Round currentRound = roundManagementVERSUS.getListeRounds().get(roundIndex);
+        listeCible2.clear();
+        listeCible2.addAll(currentRound.getListeCibles());
+        roundManagementVERSUS.setCurrentRoundIndex(roundIndex);
+    }*/
+
 
     /**
      * Méthode pour ajouter un observateur de jeu
@@ -425,7 +456,7 @@ public class Game {
         if (listeCible1.isEmpty()) {
             roundManagement.setCurrentRoundIndex(roundManagement.getCurrentRoundIndex() + 1);
             if (roundManagement.getCurrentRoundIndex() < roundManagement.getListeRounds().size()) {
-                ChargerRound(roundManagement.getCurrentRoundIndex()); // Chargement du round suivant
+                ChargerRound(roundManagement.getCurrentRoundIndex(),true); // Chargement du round suivant
                 //System.out.println(roundManagement.getCurrentRoundIndex());
 
             }
@@ -435,9 +466,22 @@ public class Game {
                 System.out.println("Level : " + currentLevel);
                 roundManagement.resetRounds(); // Réinitialisation des rounds pour le nouveau niveau
                 resetLives();
-                ChargerRound(roundManagement.getCurrentRoundIndex()); // Recharge le premier round du nouveau niveau
+                ChargerRound(roundManagement.getCurrentRoundIndex(),true); // Recharge le premier round du nouveau niveau
             }
+        }
 
+        if (listeCible2.isEmpty()) {
+            roundManagementVERSUS.setCurrentRoundIndex(roundManagementVERSUS.getCurrentRoundIndex() + 1);
+            if (roundManagementVERSUS.getCurrentRoundIndex() < roundManagementVERSUS.getListeRounds().size()) {
+                ChargerRound(roundManagementVERSUS.getCurrentRoundIndex(),false); // Chargement du round suivant
+                //System.out.println(roundManagement.getCurrentRoundIndex());
+
+            }
+            else {
+                //notifyBackgroundChange();
+                roundManagementVERSUS.resetRounds(); // Réinitialisation des rounds pour le nouveau niveau
+                ChargerRound(roundManagementVERSUS.getCurrentRoundIndex(),false); // Recharge le premier round du nouveau niveau
+            }
         }
     }
 

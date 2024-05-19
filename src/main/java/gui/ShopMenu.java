@@ -89,7 +89,7 @@ public class ShopMenu extends JPanel {
     void refreshCartTab() {
         int cartTabIndex = tabbedPane.indexOfTab("Panier");
         if (cartTabIndex != -1) {
-            JPanel cartPanel = cartTab.createPanel(null, "cart"); // Utilisez la référence existante pour actualiser le panneau
+            JPanel cartPanel = cartTab.createPanel(null, "cart");
             tabbedPane.setComponentAt(cartTabIndex, cartPanel);
         }
     }
