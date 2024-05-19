@@ -31,7 +31,7 @@ public class RoundManagement {
     /**
      * Constructeur pour initialiser les rounds et leurs cibles.
      */
-    public RoundManagement() {
+    public RoundManagement(boolean isSolo) {
         this.random = new Random();
         this.rounds = new ArrayList<>();
         this.currentRoundIndex = 0;
