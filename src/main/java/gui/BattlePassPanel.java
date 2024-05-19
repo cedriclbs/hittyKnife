@@ -8,7 +8,7 @@ import config.Game;
 import config.GameObserver;
 
 public class BattlePassPanel extends JPanel implements GameObserver {
-    private static final int MAX_PALIER = 20;
+    private static final int MAX_PALIER = 15;
     private Map<Integer, Boolean> rewardsReached;
     private int currentLevel;
     private Game game;
@@ -53,12 +53,12 @@ public class BattlePassPanel extends JPanel implements GameObserver {
         Image knife5Icon = new ImageIcon("src/main/ressources/knifes/knife#5.png").getImage();
 
         // Ajout des icônes aux paliers correspondants
-        addRewardIcons(new int[]{1, 3, 5, 7, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}, moneyIcon);
-        rewardIcons.put(2, knife4Icon);
-        rewardIcons.put(4, musicIcon);
-        rewardIcons.put(6, knife5Icon);
-        rewardIcons.put(8, musicIcon);
-        rewardIcons.put(10, musicIcon);
+        addRewardIcons(new int[]{1, 2, 4, 5, 7, 8, 10, 11, 13, 14}, moneyIcon);
+        rewardIcons.put(3, knife4Icon);
+        rewardIcons.put(6, musicIcon);
+        rewardIcons.put(9, knife5Icon);
+        rewardIcons.put(12, musicIcon);
+        rewardIcons.put(15, musicIcon);
     }
 
     // Méthode pour ajouter la même icône à plusieurs paliers

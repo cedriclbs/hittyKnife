@@ -44,6 +44,7 @@ public class GameView extends JPanel{
         }
 
         initialize();
+        playMusic("src/main/ressources/music/Main_Theme.wav");
     }
 
 

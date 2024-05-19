@@ -7,7 +7,6 @@ import geometry.Geometry;
  * Classe représentant un type spécifique de boss.
  */
 public class BossType3 extends Boss{
-    private int hitCount;
     private boolean directionPositive = true; // Indique si le boss se déplace vers la droite (+x) ou vers la gauche (-x)
 
     /**
@@ -16,20 +15,6 @@ public class BossType3 extends Boss{
      */
     public BossType3(double x, double y) {
         super(TypeCible.CIBLE_BOSS3, x, y);
-        this.hitCount = 0;
-    }
-    @Override
-    public void attacked() {
-        this.hitCount++;
-    }
-
-    public boolean isDead() {
-        int health = 3;
-        return hitCount >= health;
-    }
-
-    public int getHitCount() {
-        return hitCount;
     }
 
     @Override

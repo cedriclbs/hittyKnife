@@ -8,7 +8,6 @@ import geometry.Geometry;
  * Classe représentant un type spécifique de boss.
  */
 public class BossType4 extends Boss {
-    private int hitCount;
     private int phase = 1;
 
     /**
@@ -17,21 +16,6 @@ public class BossType4 extends Boss {
      */
     public BossType4(double x, double y) {
         super(TypeCible.CIBLE_BOSS4, x, y);
-        this.hitCount = 0;
-    }
-
-    @Override
-    public void attacked() {
-        this.hitCount++;
-    }
-
-    public boolean isDead() {
-        int health = 3;
-        return hitCount >= health;
-    }
-
-    public int getHitCount() {
-        return hitCount;
     }
 
     @Override
