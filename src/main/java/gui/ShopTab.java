@@ -108,7 +108,7 @@ public class ShopTab {
 
         panel.add(itemRoundedPanel);
 
-        // Ajoute un MouseListener pour changer le curseur en main quand la souris survole
+        // MouseListener ajouté pour changer le curseur en main quand la souris survole
         itemButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {

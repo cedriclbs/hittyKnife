@@ -95,9 +95,9 @@ public class HomeMenu extends BackgroundPanel  implements LibraryObserver {
             ImageIcon icon = adapteImage(item.getArticlePath(), item.getArticleName());
 
             JButton itemButton = new JButton(icon);
-            itemButton.setOpaque(false); // Rend le bouton transparent
-            itemButton.setContentAreaFilled(false); // Supprime le remplissage du bouton
-            itemButton.setBorderPainted(false); // Supprime le cadre du bouton
+            itemButton.setOpaque(false);
+            itemButton.setContentAreaFilled(false);
+            itemButton.setBorderPainted(false);
 
             if (item.getArticlePath().contains("knife")) {
                 leftPanel.add(itemButton);
@@ -123,12 +123,12 @@ public class HomeMenu extends BackgroundPanel  implements LibraryObserver {
 
             itemButton.addMouseListener(new MouseAdapter() {
                 @Override
-                public void mouseEntered(MouseEvent e) {
-                    itemButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                }
-                @Override
                 public void mouseExited(MouseEvent e) {
                     itemButton.setCursor(Cursor.getDefaultCursor());
+                }
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    itemButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 }
             });
         }

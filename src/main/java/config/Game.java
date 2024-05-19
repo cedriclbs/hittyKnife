@@ -260,8 +260,15 @@ public class Game {
      */
     public void initInventaire () {
         //Articles par défaut :
-        this.inventaire.add(new ShopItem("Sword 1", 15, RessourcesPaths.knifePath + "knife.png"));
-        this.inventaire.add(new ShopItem("Music 1", 30, RessourcesPaths.buttonPath + "music.png"));
+        ShopItem defaultKnife = new ShopItem("Sword 1", 15, RessourcesPaths.knifePath + "knife#1.png");
+        ShopItem defaultMusic = new ShopItem("Music 1", 30, RessourcesPaths.buttonPath + "music.png");
+
+        if (!this.inventaire.contains(defaultKnife)){
+            this.inventaire.add(defaultKnife);
+        }
+        if (!this.inventaire.contains(defaultMusic)){
+            this.inventaire.add(defaultMusic);
+        }
     }
 
     public void resetScore(){
@@ -286,6 +293,7 @@ public class Game {
             this.level = loadedGame.getLevel();
             this.argent = loadedGame.getArgent();
             this.inventaire = loadedGame.getInventaire();
+            initInventaire();
             this.currentBackgroundPath = loadedGame.getCurrentBackgroundPath();
             roundManagement.setCurrentRoundIndex(0);
             roundManagementVERSUS.setCurrentRoundIndex(0);
