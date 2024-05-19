@@ -759,7 +759,6 @@ public class EntityDisplay extends JPanel {
                 //g2d.draw(transformedBossMask);
                 if (isSolo){
                     if (transformedBossMask.intersects(transformedKnifeMask.getBounds2D())) {
-                        collision = true;
                         if (!game.powered[0]) {
                             collisionAngle = knife.getAngle();
                             collisionX = knifeX;
@@ -772,8 +771,6 @@ public class EntityDisplay extends JPanel {
                 }
                 else {
                     if (transformedBossMask.intersects(transformedKnifeMask.getBounds2D())) {
-                        collision = true;
-                        game.scoreJoueur1++;
                         if (!game.powered[1]) {
                             collisionAngle = knife.getAngle();
                             collisionX = knifeX;
@@ -782,10 +779,9 @@ public class EntityDisplay extends JPanel {
                             knife.resetKnife();
                         }
                         else collision(deleteCible, cible, cibleX, cibleY, 1);
+                        if (((Boss) cible).isDead()) game.scoreJoueur1+=2;
                     }
                     if (transformedBossMask.intersects(transformedKnifeMask2.getBounds2D())) {
-                        collision = true;
-                        game.scoreJoueur2++;
                         if (!game.powered[2]) {
                             collisionAngle = knife2.getAngle();
                             collisionX = knife2X;
@@ -794,6 +790,7 @@ public class EntityDisplay extends JPanel {
                             knife2.resetKnife();
                         }
                         else collision(deleteCible, cible, cibleX, cibleY, 2);
+                        if (((Boss) cible).isDead()) game.scoreJoueur2+=2;
                     }
                 }
 
@@ -826,7 +823,6 @@ public class EntityDisplay extends JPanel {
                 //g2d.draw(transformedCibleMask);
                 if (isSolo){
                     if (transformedCibleMask.intersects(transformedKnifeMask.getBounds2D())) {
-                        collision = true;
                         if (!game.powered[0]) {
                             collisionAngle = knife.getAngle();
                             collisionX = knifeX;
@@ -842,7 +838,6 @@ public class EntityDisplay extends JPanel {
 
                 else {
                     if (transformedCibleMask.intersects(transformedKnifeMask.getBounds2D())) {
-                        collision = true;
                         game.scoreJoueur1++;
                         if (!game.powered[1]) {
                             collisionAngle = knife.getAngle();
@@ -854,7 +849,6 @@ public class EntityDisplay extends JPanel {
                         else collision(deleteCible, cible, cibleX, cibleY, 1);
                     }
                     if (transformedCibleMask.intersects(transformedKnifeMask2.getBounds2D())) {
-                        collision = true;
                         game.scoreJoueur2++;
                         if (!game.powered[2]) {
                             collisionAngle = knife2.getAngle();
