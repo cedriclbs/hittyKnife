@@ -6,7 +6,7 @@ import entity.*;
  * Classe abstraite représentant un boss du jeu.
  */
 public class Boss extends Cible {
-    private int health;
+    private int hitCount;
 
     /**
      * Constructeur de la classe Boss prenant les coordonnées x et y du boss.
@@ -16,6 +16,7 @@ public class Boss extends Cible {
      */
     public Boss(Double x, Double y, TypeCible bosstype) {
         super(bosstype,x,y);
+        this.hitCount = 0;
     }
 
     /**
@@ -27,6 +28,7 @@ public class Boss extends Cible {
      */
     public Boss(TypeCible bosstype, double x, double y) {
         super(bosstype, x, y);
+        this.hitCount = 0;
     }
 
 
@@ -35,7 +37,7 @@ public class Boss extends Cible {
      * Cette méthode doit être implémentée dans les classes concrètes.
      */
     public void attacked() {
-        health--;
+        hitCount++;
     }
 
     /**
@@ -53,7 +55,11 @@ public class Boss extends Cible {
      * @return true si le boss est mort (a atteint 0 de santé), sinon false.
      */
     public boolean isDead() {
-        return health <= 0;
+        return hitCount >=3;
+    }
+
+    public int getHitCount() {
+        return hitCount;
     }
 
 }

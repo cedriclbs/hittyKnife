@@ -7,7 +7,6 @@ import geometry.Geometry;
  * Classe représentant un type spécifique de boss.
  */
 public class BossType2 extends Boss{
-    private int hitCount;
     private double currentAngle = 0;
 
     /**
@@ -16,20 +15,6 @@ public class BossType2 extends Boss{
      */
     public BossType2(double x, double y) {
         super(TypeCible.CIBLE_BOSS2, x, y);
-        this.hitCount = 0;
-    }
-    @Override
-    public void attacked() {
-        this.hitCount++;
-    }
-
-    public boolean isDead() {
-        int health = 3;
-        return hitCount >= health;
-    }
-    
-    public int getHitCount() {
-        return hitCount;
     }
 
     @Override
