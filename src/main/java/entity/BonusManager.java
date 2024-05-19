@@ -59,8 +59,8 @@ public class BonusManager {
      * @param player Le joueur pour lequel le gel est activé (0 ou 1).
      */
     public void activateGel(int player) {
-        activeGel[player] = true;
-        activationTimeGel[player] = System.currentTimeMillis();
+        if (player <1) {activeGel[0] = true;activationTimeGel[0] = System.currentTimeMillis();}
+        else {activeGel[1] = true ;activationTimeGel[1] = System.currentTimeMillis();}
     }
 
     /**
