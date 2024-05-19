@@ -400,9 +400,6 @@ public class Game {
         }
     }
 
-
-
-
     /**
      * Met à jour l'état du jeu en fonction du temps écoulé depuis la dernière mise à jour.
      * Cette méthode gère le mouvement des couteaux et des cibles, vérifie la complétion des rounds,
@@ -431,8 +428,6 @@ public class Game {
         checkRoundCompletion();
         bonusManager.updateBonusEffect();
     }
-
-
 
     /**
      * Met à jour le mouvement de la cible spécifiée en fonction du temps écoulé depuis la dernière mise à jour.
@@ -474,8 +469,6 @@ public class Game {
             roundManagement.setCurrentRoundIndex(roundManagement.getCurrentRoundIndex() + 1);
             if (roundManagement.getCurrentRoundIndex() < roundManagement.getListeRounds().size()) {
                 chargerRound(roundManagement.getCurrentRoundIndex(),true); // Chargement du round suivant
-                //System.out.println(roundManagement.getCurrentRoundIndex());
-
             }
             else {
                 currentLevel++; // Incrémentation du niveau
@@ -491,11 +484,8 @@ public class Game {
             roundManagementVERSUS.setCurrentRoundIndex(roundManagementVERSUS.getCurrentRoundIndex() + 1);
             if (roundManagementVERSUS.getCurrentRoundIndex() < roundManagementVERSUS.getListeRounds().size()) {
                 chargerRound(roundManagementVERSUS.getCurrentRoundIndex(),false); // Chargement du round suivant
-                //System.out.println(roundManagement.getCurrentRoundIndex());
-
             }
             else {
-                //notifyBackgroundChange();
                 roundManagementVERSUS.resetRounds(); // Réinitialisation des rounds pour le nouveau niveau
                 chargerRound(roundManagementVERSUS.getCurrentRoundIndex(),false); // Recharge le premier round du nouveau niveau
             }
@@ -614,7 +604,9 @@ public class Game {
         }
     }
 
-    // Méthode pour attribuer les récompenses en fonction du niveau
+    /**
+     * Méthode pour attribuer les récompenses en fonction du niveau
+     */
     private void giveRewards() {
         switch (level) {
             case 1, 2, 4, 5, 7, 8, 10, 11, 13, 14-> this.argent += 10;
@@ -623,7 +615,7 @@ public class Game {
                 updateLibrary(inventaire);
             }
             case 6 -> {
-                inventaire.add(new ShopItem(RessourcesPaths.knifePath+ "Battle_Theme.wav", 30, RessourcesPaths.buttonPath + "music.png"));
+                inventaire.add(new ShopItem(RessourcesPaths.musicPath+ "Battle_Theme.wav", 30, RessourcesPaths.buttonPath + "music.png"));
                 updateLibrary(inventaire);
             }
             case 9 -> {
