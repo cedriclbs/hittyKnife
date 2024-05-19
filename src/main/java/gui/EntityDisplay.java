@@ -353,8 +353,8 @@ public class EntityDisplay extends JPanel {
         }
         if (!(cible instanceof Boss)){animCollision = true;currentAnimBonusType=null;}
         if (isSolo) {
-            game.addXP(2);
-            game.addArgent(5);
+            game.addXP(1);
+            game.addArgent(2);
         }
         if (cible instanceof BossType1) {
             ((BossType1) cible).attacked();
