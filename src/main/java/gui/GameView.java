@@ -20,9 +20,8 @@ public class GameView extends JPanel{
 
     private Game game;
     private EntityDisplay entityDisplay;
-    private EntityDisplay entityDisplay2;
-    private boolean isSolo;
-
+    public boolean isSolo;
+    
     private Image backgroundImage;
     private static Clip musicClip;
 
@@ -38,9 +37,11 @@ public class GameView extends JPanel{
         this.game = game;
         Main.loop = new Loop(game);
         Main.loop.startTickFunction();
-        this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgJap10.gif", (ArrayList<Cible>)game.getListeCible(),isSolo, game);
-
-        this.entityDisplay2 = new EntityDisplay(game.knife2, "src/main/ressources/background/versus.gif",  (ArrayList<Cible>)game.getListeCible2(),isSolo, game);
+        if(isSolo){
+            this.entityDisplay = new EntityDisplay(game.knife1, "src/main/ressources/background/bgJap10.gif", (ArrayList<Cible>)game.getListeCible(),isSolo, game);
+        }else {
+            this.entityDisplay = new EntityDisplay(game.knife2, "src/main/ressources/background/versus.gif", (ArrayList<Cible>)game.getListeCible(),isSolo, game);
+        }
 
         initialize();
         playMusic("src/main/ressources/music/Main_Theme.wav");
@@ -103,7 +104,7 @@ public class GameView extends JPanel{
         } else {
             game.setIsSOlo(false);
             JPanel playersPanel = new JPanel(new GridLayout(1, 1));
-            playersPanel.add(entityDisplay2);
+            playersPanel.add(entityDisplay);
             playersPanel.setFocusable(true);
             playersPanel.addMouseListener(new MouseAdapter() {
                 public void mousePressed(MouseEvent e) {
@@ -150,7 +151,7 @@ public class GameView extends JPanel{
     public void updateKnifeImage(String knifePathClicked) {
         this.entityDisplay.updateKnifeImage(knifePathClicked);
         if (!isSolo) {
-            this.entityDisplay2.updateKnifeImage(knifePathClicked);
+            this.entityDisplay.updateKnifeImage(knifePathClicked);
         }
     }
 
@@ -160,9 +161,9 @@ public class GameView extends JPanel{
      * @param backgroundPath Le chemin d'accès à la nouvelle image de fond.
      */
     public void updateBackgroundImage(String backgroundPath) {
-        this.entityDisplay.initBg(backgroundPath);
-        revalidate();
-        repaint();
+            this.entityDisplay.initBg(backgroundPath);
+            revalidate();
+            repaint();
     }
     
     @Override
