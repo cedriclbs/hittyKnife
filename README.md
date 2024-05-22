@@ -29,16 +29,9 @@ Pour installer et exécuter "Hitty Knife Redux", assurez-vous d'avoir [Maven](ht
    git clone https://github.com/votre-utilisateur/hitty-knife-redux.git
    ```
 
-2. Compilez le projet en utilisant Maven :
-   ```bash
-   cd hitty-knife-redux
-   mvn clean package
-   ```
+2. Ouvrez un terminal et naviguez jusqu'à la racine du dossier.
 
-3. Après avoir compilé avec succès, exécutez le fichier JAR généré :
-   ```bash
-   java -jar target/hitty-knife-redux.jar
-   ```
+3. Exécutez la commande suivante : java -jar hittyknife.jar
 
 4. (Bonus) Compte Admin :
     Un compte admin (mot de passe: admin) a été crée pour vous, vous permettant directement de profiter du jeu avec une save complétée à 100%!
