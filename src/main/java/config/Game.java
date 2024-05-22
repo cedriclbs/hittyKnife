@@ -609,7 +609,7 @@ public class Game {
         switch (level) {
             case 1, 2, 4, 5, 7, 8, 10, 11, 13, 14-> this.argent += 10;
             case 3 -> {
-                inventaire.add(new ShopItem("Sword 4", 0, RessourcesPaths.buttonPath + "knife#4.png"));
+                inventaire.add(new ShopItem("Sword 4", 0, RessourcesPaths.knifePath + "knife#4.png"));
                 updateLibrary(inventaire);
             }
             case 6 -> {
